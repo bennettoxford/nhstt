@@ -1,0 +1,27 @@
+Package: nhstt
+Title: NHS Talking Therapies data set reports in R
+Version: 0.0.1
+Authors@R: 
+    person("Milan", "Wiedemann", email = "milan.wiedemann@gmail.com", comment = c(ORCID = "0000-0003-1991-282X"), role = c("aut", "cre"))
+Description: Provides functions to download and tidy annual NHS Talking Therapies reports.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+URL: https://github.com/bennettoxford/nhstt
+BugReports: https://github.com/bennettoxford/nhstt/issues
+Imports: 
+    archive,
+    cli,
+    dplyr,
+    here,
+    janitor,
+    purrr,
+    readxl,
+    tidyr
+VignetteBuilder: knitr
