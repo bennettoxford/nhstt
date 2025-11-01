@@ -1,0 +1,35 @@
+url: https://bennettoxford.github.io/nhstt/
+template:
+  bootstrap: 5
+
+development:
+  mode: auto
+
+home:
+  sidebar:
+    structure: [links, license, citation, authors, dev]
+
+reference:
+- title: Setup package and download data
+  desc: >
+    Download and manage NHS Talking Therapies data
+  contents:
+  - nhstt_setup
+  - nhstt_info
+  - nhstt_clear_download_cache
+
+- title: Available datasets
+  desc: >
+    Tidy NHS Talking Therapy datasets available in this package
+  contents:
+  - key_measures
+  - medication_status
+  - therapy_type
+  - effect_size
+
+- title: Functions for package developers
+  desc: >
+    Download and explore raw data
+  contents:
+  - nhstt_get_raw
+  - nhstt_check_columns
