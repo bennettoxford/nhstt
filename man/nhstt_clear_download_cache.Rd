@@ -2,7 +2,7 @@
 % Please edit documentation in R/nhstt_setup.R
 \name{nhstt_clear_download_cache}
 \alias{nhstt_clear_download_cache}
-\title{Clear cached data}
+\title{Clear downloaded data}
 \usage{
 nhstt_clear_download_cache(confirm = TRUE)
 }
@@ -14,7 +14,7 @@ Default is TRUE.}
 Invisible NULL
 }
 \description{
-Clear cached data
+Clear downloaded data
 }
 \examples{
 \donttest{

@@ -28,16 +28,13 @@ directly by name (e.g., \code{key_measures}).
 \examples{
 \donttest{
 # Download all default datasets (recommended)
-nhstt_setup()
+# nhstt_setup()
 
 # Download specific datasets only
-nhstt_setup(datasets = c("key_measures", "effect_size"))
-
-# Force re-download to get latest data
-nhstt_setup(force = TRUE)
+nhstt_setup(datasets = c("key_measures"))
 
 # After setup, access datasets directly
 key_measures
-medication_status
+
 }
 }
