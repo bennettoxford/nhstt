@@ -1,6 +1,47 @@
 # Declare global variables to avoid R CMD check NOTEs
 utils::globalVariables(c("start_date", "end_date", "measure"))
 
+#' Check if running in package build/check/documentation context
+#'
+#' Detects if the code is being executed during R CMD check, R CMD build,
+#' or roxygen2 documentation generation.
+#'
+#' @return Logical, TRUE if in build/check/documentation context
+#' @keywords internal
+is_pkg_build_context <- function() {
+  # Check R CMD check/build environment variables
+  if (identical(Sys.getenv("_R_CHECK_PACKAGE_NAME_"), "nhstt") ||
+      Sys.getenv("R_CMD") != "") {
+    return(TRUE)
+  }
+
+  # Check package option set during .onLoad when roxygen2 is detected
+  if (isTRUE(getOption("nhstt.quiet_data_errors", FALSE))) {
+    return(TRUE)
+  }
+
+  FALSE
+}
+
+#' Detect if package is being loaded by roxygen2
+#'
+#' Checks the call stack for roxygen2 or as.list.environment calls,
+#' which indicates documentation is being generated.
+#'
+#' @return Logical, TRUE if roxygen2 is in the call stack
+#' @keywords internal
+is_roxygen_context <- function() {
+  call_stack <- sys.calls()
+  any(vapply(call_stack, function(call) {
+    if (length(call) > 0) {
+      call_str <- paste(deparse(call[[1]]), collapse = "")
+      grepl("roxygenise|roxygenize|as\\.list\\.environment", call_str)
+    } else {
+      FALSE
+    }
+  }, logical(1)))
+}
+
 .onAttach <- function(libname, pkgname) {
   if (!is_setup()) {
     msg <- cli::format_inline("nhstt: Data not yet downloaded\nRun {.code nhstt_setup()} to download NHS Talking Therapies data")
@@ -17,6 +58,11 @@ utils::globalVariables(c("start_date", "end_date", "measure"))
 }
 
 .onLoad <- function(libname, pkgname) {
+  # During roxygen2 documentation, suppress dataset errors to avoid breaking devtools
+  if (is_roxygen_context()) {
+    options(nhstt.quiet_data_errors = TRUE)
+  }
+
   # Create active bindings for datasets
   create_dataset_bindings(pkgname)
 }
@@ -51,13 +97,23 @@ create_dataset_loader <- function(dataset_name) {
     tryCatch(
       nhstt_data(dataset_name),
       error = function(e) {
-        # During package build/documentation, data may not be available
-        # Return NULL silently to avoid breaking devtools::document()
-        # This catches all data availability errors but re-throws other errors
-        if (grepl("not found", e$message, ignore.case = TRUE) ||
-            grepl("not yet downloaded", e$message, ignore.case = TRUE)) {
-          return(NULL)
+        # Check if this is a "data not available" error
+        is_data_error <- grepl("not found", e$message, ignore.case = TRUE) ||
+          grepl("not yet downloaded", e$message, ignore.case = TRUE)
+
+        if (is_data_error) {
+          # During build/check/document, return NULL silently to avoid breaking devtools
+          if (is_pkg_build_context()) {
+            return(NULL)
+          }
+
+          # In normal usage, show helpful message
+          cli::cli_abort(c(
+            "{.field {dataset_name}} dataset not found",
+            "i" = "Run {.code nhstt_setup()} to download NHS Talking Therapies data"
+          ))
         }
+
         # Re-throw other errors (permissions, corrupt data, etc.)
         stop(e)
       }

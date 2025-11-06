@@ -16,17 +16,14 @@
 #' @examples
 #' \donttest{
 #' # Download all default datasets (recommended)
-#' nhstt_setup()
+#' # nhstt_setup()
 #'
 #' # Download specific datasets only
-#' nhstt_setup(datasets = c("key_measures", "effect_size"))
-#'
-#' # Force re-download to get latest data
-#' nhstt_setup(force = TRUE)
+#' nhstt_setup(datasets = c("key_measures"))
 #'
 #' # After setup, access datasets directly
 #' key_measures
-#' medication_status
+#' 
 #' }
 nhstt_setup <- function(datasets = c(
                           "key_measures",
@@ -86,7 +83,7 @@ nhstt_setup <- function(datasets = c(
   # Check if any work needs to be done
   if (!force && length(datasets_to_update) == 0) {
     fully_cached <- datasets
-    cli::cli_alert_success("All requested dataset{?s} already cached: {.val {fully_cached}}")
+    cli::cli_alert_success("All requested dataset{?s} already downloaded: {.val {fully_cached}}")
     cli::cli_alert_info("Access data with {.code {datasets[1]}}")
     return(invisible(cache_dir))
   }
@@ -94,7 +91,7 @@ nhstt_setup <- function(datasets = c(
   # Show what will be done
   fully_cached <- setdiff(datasets, datasets_to_update)
   if (length(fully_cached) > 0) {
-    cli::cli_alert_success("Already cached: {.val {fully_cached}}")
+    cli::cli_alert_success("Already downloaded: {.val {fully_cached}}")
   }
   if (length(datasets_to_update) > 0) {
     cli::cli_alert_info("Downloading: {.val {datasets_to_update}}")
@@ -179,7 +176,7 @@ nhstt_setup <- function(datasets = c(
   invisible(cache_dir)
 }
 
-#' Clear cached data
+#' Clear downloaded data
 #'
 #' @param confirm Logical, specifying whether to require confirmation before deletion.
 #'   Default is TRUE.
