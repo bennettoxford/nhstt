@@ -1,2 +1,6 @@
 .Rproj.user
 inst/doc
+/.quarto/
+**/*.quarto_ipynb
+docs
+check/*
