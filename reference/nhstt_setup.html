@@ -74,68 +74,26 @@ Default is FALSE.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Download all default datasets (recommended)</span></span></span>
-<span class="r-in"><span><span class="fu">nhstt_setup</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">NHS Talking Therapies data setup</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading: <span style="color: #0000BB;">"key_measures"</span>, <span style="color: #0000BB;">"medication_status"</span>, <span style="color: #0000BB;">"therapy_type"</span>, and <span style="color: #0000BB;">"effect_size"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading and extracting 8 archives</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span> 4/8 |  6s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span> 6/8 |  3s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 8/8 |  0s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading and extracting 8 archives</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Downloaded and extracted 8 archives <span style="color: #B2B2B2;">[11.6s]</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying <span style="color: #00BB00;">key_measures</span> dataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">key_measures</span> dataset <span style="color: #B2B2B2;">[12.1s]</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying <span style="color: #00BB00;">medication_status</span> dataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">medication_status</span> dataset <span style="color: #B2B2B2;">[2.5s]</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying <span style="color: #00BB00;">therapy_type</span> dataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">therapy_type</span> dataset <span style="color: #B2B2B2;">[15.9s]</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying <span style="color: #00BB00;">effect_size</span> dataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">effect_size</span> dataset <span style="color: #B2B2B2;">[21.9s]</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Setup complete! Access data with `key_measures`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Data cached in <span style="color: #0000BB;">/home/runner/.cache/R/nhstt</span> (1 MB)</span>
+<span class="r-in"><span><span class="co"># nhstt_setup()</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Download specific datasets only</span></span></span>
-<span class="r-in"><span><span class="fu">nhstt_setup</span><span class="op">(</span>datasets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"key_measures"</span>, <span class="st">"effect_size"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">nhstt_setup</span><span class="op">(</span>datasets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"key_measures"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">NHS Talking Therapies data setup</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All requested datasets already cached: <span style="color: #0000BB;">"key_measures"</span> and <span style="color: #0000BB;">"effect_size"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Access data with `key_measures`</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Force re-download to get latest data</span></span></span>
-<span class="r-in"><span><span class="fu">nhstt_setup</span><span class="op">(</span>force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">NHS Talking Therapies data setup</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading: <span style="color: #0000BB;">"key_measures"</span>, <span style="color: #0000BB;">"medication_status"</span>, <span style="color: #0000BB;">"therapy_type"</span>, and <span style="color: #0000BB;">"effect_size"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading: <span style="color: #0000BB;">"key_measures"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading and extracting 8 archives</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■                       </span> 2/8 |  8s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span> 4/8 |  6s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span> 6/8 |  3s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span> 4/8 |  4s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span> 6/8 |  2s</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 8/8 |  0s</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading and extracting 8 archives</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Downloaded and extracted 8 archives <span style="color: #B2B2B2;">[12.2s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Downloaded and extracted 8 archives <span style="color: #B2B2B2;">[9.6s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying <span style="color: #00BB00;">key_measures</span> dataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">key_measures</span> dataset <span style="color: #B2B2B2;">[11.6s]</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying <span style="color: #00BB00;">medication_status</span> dataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">medication_status</span> dataset <span style="color: #B2B2B2;">[2.5s]</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying <span style="color: #00BB00;">therapy_type</span> dataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">therapy_type</span> dataset <span style="color: #B2B2B2;">[15.6s]</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying <span style="color: #00BB00;">effect_size</span> dataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">effect_size</span> dataset <span style="color: #B2B2B2;">[21.6s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidied <span style="color: #00BB00;">key_measures</span> dataset <span style="color: #B2B2B2;">[11.9s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Setup complete! Access data with `key_measures`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Data cached in <span style="color: #0000BB;">/home/runner/.cache/R/nhstt</span> (1 MB)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Data cached in <span style="color: #0000BB;">/home/runner/.cache/R/nhstt</span> (0.4 MB)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># After setup, access datasets directly</span></span></span>
 <span class="r-in"><span><span class="va">key_measures</span></span></span>
@@ -156,24 +114,7 @@ Default is FALSE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 584,770 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: variable_a &lt;chr&gt;, variable_b &lt;chr&gt;, statistic &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   measure &lt;chr&gt;, value &lt;dbl&gt;</span></span>
-<span class="r-in"><span><span class="va">medication_status</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading <span style="color: #00BB00;">medication_status</span> dataset from cache</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 60,900 × 12</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    start_date end_date   period org_type org_code org_name variable_type        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2017-04-01 2018-03-31 fy1718 England  All      All      Psychotropic Medicat…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 60,890 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: variable_a &lt;chr&gt;, variable_b &lt;chr&gt;, statistic &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   measure &lt;chr&gt;, value &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

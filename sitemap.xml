@@ -30,6 +30,8 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_package_version.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_source_links.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/index.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/is_pkg_build_context.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/is_roxygen_context.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/is_setup.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/key_measures.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/medication_status.html</loc></url>
