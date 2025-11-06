@@ -1,0 +1,100 @@
+---
+title: "How to explore `key_measures` NHS TT report"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{how-to-key-measures}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This example demonstrates how to explore annual NHS Talking Therapies reports using the `nhstt` package.
+We'll look at regional trends in depression referrals and finished treatments to illustrate the basic workflow for accessing and visualizing this publicly available data.
+
+## Setup
+
+We start by loading the necessary packages and downloading the `key_measures` dataset, which contains performance indicators for NHS Talking Therapies services across England.
+
+```{r setup, message=FALSE, warning=FALSE}
+# Load packages
+library(nhstt)
+library(ggplot2)
+library(dplyr)
+library(scales)
+library(stringr)
+
+# Setup nhstt package and download dat
+nhstt_setup("key_measures")
+```
+
+## Select data
+
+Here we filter the data to focus on received referrals and finished treatments at the regional level.
+This step requires careful exploration of the underlying data structure.
+
+```{r select-data}
+# Select data for analysis
+selected_measures <- key_measures |> 
+  filter(org_type == "Commissioning Region") |> 
+  filter(!org_name == "UNKNOWN") |> 
+  filter(measure %in% c("referrals_received", "finished_course_treatment")) |> 
+  filter(statistic == "count") |>
+  filter(variable_a == "Depression") |> 
+  select(start_date, end_date, org_name, variable_a, statistic, measure, value)
+
+# Tidy data for analysis
+selected_measures <- selected_measures |> 
+  mutate(
+    org_name = str_to_title(str_remove(org_name, "\\s*COMMISSIONING REGION$")),
+    org_name = str_replace_all(org_name, "\\b(Of|And)\\b", tolower),
+    measure = factor(measure, levels = c("referrals_received", "finished_course_treatment"), labels = c("Referrals received", "Finished course of treatment"))
+  ) |> 
+  filter(end_date > "2020-03-31")
+```
+
+## Create figure
+
+Finally, we visualise the trends over time for each region.
+
+```{r fig-example, echo=FALSE, fig.height = 12, fig.width = 8, fig.cap = "Trends for counts of (1) referrals received and (2) finished course of treatment for depression broken down by region."}
+fig_dep_ref_tx_by_region <- selected_measures |>
+  ggplot(
+    aes(
+      y = value,
+      x = end_date,
+      colour = measure,
+      shape = measure
+    )
+  ) +
+  geom_line(alpha = 0.2) +
+  geom_point(size = 2) +
+  labs(
+    title = NULL,
+    x = "End date of yearly interval",
+    y = NULL,
+    colour = NULL,
+    shape = NULL
+  ) +
+  scale_x_date(
+    breaks = unique(selected_measures$end_date),
+    labels = label_date("%b\n%Y")
+  ) +
+  scale_y_continuous(
+    labels = label_number(accuracy = 1),
+    limits = c(0, NA)
+  ) +
+  theme(
+    legend.position = "bottom",
+    text = element_text(size = 14)
+  ) +
+  scale_colour_viridis_d(end = .6) +
+  facet_wrap(vars(org_name), ncol = 1)
+
+fig_dep_ref_tx_by_region
+```

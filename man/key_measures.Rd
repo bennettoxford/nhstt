@@ -32,6 +32,7 @@ After running \code{\link[=nhstt_setup]{nhstt_setup()}}, this dataset can be acc
 }
 \examples{
 \donttest{
+nhstt_setup(datasets = "key_measures")
 key_measures
 }
 }
