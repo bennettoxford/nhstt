@@ -28,6 +28,7 @@
 #'
 #' @examples
 #' \donttest{
+#' nhstt_setup(datasets = "key_measures")
 #' key_measures
 #' }
 NULL
@@ -62,6 +63,7 @@ NULL
 #'
 #' @examples
 #' \donttest{
+#' nhstt_setup(datasets = "medication_status")
 #' medication_status
 #' }
 NULL
@@ -96,6 +98,7 @@ NULL
 #'
 #' @examples
 #' \donttest{
+#' nhstt_setup(datasets = "therapy_type")
 #' therapy_type
 #' }
 NULL
@@ -132,6 +135,7 @@ NULL
 #'
 #' @examples
 #' \donttest{
+#' nhstt_setup(datasets = "effect_size")
 #' effect_size
 #' }
 NULL
