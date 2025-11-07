@@ -89,4 +89,3 @@ nhstt_info <- function() {
 
   invisible(cache_index)
 }
-
