@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>How to explore `key_measures` NHS TT report • nhstt</title>
+<title>How to use the key_measures report • nhstt</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How to explore `key_measures` NHS TT report">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How to use the key_measures report">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -33,7 +33,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/how-to-key-measures.html">How to explore `key_measures` NHS TT report</a></li>
+<li><a class="dropdown-item" href="../articles/how-to-effect-size.html">How to expore the effect_size report</a></li>
+    <li><a class="dropdown-item" href="../articles/how-to-key-measures.html">How to use the key_measures report</a></li>
   </ul>
 </li>
       </ul>
@@ -55,7 +56,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>How to explore `key_measures` NHS TT report</h1>
+      <h1>How to use the key_measures report</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/how-to-key-measures.Rmd" class="external-link"><code>vignettes/how-to-key-measures.Rmd</code></a></small>
@@ -91,25 +92,27 @@ for NHS Talking Therapies services across England.</p>
 </h2>
 <p>Here we filter the data to focus on received referrals and finished
 treatments at the regional level. This step requires careful exploration
-of the underlying data structure.</p>
+of the underlying data structure. We remove data before NHS financial
+year 2020-21 because the regional breakdowns changed from this period
+onwards and require further data cleaning.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select data for analysis</span></span>
-<span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">key_measures</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_type</span> <span class="op">==</span> <span class="st">"Commissioning Region"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">org_name</span> <span class="op">==</span> <span class="st">"UNKNOWN"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"referrals_received"</span>, <span class="st">"finished_course_treatment"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">key_measures</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_type</span> <span class="op">==</span> <span class="st">"Commissioning Region"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">org_name</span> <span class="op">==</span> <span class="st">"UNKNOWN"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"referrals_received"</span>, <span class="st">"finished_course_treatment"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">statistic</span> <span class="op">==</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_a</span> <span class="op">==</span> <span class="st">"Depression"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_a</span> <span class="op">==</span> <span class="st">"Depression"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">start_date</span>, <span class="va">end_date</span>, <span class="va">org_name</span>, <span class="va">variable_a</span>, <span class="va">statistic</span>, <span class="va">measure</span>, <span class="va">value</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Loading <span style="color: #00BB00;">key_measures</span> dataset from cache</span></span>
 <span></span>
 <span><span class="co"># Tidy data for analysis</span></span>
-<span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">selected_measures</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">selected_measures</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    org_name <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/case.html" class="external-link">str_to_title</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html" class="external-link">str_remove</a></span><span class="op">(</span><span class="va">org_name</span>, <span class="st">"\\s*COMMISSIONING REGION$"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    org_name <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace_all</a></span><span class="op">(</span><span class="va">org_name</span>, <span class="st">"\\b(Of|And)\\b"</span>, <span class="va">tolower</span><span class="op">)</span>,</span>
 <span>    measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">measure</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"referrals_received"</span>, <span class="st">"finished_course_treatment"</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Referrals received"</span>, <span class="st">"Finished course of treatment"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_date</span> <span class="op">&gt;</span> <span class="st">"2020-03-31"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -117,9 +120,9 @@ of the underlying data structure.</p>
 </h2>
 <p>Finally, we visualise the trends over time for each region.</p>
 <div class="figure">
-<img src="how-to-key-measures_files/figure-html/fig-example-1.png" alt="Trends for counts of (1) referrals received and (2) finished course of treatment for depression broken down by region." width="768"><p class="caption">
-Trends for counts of (1) referrals received and (2) finished course of
-treatment for depression broken down by region.
+<img src="how-to-key-measures_files/figure-html/fig-example-1.png" alt="Trends over time for counts of referrals received and finished treatment courses for depression broken down by region." width="768"><p class="caption">
+Trends over time for counts of referrals received and finished treatment
+courses for depression broken down by region.
 </p>
 </div>
 </div>
