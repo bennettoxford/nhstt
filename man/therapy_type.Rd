@@ -6,25 +6,27 @@
 \format{
 A tibble in tidy/long format with the following columns:
 \describe{
-\item{start_date}{TODO}
-\item{end_date}{TODO}
-\item{period}{TODO}
-\item{org_type}{TODO}
-\item{org_code}{TODO}
-\item{org_name}{TODO}
-\item{variable_type}{TODO}
-\item{variable_a}{TODO}
-\item{variable_b}{TODO}
-\item{statistic}{TODO}
-\item{measure}{TODO}
-\item{value}{TODO}
+\item{start_date}{Start date of the annual reporting period (e.g., "2024-04-01")}
+\item{end_date}{End date of the annual reporting period (e.g., "2025-03-31")}
+\item{period}{NHS financial year identifier (e.g., "fy2425" for 2024/25)}
+\item{org_type}{Organisation type (e.g., "England", "Commissioning Region", "STP", "CCG", "Provider")}
+\item{org_code}{Organisation code (e.g., "All", "Y54", "15M")}
+\item{org_name}{Organisation name (e.g., "All", "NORTH OF ENGLAND COMMISSIONING REGION")}
+\item{variable_type}{Type of categorisation (always "Therapy type recorded at start of treatment")}
+\item{variable_a}{Primary breakdown variable (e.g., "Low Intensity", "High Intensity", "Not stated/Not known/Invalid")}
+\item{variable_b}{Secondary breakdown variable, further breakfowns of some categories in variable_a (e.g., "Guided self help book", "CBT", "Counselling for depression") or NA}
+\item{statistic}{Type of statistic (always "count" in this dataset)}
+\item{measure}{Therapy type measure (e.g., "li_guided_self_help_book", "hi_cbt")}
+\item{value}{Numeric value of the measure, as specified in statistic column}
 }
 }
 \source{
 \url{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}
 }
 \description{
-TODO: Add detailed description of the therapy type dataset.
+Contains information about the types of therapy recorded at the start of treatment,
+including low intensity interventions (e.g., guided self-help) and high intensity
+interventions (e.g., CBT, EMDR).
 }
 \details{
 After running \code{\link[=nhstt_setup]{nhstt_setup()}}, this dataset can be accessed directly by running
