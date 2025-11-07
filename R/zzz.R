@@ -11,7 +11,7 @@ utils::globalVariables(c("start_date", "end_date", "measure"))
 is_pkg_build_context <- function() {
   # Check R CMD check/build environment variables
   if (identical(Sys.getenv("_R_CHECK_PACKAGE_NAME_"), "nhstt") ||
-      Sys.getenv("R_CMD") != "") {
+    Sys.getenv("R_CMD") != "") {
     return(TRUE)
   }
 
@@ -77,7 +77,7 @@ create_dataset_bindings <- function(pkgname) {
     # Check if binding already exists (avoid errors during devtools::load_all)
     if (exists(ds, envir = ns, inherits = FALSE)) {
       if (bindingIsActive(ds, ns)) {
-        next  # Already has active binding, skip
+        next
       }
     }
 

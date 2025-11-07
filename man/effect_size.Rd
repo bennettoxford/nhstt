@@ -6,27 +6,29 @@
 \format{
 A tibble in tidy/long format with the following columns:
 \describe{
-\item{start_date}{TODO}
-\item{end_date}{TODO}
-\item{period}{TODO}
-\item{org_type}{TODO}
-\item{org_code}{TODO}
-\item{org_name}{TODO}
-\item{proms}{TODO}
-\item{initial_caseness}{TODO}
-\item{variable_type}{TODO}
-\item{variable_a}{TODO}
-\item{variable_b}{TODO}
-\item{statistic}{TODO}
-\item{measure}{TODO}
-\item{value}{TODO}
+\item{start_date}{Start date of the annual reporting period (e.g., "2024-04-01")}
+\item{end_date}{End date of the annual reporting period (e.g., "2025-03-31")}
+\item{period}{NHS financial year identifier (e.g., "fy2425" for 2024/25)}
+\item{org_type}{Organisation type (e.g., "England", "Commissioning Region", "STP", "CCG", "Provider")}
+\item{org_code}{Organisation code (e.g., "All", "Y54", "15M")}
+\item{org_name}{Organisation name (e.g., "All", "NORTH OF ENGLAND COMMISSIONING REGION")}
+\item{proms}{Patient-reported outcome measure (e.g., "PHQ9" for depression, "GAD7" for anxiety)}
+\item{initial_caseness}{Caseness status at start (e.g., "AtCaseness", "NotCaseness")}
+\item{variable_type}{Type of categorisation (e.g., "Total", "Problem Descriptor", "Presenting Complaint")}
+\item{variable_a}{Primary breakdown variable (e.g., "ALL", "Depression", "Anxiety and stress related disorders")}
+\item{variable_b}{Secondary breakdown variable, further breakfowns of some categories in variable_a (e.g., "Agoraphobia") or "ALL" or NA}
+\item{statistic}{Type of statistic (e.g., "count", "mean", "sd", "effect_size")}
+\item{measure}{Measurement type (e.g., "start", "end", "start_to_end" for PROM scores, "finished_course_treatment_paired_wsas")}
+\item{value}{Numeric value of the measure, as specified in statistic column}
 }
 }
 \source{
 \url{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}
 }
 \description{
-TODO: Add detailed description of the effect size dataset.
+Contains patient-reported outcome measures (PROMs) data including PHQ-9 and GAD-7
+scores at start and end of treatment, along with effect sizes and Work and Social
+Adjustment Scale (WSAS) scores.
 }
 \details{
 After running \code{\link[=nhstt_setup]{nhstt_setup()}}, this dataset can be accessed directly by running
