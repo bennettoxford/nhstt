@@ -1,5 +1,5 @@
 ---
-title: "How to explore `key_measures` NHS TT report"
+title: "How to use the key_measures report"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{how-to-key-measures}
@@ -37,24 +37,25 @@ nhstt_setup("key_measures")
 
 Here we filter the data to focus on received referrals and finished treatments at the regional level.
 This step requires careful exploration of the underlying data structure.
+We remove data before NHS financial year 2020-21 because the regional breakdowns changed from this period onwards and require further data cleaning.
 
 ```{r select-data}
 # Select data for analysis
-selected_measures <- key_measures |> 
-  filter(org_type == "Commissioning Region") |> 
-  filter(!org_name == "UNKNOWN") |> 
-  filter(measure %in% c("referrals_received", "finished_course_treatment")) |> 
+selected_measures <- key_measures |>
+  filter(org_type == "Commissioning Region") |>
+  filter(!org_name == "UNKNOWN") |>
+  filter(measure %in% c("referrals_received", "finished_course_treatment")) |>
   filter(statistic == "count") |>
-  filter(variable_a == "Depression") |> 
+  filter(variable_a == "Depression") |>
   select(start_date, end_date, org_name, variable_a, statistic, measure, value)
 
 # Tidy data for analysis
-selected_measures <- selected_measures |> 
+selected_measures <- selected_measures |>
   mutate(
     org_name = str_to_title(str_remove(org_name, "\\s*COMMISSIONING REGION$")),
     org_name = str_replace_all(org_name, "\\b(Of|And)\\b", tolower),
     measure = factor(measure, levels = c("referrals_received", "finished_course_treatment"), labels = c("Referrals received", "Finished course of treatment"))
-  ) |> 
+  ) |>
   filter(end_date > "2020-03-31")
 ```
 
@@ -62,7 +63,7 @@ selected_measures <- selected_measures |>
 
 Finally, we visualise the trends over time for each region.
 
-```{r fig-example, echo=FALSE, fig.height = 12, fig.width = 8, fig.cap = "Trends for counts of (1) referrals received and (2) finished course of treatment for depression broken down by region."}
+```{r fig-example, echo=FALSE, fig.height = 12, fig.width = 8, fig.cap = "Trends over time for counts of referrals received and finished treatment courses for depression broken down by region."}
 fig_dep_ref_tx_by_region <- selected_measures |>
   ggplot(
     aes(

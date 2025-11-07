@@ -23,7 +23,6 @@
 #'
 #' # After setup, access datasets directly
 #' key_measures
-#' 
 #' }
 nhstt_setup <- function(datasets = c(
                           "key_measures",

@@ -6,25 +6,27 @@
 \format{
 A tibble in tidy/long format with the following columns:
 \describe{
-\item{start_date}{TODO}
-\item{end_date}{TODO}
-\item{period}{TODO}
-\item{org_type}{TODO}
-\item{org_code}{TODO}
-\item{org_name}{TODO}
-\item{variable_type}{TODO}
-\item{variable_a}{TODO}
-\item{variable_b}{TODO}
-\item{statistic}{TODO}
-\item{measure}{TODO}
-\item{value}{TODO}
+\item{start_date}{Start date of the annual reporting period (e.g., "2024-04-01")}
+\item{end_date}{End date of the annual reporting period (e.g., "2025-03-31")}
+\item{period}{NHS financial year identifier (e.g., "fy2425" for 2024/25)}
+\item{org_type}{Organisation type (e.g., "England", "Commissioning Region", "STP", "CCG", "Provider")}
+\item{org_code}{Organisation code (e.g., "All", "Y54", "15M")}
+\item{org_name}{Organisation name (e.g., "All", "NORTH OF ENGLAND COMMISSIONING REGION")}
+\item{variable_type}{Type of categorisation (always "Psychotropic Medication Status")}
+\item{variable_a}{Primary breakdown variable (e.g., "Status Start - Prescribed and taking", "Status Start - Not Prescribed")}
+\item{variable_b}{Always NA for this dataset}
+\item{statistic}{Type of statistic (always "count")}
+\item{measure}{Medication status measure at end (e.g., "status_end_prescribed_and_taking", "status_end_not_prescribed")}
+\item{value}{Numeric value of the measure, as specified in statistic column}
 }
 }
 \source{
 \url{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}
 }
 \description{
-TODO: Add detailed description of the medication status dataset.
+Contains information about psychotropic medication status at the start and end
+of treatment for NHS Talking Therapies patients, including whether they were
+prescribed medication, taking it, or not prescribed.
 }
 \details{
 After running \code{\link[=nhstt_setup]{nhstt_setup()}}, this dataset can be accessed directly by running

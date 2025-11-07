@@ -6,25 +6,27 @@
 \format{
 A tibble in tidy/long format with the following columns:
 \describe{
-\item{start_date}{TODO}
-\item{end_date}{TODO}
-\item{period}{TODO}
-\item{org_type}{TODO}
-\item{org_code}{TODO}
-\item{org_name}{TODO}
-\item{variable_type}{TODO}
-\item{variable_a}{TODO}
-\item{variable_b}{TODO}
-\item{statistic}{TODO}
-\item{measure}{TODO}
-\item{value}{TODO}
+\item{start_date}{Start date of the annual reporting period (e.g., "2024-04-01")}
+\item{end_date}{End date of the annual reporting period (e.g., "2025-03-31")}
+\item{period}{NHS financial year identifier (e.g., "fy2425" for 2024/25)}
+\item{org_type}{Organisation type (e.g., "England", "Commissioning Region", "STP", "CCG", "Provider")}
+\item{org_code}{Organisation code (e.g., "All", "Y54", "15M")}
+\item{org_name}{Organisation name (e.g., "All", "NORTH OF ENGLAND COMMISSIONING REGION")}
+\item{variable_type}{Type of categorisation (e.g., "Problem Descriptor", "Presenting Complaint")}
+\item{variable_a}{Primary breakdown variable (e.g., "Depression", "Anxiety and stress related disorders", "All ADSM")}
+\item{variable_b}{Secondary breakdown variable, further breakfowns of some categories in variable_a (e.g., "Agoraphobia", "Generalized anxiety disorder") or NA}
+\item{statistic}{Type of statistic (e.g., "count", "percentage")}
+\item{measure}{Outcome measure (e.g., "referrals_received", "finished_course_treatment", "recovery", "improvement")}
+\item{value}{Numeric value of the measure, as specified in statistic column}
 }
 }
 \source{
 \url{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}
 }
 \description{
-TODO: Add detailed description of the key measures dataset.
+Contains key performance indicators for NHS Talking Therapies services including
+referrals, treatment completion, recovery, and improvement rates across different
+problem descriptors and presenting complaints.
 }
 \details{
 After running \code{\link[=nhstt_setup]{nhstt_setup()}}, this dataset can be accessed directly by running

@@ -1,0 +1,113 @@
+---
+title: "How to expore the effect_size report"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{how-to-effect-size}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This example demonstrates how to explore patient-reported outcome measures (PROMs) from NHS Talking Therapies using the `nhstt` package.
+We'll explore PHQ-9 and GAD-7 scores at the start and end of treatment for depression and all anxiety and stress related disorders to illustrate trends in symptom severity.
+
+## Setup
+
+We start by loading the R packages and downloading the `effect_size` dataset, which contains PROMs data including depression (PHQ-9) and anxiety (GAD-7) questionnaire scores.
+
+```{r setup, message=FALSE, warning=FALSE}
+# Load packages
+library(nhstt)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+library(stringr)
+
+# Setup nhstt package and download dat
+nhstt_setup("effect_size")
+```
+
+
+## Select data
+
+Here we filter the data to select mean scores and standard deviations for depression and all anxiety and stress related disorders for all regions.
+
+```{r select-data}
+# Select data for analysis
+selected_measures <- effect_size |> 
+   filter(org_type == "England" & org_code == "All") |> 
+   filter(statistic %in% c("mean", "sd")) |> 
+  filter(
+    (variable_a == "Depression") |
+    (variable_a == "Anxiety and stress related disorders" & variable_b == "Total")
+  )
+
+# Tidy data for analysis
+tidy_measures <- selected_measures |>
+  pivot_wider(names_from = "statistic", values_from = "value") |> 
+  select(-variable_b, -org_code, -org_name) |> 
+  mutate(
+    variable_a = factor(variable_a, levels = c("Anxiety and stress related disorders", "Depression")),
+    proms = factor(proms, levels = c("GAD7", "PHQ9")),
+    measure = factor(measure, levels = c("start", "end"), labels = c("Start of treatment", "End of treatment")),
+    initial_caseness = factor(initial_caseness, levels = c("AtCaseness", "NotCaseness"), labels = c("At caseness", "Not at caseness"))
+  )
+```
+
+## Create figure
+
+```{r fig-example, echo=FALSE, fig.height = 12, fig.width = 8, fig.cap = "Trends over time for means and standard deviations for PHQ-9 and GAD-7 scores for depression and all anxiety and stress related disorders."}
+
+tidy_measures |>
+  ggplot(
+    aes(
+      x = end_date,
+      y = mean,
+      colour = measure,
+      shape = measure,
+      group = measure
+    )
+  ) +
+  geom_errorbar(
+    aes(ymin = mean - sd, ymax = mean + sd), 
+    width = 100,
+    alpha = 1,
+    position = position_dodge(width = 100)) +
+  geom_line(
+    alpha = 0.2,
+    position = position_dodge(width = 100)) +
+  geom_point(size = 2,
+             position = position_dodge(width = 100)) +
+  labs(
+    title = NULL,
+    x = "End date of yearly interval",
+    y = "Mean score",
+    colour = NULL,
+    shape = NULL
+  ) +
+  scale_x_date(
+    breaks = unique(tidy_measures$end_date),
+    labels = label_date("%b\n%Y")
+  ) +
+  scale_y_continuous(
+    labels = label_number(accuracy = 0.1),
+    limits = c(0, NA)
+  ) +
+  theme(
+    legend.position = "bottom",
+    text = element_text(size = 12)
+  ) +
+  scale_colour_viridis_d(end = .6) +
+  facet_grid(
+    rows = vars(variable_a, initial_caseness),
+    cols = vars(proms),
+    switch = "y"
+  )
+```
