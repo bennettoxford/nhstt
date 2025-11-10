@@ -3,4 +3,7 @@ inst/doc
 /.quarto/
 **/*.quarto_ipynb
 docs
-check/*
+.claude/*
+AGENTS.md
+^\.vscode$
+.vscode/
