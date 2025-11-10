@@ -10,26 +10,21 @@ home:
     structure: [links, license, citation, authors, dev]
 
 reference:
-- title: Setup package and download data
-  desc: >
-    Download and manage NHS Talking Therapies data
-  contents:
-  - nhstt_setup
-  - nhstt_info
-  - nhstt_clear_download_cache
 
-- title: Available datasets
-  desc: >
-    Tidy NHS Talking Therapy datasets available in this package
+- title: Annual reports
   contents:
-  - key_measures
-  - medication_status
-  - therapy_type
-  - effect_size
+  - get_key_measures_annual
 
-- title: Functions for package developers
-  desc: >
-    Download and explore raw data
+- title: Monthly reports
   contents:
-  - nhstt_get_raw
-  - nhstt_check_columns
+  - get_activity_performance_monthly
+
+- title: Cache management and helper functions
+  contents:
+  - cache_info
+  - clear_cache
+  - available_nhstt_reports
+
+- title: Helper functions
+  contents:
+  - available_nhstt_reports
