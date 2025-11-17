@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/bennettoxford/nhstt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bennettoxford/nhstt/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/bennettoxford/nhstt/graph/badge.svg)](https://app.codecov.io/gh/bennettoxford/nhstt)
 <!-- badges: end -->
 
 > **This package is under active development. Breaking changes are
@@ -28,26 +30,24 @@ pak::pak("bennettoxford/nhstt")
 ``` r
 library(nhstt)
 
-# Download and process data (run once)
-nhstt_setup()
+# Load annual key measures dataset for financial year 2024-25
+km_annual <- get_key_measures_annual(periods = "2024-25")
 
-# See R package info and avialable datasets
-nhstt_info()
-
-# Load a dataset
-key_measures
+# Load all monthly activity performance datasets
+# Note, this will take a few minutes
+ap_monthly <- get_activity_performance_monthly()
 ```
 
 ## Available NHS Talking Therapies reports
 
 ### Annual reports
 
-All annual reports are available from April 2017 to March 2025 (8 annual
-periods).
+| Function                    | First period | Last period | Count periods | Version |
+|:----------------------------|:-------------|:------------|--------------:|--------:|
+| `get_key_measures_annual()` | 2017-18      | 2024-25     |             8 |   0.2.0 |
 
-| Dataset | Description | Version |
-|:---|:---|---:|
-| `key_measures` | Key measures like referrals, finished treatments, and treatment outcomes | 0.1.0 |
-| `medication_status` | Psychotropic medication status at start and end of treatment | 0.1.0 |
-| `therapy_type` | Therapy type at start and end of treatment | 0.1.0 |
-| `effect_size` | Effect sizes for PHQ9 and GAD7, with start and end of treatment scores | 0.1.0 |
+### Monthly reports
+
+| Function | First period | Last period | Count periods | Version |
+|:---|:---|:---|---:|---:|
+| `get_activity_performance_monthly()` | 2023-05 | 2025-09 | 29 | 0.2.0 |
