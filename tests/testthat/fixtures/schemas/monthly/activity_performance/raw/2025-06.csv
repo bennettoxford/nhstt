@@ -1,0 +1,6 @@
+REPORTING_PERIOD_START,REPORTING_PERIOD_END,GROUP_TYPE,ORG_CODE1,ORG_NAME1,ORG_CODE2,ORG_NAME2,MEASURE_ID,MEASURE_NAME,MEASURE_VALUE_SUPPRESSED
+2025-06-01,2025-06-30,England,all,all SubICBs,all,all Providers,M001,Count_ReferralsReceived,145215
+2025-06-01,2025-06-30,England,all,all SubICBs,all,all Providers,M002,Count_SelfReferrals,98702
+2025-06-01,2025-06-30,England,all,all SubICBs,all,all Providers,M003,Count_GPReferrals,12970
+2025-06-01,2025-06-30,England,all,all SubICBs,all,all Providers,M004,Count_HealthVisitorReferrals,-
+2025-06-01,2025-06-30,England,all,all SubICBs,all,all Providers,M005,Count_OtherPrimaryCareReferrals,5908

@@ -1,6 +1,6 @@
 Package: nhstt
 Title: NHS Talking Therapies for anxiety and depression reports in R
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: c(
     person("Milan", "Wiedemann", email = "milan.wiedemann@gmail.com", comment = c(ORCID = "0000-0003-1991-282X"), role = c("aut", "cre")),
     person("Wellcome Trust", role = "fnd"))
@@ -8,26 +8,38 @@ Description: Provides functions to download and tidy annual NHS Talking Therapie
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
-Suggests: 
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.1.0)
+Suggests:
+    covr,
+    fs,
     ggplot2,
     knitr,
+    readr,
     rmarkdown,
     scales,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 Config/testthat/edition: 3
 URL: https://github.com/bennettoxford/nhstt, https://bennettoxford.github.io/nhstt/
 BugReports: https://github.com/bennettoxford/nhstt/issues
 Imports:
     archive,
+    arrow,
     cli,
+    digest,
     dplyr,
     janitor,
     jsonlite,
     purrr,
-    readr,
+    RcppTOML,
     rlang,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    tidyselect,
+    tools,
+    utils,
+    vroom
 VignetteBuilder: knitr

@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/bennettoxford/nhstt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bennettoxford/nhstt/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/bennettoxford/nhstt/graph/badge.svg)](https://app.codecov.io/gh/bennettoxford/nhstt)
 <!-- badges: end -->
 
 > **This package is under active development. Breaking changes are likely.**
@@ -37,40 +38,68 @@ pak::pak("bennettoxford/nhstt")
 ```{r example, eval = FALSE}
 library(nhstt)
 
-# Download and process data (run once)
-nhstt_setup()
+# Load annual key measures dataset for financial year 2024-25
+km_annual <- get_key_measures_annual(periods = "2024-25")
 
-# See R package info and avialable datasets
-nhstt_info()
-
-# Load a dataset
-key_measures
+# Load all monthly activity performance datasets
+# Note, this will take a few minutes
+ap_monthly <- get_activity_performance_monthly()
 ```
 
 ## Available NHS Talking Therapies reports
 
 ### Annual reports
 
-All annual reports are available from `r format(min(nhstt::key_measures$start_date), "%B %Y")` to
-`r format(max(nhstt::key_measures$end_date), "%B %Y")` (`r length(unique(nhstt::key_measures$period))` annual periods).
-
-```{r datasets-table, echo = FALSE, message = FALSE}
-configs <- nhstt:::get_dataset_configs()
-
-datasets_df <- data.frame(
-  Dataset = paste0("`", names(configs), "`"),
-  Description = sapply(configs, function(x) x$description),
-  Version = sapply(configs, function(x) x$version)
-)
+```{r datasets-annual, echo = FALSE, message = FALSE}
+df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
+  dplyr::filter(frequency == "annual") |>
+  dplyr::select(
+    get_function,
+    first_period,
+    last_period,
+    n_periods,
+    version
+  ) |>
+  dplyr::mutate(get_function = paste0("`", get_function, "()`"))
 
 knitr::kable(
-  datasets_df,
+  df_nhstt_reports,
   row.names = FALSE,
   col.names = c(
-    "Dataset",
-    "Description",
+    "Function",
+    "First period",
+    "Last period",
+    "Count periods",
     "Version"
   ),
-  align = c("l", "l", "r")
+  align = c("l", "l", "l", "r", "r")
+)
+```
+
+### Monthly reports
+
+```{r datasets-monthly, echo = FALSE, message = FALSE}
+df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
+  dplyr::filter(frequency == "monthly") |>
+  dplyr::select(
+    get_function,
+    first_period,
+    last_period,
+    n_periods,
+    version
+  ) |>
+  dplyr::mutate(get_function = paste0("`", get_function, "()`"))
+
+knitr::kable(
+  df_nhstt_reports,
+  row.names = FALSE,
+  col.names = c(
+    "Function",
+    "First period",
+    "Last period",
+    "Count periods",
+    "Version"
+  ),
+  align = c("l", "l", "l", "r", "r")
 )
 ```

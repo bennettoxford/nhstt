@@ -1,0 +1,3 @@
+reporting_period,start_date,end_date,group_type,org_code1,org_name1,org_code2,org_name2,measure_id,measure_name,measure_statistic,value
+2025-09,2025-09-01,2025-09-30,England,all,all SubICBs,all,all Providers,M001,referrals_received,count,154572
+2025-09,2025-09-01,2025-09-30,England,all,all SubICBs,all,all Providers,M002,self_referrals,count,104068

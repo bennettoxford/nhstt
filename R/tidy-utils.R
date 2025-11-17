@@ -1,0 +1,360 @@
+#' Make clean strings
+#'
+#' @param x Character, specifying string to clean (e.g., "CamelCase")
+#'
+#' @return Clean string
+#'
+#' @keywords internal
+make_clean_str <- function(x) {
+  x |>
+    gsub("([a-z])([A-Z])", "\\1_\\2", x = _) |>
+    gsub("([A-Z])([A-Z][a-z])", "\\1_\\2", x = _) |>
+    tolower()
+}
+
+#' Tidy numeric values
+#'
+#' Converts NHS suppression markers to NA
+#'
+#' @param x Character or numeric vector, specifying values to tidy
+#'
+#' @return Numeric vector with suppression markers as NA
+#'
+#' @importFrom dplyr case_when
+#'
+#' @keywords internal
+tidy_numeric_values <- function(x) {
+  if (is.numeric(x)) {
+    return(x)
+  }
+
+  x <- case_when(
+    x %in% c("*", "-", "", "N/A", "NA", "NULL", "Null", "null") ~ NA_character_,
+    .default = as.character(x)
+  )
+
+  suppressWarnings(as.numeric(x))
+}
+
+#' Tidy dataset values
+#'
+#' Converts NULL to NA and coerces measure columns to numeric
+#'
+#' @param df Tibble, specifying data to tidy
+#' @param measure_cols Character vector, specifying measure column names
+#'
+#' @return Tibble with tidy values
+#'
+#' @importFrom dplyr mutate across
+#' @importFrom tidyselect all_of
+#'
+#' @keywords internal
+convert_to_numeric <- function(df, measure_cols) {
+  measure_cols_present <- intersect(measure_cols, names(df))
+
+  df |>
+    mutate(across(
+      all_of(measure_cols_present),
+      tidy_numeric_values
+    ))
+}
+
+#' Rename columns
+#'
+#' Renames columns using a mapping (for year-specific inconsistencies)
+#'
+#' @param df Tibble, specifying data with columns to rename
+#' @param rename_mapping Named character vector, specifying old_name = new_name mapping
+#'
+#' @return Tibble with renamed columns
+#'
+#' @importFrom dplyr rename
+#'
+#' @keywords internal
+rename_columns <- function(df, rename_mapping) {
+  if (is.null(rename_mapping) || length(rename_mapping) == 0) {
+    return(df)
+  }
+
+  valid_mapping <- rename_mapping[names(rename_mapping) %in% names(df)]
+
+  if (length(valid_mapping) == 0) {
+    return(df)
+  }
+
+  rename(df, !!!stats::setNames(names(valid_mapping), valid_mapping))
+}
+
+#' Filter rows
+#'
+#' Filters rows based on configuration
+#'
+#' @param df Tibble, specifying data to filter
+#' @param filter_config Named list, specifying filter values (e.g., list(org_type = c("Provider")))
+#'
+#' @return Filtered tibble
+#'
+#' @importFrom dplyr filter
+#' @importFrom rlang .data expr
+#' @importFrom purrr map2 compact
+#'
+#' @keywords internal
+filter_rows <- function(df, filter_config) {
+  if (is.null(filter_config) || length(filter_config) == 0) {
+    return(df)
+  }
+
+  conditions <- map2(
+    names(filter_config),
+    filter_config,
+    \(col_name, values) {
+      if (col_name %in% names(df)) {
+        expr(.data[[!!col_name]] %in% !!values)
+      } else {
+        NULL
+      }
+    }
+  ) |>
+    compact()
+
+  if (length(conditions) == 0) {
+    return(df)
+  }
+
+  filter(df, !!!conditions)
+}
+
+#' Pivot measures to long format
+#'
+#' @param data_list Named list, specifying tibbles (e.g., list("2023-24" = df1, "2024-25" = df2))
+#' @param pivot_config List, specifying pivot configuration with elements:
+#'   - id_cols: Character vector, ID columns to preserve
+#'   - measure_cols: Character vector, measure columns to pivot
+#'   - sep: Character, regex pattern to separate measure names
+#'   - into: Character vector, output column names for separated parts
+#'
+#' @return Tibble in long format
+#'
+#' @importFrom purrr imap list_rbind
+#' @importFrom dplyr mutate
+#' @importFrom tidyr pivot_longer extract
+#' @importFrom tidyselect any_of
+#'
+#' @keywords internal
+pivot_longer_measures <- function(data_list, pivot_config) {
+  measure_cols <- pivot_config$measure_cols
+  sep_pattern <- pivot_config$sep
+  into <- pivot_config$into
+
+  data_list |>
+    imap(\(df, reporting_period) {
+      mutate(df, reporting_period = reporting_period)
+    }) |>
+    list_rbind() |>
+    pivot_longer(
+      cols = any_of(measure_cols),
+      names_to = "full_measure",
+      values_to = "value"
+    ) |>
+    extract(
+      col = "full_measure",
+      into = into,
+      regex = sep_pattern,
+      remove = TRUE
+    )
+}
+
+#' Add period date columns
+#'
+#' Detects period format (annual "2023-24" or monthly "2025-09") and adds
+#' appropriate start_date and end_date columns
+#'
+#' @param df Tibble, specifying data with reporting_period column
+#'
+#' @return Tibble with start_date and end_date columns
+#'
+#' @importFrom purrr map list_c
+#' @importFrom dplyr mutate
+#'
+#' @keywords internal
+add_period_columns <- function(df) {
+  first_period <- df$reporting_period[1]
+  is_annual <- is_financial_year_period(first_period)
+
+  parser_fn <- if (is_annual) {
+    parse_annual_period_bounds
+  } else {
+    parse_monthly_period_bounds
+  }
+
+  period_info <- map(df$reporting_period, parser_fn)
+
+  df |>
+    mutate(
+      start_date = map(period_info, "start") |> list_c(),
+      end_date = map(period_info, "end") |> list_c()
+    )
+}
+
+#' Parse reporting period date strings
+#'
+#' Handles ISO (YYYY-MM-DD) and UK-style (DD/MM/YYYY) formats
+#'
+#' @param x Character vector or Date, specifying dates to parse (e.g., "2023-04-01" or "01/04/2023")
+#'
+#' @return Date vector
+#'
+#' @keywords internal
+parse_reporting_date <- function(x) {
+  if (inherits(x, "Date")) {
+    return(x)
+  }
+
+  x <- as.character(x)
+  out <- rep(as.Date(NA), length(x))
+
+  iso_mask <- grepl("^\\d{4}-\\d{2}-\\d{2}$", x)
+  if (any(iso_mask)) {
+    out[iso_mask] <- as.Date(x[iso_mask])
+  }
+
+  dmy_mask <- grepl("^\\d{2}/\\d{2}/\\d{4}$", x)
+  if (any(dmy_mask)) {
+    out[dmy_mask] <- as.Date(x[dmy_mask], format = "%d/%m/%Y")
+  }
+
+  out
+}
+
+#' Determine if a reporting period represents a financial year
+#'
+#' Accepts both legacy "FY2023-24" codes and new "2023-24" format.
+#' Values ending in 13-31 are treated as financial years
+#'
+#' @param period Character, specifying period to check (e.g., "2023-24" or "FY2023-24")
+#'
+#' @return Logical
+#'
+#' @keywords internal
+is_financial_year_period <- function(period) {
+  if (grepl("^FY\\d{4}-\\d{2}$", period)) {
+    return(TRUE)
+  }
+
+  if (!grepl("^\\d{4}-\\d{2}$", period)) {
+    return(FALSE)
+  }
+
+  suffix <- as.integer(substr(period, 6, 7))
+  !is.na(suffix) && suffix > 12
+}
+
+#' Parse annual period bounds
+#'
+#' Converts financial year code to start/end dates
+#'
+#' @param period Character, specifying financial year (e.g., "2023-24")
+#'
+#' @return List with start and end dates
+#'
+#' @importFrom cli cli_abort
+#'
+#' @keywords internal
+parse_annual_period_bounds <- function(period) {
+  normalized <- if (grepl("^FY", period)) {
+    sub("^FY", "", period)
+  } else {
+    period
+  }
+
+  if (!grepl("^\\d{4}-\\d{2}$", normalized)) {
+    cli_abort(
+      "Invalid financial year format: {.val {period}}. Expected format: 2023-24"
+    )
+  }
+
+  suffix <- as.integer(substr(normalized, 6, 7))
+  if (is.na(suffix) || suffix <= 12) {
+    cli_abort(
+      "Invalid financial year value: {.val {period}}. Expected second part between 13 and 31."
+    )
+  }
+
+  start_year <- as.integer(substr(normalized, 1, 4))
+  list(
+    start = as.Date(paste0(start_year, "-04-01")),
+    end = as.Date(paste0(start_year + 1, "-03-31"))
+  )
+}
+
+#' Parse monthly period bounds
+#'
+#' Converts ISO year-month format to start/end dates of that month
+#'
+#' @param period Character, specifying monthly period (e.g., "2025-09")
+#'
+#' @return List with start and end dates
+#'
+#' @importFrom cli cli_abort
+#'
+#' @keywords internal
+parse_monthly_period_bounds <- function(period) {
+  if (!grepl("^\\d{4}-\\d{2}$", period)) {
+    cli_abort("Invalid monthly period format: {.val {period}}")
+  }
+
+  year <- as.integer(substr(period, 1, 4))
+  month <- as.integer(substr(period, 6, 7))
+
+  start_date <- as.Date(paste0(year, "-", sprintf("%02d", month), "-01"))
+
+  if (month == 12) {
+    next_month_start <- as.Date(paste0(year + 1, "-01-01"))
+  } else {
+    next_month_start <- as.Date(paste0(
+      year,
+      "-",
+      sprintf("%02d", month + 1),
+      "-01"
+    ))
+  }
+  end_date <- next_month_start - 1
+
+  list(
+    start = start_date,
+    end = end_date
+  )
+}
+
+#' Clean column values with make_clean_str
+#'
+#' Applies make_clean_str to values in specified columns
+#'
+#' @param df Tibble, specifying data with columns to clean
+#' @param column_names Character vector, specifying column names to clean (e.g., c("measure", "statistic"))
+#'
+#' @return Tibble with cleaned column values
+#'
+#' @importFrom dplyr mutate across
+#' @importFrom tidyselect all_of
+#'
+#' @keywords internal
+clean_column_values <- function(df, column_names = NULL) {
+  if (is.null(column_names) || length(column_names) == 0) {
+    return(df)
+  }
+
+  columns_to_clean <- intersect(column_names, names(df))
+
+  if (length(columns_to_clean) == 0) {
+    return(df)
+  }
+
+  df |>
+    mutate(
+      across(
+        all_of(columns_to_clean),
+        make_clean_str
+      )
+    )
+}
