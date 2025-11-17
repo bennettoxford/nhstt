@@ -26,7 +26,7 @@ load_raw_fixture <- function(dataset, period, frequency) {
     )
   }
 
-  vroom::vroom(fixture_path, show_col_types = FALSE)
+  vroom::vroom(fixture_path, show_col_types = FALSE, delim = ",")
 }
 
 #' Load tidy schema for testing
@@ -52,7 +52,7 @@ load_tidy_schema <- function(dataset, frequency) {
     )
   }
 
-  vroom::vroom(schema_path, show_col_types = FALSE)
+  vroom::vroom(schema_path, show_col_types = FALSE, delim = ",")
 }
 
 #' Get expected tidy column names

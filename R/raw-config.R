@@ -105,7 +105,7 @@ validate_raw_config <- function(config) {
         }
 
         # Validate format
-        valid_formats <- c("csv", "zip", "rar")
+        valid_formats <- c("csv", "zip", "rar", "xlsx")
         if (!source$format %in% valid_formats) {
           cli_abort(c(
             "Dataset {.val {dataset_name}} ({freq}) source {i} has invalid format: {.val {source$format}}",
@@ -120,6 +120,12 @@ validate_raw_config <- function(config) {
               "Dataset {.val {dataset_name}} ({freq}) source {i} with format {.val {source$format}} must have csv_pattern"
             )
           }
+        }
+
+        if (source$format == "xlsx" && !"sheet" %in% names(source)) {
+          cli_abort(
+            "Dataset {.val {dataset_name}} ({freq}) source {i} with format xlsx must specify sheet"
+          )
         }
 
         # Validate period format

@@ -24,7 +24,7 @@ write_raw_downloads_json(
 
 \item{url}{Character, specifying source URL}
 
-\item{source_format}{Character, specifying original format ("zip", "rar", "csv")}
+\item{source_format}{Character, specifying original format ("zip", "rar", "csv", "xlsx")}
 
 \item{storage_format}{Character, specifying how it's stored ("csv", "parquet")}
 

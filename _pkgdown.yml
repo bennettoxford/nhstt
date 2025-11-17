@@ -30,6 +30,11 @@ reference:
   - title: "Monthly reports"
     contents:
       - get_activity_performance_monthly
+  - title: "Metadata"
+    contents:
+      - get_metadata_measures_annual
+      - get_metadata_variables_annual
+      - get_metadata_monthly
   - title: "Cache management"
     contents:
       - cache_info

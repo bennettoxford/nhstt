@@ -62,15 +62,18 @@ resolve_cache_file <- function(file_path, use_cache) {
 #' @param period Character, reporting period
 #' @param frequency Character, "annual" or "monthly"
 #' @param url Character, source URL
-#' @param source_format Character, source format ("csv", "zip", "rar")
+#' @param source_format Character, source format ("csv", "zip", "rar", "xlsx")
 #' @param file_path Character, destination path
 #' @param csv_pattern Character, regex to locate CSV inside archive (optional)
+#' @param sheet Character, sheet name or index for Excel sources (required for Excel sources)
+#' @param range Character, Excel cell range (e.g., "A5:H427") for Excel sources (optional)
 #'
 #' @return Character path to cached file
 #'
 #' @importFrom cli cli_process_start cli_process_done
 #' @importFrom vroom vroom
 #' @importFrom arrow write_parquet
+#' @importFrom readxl read_excel
 #'
 #' @keywords internal
 download_and_store <- function(
@@ -80,12 +83,16 @@ download_and_store <- function(
   url,
   source_format,
   file_path,
-  csv_pattern = NULL
+  csv_pattern = NULL,
+  sheet = NULL,
+  range = NULL
 ) {
   cli_process_start("Downloading {dataset} ({frequency}) for {period}")
 
   temp_ext <- if (source_format %in% c("zip", "rar")) {
     paste0(".", source_format)
+  } else if (source_format == "xlsx") {
+    ".xlsx"
   } else {
     ".csv"
   }
@@ -101,11 +108,21 @@ download_and_store <- function(
 
   download_with_retry(url, temp_file)
 
+  if (identical(source_format, "xlsx") && is.null(sheet)) {
+    cli_abort("Excel sources must specify a sheet name or index")
+  }
+
   raw_data <- switch(
     source_format,
     zip = extract_csv_from_archive(temp_file, csv_pattern),
     rar = extract_csv_from_archive(temp_file, csv_pattern),
     csv = vroom(temp_file, show_col_types = FALSE),
+    xlsx = read_excel(
+      temp_file,
+      sheet = sheet,
+      range = range,
+      col_names = TRUE
+    ),
     cli_abort("Unsupported format: {.val {source_format}}")
   )
 
@@ -164,7 +181,9 @@ download_raw <- function(dataset, period, frequency, use_cache = TRUE) {
     url = url,
     source_format = source_format,
     file_path = file_path,
-    csv_pattern = source_info$csv_pattern
+    csv_pattern = source_info$csv_pattern,
+    sheet = source_info$sheet,
+    range = source_info$range
   )
 }
 

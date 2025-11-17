@@ -12,10 +12,22 @@ test_that("load_tidy_config has key_measures dataset", {
   expect_true("key_measures" %in% names(tidy_config))
 })
 
+test_that("load_tidy_config has metadata dataset", {
+  tidy_config <- load_tidy_config()
+
+  expect_true("metadata" %in% names(tidy_config))
+})
+
 test_that("key_measures has annual frequency in tidy config", {
   tidy_config <- load_tidy_config()
 
   expect_true("annual" %in% names(tidy_config$key_measures))
+})
+
+test_that("metadata has monthly frequency in tidy config", {
+  tidy_config <- load_tidy_config()
+
+  expect_true("monthly" %in% names(tidy_config$metadata))
 })
 
 test_that("get_tidy_config returns configuration for dataset", {
@@ -24,6 +36,13 @@ test_that("get_tidy_config returns configuration for dataset", {
   expect_type(config, "list")
   expect_true("filter" %in% names(config))
   expect_true("pivot_longer" %in% names(config))
+  expect_true("select" %in% names(config))
+})
+
+test_that("get_tidy_config returns configuration for metadata dataset", {
+  config <- get_tidy_config("metadata", "monthly")
+
+  expect_type(config, "list")
   expect_true("select" %in% names(config))
 })
 
@@ -421,4 +440,93 @@ test_that("tidy_dataset applies group_type filter from config (activity_performa
     # If no filter defined, just check column exists
     expect_true("group_type" %in% names(result))
   }
+})
+
+# Metadata dataset tests -------------------------------------------------------
+
+test_that("tidy_dataset returns a tibble (metadata)", {
+  raw_data <- load_raw_data("metadata", "2025-07", "monthly")
+  result <- tidy_dataset(raw_data, "metadata", "monthly")
+
+  expect_s3_class(result, "tbl_df")
+})
+
+test_that("tidy_dataset has expected columns (metadata)", {
+  raw_data <- load_raw_data("metadata", "2025-07", "monthly")
+  result <- tidy_dataset(raw_data, "metadata", "monthly")
+
+  expected_cols <- expected_tidy_columns("metadata", "monthly")
+  expect_named(result, expected_cols, ignore.order = FALSE)
+})
+
+test_that("tidy_dataset sets reporting period for metadata", {
+  raw_data <- load_raw_data("metadata", "2025-07", "monthly")
+  result <- tidy_dataset(raw_data, "metadata", "monthly")
+
+  expect_setequal(unique(result$reporting_period), "2025-07")
+})
+
+test_that("tidy_dataset keeps descriptive fields for metadata", {
+  raw_data <- load_raw_data("metadata", "2025-07", "monthly")
+  result <- tidy_dataset(raw_data, "metadata", "monthly")
+
+  expect_true(all(nchar(result$description) > 0))
+  expect_true(all(nchar(result$construction) > 0))
+  expect_true(all(
+    result$measure_id %in% c("M001", "M002", "M003", "M004", "M005")
+  ))
+})
+
+# Annual metadata (measures/variables) -----------------------------------------
+
+test_that("tidy_dataset returns tibble for metadata measures main", {
+  raw_data <- load_raw_data("metadata_measures_main", "2024-25", "annual")
+  result <- tidy_dataset(raw_data, "metadata_measures_main", "annual")
+
+  expect_s3_class(result, "tbl_df")
+  expect_named(
+    result,
+    expected_tidy_columns("metadata_measures_main", "annual")
+  )
+  expect_true(all(result$dataset_name == "key_measures"))
+})
+
+test_that("tidy_dataset returns tibble for metadata measures additional", {
+  raw_data <- load_raw_data("metadata_measures_additional", "2024-25", "annual")
+  result <- tidy_dataset(raw_data, "metadata_measures_additional", "annual")
+
+  expect_s3_class(result, "tbl_df")
+  expect_named(
+    result,
+    expected_tidy_columns("metadata_measures_additional", "annual")
+  )
+  expect_true(any(grepl("therapy", result$dataset_name)))
+})
+
+test_that("tidy_dataset returns tibble for metadata variables main", {
+  raw_data <- load_raw_data("metadata_variables_main", "2024-25", "annual")
+  result <- tidy_dataset(raw_data, "metadata_variables_main", "annual")
+
+  expect_s3_class(result, "tbl_df")
+  expect_named(
+    result,
+    expected_tidy_columns("metadata_variables_main", "annual")
+  )
+  expect_true(all(result$dataset_name == "key_measures"))
+})
+
+test_that("tidy_dataset returns tibble for metadata variables additional", {
+  raw_data <- load_raw_data(
+    "metadata_variables_additional",
+    "2024-25",
+    "annual"
+  )
+  result <- tidy_dataset(raw_data, "metadata_variables_additional", "annual")
+
+  expect_s3_class(result, "tbl_df")
+  expect_named(
+    result,
+    expected_tidy_columns("metadata_variables_additional", "annual")
+  )
+  expect_true(any(grepl("therapy", result$dataset_name)))
 })

@@ -301,7 +301,7 @@ read_raw_downloads_json <- function(frequency) {
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #' @param url Character, specifying source URL
-#' @param source_format Character, specifying original format ("zip", "rar", "csv")
+#' @param source_format Character, specifying original format ("zip", "rar", "csv", "xlsx")
 #' @param storage_format Character, specifying how it's stored ("csv", "parquet")
 #' @param raw_data_hash Character, specifying SHA256 hash of data
 #' @param file_size Numeric, specifying size of stored file in bytes
