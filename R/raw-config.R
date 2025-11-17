@@ -47,7 +47,9 @@ validate_raw_config <- function(config) {
     freq_names <- names(dataset)
 
     if (length(freq_names) == 0) {
-      cli_abort("Dataset {.val {dataset_name}} must have at least one frequency (annual/monthly)")
+      cli_abort(
+        "Dataset {.val {dataset_name}} must have at least one frequency (annual/monthly)"
+      )
     }
 
     invalid_freqs <- setdiff(freq_names, valid_frequencies)
@@ -75,13 +77,17 @@ validate_raw_config <- function(config) {
 
       # Validate version format
       if (!grepl("^\\d+\\.\\d+\\.\\d+$", freq_config$version)) {
-        cli_warn("Dataset {.val {dataset_name}} ({freq}) version {.val {freq_config$version}} is not in semantic versioning format (x.y.z)")
+        cli_warn(
+          "Dataset {.val {dataset_name}} ({freq}) version {.val {freq_config$version}} is not in semantic versioning format (x.y.z)"
+        )
       }
 
       # Validate sources
       sources <- freq_config$sources
       if (length(sources) == 0) {
-        cli_abort("Dataset {.val {dataset_name}} ({freq}) must have at least one source")
+        cli_abort(
+          "Dataset {.val {dataset_name}} ({freq}) must have at least one source"
+        )
       }
 
       for (i in seq_along(sources)) {
@@ -110,17 +116,23 @@ validate_raw_config <- function(config) {
         # If archived, check for csv_pattern
         if (source$format %in% c("zip", "rar")) {
           if (!"csv_pattern" %in% names(source)) {
-            cli_abort("Dataset {.val {dataset_name}} ({freq}) source {i} with format {.val {source$format}} must have csv_pattern")
+            cli_abort(
+              "Dataset {.val {dataset_name}} ({freq}) source {i} with format {.val {source$format}} must have csv_pattern"
+            )
           }
         }
 
         # Validate period format
         if (freq == "annual" && !grepl("^\\d{4}-\\d{2}$", source$period)) {
-          cli_warn("Dataset {.val {dataset_name}} ({freq}) source {i} period {.val {source$period}} does not match annual format (YYYY-YY)")
+          cli_warn(
+            "Dataset {.val {dataset_name}} ({freq}) source {i} period {.val {source$period}} does not match annual format (YYYY-YY)"
+          )
         }
 
         if (freq == "monthly" && !grepl("^\\d{4}-\\d{2}$", source$period)) {
-          cli_warn("Dataset {.val {dataset_name}} ({freq}) source {i} period {.val {source$period}} does not match monthly format (YYYY-MM)")
+          cli_warn(
+            "Dataset {.val {dataset_name}} ({freq}) source {i} period {.val {source$period}} does not match monthly format (YYYY-MM)"
+          )
         }
       }
     }
@@ -181,7 +193,11 @@ validate_frequency <- function(frequency) {
 #' @keywords internal
 validate_period <- function(period, dataset, frequency) {
   # Include development periods for validation (allows read_raw() to work)
-  available <- list_available_periods(dataset, frequency, include_development = TRUE)
+  available <- list_available_periods(
+    dataset,
+    frequency,
+    include_development = TRUE
+  )
 
   if (!period %in% available) {
     cli_abort(c(
@@ -269,7 +285,11 @@ available_nhstt_reports <- function() {
 #' @importFrom purrr map_chr keep
 #'
 #' @keywords internal
-list_available_periods <- function(dataset, frequency, include_development = FALSE) {
+list_available_periods <- function(
+  dataset,
+  frequency,
+  include_development = FALSE
+) {
   validate_dataset(dataset)
   validate_frequency(frequency)
 
@@ -311,7 +331,11 @@ resolve_periods <- function(periods, dataset, frequency) {
   }
 
   available <- list_available_periods(dataset, frequency)
-  all_periods <- list_available_periods(dataset, frequency, include_development = TRUE)
+  all_periods <- list_available_periods(
+    dataset,
+    frequency,
+    include_development = TRUE
+  )
 
   invalid <- periods[!periods %in% all_periods]
   development <- periods[periods %in% all_periods & !periods %in% available]
