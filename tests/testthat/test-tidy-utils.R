@@ -43,9 +43,9 @@ test_that("tidy_numeric_values coerces numeric strings", {
 
 test_that("convert_to_numeric only cleans configured measure columns", {
   df <- tibble::tribble(
-    ~org_code, ~count_gp_referrals, ~count_other,
-    "A", "10", "200",
-    "B", "*", "300"
+    ~org_code , ~count_gp_referrals , ~count_other ,
+    "A"       , "10"                , "200"        ,
+    "B"       , "*"                 , "300"
   )
 
   tidied <- convert_to_numeric(df, c("count_gp_referrals"))

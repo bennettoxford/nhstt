@@ -202,7 +202,10 @@ test_that("read_raw_downloads_json reads metadata correctly", {
   expect_true("2023-24" %in% names(metadata$key_measures))
   expect_equal(metadata$key_measures$`2023-24`$source_format, "zip")
   expect_equal(metadata$key_measures$`2023-24`$storage_format, "parquet")
-  expect_equal(metadata$key_measures$`2023-24`$url, "https://example.com/data.zip")
+  expect_equal(
+    metadata$key_measures$`2023-24`$url,
+    "https://example.com/data.zip"
+  )
   expect_equal(metadata$key_measures$`2023-24`$data_hash, "abc123")
 })
 

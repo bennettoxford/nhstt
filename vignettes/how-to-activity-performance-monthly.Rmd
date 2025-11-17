@@ -1,0 +1,142 @@
+---
+title: "How to use the monthly activity performance data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{how-to-activity-performance-monthly}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+> **Note:** This vignette is for illustration purposes only and may contain errors. It demonstrates example usage of the dataset and functions, but results should not be interpreted as validated analyses.
+
+This example demonstrates how to explore monthly NHS Talking Therapies reports using the `nhstt` package.
+We'll look at changes in monthly measures related to different treatment end codes broken down by individual NHS Talking Therapies providers.
+
+## Setup
+
+We start by loading the necessary packages and downloading the monthly activity performance dataset with `get_activity_performance_monthly()`. This report contains monthly performance indicators for NHS Talking Therapies services across England.
+
+```{r setup, message=FALSE, warning=FALSE}
+# Load packages
+library(nhstt)
+library(ggplot2)
+library(dplyr)
+library(scales)
+library(stringr)
+
+# Get all monthly activity performance reports
+activity_performance <- get_activity_performance_monthly()
+```
+
+
+## Select data for analysis
+
+We want to explore changes in the following measures related to referrals that ended:
+
+- **M057**: Count of referrals that ended in the reporting period with an end code of 'Not suitable for IAPT service - no action taken or directed back to referrer' (End code: 10)
+- **M058**: Count of referrals that ended in the reporting period with an end code of 'Not suitable for IAPT service - signposted elsewhere with mutual agreement of patient' (End code: 11)
+- **M059**: Count of referrals that ended in the reporting period with an end code of 'Discharged by mutual agreement following advice and support' (End code: 12)
+- **M060**: Count of referrals that ended in the reporting period with an end code of 'Referred to another therapy service by mutual agreement' (End code: 13)
+- **M061**: Count of referrals that ended in the reporting period with an end code of 'Suitable for IAPT service, but patient declined treatment that was offered' (End code: 14)
+- **M066**: Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’ (End code: 46) 
+- **M062**: Count of referrals that ended in the reporting period with an end code of 'Deceased (Seen but not taken on for a course of treatment)' (End code: 17)
+- **M063**: Count of referrals that ended in the reporting period with an end code of 'Not known (Seen but not taken on for a course of treatment)' (End code: 95)
+- **M066**: Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment' (End code: 46)
+- **M069**: Count of referrals that ended in the reporting period with an end code of 'Deceased (Seen and taken on for a course of treatment)' (End code: 49)
+- **M070**: Count of referrals that ended in the reporting period with an end code of 'Not Known (Seen and taken on for a course of treatment)' (End code: 96)
+- **M071**: Count of referrals that ended in the reporting period with an invalid end code (Invalid: not in 10, 11, 12, 13, 14, 16, 17, 95, 46, 47, 48, 49, 50, 96)
+- **M340**: Count of referrals that ended in the reporting period with an end code of 'Incomplete Assessment (Patient dropped out)' (End code: 16)
+- **M341**: Count of referrals that ended in the reporting period with an end code of 'Termination of treatment earlier than patient requested' (End code: 48)
+- **M342**: Count of referrals that ended in the reporting period with an end code of 'Not assessed' (End code: 50)
+- **M344**: Count of referrals that ended in the reporting period with an end code of 'Termination of treatment earlier than Care Professional planned' (End code: 47)
+
+```{r select-data}
+referral_ended_measures <- c(
+  "M057", "M058", "M059", "M060", "M061", "M066", "M340", "M062",
+  "M063", "M066", "M344", "M341", "M069", "M342", "M070", "M071"
+)
+
+selected_activity_performance <- activity_performance |>
+  filter(measure_id %in% c(referral_ended_measures)) |>
+  filter(group_type == "Provider")
+```
+
+## Create figure
+
+Finally, we visualise the trends over time broken down by codes for referrals that ended for each service provider.
+
+```{r fig-example, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 12, fig.width = 10, fig.cap = "Trends for counts of different referrals that ended measures."}
+
+end_dates <- unique(selected_activity_performance$end_date)
+fig_date_breaks <- end_dates[seq(4, length(end_dates), by = 4)]
+
+measure_name_to_sentence <- function(x) {
+  x |>
+    str_remove("^ended_") |>
+    str_replace_all("_", " ") |>
+    str_to_sentence()
+}
+
+fig_selected_activity_performance <- selected_activity_performance |>
+  mutate(
+measure_name_id = paste0(
+  measure_name_to_sentence(measure_name),
+      " (",
+      measure_id,
+      ")"
+    )
+  ) |>
+    select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
+  
+levels_order <- fig_selected_activity_performance %>%
+    distinct(measure_id, measure_name_id) %>%
+    arrange(measure_id) %>%
+    pull(measure_name_id)
+
+fig_ref_ended_by_service <- fig_selected_activity_performance |>
+  mutate(measure_name_id = factor(measure_name_id, levels = levels_order)) |> 
+  ggplot(
+    aes(
+      y = value,
+      x = end_date,
+      colour = measure_name_id,
+      group = org_code2
+    )
+  ) +
+  geom_line(alpha = 0.2) +
+  geom_point(size = .2) +
+  labs(
+    title = NULL,
+    x = "End date of yearly interval",
+    y = NULL,
+    colour = NULL,
+    shape = NULL
+  ) +
+  scale_x_date(
+    # breaks = fig_date_breaks,
+    labels = label_date("%b\n%Y")
+  ) +
+  scale_y_continuous(
+    labels = label_number(accuracy = 1),
+    limits = c(0, NA)
+  ) +
+  theme(
+    legend.position = "bottom",
+    text = element_text(size = 13)
+  ) +
+  facet_wrap(
+    vars(measure_name_id),
+    scales = "free_y",
+    ncol = 3
+  ) +
+  guides(colour = guide_legend(nrow = 5, byrow = TRUE))
+
+fig_ref_ended_by_service
+```
