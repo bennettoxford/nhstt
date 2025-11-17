@@ -44,7 +44,9 @@ validate_tidy_config <- function(config) {
     freq_names <- names(dataset)
 
     if (length(freq_names) == 0) {
-      cli_abort("Dataset {.val {dataset_name}} must have at least one frequency (annual/monthly)")
+      cli_abort(
+        "Dataset {.val {dataset_name}} must have at least one frequency (annual/monthly)"
+      )
     }
 
     invalid_freqs <- setdiff(freq_names, valid_frequencies)
@@ -60,25 +62,37 @@ validate_tidy_config <- function(config) {
       freq_config <- dataset[[freq]]
 
       # If pivot_longer exists (wide-to-long), validate structure
-      has_pivot <- !is.null(freq_config$pivot_longer) && length(freq_config$pivot_longer) > 0
+      has_pivot <- !is.null(freq_config$pivot_longer) &&
+        length(freq_config$pivot_longer) > 0
       if (has_pivot) {
         pivot_config <- freq_config$pivot_longer
 
         # Must have required fields
-        if (is.null(pivot_config$measure_cols) || length(pivot_config$measure_cols) == 0) {
-          cli_abort("Dataset {.val {dataset_name}} ({freq}) pivot_longer missing measure_cols")
+        if (
+          is.null(pivot_config$measure_cols) ||
+            length(pivot_config$measure_cols) == 0
+        ) {
+          cli_abort(
+            "Dataset {.val {dataset_name}} ({freq}) pivot_longer missing measure_cols"
+          )
         }
         if (is.null(pivot_config$sep)) {
-          cli_abort("Dataset {.val {dataset_name}} ({freq}) pivot_longer missing sep pattern")
+          cli_abort(
+            "Dataset {.val {dataset_name}} ({freq}) pivot_longer missing sep pattern"
+          )
         }
         if (is.null(pivot_config$into) || length(pivot_config$into) == 0) {
-          cli_abort("Dataset {.val {dataset_name}} ({freq}) pivot_longer missing into columns")
+          cli_abort(
+            "Dataset {.val {dataset_name}} ({freq}) pivot_longer missing into columns"
+          )
         }
       }
 
       # Validate select section if present
       if (!is.null(freq_config$select) && length(freq_config$select) == 0) {
-        cli_warn("Dataset {.val {dataset_name}} ({freq}) select is empty - no columns will be selected")
+        cli_warn(
+          "Dataset {.val {dataset_name}} ({freq}) select is empty - no columns will be selected"
+        )
       }
     }
   }
@@ -112,7 +126,8 @@ get_tidy_config <- function(dataset, frequency) {
   }
 
   # Set defaults for all config sections
-  dataset_config$clean_column_names <- dataset_config$clean_column_names %||% FALSE
+  dataset_config$clean_column_names <- dataset_config$clean_column_names %||%
+    FALSE
   dataset_config$rename <- dataset_config$rename %||% character()
   dataset_config$filter <- dataset_config$filter %||% list()
   dataset_config$type_convert <- dataset_config$type_convert %||% character()
@@ -207,7 +222,10 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
 
   # Clean values in specified columns
   if (length(config$clean_values) > 0) {
-    combined <- clean_column_values(combined, column_names = config$clean_values)
+    combined <- clean_column_values(
+      combined,
+      column_names = config$clean_values
+    )
   }
 
   # Select and order final columns
