@@ -1,4 +1,5 @@
 url: https://bennettoxford.github.io/nhstt/
+
 template:
   bootstrap: 5
 
@@ -9,22 +10,37 @@ home:
   sidebar:
     structure: [links, license, citation, authors, dev]
 
+navbar:
+  title: nhstt
+  type: default
+  left:
+    - text: "Function reference"
+      href: reference/index.html
+    - text: "How-to guides"
+      menu:
+        - text: "Annual key measures"
+          href: articles/how-to-key-measures-annual.html
+        - text: "Monthly activity & performance"
+          href: articles/how-to-activity-performance-monthly.html
+
 reference:
+  - title: "Annual reports"
+    contents:
+      - get_key_measures_annual
+  - title: "Monthly reports"
+    contents:
+      - get_activity_performance_monthly
+  - title: "Cache management"
+    contents:
+      - cache_info
+      - clear_cache
+  - title: "Helper functions"
+    contents:
+      - available_nhstt_reports
 
-- title: Annual reports
-  contents:
-  - get_key_measures_annual
-
-- title: Monthly reports
-  contents:
-  - get_activity_performance_monthly
-
-- title: Cache management and helper functions
-  contents:
-  - cache_info
-  - clear_cache
-  - available_nhstt_reports
-
-- title: Helper functions
-  contents:
-  - available_nhstt_reports
+articles:
+  - title: "How-to guides"
+    desc: "Step-by-step guides for analysing NHS TT data"
+    contents:
+      - how-to-activity-performance-monthly
+      - how-to-key-measures-annual
