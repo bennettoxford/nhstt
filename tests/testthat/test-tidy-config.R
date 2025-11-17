@@ -350,7 +350,11 @@ test_that("tidy_dataset splits measure_statistic and measure_name (activity_perf
 })
 
 test_that("tidy_dataset handles multiple periods (activity_performance)", {
-  raw_data <- load_raw_data("activity_performance", c("2025-06", "2025-09"), "monthly")
+  raw_data <- load_raw_data(
+    "activity_performance",
+    c("2025-06", "2025-09"),
+    "monthly"
+  )
   result <- tidy_dataset(raw_data, "activity_performance", "monthly")
 
   # Should have data from both periods (ISO format: "2025-06", "2025-09")

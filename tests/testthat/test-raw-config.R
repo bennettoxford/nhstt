@@ -278,7 +278,9 @@ test_that("available_nhstt_reports includes annual key_measures", {
 
 test_that("available_nhstt_reports shows correct period counts", {
   reports <- available_nhstt_reports()
-  km_annual <- reports[reports$dataset == "key_measures" & reports$frequency == "annual", ]
+  km_annual <- reports[
+    reports$dataset == "key_measures" & reports$frequency == "annual",
+  ]
 
   # Should have 8 annual periods (2017-18 through 2024-25)
   expect_equal(km_annual$n_periods, 8)
@@ -286,7 +288,9 @@ test_that("available_nhstt_reports shows correct period counts", {
 
 test_that("available_nhstt_reports shows correct first and last periods", {
   reports <- available_nhstt_reports()
-  km_annual <- reports[reports$dataset == "key_measures" & reports$frequency == "annual", ]
+  km_annual <- reports[
+    reports$dataset == "key_measures" & reports$frequency == "annual",
+  ]
 
   expect_equal(km_annual$first_period, "2017-18")
   expect_equal(km_annual$last_period, "2024-25")
@@ -414,7 +418,11 @@ test_that("validate_raw_config errors when zip/rar missing csv_pattern", {
 test_that("list_available_periods excludes development periods by default", {
   # This test assumes no actual development periods exist in raw_config.toml
   periods <- list_available_periods("key_measures", "annual")
-  periods_with_dev <- list_available_periods("key_measures", "annual", include_development = TRUE)
+  periods_with_dev <- list_available_periods(
+    "key_measures",
+    "annual",
+    include_development = TRUE
+  )
 
   # Should return same list if no development periods
   expect_equal(periods, periods_with_dev)
