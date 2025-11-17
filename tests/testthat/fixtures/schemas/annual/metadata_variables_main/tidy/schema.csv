@@ -1,0 +1,4 @@
+reporting_period,dataset_name,variable_type,variable_a,variable_b,fields_for_variable_type,values_for_variable_a,values_for_variable_b,notes
+2024-25,key_measures,Total,Null,Null,N/A,N/A,N/A,All records included
+2024-25,key_measures,Gender,Female,Null,Gender,Gender = 2,N/A,NA
+2024-25,key_measures,Gender,Male,Null,Gender,Gender = 1,N/A,NA

@@ -1,0 +1,42 @@
+Name of additional csv data file,CSV field name,Description of measure,Technical Construction,Additional notes
+"psych-ther-ann-rep-csv-2023-24-therapist-role, 
+psych-ther-ann-rep-csv-2023-24-therapy-type, 
+psych-ther-ann-rep-csv-2023-24-employment-status, 
+psych-ther-ann-rep-csv-2023-24-psych-medication, 
+psych-ther-ann-rep-csv-2023-24-peq, 
+psych-ther-ann-rep-csv-2023-24-effect-size,
+psych-ther-ann-rep-csv-2023-24-ltc-iet",OrgType,"The type of organisation to which the data refer. Data are published for the following organisation types:
+- England (aggregated data for all NHS Talking Therapies service providers)
+- Commissioning Region
+- Integrated Care Board (ICB)
+- Subsection of Integrated Care Board (SubICB)
+- NHS Talking Therapies service provider","Hardcoded in processing.
+","For further information about NHS geographies, see https://www.ons.gov.uk/methodology/geography/ukgeographies/healthgeography#english-health-geography"
+"psych-ther-ann-rep-csv-2023-24-therapist-role, 
+psych-ther-ann-rep-csv-2023-24-therapy-type, 
+psych-ther-ann-rep-csv-2023-24-employment-status, 
+psych-ther-ann-rep-csv-2023-24-psych-medication, 
+psych-ther-ann-rep-csv-2023-24-peq, 
+psych-ther-ann-rep-csv-2023-24-effect-size,
+psych-ther-ann-rep-csv-2023-24-ltc-iet",OrgCode,"The Organisation Data Service (ODS) code of the organisation to which the data refer. Data are published for the following organisation types:
+- England (aggregated data for all NHS Talking Therapies service providers)
+- Commissioning Region
+- Integrated Care Board (ICB)
+- Subsection of Integrated Care Board (SubICB)
+- NHS Talking Therapies service provider","The SubICB for a referral is defined using the OrgIDComm field on the IDS101Referral table. Old codes (including CCG codes) are mapped to 2022/23 SubICB codes.
+
+ICB and Commissioning Regions are derived from the SubICB code.
+
+NHS Talking Therapies service provider is taken from the submitted OrgID_Provider field on IDS101Referral table, a mandatory dataset field in the Referral table",Organisation Data Service (ODS) reference data are available from https://odsportal.hscic.gov.uk/
+"psych-ther-ann-rep-csv-2023-24-therapist-role, 
+psych-ther-ann-rep-csv-2023-24-therapy-type, 
+psych-ther-ann-rep-csv-2023-24-employment-status, 
+psych-ther-ann-rep-csv-2023-24-psych-medication, 
+psych-ther-ann-rep-csv-2023-24-peq, 
+psych-ther-ann-rep-csv-2023-24-effect-size,
+psych-ther-ann-rep-csv-2023-24-ltc-iet",OrgName,"The Organisation Data Service (ODS) name of the organisation to which the data refer. Data are published for the following organisation types:
+- England (aggregated data for all NHS Talking Therapies service providers)
+- Commissioning Region
+- Integrated Care Board (ICB)
+- Subsection of Integrated Care Board (SubICB)
+- NHS Talking Therapies service provider",NA,Organisation Data Service (ODS) reference data are available from https://odsportal.hscic.gov.uk/

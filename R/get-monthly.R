@@ -48,3 +48,46 @@ get_activity_performance_monthly <- function(
 
   list_rbind(data_list)
 }
+
+#' Get monthly metadata for NHS Talking Therapies measures
+#'
+#' Retrieves the definitions, derivations, and construction notes for each
+#' reported measure.
+#'
+#' @inheritParams get_activity_performance_monthly
+#'
+#' @return Tibble with metadata for each measure
+#'
+#' @details
+#' Raw data is stored in parquet format for efficient compression.
+#'
+#' @importFrom purrr map list_rbind
+#'
+#' @export
+#' @examples
+#' \dontrun{
+#' metadata <- get_metadata_monthly()
+#' }
+get_metadata_monthly <- function(
+  periods = NULL,
+  use_cache = TRUE
+) {
+  frequency <- "monthly"
+  dataset <- "metadata"
+
+  periods <- resolve_periods(periods, dataset, frequency)
+  periods <- rev(periods)
+
+  data_list <- map(
+    periods,
+    \(period) {
+      if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
+        load_tidy_cache(dataset, period, frequency)
+      } else {
+        prepare_tidy_data(dataset, period, frequency)
+      }
+    }
+  )
+
+  list_rbind(data_list)
+}

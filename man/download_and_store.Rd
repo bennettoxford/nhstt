@@ -11,7 +11,9 @@ download_and_store(
   url,
   source_format,
   file_path,
-  csv_pattern = NULL
+  csv_pattern = NULL,
+  sheet = NULL,
+  range = NULL
 )
 }
 \arguments{
@@ -23,11 +25,15 @@ download_and_store(
 
 \item{url}{Character, source URL}
 
-\item{source_format}{Character, source format ("csv", "zip", "rar")}
+\item{source_format}{Character, source format ("csv", "zip", "rar", "xlsx")}
 
 \item{file_path}{Character, destination path}
 
 \item{csv_pattern}{Character, regex to locate CSV inside archive (optional)}
+
+\item{sheet}{Character, sheet name or index for Excel sources (required for Excel sources)}
+
+\item{range}{Character, Excel cell range (e.g., "A5:H427") for Excel sources (optional)}
 }
 \value{
 Character path to cached file
