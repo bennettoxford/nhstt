@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,11 +16,6 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/how-to-effect-size.html">How to expore the effect_size report</a></li>
-    <li><a class="dropdown-item" href="../articles/how-to-key-measures.html">How to use the key_measures report</a></li>
-  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/bennettoxford/nhstt/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -36,92 +31,83 @@
     </div>
 
     <div class="section level2">
-      <h2 id="setup-package-and-download-data">Setup package and download data<a class="anchor" aria-label="anchor" href="#setup-package-and-download-data"></a></h2>
-
-      <div class="section-desc"><p>Download and manage NHS Talking Therapies data</p></div>
+      <h2 id="annual-reports">Annual reports<a class="anchor" aria-label="anchor" href="#annual-reports"></a></h2>
 
 
-    </div><div class="section level2">
+
+      <dl></dl></div><div class="section level2">
 
 
 
 
       <dl><dt>
 
-          <code><a href="nhstt_setup.html">nhstt_setup()</a></code>
+          <code><a href="get_key_measures_annual.html">get_key_measures_annual()</a></code>
 
         </dt>
-        <dd>Setup R package and download NHS TT reports</dd>
-      </dl><dl><dt>
-
-          <code><a href="nhstt_info.html">nhstt_info()</a></code>
-
-        </dt>
-        <dd>Get information about NHS Talking Therapies datasets</dd>
-      </dl><dl><dt>
-
-          <code><a href="nhstt_clear_download_cache.html">nhstt_clear_download_cache()</a></code>
-
-        </dt>
-        <dd>Clear downloaded data</dd>
+        <dd>Get annual key performance measures</dd>
       </dl></div><div class="section level2">
-      <h2 id="available-datasets">Available datasets<a class="anchor" aria-label="anchor" href="#available-datasets"></a></h2>
-
-      <div class="section-desc"><p>Tidy NHS Talking Therapy datasets available in this package</p></div>
+      <h2 id="monthly-reports">Monthly reports<a class="anchor" aria-label="anchor" href="#monthly-reports"></a></h2>
 
 
-    </div><div class="section level2">
+
+      <dl></dl></div><div class="section level2">
 
 
 
 
       <dl><dt>
 
-          <code><a href="key_measures.html">key_measures</a></code>
+          <code><a href="get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code>
 
         </dt>
-        <dd>Key measures dataset from NHS TT annual reports</dd>
-      </dl><dl><dt>
-
-          <code><a href="medication_status.html">medication_status</a></code>
-
-        </dt>
-        <dd>Medication status dataset from NHS TT annual reports</dd>
-      </dl><dl><dt>
-
-          <code><a href="therapy_type.html">therapy_type</a></code>
-
-        </dt>
-        <dd>Therapy type dataset from NHS TT annual reports</dd>
-      </dl><dl><dt>
-
-          <code><a href="effect_size.html">effect_size</a></code>
-
-        </dt>
-        <dd>Effect size dataset from NHS TT annual reports</dd>
+        <dd>Get monthly activity and performance measures</dd>
       </dl></div><div class="section level2">
-      <h2 id="functions-for-package-developers">Functions for package developers<a class="anchor" aria-label="anchor" href="#functions-for-package-developers"></a></h2>
-
-      <div class="section-desc"><p>Download and explore raw data</p></div>
+      <h2 id="cache-management-and-helper-functions">Cache management and helper functions<a class="anchor" aria-label="anchor" href="#cache-management-and-helper-functions"></a></h2>
 
 
-    </div><div class="section level2">
+
+      <dl></dl></div><div class="section level2">
 
 
 
 
       <dl><dt>
 
-          <code><a href="nhstt_get_raw.html">nhstt_get_raw()</a></code>
+          <code><a href="cache_info.html">cache_info()</a></code>
 
         </dt>
-        <dd>Download raw NHS TT data files as published on NHS Digital</dd>
-      </dl><dl><dt>
+        <dd>Display cache information</dd>
 
-          <code><a href="nhstt_check_columns.html">nhstt_check_columns()</a></code>
+        <dt>
+
+          <code><a href="clear_cache.html">clear_cache()</a></code>
 
         </dt>
-        <dd>Check column names across years for a dataset</dd>
+        <dd>Clear cache</dd>
+
+        <dt>
+
+          <code><a href="available_nhstt_reports.html">available_nhstt_reports()</a></code>
+
+        </dt>
+        <dd>List available NHS Talking Therapies reports</dd>
+      </dl></div><div class="section level2">
+      <h2 id="helper-functions">Helper functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="available_nhstt_reports.html">available_nhstt_reports()</a></code>
+
+        </dt>
+        <dd>List available NHS Talking Therapies reports</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
@@ -132,7 +118,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
