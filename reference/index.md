@@ -10,14 +10,12 @@
 - [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md)
   : Get monthly activity and performance measures
 
-## Cache management and helper functions
+## Cache management
 
 - [`cache_info()`](https://bennettoxford.github.io/nhstt/reference/cache_info.md)
   : Display cache information
 - [`clear_cache()`](https://bennettoxford.github.io/nhstt/reference/clear_cache.md)
   : Clear cache
-- [`available_nhstt_reports()`](https://bennettoxford.github.io/nhstt/reference/available_nhstt_reports.md)
-  : List available NHS Talking Therapies reports
 
 ## Helper functions
 

@@ -54,17 +54,25 @@ ap_monthly <- get_activity_performance_monthly()
 - [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md)
   : Get monthly activity and performance measures
 
-## Cache management and helper functions
+## Cache management
 
 - [`cache_info()`](https://bennettoxford.github.io/nhstt/reference/cache_info.md)
   : Display cache information
 - [`clear_cache()`](https://bennettoxford.github.io/nhstt/reference/clear_cache.md)
   : Clear cache
-- [`available_nhstt_reports()`](https://bennettoxford.github.io/nhstt/reference/available_nhstt_reports.md)
-  : List available NHS Talking Therapies reports
 
 ## Helper functions
 
 - [`available_nhstt_reports()`](https://bennettoxford.github.io/nhstt/reference/available_nhstt_reports.md)
   : List available NHS Talking Therapies reports
 
+# Articles
+
+### How-to guides
+
+Step-by-step guides for analysing NHS TT data
+
+- [How to use the monthly activity performance
+  data](https://bennettoxford.github.io/nhstt/articles/how-to-activity-performance-monthly.md):
+- [How to use the annual key measures
+  data](https://bennettoxford.github.io/nhstt/articles/how-to-key-measures-annual.md):

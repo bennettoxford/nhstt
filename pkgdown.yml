@@ -1,8 +1,10 @@
 pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
-articles: {}
-last_built: 2025-11-17T17:42Z
+articles:
+  how-to-activity-performance-monthly: how-to-activity-performance-monthly.html
+  how-to-key-measures-annual: how-to-key-measures-annual.html
+last_built: 2025-11-17T21:32Z
 urls:
   reference: https://bennettoxford.github.io/nhstt/reference
   article: https://bennettoxford.github.io/nhstt/articles
