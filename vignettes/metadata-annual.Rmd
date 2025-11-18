@@ -1,0 +1,95 @@
+---
+title: "Annual metadata"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{metadata-annual}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+> **Note:** This package currently only provides metadata for the most recent annual reporting period.
+
+This guide shows how to access metadata for the annual NHS Talking Therapies reports. Metadata provides detailed information about measure definitions, field descriptions, and variable derivations used in the annual key measures dataset.
+
+## Setup
+
+```{r setup, message=FALSE}
+library(nhstt)
+library(dplyr)
+library(gt)
+
+# Metadata for annual measures
+metadata_measures_annual <- get_metadata_measures_annual() |> 
+  filter(dataset_name == "key_measures") |> 
+  select(field_name, description)
+
+# Metadata for annual variables
+metadata_variables_annual <- get_metadata_variables_annual() |> 
+  filter(dataset_name == "key_measures") |> 
+  select(
+    variable_type, variable_type,
+    variable_a, variable_b
+  )
+```
+
+## `key_measures` measures
+
+```{r tab-key-measures-measures, echo=FALSE}
+
+metadata_measures_annual |> 
+  gt() |> 
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = field_name)
+  ) |> 
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = description)
+  ) |> 
+  cols_label(
+    field_name = "Column",
+    description = "Description"
+  )
+```
+
+## `key_measures` variables
+
+```{r tab-key-measures-variables, echo=FALSE}
+
+metadata_variables_annual |> 
+  gt() |> 
+    tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = variable_type)
+  ) |> 
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = variable_a)
+  ) |> 
+      tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = variable_b)
+  ) |> 
+  cols_label(
+    variable_type = "Variable type",
+    variable_a = "Variable A",
+    variable_b = "Variable A"
+  )
+```

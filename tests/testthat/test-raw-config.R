@@ -4,6 +4,20 @@ test_that("validate_dataset accepts valid dataset", {
   expect_invisible(validate_dataset("key_measures"))
 })
 
+test_that("validate_dataset accepts metadata dataset", {
+  expect_invisible(validate_dataset("metadata"))
+})
+
+test_that("validate_dataset accepts metadata measures datasets", {
+  expect_invisible(validate_dataset("metadata_measures_main"))
+  expect_invisible(validate_dataset("metadata_measures_additional"))
+})
+
+test_that("validate_dataset accepts metadata variables datasets", {
+  expect_invisible(validate_dataset("metadata_variables_main"))
+  expect_invisible(validate_dataset("metadata_variables_additional"))
+})
+
 test_that("validate_dataset errors for invalid dataset", {
   expect_error(
     validate_dataset("invalid_dataset"),
@@ -28,6 +42,10 @@ test_that("validate_frequency errors for invalid frequency", {
 
 test_that("validate_period accepts valid period", {
   expect_invisible(validate_period("2023-24", "key_measures", "annual"))
+})
+
+test_that("validate_period accepts metadata period", {
+  expect_invisible(validate_period("2025-07", "metadata", "monthly"))
 })
 
 test_that("validate_period errors for invalid period", {
@@ -57,6 +75,26 @@ test_that("load_raw_config has key_measures dataset", {
   expect_true("key_measures" %in% names(raw_config$datasets))
 })
 
+test_that("load_raw_config has metadata dataset", {
+  raw_config <- load_raw_config()
+
+  expect_true("metadata" %in% names(raw_config$datasets))
+})
+
+test_that("load_raw_config has metadata measures datasets", {
+  raw_config <- load_raw_config()
+
+  expect_true("metadata_measures_main" %in% names(raw_config$datasets))
+  expect_true("metadata_measures_additional" %in% names(raw_config$datasets))
+})
+
+test_that("load_raw_config has metadata variables datasets", {
+  raw_config <- load_raw_config()
+
+  expect_true("metadata_variables_main" %in% names(raw_config$datasets))
+  expect_true("metadata_variables_additional" %in% names(raw_config$datasets))
+})
+
 test_that("key_measures has annual frequency", {
   raw_config <- load_raw_config()
 
@@ -80,6 +118,23 @@ test_that("list_available_periods returns character vector", {
 
   expect_type(periods, "character")
   expect_true(length(periods) > 0)
+})
+
+test_that("list_available_periods includes metadata period", {
+  periods <- list_available_periods("metadata", "monthly")
+
+  expect_true("2025-07" %in% periods)
+})
+
+test_that("list_available_periods includes metadata annual periods", {
+  measures_periods <- list_available_periods("metadata_measures_main", "annual")
+  variables_periods <- list_available_periods(
+    "metadata_variables_main",
+    "annual"
+  )
+
+  expect_true("2024-25" %in% measures_periods)
+  expect_true("2024-25" %in% variables_periods)
 })
 
 test_that("list_available_periods returns financial year format", {
@@ -165,6 +220,12 @@ test_that("get_source_config returns correct format for rar", {
   expect_equal(source$format, "rar")
 })
 
+test_that("get_source_config returns correct format for xlsx", {
+  source <- get_source_config("metadata", "2025-07", "monthly")
+
+  expect_equal(source$format, "xlsx")
+})
+
 test_that("get_source_config returns csv_pattern string", {
   source <- get_source_config("key_measures", "2023-24", "annual")
 
@@ -177,6 +238,50 @@ test_that("get_source_config has csv_file field", {
 
   expect_true("csv_file" %in% names(source))
   expect_type(source$csv_file, "character")
+})
+
+test_that("metadata source includes sheet and range details", {
+  source <- get_source_config("metadata", "2025-07", "monthly")
+
+  expect_true("sheet" %in% names(source))
+  expect_equal(source$sheet, "Measures")
+  expect_equal(source$range, "A5:H427")
+})
+
+test_that("annual metadata measures main source reports sheet", {
+  source <- get_source_config("metadata_measures_main", "2024-25", "annual")
+
+  expect_equal(source$sheet, "Data measures (main)")
+  expect_equal(source$range, "A10:D57")
+})
+
+test_that("annual metadata measures additional source reports sheet", {
+  source <- get_source_config(
+    "metadata_measures_additional",
+    "2024-25",
+    "annual"
+  )
+
+  expect_equal(source$sheet, "Data measures (additional)")
+  expect_equal(source$range, "A10:E137")
+})
+
+test_that("annual metadata variables sources report sheets", {
+  main_source <- get_source_config(
+    "metadata_variables_main",
+    "2024-25",
+    "annual"
+  )
+  add_source <- get_source_config(
+    "metadata_variables_additional",
+    "2024-25",
+    "annual"
+  )
+
+  expect_equal(main_source$sheet, "Variables (main)")
+  expect_equal(main_source$range, "A10:G271")
+  expect_equal(add_source$sheet, "Variables (additional)")
+  expect_equal(add_source$range, "A10:H308")
 })
 
 # Get dataset version tests ----------------------------------------------------

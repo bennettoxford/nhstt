@@ -6,7 +6,12 @@
 tidy_config_registry <- function() {
   list(
     key_measures = tidy_config_key_measures,
-    activity_performance = tidy_config_activity_performance
+    activity_performance = tidy_config_activity_performance,
+    metadata = tidy_config_metadata,
+    metadata_measures_main = tidy_config_metadata_measures_main,
+    metadata_measures_additional = tidy_config_metadata_measures_additional,
+    metadata_variables_main = tidy_config_metadata_variables_main,
+    metadata_variables_additional = tidy_config_metadata_variables_additional
   )
 }
 
@@ -164,6 +169,8 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
   # === BEFORE PIVOTING / BEFORE COMBINING DATA ===
   # Process each period individually
   tidy_list <- imap(raw_data_list, \(df, period) {
+    df <- mutate(df, reporting_period = period)
+
     # Clean column names to snake_case
     if (isTRUE(config$clean_column_names)) {
       names(df) <- make_clean_names(names(df))
@@ -310,6 +317,30 @@ apply_separate <- function(df, separate_config) {
 apply_mutate <- function(df, mutate_config) {
   for (new_col in names(mutate_config)) {
     col_config <- mutate_config[[new_col]]
+
+    # Handle constant assignments
+    if (!is.null(col_config$value)) {
+      df <- mutate(df, !!new_col := col_config$value)
+      next
+    }
+
+    # Handle replace_na
+    if (!is.null(col_config$replace_na)) {
+      na_config <- col_config$replace_na
+      col_name <- na_config$column
+      replacement <- na_config$value
+      if (col_name %in% names(df)) {
+        df <- mutate(
+          df,
+          !!col_name := ifelse(
+            is.na(.data[[col_name]]),
+            replacement,
+            .data[[col_name]]
+          )
+        )
+      }
+      next
+    }
 
     # Handle date formatting
     if (!is.null(col_config$fn) && col_config$fn == "format") {

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-> **Note:** This vignette is for illustration purposes only and may contain errors. It demonstrates example usage of the dataset and functions, but results should not be interpreted as validated analyses.
+> **Note:** This guide is for illustration purposes only and may contain errors. It demonstrates example usage of the dataset and functions, but results should not be interpreted as validated analyses.
 
 This example demonstrates how to explore monthly NHS Talking Therapies reports using the `nhstt` package.
 We'll look at changes in monthly measures related to different treatment end codes broken down by individual NHS Talking Therapies providers.

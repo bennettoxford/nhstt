@@ -22,6 +22,12 @@ navbar:
           href: articles/how-to-key-measures-annual.html
         - text: "Monthly activity & performance"
           href: articles/how-to-activity-performance-monthly.html
+    - text: "Metadata"
+      menu:
+        - text: "Annual metadata"
+          href: articles/metadata-annual.html
+        - text: "Monthly metadata"
+          href: articles/metadata-monthly.html
 
 reference:
   - title: "Annual reports"
@@ -30,6 +36,11 @@ reference:
   - title: "Monthly reports"
     contents:
       - get_activity_performance_monthly
+  - title: "Metadata"
+    contents:
+      - get_metadata_measures_annual
+      - get_metadata_variables_annual
+      - get_metadata_monthly
   - title: "Cache management"
     contents:
       - cache_info
@@ -44,3 +55,8 @@ articles:
     contents:
       - how-to-activity-performance-monthly
       - how-to-key-measures-annual
+  - title: "Metadata"
+    desc: "Metadata for annual and monthly reports"
+    contents:
+      - metadata-annual
+      - metadata-monthly
