@@ -2,7 +2,6 @@
 inst/doc
 /.quarto/
 **/*.quarto_ipynb
-docs
 .claude/*
 AGENTS.md
 ^\.vscode$
