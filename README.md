@@ -51,3 +51,11 @@ ap_monthly <- get_activity_performance_monthly()
 | Function | First period | Last period | Count periods | Version |
 |:---|:---|:---|---:|---:|
 | `get_activity_performance_monthly()` | 2023-05 | 2025-09 | 29 | 0.2.0 |
+
+### Metadata
+
+| Function | First period | Last period | Count periods | Version |
+|:---|:---|:---|---:|---:|
+| `get_metadata_monthly()` | 2025-07 | 2025-07 | 1 | 0.1.0 |
+| `get_metadata_measures_annual()` | 2024-25 | 2024-25 | 1 | 0.1.0 |
+| `get_metadata_variables_annual()` | 2024-25 | 2024-25 | 1 | 0.1.0 |

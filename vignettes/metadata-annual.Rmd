@@ -1,5 +1,5 @@
 ---
-title: "Annual metadata"
+title: "Metadata for annual key measures and variables"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{metadata-annual}
@@ -16,11 +16,7 @@ knitr::opts_chunk$set(
 
 > **Note:** This package currently only provides metadata for the most recent annual reporting period.
 
-This guide shows how to access metadata for the annual NHS Talking Therapies reports. Metadata provides detailed information about measure definitions, field descriptions, and variable derivations used in the annual key measures dataset.
-
-## Setup
-
-```{r setup, message=FALSE}
+```{r setup, include = FALSE}
 library(nhstt)
 library(dplyr)
 library(gt)

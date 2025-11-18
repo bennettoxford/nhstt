@@ -18,15 +18,21 @@ navbar:
       href: reference/index.html
     - text: "How-to guides"
       menu:
-        - text: "Annual key measures"
+        - text: "Annual datasets"
+        - text: "Key measures"
           href: articles/how-to-key-measures-annual.html
-        - text: "Monthly activity & performance"
+        - text: -------
+        - text: "Monthly datasets"
+        - text: "Activity and performance"
           href: articles/how-to-activity-performance-monthly.html
     - text: "Metadata"
       menu:
         - text: "Annual metadata"
+        - text: "Key measures and variables"
           href: articles/metadata-annual.html
-        - text: "Monthly metadata"
+        - text: -------
+        - text: "Monthly datasets"
+        - text: "Core measures"
           href: articles/metadata-monthly.html
 
 reference:
