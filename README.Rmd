@@ -52,6 +52,7 @@ ap_monthly <- get_activity_performance_monthly()
 
 ```{r datasets-annual, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
+  dplyr::filter(!stringr::str_detect(title, "metadata")) |> 
   dplyr::filter(frequency == "annual") |>
   dplyr::select(
     get_function,
@@ -80,6 +81,7 @@ knitr::kable(
 
 ```{r datasets-monthly, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
+  dplyr::filter(!stringr::str_detect(title, "metadata")) |> 
   dplyr::filter(frequency == "monthly") |>
   dplyr::select(
     get_function,
@@ -89,6 +91,35 @@ df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
     version
   ) |>
   dplyr::mutate(get_function = paste0("`", get_function, "()`"))
+
+knitr::kable(
+  df_nhstt_reports,
+  row.names = FALSE,
+  col.names = c(
+    "Function",
+    "First period",
+    "Last period",
+    "Count periods",
+    "Version"
+  ),
+  align = c("l", "l", "l", "r", "r")
+)
+```
+
+### Metadata
+
+```{r datasets-metadata, echo = FALSE, message = FALSE}
+df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
+  dplyr::filter(stringr::str_detect(title, "metadata")) |> 
+  dplyr::select(
+    get_function,
+    first_period,
+    last_period,
+    n_periods,
+    version
+  ) |>
+  dplyr::mutate(get_function = paste0("`", get_function, "()`")) |> 
+  dplyr::distinct()
 
 knitr::kable(
   df_nhstt_reports,

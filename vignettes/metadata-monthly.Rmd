@@ -1,5 +1,5 @@
 ---
-title: "Monthly metadata"
+title: "Monthly core measures"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{metadata-monthly}
@@ -16,11 +16,7 @@ knitr::opts_chunk$set(
 
 > **Note:** This package currently only provides metadata for the most recent monthly reporting period.
 
-This guide shows how to access metadata for the monthly NHS Talking Therapies reports. Metadata provides detailed information about measure definitions used in the monthly activity and performance dataset.
-
-## Setup
-
-```{r setup, message=FALSE}
+```{r setup, include = FALSE}
 library(nhstt)
 library(dplyr)
 library(gt)
@@ -30,10 +26,6 @@ metadata_monthly <- get_metadata_monthly() |>
   filter(measure_type == "Core") |> 
   select(measure_id, description)
 ```
-
-## Monthly core measures
-
-The monthly metadata describes each measure in the monthly activity and performance reports, including measure names, descriptions, derivation UIDs, and construction details.
 
 ```{r tab-measures-monthly, echo=FALSE}
 

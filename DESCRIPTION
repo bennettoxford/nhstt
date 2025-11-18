@@ -15,10 +15,12 @@ Suggests:
     covr,
     fs,
     ggplot2,
+    gt,
     knitr,
     readr,
     rmarkdown,
     scales,
+    stringr,
     testthat (>= 3.0.0),
     withr
 Config/testthat/edition: 3
@@ -36,12 +38,10 @@ Imports:
     readxl,
     RcppTOML,
     rlang,
-    stringr,
     tibble,
     tidyr,
     tidyselect,
     tools,
     utils,
-    vroom,
-    gt
+    vroom
 VignetteBuilder: knitr
