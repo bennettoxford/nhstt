@@ -42,5 +42,6 @@ Imports:
     tidyselect,
     tools,
     utils,
-    vroom
+    vroom,
+    gt
 VignetteBuilder: knitr
