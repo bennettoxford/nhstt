@@ -1,5 +1,5 @@
 ---
-title: "How to use the monthly activity performance data"
+title: "How to use the monthly activity and performance data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{how-to-activity-performance-monthly}
@@ -30,39 +30,56 @@ library(ggplot2)
 library(dplyr)
 library(scales)
 library(stringr)
+library(gt)
 
 # Get all monthly activity performance reports
-activity_performance <- get_activity_performance_monthly()
-```
+activity_performance <- get_activity_performance_monthly(
+  periods = c(
+    "2025-09", "2025-08", "2025-07", "2025-06", "2025-05", 
+    "2025-04", "2025-03", "2025-02", "2025-01", "2024-12",
+    "2024-11", "2024-10", "2024-09"
+    )
+)
 
+# Define measure ids to explore
+referral_ended_measures <- c(
+  "M057", "M058", "M059", "M060", "M061", "M066", "M340", "M062",
+  "M063", "M066", "M344", "M341", "M069", "M342", "M070", "M071"
+)
+```
 
 ## Select data for analysis
 
 We want to explore changes in the following measures related to referrals that ended:
 
-- **M057**: Count of referrals that ended in the reporting period with an end code of 'Not suitable for IAPT service - no action taken or directed back to referrer' (End code: 10)
-- **M058**: Count of referrals that ended in the reporting period with an end code of 'Not suitable for IAPT service - signposted elsewhere with mutual agreement of patient' (End code: 11)
-- **M059**: Count of referrals that ended in the reporting period with an end code of 'Discharged by mutual agreement following advice and support' (End code: 12)
-- **M060**: Count of referrals that ended in the reporting period with an end code of 'Referred to another therapy service by mutual agreement' (End code: 13)
-- **M061**: Count of referrals that ended in the reporting period with an end code of 'Suitable for IAPT service, but patient declined treatment that was offered' (End code: 14)
-- **M066**: Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’ (End code: 46) 
-- **M062**: Count of referrals that ended in the reporting period with an end code of 'Deceased (Seen but not taken on for a course of treatment)' (End code: 17)
-- **M063**: Count of referrals that ended in the reporting period with an end code of 'Not known (Seen but not taken on for a course of treatment)' (End code: 95)
-- **M066**: Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment' (End code: 46)
-- **M069**: Count of referrals that ended in the reporting period with an end code of 'Deceased (Seen and taken on for a course of treatment)' (End code: 49)
-- **M070**: Count of referrals that ended in the reporting period with an end code of 'Not Known (Seen and taken on for a course of treatment)' (End code: 96)
-- **M071**: Count of referrals that ended in the reporting period with an invalid end code (Invalid: not in 10, 11, 12, 13, 14, 16, 17, 95, 46, 47, 48, 49, 50, 96)
-- **M340**: Count of referrals that ended in the reporting period with an end code of 'Incomplete Assessment (Patient dropped out)' (End code: 16)
-- **M341**: Count of referrals that ended in the reporting period with an end code of 'Termination of treatment earlier than patient requested' (End code: 48)
-- **M342**: Count of referrals that ended in the reporting period with an end code of 'Not assessed' (End code: 50)
-- **M344**: Count of referrals that ended in the reporting period with an end code of 'Termination of treatment earlier than Care Professional planned' (End code: 47)
+```{r tab-measures, echo=FALSE}
+monthly_metadata <- get_metadata_monthly()
+
+monthly_metadata |> 
+  filter(measure_id %in% referral_ended_measures) |> 
+  select(measure_id, description) |> 
+  gt() |> 
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = measure_id)
+  ) |> 
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = description)
+  ) |> 
+  cols_label(
+    measure_id = "ID",
+    description = "Description"
+  )
+```
+
+Here we filter the data to include all measures as defined above in `referral_ended_measures` for all providers:
 
 ```{r select-data}
-referral_ended_measures <- c(
-  "M057", "M058", "M059", "M060", "M061", "M066", "M340", "M062",
-  "M063", "M066", "M344", "M341", "M069", "M342", "M070", "M071"
-)
-
 selected_activity_performance <- activity_performance |>
   filter(measure_id %in% c(referral_ended_measures)) |>
   filter(group_type == "Provider")
