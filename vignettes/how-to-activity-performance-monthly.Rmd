@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -17,42 +17,49 @@ knitr::opts_chunk$set(
 > **Note:** This guide is for illustration purposes only and may contain errors. It demonstrates example usage of the dataset and functions, but results should not be interpreted as validated analyses.
 
 This example demonstrates how to explore monthly NHS Talking Therapies reports using the `nhstt` package.
-We'll look at changes in monthly measures related to different treatment end codes broken down by individual NHS Talking Therapies providers.
+To illustrate the basic workflow for accessing and visualising this publicly available data we'll look at two examples:
+
+1. Measures describing different treatment end codes 
+1. Measures describing wait times from referral to first treatment
 
 ## Setup
 
-We start by loading the necessary packages and downloading the monthly activity performance dataset with `get_activity_performance_monthly()`. This report contains monthly performance indicators for NHS Talking Therapies services across England.
 
 ```{r setup, message=FALSE, warning=FALSE}
-# Load packages
+# Load nhstt package for data
 library(nhstt)
+
+# Load other packages for analysis
 library(ggplot2)
+library(lubridate)
 library(dplyr)
 library(scales)
 library(stringr)
 library(gt)
 
 # Get all monthly activity performance reports
-activity_performance <- get_activity_performance_monthly(
-  periods = c(
-    "2025-09", "2025-08", "2025-07", "2025-06", "2025-05", 
-    "2025-04", "2025-03", "2025-02", "2025-01", "2024-12",
-    "2024-11", "2024-10", "2024-09"
-    )
-)
+activity_performance <- get_activity_performance_monthly()
+```
 
-# Define measure ids to explore
+We start by loading R packages and downloading the monthly activity and performance dataset with `get_activity_performance_monthly()`. This report contains monthly performance indicators for NHS Talking Therapies services across England.
+
+The `activity_performance` dataset defined above contains a total of `r length(unique(activity_performance$measure_id))` different activity and performance measures, available from `r format(min(activity_performance$start_date), "%B %Y")` to `r format(max(activity_performance$end_date), "%B %Y")` (`r length(unique(activity_performance$reporting_period))` reporting periods).
+
+### Example 1: Explore changes in referrals that ended
+
+#### Define measures related to referrals that ended
+
+Using the `get_metadata_monthly()` function, we can look up the descriptions for these measures:
+
+```{r}
+# Define measure ids for analysis
 referral_ended_measures <- c(
   "M057", "M058", "M059", "M060", "M061", "M066", "M340", "M062",
   "M063", "M066", "M344", "M341", "M069", "M342", "M070", "M071"
 )
 ```
 
-## Select data for analysis
-
-We want to explore changes in the following measures related to referrals that ended:
-
-```{r tab-measures, echo=FALSE}
+```{r tab-measures1, echo=FALSE}
 monthly_metadata <- get_metadata_monthly()
 
 monthly_metadata |> 
@@ -77,19 +84,20 @@ monthly_metadata |>
   )
 ```
 
-Here we filter the data to include all measures as defined above in `referral_ended_measures` for all providers:
+#### Analysis
+
+Here we filter the data to include all measures defined above in `referral_ended_measures` and select all service providers:
 
 ```{r select-data}
+# Select data for analysis
 selected_activity_performance <- activity_performance |>
   filter(measure_id %in% c(referral_ended_measures)) |>
   filter(group_type == "Provider")
 ```
 
-## Create figure
+Now we can visualise the trends over time broken down by codes for referrals that ended for each service provider. Note that the y-axis scales are not fixed to allow better visualisation of trends for measures with different count ranges.
 
-Finally, we visualise the trends over time broken down by codes for referrals that ended for each service provider.
-
-```{r fig-example, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 12, fig.width = 10, fig.cap = "Trends for counts of different referrals that ended measures."}
+```{r fig-example, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 14, fig.width = 10, fig.cap = "Trends for counts of different referrals that ended measures."}
 
 end_dates <- unique(selected_activity_performance$end_date)
 fig_date_breaks <- end_dates[seq(4, length(end_dates), by = 4)]
@@ -130,8 +138,8 @@ fig_ref_ended_by_service <- fig_selected_activity_performance |>
   geom_line(alpha = 0.2) +
   geom_point(size = .2) +
   labs(
-    title = NULL,
-    x = "End date of yearly interval",
+    title = "Count of referrals that ended in the reporting period with a code of:",
+    x = NULL,
     y = NULL,
     colour = NULL,
     shape = NULL
@@ -154,6 +162,124 @@ fig_ref_ended_by_service <- fig_selected_activity_performance |>
     ncol = 3
   ) +
   guides(colour = guide_legend(nrow = 5, byrow = TRUE))
+
+fig_ref_ended_by_service
+```
+
+### Example 2: Explore wait times from referrral to first treatment
+
+#### Define measures
+
+Here we will explore changes in the following measures related to wait times from referrral to first treatment. Note that there are other measures related to wait times available in the dataset.
+
+```{r}
+# Define measure ids for analysis
+first_tx_waited_measures <- c(
+  "M039", "M040", "M041", "M042", "M043", "M044", "M045"
+)
+```
+
+```{r tab-measures2, echo=FALSE}
+monthly_metadata |> 
+  filter(measure_id %in% c(
+    first_tx_waited_measures
+    )) |> 
+  select(measure_id, description) |> 
+  gt() |> 
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = measure_id)
+  ) |> 
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = description)
+  ) |> 
+  cols_label(
+    measure_id = "ID",
+    description = "Description"
+  )
+```
+
+#### Analysis
+
+Here we filter the data to include all measures defined above in `first_tx_waited_measures` and select all service providers:
+
+```{r select-data-waited}
+# Select data for analysis
+selected_activity_performance <- activity_performance |>
+  filter(measure_id %in% c(first_tx_waited_measures)) |>
+  filter(group_type == "Provider")
+```
+
+Now we can visualise the trends over time broken down by different waiting time periods from referral to first treatment, with one line for each service provider.
+
+```{r fig-example2, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 8, fig.width = 10, fig.cap = "Trends for counts of different waiting time periods from referral to first treatment for each service."}
+
+end_dates <- unique(selected_activity_performance$end_date)
+fig_date_breaks <- end_dates[seq(4, length(end_dates), by = 4)]
+
+tidy_wait_measure <- function(x) {
+  x |>
+    str_remove("^waiting_for_treatment") |> 
+    str_replace_all("_", " ")
+}
+
+fig_selected_activity_performance <- selected_activity_performance |>
+  mutate(
+  measure_name_id = paste0(
+  tidy_wait_measure(measure_name),
+      " (",
+      measure_id,
+      ")"
+    )
+  ) |>
+    select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
+
+levels_order <- fig_selected_activity_performance %>%
+    distinct(measure_id, measure_name_id) %>%
+    arrange(measure_id) %>%
+    pull(measure_name_id)
+
+fig_ref_ended_by_service <- fig_selected_activity_performance |>
+  mutate(measure_name_id = factor(measure_name_id, levels = levels_order)) |> 
+  ggplot(
+    aes(
+      y = value,
+      x = end_date,
+      colour = measure_name_id,
+      group = org_code2
+    )
+  ) +
+  geom_line(alpha = 0.2) +
+  geom_point(size = .2) +
+  labs(
+    title = "Referrals yet to have a first treatment who have been waiting:",
+    x = NULL,
+    y = NULL,
+    colour = NULL,
+    shape = NULL
+  ) +
+  scale_x_date(
+    # breaks = fig_date_breaks,
+    labels = label_date("%b\n%Y")
+  ) +
+  scale_y_continuous(
+    labels = label_number(accuracy = 1),
+    limits = c(0, NA)
+  ) +
+  theme(
+    legend.position = "bottom",
+    text = element_text(size = 13)
+  ) +
+  facet_wrap(
+    vars(measure_name_id),
+    # scales = "free_y",
+    ncol = 3
+  )
 
 fig_ref_ended_by_service
 ```
