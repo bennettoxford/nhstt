@@ -41,7 +41,7 @@ get_activity_performance_monthly <- function(
       if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
         load_tidy_cache(dataset, period, frequency)
       } else {
-        prepare_tidy_data(dataset, period, frequency)
+        download_and_tidy(dataset, period, frequency)
       }
     }
   )
@@ -61,7 +61,13 @@ get_activity_performance_monthly <- function(
 #' @details
 #' Raw data is stored in parquet format for efficient compression.
 #'
+#' If network download fails (e.g., in GitHub Actions), falls back to bundled
+#' metadata shipped with the package. This is a temporary workaround for
+#' `digital.nhs.uk` blocking CI environments.
+#'
 #' @importFrom purrr map list_rbind
+#' @importFrom arrow read_parquet
+#' @importFrom cli cli_alert_warning
 #'
 #' @export
 #' @examples
@@ -84,7 +90,22 @@ get_metadata_monthly <- function(
       if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
         load_tidy_cache(dataset, period, frequency)
       } else {
-        prepare_tidy_data(dataset, period, frequency)
+        tryCatch(
+          {
+            download_and_tidy(dataset, period, frequency)
+          },
+          error = function(e) {
+            package_path <- get_package_data_path(dataset, period, frequency)
+            if (!is.null(package_path)) {
+              cli_alert_warning(
+                "Download failed, using package metadata for {period}"
+              )
+              read_parquet(package_path)
+            } else {
+              stop(e)
+            }
+          }
+        )
       }
     }
   )

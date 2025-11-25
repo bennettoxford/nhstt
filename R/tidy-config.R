@@ -357,7 +357,7 @@ apply_mutate <- function(df, mutate_config) {
   df
 }
 
-#' Prepare tidy data for any dataset (generic internal function)
+#' Download and tidy data
 #'
 #' Orchestrates the complete tidy pipeline: read raw → tidy → cache.
 #' This replaces all dataset-specific fetch_and_tidy_* functions.
@@ -371,7 +371,7 @@ apply_mutate <- function(df, mutate_config) {
 #' @importFrom cli cli_process_start cli_process_done
 #'
 #' @keywords internal
-prepare_tidy_data <- function(dataset, period, frequency) {
+download_and_tidy <- function(dataset, period, frequency) {
   raw_df <- read_raw(dataset, period, frequency, use_cache = TRUE)
 
   raw_data_hash <- calculate_data_hash(raw_df)
