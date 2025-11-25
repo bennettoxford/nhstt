@@ -17,10 +17,11 @@ knitr::opts_chunk$set(
 > **Note:** This guide is for illustration purposes only and may contain errors. It demonstrates example usage of the dataset and functions, but results should not be interpreted as validated analyses.
 
 This example demonstrates how to explore monthly NHS Talking Therapies reports using the `nhstt` package.
-To illustrate the basic workflow for accessing and visualising this publicly available data we'll look at two examples:
+To illustrate the basic workflow for accessing and visualising this publicly available data we'll look at three examples:
 
 1. Measures describing different treatment end codes 
 1. Measures describing wait times from referral to first treatment
+1. Comparing a measure across different providers
 
 ## Setup
 
@@ -211,7 +212,7 @@ Here we filter the data to include all measures defined above in `first_tx_waite
 ```{r select-data-waited}
 # Select data for analysis
 selected_activity_performance <- activity_performance |>
-  filter(measure_id %in% c(first_tx_waited_measures)) |>
+  filter(measure_id %in% first_tx_waited_measures) |>
   filter(group_type == "Provider")
 ```
 
@@ -282,4 +283,115 @@ fig_ref_ended_by_service <- fig_selected_activity_performance |>
   )
 
 fig_ref_ended_by_service
+```
+
+### Example 3: Compare a measure across different providers
+
+We can also focus on a single measure and compare counts across different services. In this example we look at measure `M344` (_Count of referrals that ended in the reporting period with an end code of 'Termination of treatment earlier than Care Professional planned'_) and visualise trends over time for the four providers with the highest overall counts.
+
+Here we identify the 4 providers with the most recorded activity in `M344` across the whole time period:
+
+```{r get-top4-m344}
+top4_m344_providers <- activity_performance |>
+  filter(measure_id == "M344") |> 
+  filter(group_type == "Provider") |> 
+  select(org_name2, value) |> 
+  group_by(org_name2) |> 
+  summarise(total = sum(value, na.rm = TRUE)) |> 
+  slice_max(total, n = 4) |> 
+  pull(org_name2)
+```
+
+We can use this list (`top4_m344_providers`) to filter the data and plot trends for these four providers:
+
+```{r fig-example3, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 7, fig.width = 10, fig.cap = "Counts of referrals with measure M344 for the four providers with the highest totals."}
+
+
+
+activity_performance |>
+  mutate(
+    measure_name_id = paste0(
+      measure_name_to_sentence(measure_name),
+      " (",
+      measure_id,
+      ")"
+    )
+  ) |> 
+  filter(measure_id == "M344") |> 
+  filter(group_type == "Provider") |> 
+  filter(org_name2 %in% top4_m344_providers) |>
+  mutate(
+    org_name2 = str_to_title(org_name2),
+    org_name2 = str_replace_all(org_name2, "Nhs", "NHS")
+  ) |>
+  ggplot(
+    aes(
+      y = value,
+      x = end_date,
+      colour = org_name2,
+      shape = org_name2,
+      group = org_name2
+    )
+  ) +
+  geom_line(alpha = 0.2) +
+  geom_point(size = 1.5) +
+  labs(
+    title = "Count of referrals that ended in the reporting period with a code of:",
+    x = NULL,
+    y = NULL,
+    colour = NULL,
+    shape = NULL
+  ) +
+  scale_x_date(labels = label_date("%b\n%Y")) +
+  scale_y_continuous(
+    labels = label_number(accuracy = 1),
+    limits = c(0, NA)
+  ) +
+  theme(
+    legend.position = "bottom",
+    text = element_text(size = 13)
+  ) +
+  facet_wrap(
+    vars(measure_name_id),
+    scales = "free_y",
+    ncol = 3
+  ) +
+  guides(colour = guide_legend(nrow = 5, byrow = TRUE))
+```
+
+
+```{r review-spike-R1L-M344-2024-12, eval=FALSE, echo=FALSE}
+# Code to investigate the spike in R1L for M344 in Dec 2024
+# Need to do this properly to understand whats going on
+raw_activity_performance <- nhstt:::read_raw(
+  dataset = "activity_performance",
+  period = "2024-12",
+  frequency = "monthly",
+  ) 
+
+unique(raw_activity_performance$GROUP_TYPE)
+
+unique(raw_activity_performance$ORG_NAME1)
+unique(raw_activity_performance$ORG_CODE1)
+
+length(unique(raw_activity_performance$ORG_NAME1))
+# 119
+length(unique(raw_activity_performance$ORG_CODE1))
+# 120
+
+unique(raw_activity_performance$ORG_NAME2)
+unique(raw_activity_performance$ORG_CODE2)
+
+length(unique(raw_activity_performance$ORG_NAME2))
+# 141
+length(unique(raw_activity_performance$ORG_CODE2))
+# 141
+
+raw_activity_performance |> 
+  filter(GROUP_TYPE == "Provider") |>
+  filter(ORG_NAME2 == "ESSEX PARTNERSHIP UNIVERSITY NHS FOUNDATION TRUST") |> 
+  filter(MEASURE_ID == "M344") |> 
+  pull(MEASURE_VALUE_SUPPRESSED) |> 
+  as.numeric() |> 
+  sum(na.rm = TRUE)
 ```

@@ -3,6 +3,7 @@
 #' @param url Character, specifying URL to download from
 #' @param file Character, specifying destination file path
 #'
+#' @importFrom curl curl_download new_handle handle_setheaders handle_setopt
 #' @importFrom utils download.file
 #' @importFrom cli cli_alert_warning cli_abort
 #'
@@ -12,7 +13,15 @@ download_with_retry <- function(url, file) {
   for (attempt in seq_len(max_attempts)) {
     result <- tryCatch(
       {
-        download.file(url, file, mode = "wb", quiet = TRUE)
+        handle <- curl::new_handle()
+        curl::handle_setheaders(
+          handle,
+          "User-Agent" = "Mozilla/5.0",
+          "Accept" = "*/*"
+        )
+        curl::handle_setopt(handle, http_version = 1L, followlocation = TRUE)
+
+        curl::curl_download(url, file, handle = handle, mode = "wb")
         TRUE
       },
       error = function(e) {
