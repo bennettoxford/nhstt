@@ -1,0 +1,51 @@
+---
+title: "Employment Advisor measures"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Employment Advisor measures}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+> **Note:** This package currently only provides metadata for the most recent monthly reporting period.
+
+```{r setup, include = FALSE}
+library(nhstt)
+library(dplyr)
+library(gt)
+
+# Metadata for monthly EA measures
+metadata_monthly_ea <- get_metadata_monthly() |>
+  filter(measure_type == "EA") |>
+  select(measure_id, description)
+```
+
+In total there are **`r length(unique(metadata_monthly_ea$measure_id))`** monthly _EA_ measures:
+
+```{r tab-measures-monthly-ea, echo=FALSE}
+metadata_monthly_ea |>
+  gt() |>
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = measure_id)
+  ) |>
+  tab_style(
+    style = list(
+      cell_text(align = "left", v_align = "top")
+    ),
+    locations = cells_body(columns = description)
+  ) |>
+  cols_label(
+    measure_id = "ID",
+    description = "Description"
+  )
+```
