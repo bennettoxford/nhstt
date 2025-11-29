@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,8 +35,23 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides">
-<li><a class="dropdown-item" href="articles/how-to-key-measures-annual.html">Annual key measures</a></li>
-    <li><a class="dropdown-item" href="articles/how-to-activity-performance-monthly.html">Monthly activity &amp; performance</a></li>
+<li><h6 class="dropdown-header" data-toc-skip>Annual data</h6></li>
+    <li><a class="dropdown-item" href="articles/how-to-key-measures-annual.html">Key measures</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Monthly data</h6></li>
+    <li><a class="dropdown-item" href="articles/how-to-activity-performance-monthly.html">Activity and performance</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-metadata" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Metadata</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-metadata">
+<li><h6 class="dropdown-header" data-toc-skip>Annual metadata</h6></li>
+    <li><a class="dropdown-item" href="articles/metadata-annual.html">Key measures and variables</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Monthly metadata</h6></li>
+    <li><a class="dropdown-item" href="articles/metadata-monthly-core.html">Core measures</a></li>
+    <li><a class="dropdown-item" href="articles/metadata-monthly-ea.html">Employment Advisor measures</a></li>
+    <li><a class="dropdown-item" href="articles/metadata-monthly-ltc.html">Long-term Condition measures</a></li>
   </ul>
 </li>
       </ul>
@@ -83,7 +98,7 @@
 <span><span class="va">ap_monthly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="available-nhs-talking-therapies-reports">Available NHS Talking Therapies reports<a class="anchor" aria-label="anchor" href="#available-nhs-talking-therapies-reports"></a>
+<h2 id="available-nhs-talking-therapies-data">Available NHS Talking Therapies data<a class="anchor" aria-label="anchor" href="#available-nhs-talking-therapies-data"></a>
 </h2>
 <div class="section level3">
 <h3 id="annual-reports">Annual reports<a class="anchor" aria-label="anchor" href="#annual-reports"></a>
@@ -138,6 +153,89 @@
 <td align="right">0.2.0</td>
 </tr></tbody>
 </table>
+</div>
+<div class="section level3">
+<h3 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
+</h3>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Function</th>
+<th align="left">First period</th>
+<th align="left">Last period</th>
+<th align="right">Count periods</th>
+<th align="right">Version</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code><a href="reference/get_metadata_monthly.html">get_metadata_monthly()</a></code></td>
+<td align="left">2025-07</td>
+<td align="left">2025-07</td>
+<td align="right">1</td>
+<td align="right">0.1.0</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="reference/get_metadata_measures_annual.html">get_metadata_measures_annual()</a></code></td>
+<td align="left">2024-25</td>
+<td align="left">2024-25</td>
+<td align="right">1</td>
+<td align="right">0.1.0</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="reference/get_metadata_variables_annual.html">get_metadata_variables_annual()</a></code></td>
+<td align="left">2024-25</td>
+<td align="left">2024-25</td>
+<td align="right">1</td>
+<td align="right">0.1.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level2">
+<h2 id="time-to-download-and-tidy-the-data">Time to download and tidy the data<a class="anchor" aria-label="anchor" href="#time-to-download-and-tidy-the-data"></a>
+</h2>
+<p>Approximate download and processing times per period. Your times might be a bit faster or slower depending on your internet and computer.</p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Function</th>
+<th align="right">Download per period</th>
+<th align="right">Tidy per period</th>
+<th align="right">Total (all periods)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code><a href="reference/get_key_measures_annual.html">get_key_measures_annual()</a></code></td>
+<td align="right">1.2 sec</td>
+<td align="right">16.6 sec</td>
+<td align="right">2.4 min</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code></td>
+<td align="right">4.4 sec</td>
+<td align="right">0.48 sec</td>
+<td align="right">2.4 min</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="licence">Licence<a class="anchor" aria-label="anchor" href="#licence"></a>
+</h2>
+<div class="section level3">
+<h3 id="r-package">R package<a class="anchor" aria-label="anchor" href="#r-package"></a>
+</h3>
+<p>The <code>nhstt</code> package is licensed under the <a href="LICENSE.html">MIT License</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="nhs-talking-therapies-data">NHS Talking Therapies data<a class="anchor" aria-label="anchor" href="#nhs-talking-therapies-data"></a>
+</h3>
+<p>All NHS Talking Therapies data is Copyright NHS England and licensed under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence v3.0</a>. Contains public sector information licensed under the Open Government Licence v3.0.</p>
 </div>
 </div>
 </div>

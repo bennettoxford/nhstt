@@ -39,7 +39,7 @@ write_raw_downloads_json(
 
 - source_format:
 
-  Character, specifying original format ("zip", "rar", "csv")
+  Character, specifying original format ("zip", "rar", "csv", "xlsx")
 
 - storage_format:
 

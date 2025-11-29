@@ -4,7 +4,11 @@ pkgdown_sha: ~
 articles:
   how-to-activity-performance-monthly: how-to-activity-performance-monthly.html
   how-to-key-measures-annual: how-to-key-measures-annual.html
-last_built: 2025-11-17T21:32Z
+  metadata-annual: metadata-annual.html
+  metadata-monthly-core: metadata-monthly-core.html
+  metadata-monthly-ea: metadata-monthly-ea.html
+  metadata-monthly-ltc: metadata-monthly-ltc.html
+last_built: 2025-11-29T10:58Z
 urls:
   reference: https://bennettoxford.github.io/nhstt/reference
   article: https://bennettoxford.github.io/nhstt/articles

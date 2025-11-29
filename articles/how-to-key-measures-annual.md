@@ -1,9 +1,8 @@
 # How to use the annual key measures data
 
-> **Note:** This vignette is for illustration purposes only and may
-> contain errors. It demonstrates example usage of the dataset and
-> functions, but results should not be interpreted as validated
-> analyses.
+> **Note:** This guide is for illustration purposes only and may contain
+> errors. It demonstrates example usage of the dataset and functions,
+> but results should not be interpreted as validated analyses.
 
 This example demonstrates how to explore annual NHS Talking Therapies
 reports using the `nhstt` package. We’ll look at regional trends in

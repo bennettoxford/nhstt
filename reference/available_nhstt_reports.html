@@ -9,7 +9,7 @@ their time period coverage and frequency"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,8 +20,21 @@ their time period coverage and frequency"></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Function reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides"><li><a class="dropdown-item" href="../articles/how-to-key-measures-annual.html">Annual key measures</a></li>
-    <li><a class="dropdown-item" href="../articles/how-to-activity-performance-monthly.html">Monthly activity &amp; performance</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides"><li><h6 class="dropdown-header" data-toc-skip>Annual data</h6></li>
+    <li><a class="dropdown-item" href="../articles/how-to-key-measures-annual.html">Key measures</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Monthly data</h6></li>
+    <li><a class="dropdown-item" href="../articles/how-to-activity-performance-monthly.html">Activity and performance</a></li>
+  </ul></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-metadata" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Metadata</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-metadata"><li><h6 class="dropdown-header" data-toc-skip>Annual metadata</h6></li>
+    <li><a class="dropdown-item" href="../articles/metadata-annual.html">Key measures and variables</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Monthly metadata</h6></li>
+    <li><a class="dropdown-item" href="../articles/metadata-monthly-core.html">Core measures</a></li>
+    <li><a class="dropdown-item" href="../articles/metadata-monthly-ea.html">Employment Advisor measures</a></li>
+    <li><a class="dropdown-item" href="../articles/metadata-monthly-ltc.html">Long-term Condition measures</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -57,11 +70,16 @@ their time period coverage and frequency</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">available_nhstt_reports</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   dataset        frequency title get_function first_period last_period n_periods</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> activity_perf… monthly   Acti… get_activit… 2023-05      2025-09            29</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> key_measures   annual    Key … get_key_mea… 2017-18      2024-25             8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> metadata       monthly   Mont… get_metadat… 2025-07      2025-07             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> metadata_meas… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> metadata_meas… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> metadata_vari… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> metadata_vari… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: version &lt;chr&gt;</span></span>
 </code></pre></div>
     </div>

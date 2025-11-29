@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>How to use the monthly activity performance data • nhstt</title>
+<title>How to use the monthly activity and performance data • nhstt</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How to use the monthly activity performance data">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="How to use the monthly activity and performance data">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,8 +33,23 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides">
-<li><a class="dropdown-item" href="../articles/how-to-key-measures-annual.html">Annual key measures</a></li>
-    <li><a class="dropdown-item" href="../articles/how-to-activity-performance-monthly.html">Monthly activity &amp; performance</a></li>
+<li><h6 class="dropdown-header" data-toc-skip>Annual data</h6></li>
+    <li><a class="dropdown-item" href="../articles/how-to-key-measures-annual.html">Key measures</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Monthly data</h6></li>
+    <li><a class="dropdown-item" href="../articles/how-to-activity-performance-monthly.html">Activity and performance</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-metadata" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Metadata</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-metadata">
+<li><h6 class="dropdown-header" data-toc-skip>Annual metadata</h6></li>
+    <li><a class="dropdown-item" href="../articles/metadata-annual.html">Key measures and variables</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Monthly metadata</h6></li>
+    <li><a class="dropdown-item" href="../articles/metadata-monthly-core.html">Core measures</a></li>
+    <li><a class="dropdown-item" href="../articles/metadata-monthly-ea.html">Employment Advisor measures</a></li>
+    <li><a class="dropdown-item" href="../articles/metadata-monthly-ltc.html">Long-term Condition measures</a></li>
   </ul>
 </li>
       </ul>
@@ -56,7 +71,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>How to use the monthly activity performance data</h1>
+      <h1>How to use the monthly activity and performance data</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/how-to-activity-performance-monthly.Rmd" class="external-link"><code>vignettes/how-to-activity-performance-monthly.Rmd</code></a></small>
@@ -66,126 +81,1157 @@
     
     
 <blockquote>
-<p><strong>Note:</strong> This vignette is for illustration purposes
-only and may contain errors. It demonstrates example usage of the
-dataset and functions, but results should not be interpreted as
-validated analyses.</p>
+<p><strong>Note:</strong> This guide is for illustration purposes only
+and may contain errors. It demonstrates example usage of the dataset and
+functions, but results should not be interpreted as validated
+analyses.</p>
 </blockquote>
 <p>This example demonstrates how to explore monthly NHS Talking
-Therapies reports using the <code>nhstt</code> package. We’ll look at
-changes in monthly measures related to different treatment end codes
-broken down by individual NHS Talking Therapies providers.</p>
+Therapies reports using the <code>nhstt</code> package. To illustrate
+the basic workflow for accessing and visualising this publicly available
+data we’ll look at three examples:</p>
+<ol style="list-style-type: decimal">
+<li>Measures describing different treatment end codes</li>
+<li>Measures describing wait times from referral to first treatment</li>
+<li>Comparing a measure across different providers</li>
+</ol>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
-<p>We start by loading the necessary packages and downloading the
-monthly activity performance dataset with
-<code><a href="../reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code>. This report contains
-monthly performance indicators for NHS Talking Therapies services across
-England.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load packages</span></span>
+<code class="sourceCode R"><span><span class="co"># Load nhstt package for data</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bennettoxford/nhstt" class="external-link">nhstt</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load other packages for analysis</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com" class="external-link">gt</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get all monthly activity performance reports</span></span>
 <span><span class="va">activity_performance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_activity_performance_monthly.html">get_activity_performance_monthly</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="select-data-for-analysis">Select data for analysis<a class="anchor" aria-label="anchor" href="#select-data-for-analysis"></a>
-</h2>
-<p>We want to explore changes in the following measures related to
-referrals that ended:</p>
-<ul>
-<li>
-<strong>M057</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Not suitable for IAPT service - no
-action taken or directed back to referrer’ (End code: 10)</li>
-<li>
-<strong>M058</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Not suitable for IAPT service -
-signposted elsewhere with mutual agreement of patient’ (End code:
-11)</li>
-<li>
-<strong>M059</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Discharged by mutual agreement
-following advice and support’ (End code: 12)</li>
-<li>
-<strong>M060</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Referred to another therapy
-service by mutual agreement’ (End code: 13)</li>
-<li>
-<strong>M061</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Suitable for IAPT service, but
-patient declined treatment that was offered’ (End code: 14)</li>
-<li>
-<strong>M066</strong>: Count of referrals with an end date in the
-reporting period - Improving Access to Psychological Therapies care
-spell end code is ‘Mutually agreed completion of treatment’ (End code:
-46)</li>
-<li>
-<strong>M062</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Deceased (Seen but not taken on
-for a course of treatment)’ (End code: 17)</li>
-<li>
-<strong>M063</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Not known (Seen but not taken on
-for a course of treatment)’ (End code: 95)</li>
-<li>
-<strong>M066</strong>: Count of referrals with an end date in the
-reporting period - Improving Access to Psychological Therapies care
-spell end code is ‘Mutually agreed completion of treatment’ (End code:
-46)</li>
-<li>
-<strong>M069</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Deceased (Seen and taken on for a
-course of treatment)’ (End code: 49)</li>
-<li>
-<strong>M070</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Not Known (Seen and taken on for a
-course of treatment)’ (End code: 96)</li>
-<li>
-<strong>M071</strong>: Count of referrals that ended in the
-reporting period with an invalid end code (Invalid: not in 10, 11, 12,
-13, 14, 16, 17, 95, 46, 47, 48, 49, 50, 96)</li>
-<li>
-<strong>M340</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Incomplete Assessment (Patient
-dropped out)’ (End code: 16)</li>
-<li>
-<strong>M341</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Termination of treatment earlier
-than patient requested’ (End code: 48)</li>
-<li>
-<strong>M342</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Not assessed’ (End code: 50)</li>
-<li>
-<strong>M344</strong>: Count of referrals that ended in the
-reporting period with an end code of ‘Termination of treatment earlier
-than Care Professional planned’ (End code: 47)</li>
-</ul>
+<p>We start by loading R packages and downloading the monthly activity
+and performance dataset with
+<code><a href="../reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code>. This report contains
+monthly performance indicators for NHS Talking Therapies services across
+England.</p>
+<p>The <code>activity_performance</code> dataset defined above contains
+a total of 217 different activity and performance measures, available
+from May 2023 to September 2025 (29 reporting periods).</p>
+<div class="section level3">
+<h3 id="example-1-explore-changes-in-referrals-that-ended">Example 1: Explore changes in referrals that ended<a class="anchor" aria-label="anchor" href="#example-1-explore-changes-in-referrals-that-ended"></a>
+</h3>
+<div class="section level4">
+<h4 id="define-measures-related-to-referrals-that-ended">Define measures related to referrals that ended<a class="anchor" aria-label="anchor" href="#define-measures-related-to-referrals-that-ended"></a>
+</h4>
+<p>Using the <code><a href="../reference/get_metadata_monthly.html">get_metadata_monthly()</a></code> function, we can look
+up the descriptions for these measures:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">referral_ended_measures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># Define measure ids for analysis</span></span>
+<span><span class="va">referral_ended_measures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"M057"</span>, <span class="st">"M058"</span>, <span class="st">"M059"</span>, <span class="st">"M060"</span>, <span class="st">"M061"</span>, <span class="st">"M066"</span>, <span class="st">"M340"</span>, <span class="st">"M062"</span>,</span>
 <span>  <span class="st">"M063"</span>, <span class="st">"M066"</span>, <span class="st">"M344"</span>, <span class="st">"M341"</span>, <span class="st">"M069"</span>, <span class="st">"M342"</span>, <span class="st">"M070"</span>, <span class="st">"M071"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading metadata (monthly) for 2025-07</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Download failed (attempt 1/3), retrying...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading metadata (monthly) for 2025-07<span style="color: #BBBB00;">!</span> Download failed (attempt 2/3), retrying...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading metadata (monthly) for 2025-07<span style="color: #BB0000;">✖</span> Downloading metadata (monthly) for 2025-07 ... failed</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Download failed, using package metadata for 2025-07</span></span></code></pre>
+<div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mwlefoodfi table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mwlefoodfi thead, #mwlefoodfi tbody, #mwlefoodfi tfoot, #mwlefoodfi tr, #mwlefoodfi td, #mwlefoodfi th {
+  border-style: none;
+}
+
+#mwlefoodfi p {
+  margin: 0;
+  padding: 0;
+}
+
+#mwlefoodfi .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mwlefoodfi .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mwlefoodfi .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mwlefoodfi .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mwlefoodfi .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mwlefoodfi .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mwlefoodfi .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mwlefoodfi .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mwlefoodfi .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mwlefoodfi .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mwlefoodfi .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mwlefoodfi .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mwlefoodfi .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mwlefoodfi .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mwlefoodfi .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mwlefoodfi .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mwlefoodfi .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mwlefoodfi .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mwlefoodfi .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mwlefoodfi .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mwlefoodfi .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mwlefoodfi .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mwlefoodfi .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mwlefoodfi .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mwlefoodfi .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mwlefoodfi .gt_left {
+  text-align: left;
+}
+
+#mwlefoodfi .gt_center {
+  text-align: center;
+}
+
+#mwlefoodfi .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mwlefoodfi .gt_font_normal {
+  font-weight: normal;
+}
+
+#mwlefoodfi .gt_font_bold {
+  font-weight: bold;
+}
+
+#mwlefoodfi .gt_font_italic {
+  font-style: italic;
+}
+
+#mwlefoodfi .gt_super {
+  font-size: 65%;
+}
+
+#mwlefoodfi .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mwlefoodfi .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mwlefoodfi .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mwlefoodfi .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mwlefoodfi .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mwlefoodfi .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mwlefoodfi .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mwlefoodfi .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mwlefoodfi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="measure_id">ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="description">Description</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M057</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of 'Not suitable for IAPT service - no action taken or directed back to referrer’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M058</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Not suitable for IAPT service - signposted elsewhere with mutual agreement of patient’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M059</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of 'Discharged by mutual agreement following advice and support'</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M060</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of 'Referred to another therapy service by mutual agreement'</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M061</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of 'Suitable for IAPT service, but patient declined treatment that was offered'</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M062</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen but not taken on for a course of treatment)’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M063</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of 'Not known (Seen but not taken on for a course of treatment)'</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M066</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M069</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen and taken on for a course of treatment)’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M070</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M340</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Incomplete Assessment (Patient dropped out)’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M341</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M342</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Not assessed’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M344</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M071</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an invalid end code</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level4">
+<h4 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a>
+</h4>
+<p>Here we filter the data to include all measures defined above in
+<code>referral_ended_measures</code> and select all service
+providers:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Select data for analysis</span></span>
 <span><span class="va">selected_activity_performance</span> <span class="op">&lt;-</span> <span class="va">activity_performance</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">referral_ended_measures</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_type</span> <span class="op">==</span> <span class="st">"Provider"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="create-figure">Create figure<a class="anchor" aria-label="anchor" href="#create-figure"></a>
-</h2>
-<p>Finally, we visualise the trends over time broken down by codes for
-referrals that ended for each service provider.</p>
+<p>Now we can visualise the trends over time broken down by codes for
+referrals that ended for each service provider. Note that the y-axis
+scales are not fixed to allow better visualisation of trends for
+measures with different count ranges.</p>
 <div class="figure">
 <img src="how-to-activity-performance-monthly_files/figure-html/fig-example-1.png" class="r-plt" alt="Trends for counts of different referrals that ended measures." width="960"><p class="caption">
 Trends for counts of different referrals that ended measures.
 </p>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="example-2-explore-wait-times-from-referrral-to-first-treatment">Example 2: Explore wait times from referrral to first treatment<a class="anchor" aria-label="anchor" href="#example-2-explore-wait-times-from-referrral-to-first-treatment"></a>
+</h3>
+<div class="section level4">
+<h4 id="define-measures">Define measures<a class="anchor" aria-label="anchor" href="#define-measures"></a>
+</h4>
+<p>Here we will explore changes in the following measures related to
+wait times from referrral to first treatment. Note that there are other
+measures related to wait times available in the dataset.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Define measure ids for analysis</span></span>
+<span><span class="va">first_tx_waited_measures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"M039"</span>, <span class="st">"M040"</span>, <span class="st">"M041"</span>, <span class="st">"M042"</span>, <span class="st">"M043"</span>, <span class="st">"M044"</span>, <span class="st">"M045"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div id="eexombwkke" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#eexombwkke table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#eexombwkke thead, #eexombwkke tbody, #eexombwkke tfoot, #eexombwkke tr, #eexombwkke td, #eexombwkke th {
+  border-style: none;
+}
+
+#eexombwkke p {
+  margin: 0;
+  padding: 0;
+}
+
+#eexombwkke .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#eexombwkke .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#eexombwkke .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#eexombwkke .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#eexombwkke .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eexombwkke .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eexombwkke .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eexombwkke .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#eexombwkke .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#eexombwkke .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#eexombwkke .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#eexombwkke .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#eexombwkke .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#eexombwkke .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#eexombwkke .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eexombwkke .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#eexombwkke .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#eexombwkke .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#eexombwkke .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eexombwkke .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#eexombwkke .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#eexombwkke .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#eexombwkke .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eexombwkke .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#eexombwkke .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#eexombwkke .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eexombwkke .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eexombwkke .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#eexombwkke .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eexombwkke .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#eexombwkke .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eexombwkke .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eexombwkke .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eexombwkke .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eexombwkke .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eexombwkke .gt_left {
+  text-align: left;
+}
+
+#eexombwkke .gt_center {
+  text-align: center;
+}
+
+#eexombwkke .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#eexombwkke .gt_font_normal {
+  font-weight: normal;
+}
+
+#eexombwkke .gt_font_bold {
+  font-weight: bold;
+}
+
+#eexombwkke .gt_font_italic {
+  font-style: italic;
+}
+
+#eexombwkke .gt_super {
+  font-size: 65%;
+}
+
+#eexombwkke .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#eexombwkke .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#eexombwkke .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#eexombwkke .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#eexombwkke .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#eexombwkke .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#eexombwkke .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#eexombwkke .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#eexombwkke div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="measure_id">ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="description">Description</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M039</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals yet to have a first treatment who have been waiting 0 to 2 weeks at the end of the reporting period</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M040</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals yet to have a first treatment who have been waiting 0 to 4 weeks at the end of the reporting period</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M041</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals yet to have a first treatment who have been waiting 0 to 6 weeks at the end of the reporting period</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M042</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals yet to have a first treatment who have been waiting 0 to 12 weeks at the end of the reporting period</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M043</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals yet to have a first treatment who have been waiting 0 to 18 weeks at the end of the reporting period</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M044</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals yet to have a first treatment who have been waiting over 18 weeks at the end of the reporting period</td>
+</tr>
+<tr>
+<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top;">M045</td>
+<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals yet to have a first treatment who have been waiting over 90 days at the end of the reporting period</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level4">
+<h4 id="analysis-1">Analysis<a class="anchor" aria-label="anchor" href="#analysis-1"></a>
+</h4>
+<p>Here we filter the data to include all measures defined above in
+<code>first_tx_waited_measures</code> and select all service
+providers:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Select data for analysis</span></span>
+<span><span class="va">selected_activity_performance</span> <span class="op">&lt;-</span> <span class="va">activity_performance</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">first_tx_waited_measures</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_type</span> <span class="op">==</span> <span class="st">"Provider"</span><span class="op">)</span></span></code></pre></div>
+<p>Now we can visualise the trends over time broken down by different
+waiting time periods from referral to first treatment, with one line for
+each service provider.</p>
+<div class="figure">
+<img src="how-to-activity-performance-monthly_files/figure-html/fig-example2-1.png" class="r-plt" alt="Trends for counts of different waiting time periods from referral to first treatment for each service." width="960"><p class="caption">
+Trends for counts of different waiting time periods from referral to
+first treatment for each service.
+</p>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="example-3-compare-a-measure-across-different-providers">Example 3: Compare a measure across different providers<a class="anchor" aria-label="anchor" href="#example-3-compare-a-measure-across-different-providers"></a>
+</h3>
+<p>We can also focus on a single measure and compare counts across
+different services. In this example we look at measure <code>M344</code>
+(<em>Count of referrals that ended in the reporting period with an end
+code of ‘Termination of treatment earlier than Care Professional
+planned’</em>) and visualise trends over time for the four providers
+with the highest overall counts.</p>
+<p>Here we identify the 4 providers with the most recorded activity in
+<code>M344</code> across the whole time period:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">top4_m344_providers</span> <span class="op">&lt;-</span> <span class="va">activity_performance</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_id</span> <span class="op">==</span> <span class="st">"M344"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_type</span> <span class="op">==</span> <span class="st">"Provider"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">org_name2</span>, <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">org_name2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">value</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max</a></span><span class="op">(</span><span class="va">total</span>, n <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">org_name2</span><span class="op">)</span></span></code></pre></div>
+<p>We can use this list (<code>top4_m344_providers</code>) to filter the
+data and plot trends for these four providers:</p>
+<div class="figure">
+<img src="how-to-activity-performance-monthly_files/figure-html/fig-example3-1.png" class="r-plt" alt="Counts of referrals with measure M344 for the four providers with the highest totals." width="960"><p class="caption">
+Counts of referrals with measure M344 for the four providers with the
+highest totals.
+</p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
