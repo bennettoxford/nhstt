@@ -106,6 +106,52 @@ get_tidy_cache_path <- function(
   file.path(get_tidy_cache_dir(dataset, frequency), filename)
 }
 
+#' Get package data path
+#'
+#' Returns path to tidy data shipped with the package.
+#' Used as fallback when network downloads fail in GitHub Actions.
+#'
+#' @details
+#' This is a temporary workaround for metadata files hosted on `digital.nhs.uk`,
+#' which are blocked in CI environments. This function will likely be removed
+#' once data is archived on Zenodo, where we expect no download issues.
+#'
+#' @param dataset Character, specifying dataset name (e.g., "metadata")
+#' @param period Character, specifying reporting period (e.g., "2025-07")
+#' @param frequency Character, specifying report frequency ("monthly" or "annual")
+#' @param dataset_version Character, specifying dataset version (e.g., "0.1.0"). Default NULL
+#'
+#' @return Character path to parquet file, or NULL if not available
+#'
+#' @keywords internal
+get_package_data_path <- function(
+  dataset,
+  period,
+  frequency,
+  dataset_version = NULL
+) {
+  if (is.null(dataset_version)) {
+    dataset_version <- get_dataset_version(dataset, frequency)
+  }
+
+  filename <- paste0(period, "_v", dataset_version, ".parquet")
+  path <- system.file(
+    "extdata",
+    "tidy",
+    frequency,
+    dataset,
+    filename,
+    package = "nhstt",
+    mustWork = FALSE
+  )
+
+  if (file.exists(path)) {
+    return(path)
+  }
+
+  NULL
+}
+
 #' Get dataset version metadata file path
 #'
 #' Returns the path to the JSON file that stores version metadata for a dataset

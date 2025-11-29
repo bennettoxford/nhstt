@@ -16,7 +16,7 @@ load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
   ) {
     load_tidy_cache(dataset_main, period, frequency)
   } else {
-    prepare_tidy_data(dataset_main, period, frequency)
+    download_and_tidy(dataset_main, period, frequency)
   }
 
   additional_df <- if (
@@ -24,7 +24,7 @@ load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
   ) {
     load_tidy_cache(dataset_additional, period, frequency)
   } else {
-    prepare_tidy_data(dataset_additional, period, frequency)
+    download_and_tidy(dataset_additional, period, frequency)
   }
 
   list_rbind(list(main_df, additional_df))

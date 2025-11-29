@@ -46,13 +46,13 @@ km_annual <- get_key_measures_annual(periods = "2024-25")
 ap_monthly <- get_activity_performance_monthly()
 ```
 
-## Available NHS Talking Therapies reports
+## Available NHS Talking Therapies data
 
 ### Annual reports
 
 ```{r datasets-annual, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
-  dplyr::filter(!stringr::str_detect(title, "metadata")) |> 
+  dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::filter(frequency == "annual") |>
   dplyr::select(
     get_function,
@@ -81,7 +81,7 @@ knitr::kable(
 
 ```{r datasets-monthly, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
-  dplyr::filter(!stringr::str_detect(title, "metadata")) |> 
+  dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::filter(frequency == "monthly") |>
   dplyr::select(
     get_function,
@@ -110,7 +110,7 @@ knitr::kable(
 
 ```{r datasets-metadata, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
-  dplyr::filter(stringr::str_detect(title, "metadata")) |> 
+  dplyr::filter(stringr::str_detect(title, "metadata")) |>
   dplyr::select(
     get_function,
     first_period,
@@ -118,7 +118,7 @@ df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
     n_periods,
     version
   ) |>
-  dplyr::mutate(get_function = paste0("`", get_function, "()`")) |> 
+  dplyr::mutate(get_function = paste0("`", get_function, "()`")) |>
   dplyr::distinct()
 
 knitr::kable(
@@ -134,3 +134,108 @@ knitr::kable(
   align = c("l", "l", "l", "r", "r")
 )
 ```
+
+## Time to download and tidy the data
+
+```{r run-benchmarks, echo = FALSE, message = FALSE, warning = FALSE}
+library(nhstt)
+
+format_time <- function(elapsed) {
+  if (elapsed < 1) {
+    paste0(round(elapsed, 2), " sec")
+  } else if (elapsed < 60) {
+    paste0(round(elapsed, 1), " sec")
+  } else {
+    paste0(round(elapsed / 60, 1), " min")
+  }
+}
+
+benchmark_dataset <- function(dataset, period, frequency, get_function) {
+  n_periods <- length(nhstt:::list_available_periods(dataset, frequency))
+
+  raw_path <- nhstt:::get_raw_cache_path(dataset, period, frequency)
+  tidy_path <- nhstt:::get_tidy_cache_path(dataset, period, frequency)
+  if (file.exists(raw_path)) {
+    unlink(raw_path)
+  }
+  if (file.exists(tidy_path)) {
+    unlink(tidy_path)
+  }
+
+  download_time <- system.time({
+    nhstt:::read_raw(dataset, period, frequency, use_cache = FALSE)
+  })["elapsed"]
+
+  tidy_time <- system.time({
+    get_function(periods = period, use_cache = TRUE)
+  })["elapsed"]
+
+  total_time <- (download_time + tidy_time) * n_periods
+
+  list(
+    download = format_time(download_time),
+    tidy = format_time(tidy_time),
+    total = format_time(total_time)
+  )
+}
+
+time_km_annual <- benchmark_dataset(
+  "key_measures",
+  "2024-25",
+  "annual",
+  get_key_measures_annual
+)
+time_ap_monthly <- benchmark_dataset(
+  "activity_performance",
+  "2025-08",
+  "monthly",
+  get_activity_performance_monthly
+)
+```
+
+Approximate download and processing times per period.
+Your times might be a bit faster or slower depending on your internet and computer.
+
+```{r performance-table, echo = FALSE}
+performance_data <- tibble::tibble(
+  Function = c(
+    "`get_key_measures_annual()`",
+    "`get_activity_performance_monthly()`"
+  ),
+  Download_per_period = c(
+    time_km_annual$download,
+    time_ap_monthly$download
+  ),
+  Tidy_per_period = c(
+    time_km_annual$tidy,
+    time_ap_monthly$tidy
+  ),
+  Total_all_periods = c(
+    time_km_annual$total,
+    time_ap_monthly$total
+  )
+)
+
+knitr::kable(
+  performance_data,
+  row.names = FALSE,
+  col.names = c(
+    "Function",
+    "Download per period",
+    "Tidy per period",
+    "Total (all periods)"
+  ),
+  align = c("l", "r", "r", "r")
+)
+```
+
+## Licence
+
+### R package
+
+The `nhstt` package is licensed under the [MIT License](LICENSE.md).
+
+### NHS Talking Therapies data
+
+All NHS Talking Therapies data is Copyright NHS England and licensed under the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).
+Contains public sector information licensed under the Open Government Licence v3.0.
