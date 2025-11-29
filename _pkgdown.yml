@@ -18,11 +18,11 @@ navbar:
       href: reference/index.html
     - text: "How-to guides"
       menu:
-        - text: "Annual datasets"
+        - text: "Annual data"
         - text: "Key measures"
           href: articles/how-to-key-measures-annual.html
         - text: -------
-        - text: "Monthly datasets"
+        - text: "Monthly data"
         - text: "Activity and performance"
           href: articles/how-to-activity-performance-monthly.html
     - text: "Metadata"
@@ -31,15 +31,19 @@ navbar:
         - text: "Key measures and variables"
           href: articles/metadata-annual.html
         - text: -------
-        - text: "Monthly datasets"
+        - text: "Monthly metadata"
         - text: "Core measures"
-          href: articles/metadata-monthly.html
+          href: articles/metadata-monthly-core.html
+        - text: "Employment Advisor measures"
+          href: articles/metadata-monthly-ea.html
+        - text: "Long-term Condition measures"
+          href: articles/metadata-monthly-ltc.html
 
 reference:
-  - title: "Annual reports"
+  - title: "Annual data"
     contents:
       - get_key_measures_annual
-  - title: "Monthly reports"
+  - title: "Monthly data"
     contents:
       - get_activity_performance_monthly
   - title: "Metadata"
@@ -65,4 +69,6 @@ articles:
     desc: "Metadata for annual and monthly reports"
     contents:
       - metadata-annual
-      - metadata-monthly
+      - metadata-monthly-core
+      - metadata-monthly-ea
+      - metadata-monthly-ltc

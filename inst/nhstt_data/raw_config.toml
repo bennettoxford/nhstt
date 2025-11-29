@@ -3,6 +3,8 @@ title = "Key Performance Measures (Annual)"
 description = "Annual referrals, assessments, treatment completions, recovery rates, waiting times by organisation"
 version = "0.2.0"
 get_function = "get_key_measures_annual"
+copyright = "Copyright NHS England"
+license = "OGL-UK-3.0"
 
 [[datasets.key_measures.annual.sources]]
 period = "2017-18"
@@ -67,6 +69,8 @@ description = "Monthly activity and performance indicators by organisation"
 version = "0.2.0"
 get_function = "get_activity_performance_monthly"
 make_clean_names = ["measure"]
+copyright = "Copyright NHS England"
+license = "OGL-UK-3.0"
 
 [[datasets.activity_performance.monthly.sources]]
 period = "2023-05"
@@ -218,6 +222,8 @@ title = "Monthly metadata"
 description = "Measure definitions, derivations, and construction details"
 version = "0.1.0"
 get_function = "get_metadata_monthly"
+copyright = "Copyright NHS England"
+license = "OGL-UK-3.0"
 
 [[datasets.metadata.monthly.sources]]
 period = "2025-07"
@@ -231,6 +237,8 @@ title = "Annual metadata - data measures (main)"
 description = "Field definitions for key measures dataset"
 version = "0.1.0"
 get_function = "get_metadata_measures_annual"
+copyright = "Copyright NHS England"
+license = "OGL-UK-3.0"
 
 [[datasets.metadata_measures_main.annual.sources]]
 period = "2024-25"
@@ -244,6 +252,8 @@ title = "Annual metadata - data measures (additional)"
 description = "Field definitions for additional annual CSVs"
 version = "0.1.0"
 get_function = "get_metadata_measures_annual"
+copyright = "Copyright NHS England"
+license = "OGL-UK-3.0"
 
 [[datasets.metadata_measures_additional.annual.sources]]
 period = "2024-25"
@@ -257,6 +267,8 @@ title = "Annual metadata - variables (main)"
 description = "Variable derivations for key measures dataset"
 version = "0.1.0"
 get_function = "get_metadata_variables_annual"
+copyright = "Copyright NHS England"
+license = "OGL-UK-3.0"
 
 [[datasets.metadata_variables_main.annual.sources]]
 period = "2024-25"
@@ -270,6 +282,8 @@ title = "Annual metadata - variables (additional)"
 description = "Variable derivations for additional annual CSVs"
 version = "0.1.0"
 get_function = "get_metadata_variables_annual"
+copyright = "Copyright NHS England"
+license = "OGL-UK-3.0"
 
 [[datasets.metadata_variables_additional.annual.sources]]
 period = "2024-25"

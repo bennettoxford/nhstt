@@ -42,7 +42,7 @@ get_key_measures_annual <- function(
       if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
         load_tidy_cache(dataset, period, frequency)
       } else {
-        prepare_tidy_data(dataset, period, frequency)
+        download_and_tidy(dataset, period, frequency)
       }
     }
   )
