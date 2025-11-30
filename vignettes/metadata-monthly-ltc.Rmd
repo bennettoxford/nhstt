@@ -14,12 +14,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-> **Note:** This package currently only provides metadata for the most recent monthly reporting period.
+> **Note:** This package currently only provides metadata for the most recent monthly reporting period. Older monthly periods might have less, or different measures.
 
 ```{r setup, include = FALSE}
 library(nhstt)
 library(dplyr)
-library(gt)
+library(reactable)
 
 # Metadata for monthly LTC measures
 metadata_monthly_ltc <- get_metadata_monthly() |>
@@ -27,25 +27,43 @@ metadata_monthly_ltc <- get_metadata_monthly() |>
   select(measure_id, description)
 ```
 
-In total there are **`r length(unique(metadata_monthly_ltc$measure_id))`** monthly _LTC_ measures:
+In total there are **`r length(unique(metadata_monthly_ltc$measure_id))`** monthly Long-term Condition (LTC) measures:
 
 ```{r tab-measures-monthly-ltc, echo=FALSE}
-metadata_monthly_ltc |>
-  gt() |>
-  tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
+
+reactable(
+  metadata_monthly_ltc,
+  searchable = TRUE,
+  sortable = FALSE,
+  searchMethod = JS(
+    "function(rows, columnIds, filterValue) {
+    return rows.filter(function(row) {
+      var measure = String(row.values['measure_id']).toLowerCase();
+      var desc = String(row.values['description']).toLowerCase();
+      var search = filterValue.toLowerCase();
+      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;
+    });
+  }"
+  ),
+  defaultPageSize = nrow(metadata_monthly_ltc),
+  columns = list(
+    measure_id = colDef(
+      name = "Measure ID and description",
+      cell = function(value, index) {
+        description <- metadata_monthly_ltc$description[index]
+        htmltools::tags$div(
+          htmltools::tags$code(
+            style = "color: #2A788EFF;",
+            value
+          ),
+          ": ",
+          description
+        )
+      }
     ),
-    locations = cells_body(columns = measure_id)
-  ) |>
-  tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
-    ),
-    locations = cells_body(columns = description)
-  ) |>
-  cols_label(
-    measure_id = "ID",
-    description = "Description"
-  )
+    description = colDef(show = FALSE)
+  ),
+  outlined = TRUE,
+  striped = TRUE
+)
 ```
