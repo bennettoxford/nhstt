@@ -1,5 +1,5 @@
 ---
-title: "Metadata for annual key measures and variables"
+title: "Metadata for annual key measures"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{metadata-annual}
@@ -14,78 +14,202 @@ knitr::opts_chunk$set(
 )
 ```
 
-> **Note:** This package currently only provides metadata for the most recent annual reporting period.
+> **Note:** This package currently only provides metadata for the most recent annual reporting period. Not all annual measures from the table below are currently available in the tidy data provided by this package - there are some inconsistencies across the years that we need to investigate first. We plan to implement all available measures for all years in the future.
 
 ```{r setup, include = FALSE}
 library(nhstt)
 library(dplyr)
-library(gt)
+library(reactable)
 
 # Metadata for annual measures
-metadata_measures_annual <- get_metadata_measures_annual() |> 
-  filter(dataset_name == "key_measures") |> 
+metadata_measures_annual <- get_metadata_measures_annual() |>
+  filter(dataset_name == "key_measures") |>
   select(field_name, description)
 
+metadata_measures_annual_standard <- metadata_measures_annual |>
+  filter(
+    field_name %in%
+      c(
+        "OrgType",
+        "OrgCode",
+        "OrgName"
+      )
+  )
+
+metadata_measures_annual_measures <- metadata_measures_annual |>
+  filter(
+    !field_name %in%
+      c(
+        "OrgType",
+        "OrgCode",
+        "OrgName",
+        "VariableType",
+        "VariableA",
+        "VariableB"
+      )
+  )
+
 # Metadata for annual variables
-metadata_variables_annual <- get_metadata_variables_annual() |> 
-  filter(dataset_name == "key_measures") |> 
+metadata_variables_annual <- get_metadata_variables_annual() |>
+  filter(dataset_name == "key_measures") |>
   select(
-    variable_type, variable_type,
-    variable_a, variable_b
+    variable_type,
+    variable_type,
+    variable_a,
+    variable_b
   )
 ```
 
-## `key_measures` measures
+## Measures
+
+The following table shows all available measures in the most recent annual key measures dataset.
 
 ```{r tab-key-measures-measures, echo=FALSE}
 
-metadata_measures_annual |> 
-  gt() |> 
-  tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
+reactable(
+  metadata_measures_annual_measures,
+  searchable = TRUE,
+  sortable = FALSE,
+  searchMethod = JS(
+    "function(rows, columnIds, filterValue) {
+    return rows.filter(function(row) {
+      var field = String(row.values['field_name']).toLowerCase();
+      var desc = String(row.values['description']).toLowerCase();
+      var search = filterValue.toLowerCase();
+      return field.indexOf(search) >= 0 || desc.indexOf(search) >= 0;
+    });
+  }"
+  ),
+  defaultPageSize = nrow(metadata_measures_annual_measures),
+  columns = list(
+    field_name = colDef(
+      name = "Column name and description",
+      cell = function(value, index) {
+        description <- metadata_measures_annual_measures$description[index]
+        htmltools::tags$div(
+          htmltools::tags$code(
+            style = "color: #2A788EFF;",
+            value
+          ),
+          ": ",
+          description
+        )
+      }
     ),
-    locations = cells_body(columns = field_name)
-  ) |> 
-  tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
-    ),
-    locations = cells_body(columns = description)
-  ) |> 
-  cols_label(
-    field_name = "Column",
-    description = "Description"
-  )
+    description = colDef(show = FALSE)
+  ),
+  outlined = TRUE,
+  striped = TRUE
+)
 ```
 
-## `key_measures` variables
+## Breakdowns
+
+### Organisational
+
+The following table shows the standard organisational columns available for all breakdowns.
+
+```{r tab-key-measures-standard, echo=FALSE}
+
+reactable(
+  metadata_measures_annual_standard,
+  searchable = FALSE,
+  sortable = FALSE,
+  defaultPageSize = nrow(metadata_measures_annual_standard),
+  columns = list(
+    field_name = colDef(
+      name = "Column name and description",
+      cell = function(value, index) {
+        description <- metadata_measures_annual_standard$description[index]
+        htmltools::tags$div(
+          htmltools::tags$code(
+            style = "color: #2A788EFF;",
+            value
+          ),
+          ": ",
+          description
+        )
+      }
+    ),
+    description = colDef(show = FALSE)
+  ),
+  outlined = TRUE,
+  striped = TRUE
+)
+```
+
+### Demographic, clinical, and treatment delivery
+
+The following table shows all available demographic, clinical, and treatment delivery variables for breakdowns.
+
+These three columns provide further options for breakdowns:
+
+- `VariableType`:	The type of variable by which the data are categorised.
+- `VariableA`: The high-level variable values for the categories
+- `VariableB`: The sub-category (where applicable - NULL if not applicable)
+
 
 ```{r tab-key-measures-variables, echo=FALSE}
-
-metadata_variables_annual |> 
-  gt() |> 
-    tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
+# Following the merge cells example at:
+# https://glin.github.io/reactable/articles/cookbook/cookbook.html#merge-cells
+reactable(
+  metadata_variables_annual,
+  searchable = TRUE,
+  sortable = FALSE,
+  defaultPageSize = nrow(metadata_variables_annual),
+  columns = list(
+    variable_type = colDef(
+      name = "Variable type",
+      style = JS(
+        "function(rowInfo, column, state) {
+        const firstSorted = state.sorted[0]
+        // Merge cells if unsorted or sorting by variable_type
+        if (!firstSorted || firstSorted.id === 'variable_type') {
+          const prevRow = state.pageRows[rowInfo.viewIndex - 1]
+          if (prevRow && rowInfo.values['variable_type'] === prevRow['variable_type']) {
+            return { visibility: 'hidden' }
+          }
+        }
+        // Add border when variable_type changes
+        if (rowInfo.viewIndex > 0) {
+          const prevRow = state.pageRows[rowInfo.viewIndex - 1]
+          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {
+            return { borderTop: '1px solid #333' }
+          }
+        }
+      }"
+      )
     ),
-    locations = cells_body(columns = variable_type)
-  ) |> 
-  tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
+    variable_a = colDef(
+      name = "Variable A",
+      style = JS(
+        "function(rowInfo, column, state) {
+        // Add border when variable_type changes
+        if (rowInfo.viewIndex > 0) {
+          const prevRow = state.pageRows[rowInfo.viewIndex - 1]
+          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {
+            return { borderTop: '1px solid #333' }
+          }
+        }
+      }"
+      )
     ),
-    locations = cells_body(columns = variable_a)
-  ) |> 
-      tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
-    ),
-    locations = cells_body(columns = variable_b)
-  ) |> 
-  cols_label(
-    variable_type = "Variable type",
-    variable_a = "Variable A",
-    variable_b = "Variable A"
-  )
+    variable_b = colDef(
+      name = "Variable B",
+      style = JS(
+        "function(rowInfo, column, state) {
+        // Add border when variable_type changes
+        if (rowInfo.viewIndex > 0) {
+          const prevRow = state.pageRows[rowInfo.viewIndex - 1]
+          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {
+            return { borderTop: '1px solid #333' }
+          }
+        }
+      }"
+      )
+    )
+  ),
+  outlined = TRUE,
+  striped = TRUE
+)
 ```

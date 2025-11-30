@@ -1,4 +1,5 @@
 [format]
 exclude = [
-  "vignettes/*"
+  "vignettes/how-to-activity-performance-monthly.Rmd",
+  "vignettes/how-to-key-measures-annual.Rmd"
 ]
