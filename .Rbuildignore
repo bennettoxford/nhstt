@@ -11,3 +11,5 @@
 .claude/*
 AGENTS.md
 ^codecov\.yml$
+DEVELOPERS.md
+justfile

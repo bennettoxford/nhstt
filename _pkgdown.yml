@@ -28,16 +28,22 @@ navbar:
     - text: "Metadata"
       menu:
         - text: "Annual metadata"
-        - text: "Key measures and variables"
+        - text: "Key measures"
           href: articles/metadata-annual.html
         - text: -------
         - text: "Monthly metadata"
         - text: "Core measures"
           href: articles/metadata-monthly-core.html
-        - text: "Employment Advisor measures"
+        - text: "Employment Advisor (EA) measures"
           href: articles/metadata-monthly-ea.html
-        - text: "Long-term Condition measures"
+        - text: "Long-term Condition (LTC) measures"
           href: articles/metadata-monthly-ltc.html
+    - text: "Reports"
+      menu:
+        - text: "Drafts"
+        - text: "Number of treatment appointments"
+          href: articles/report-monthly-tx-appointments.html
+        
 
 reference:
   - title: "Annual data"
@@ -72,3 +78,7 @@ articles:
       - metadata-monthly-core
       - metadata-monthly-ea
       - metadata-monthly-ltc
+  - title: "Reports"
+    desc: "Reports using NHS TT data"
+    contents:
+      - report-monthly-tx-appointments

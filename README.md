@@ -40,13 +40,13 @@ ap_monthly <- get_activity_performance_monthly()
 
 ## Available NHS Talking Therapies data
 
-### Annual reports
+### Annual data
 
 | Function                    | First period | Last period | Count periods | Version |
 |:----------------------------|:-------------|:------------|--------------:|--------:|
 | `get_key_measures_annual()` | 2017-18      | 2024-25     |             8 |   0.2.0 |
 
-### Monthly reports
+### Monthly data
 
 | Function | First period | Last period | Count periods | Version |
 |:---|:---|:---|---:|---:|
@@ -67,8 +67,12 @@ be a bit faster or slower depending on your internet and computer.
 
 | Function | Download per period | Tidy per period | Total (all periods) |
 |:---|---:|---:|---:|
-| `get_key_measures_annual()` | 1.2 sec | 16.6 sec | 2.4 min |
-| `get_activity_performance_monthly()` | 4.4 sec | 0.48 sec | 2.4 min |
+| `get_key_measures_annual()` | 1.2 sec | 15.5 sec | 2.2 min |
+| `get_activity_performance_monthly()` | 4.3 sec | 0.44 sec | 2.3 min |
+
+## For developers
+
+See [DEVELOPERS.md](DEVELOPERS.md).
 
 ## Licence
 

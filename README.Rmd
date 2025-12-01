@@ -48,7 +48,7 @@ ap_monthly <- get_activity_performance_monthly()
 
 ## Available NHS Talking Therapies data
 
-### Annual reports
+### Annual data
 
 ```{r datasets-annual, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
@@ -77,7 +77,7 @@ knitr::kable(
 )
 ```
 
-### Monthly reports
+### Monthly data
 
 ```{r datasets-monthly, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
@@ -228,6 +228,10 @@ knitr::kable(
   align = c("l", "r", "r", "r")
 )
 ```
+
+## For developers
+
+See [DEVELOPERS.md](DEVELOPERS.md).
 
 ## Licence
 
