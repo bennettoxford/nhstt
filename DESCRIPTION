@@ -1,6 +1,6 @@
 Package: nhstt
 Title: NHS Talking Therapies for anxiety and depression reports in R
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(
     person("Milan", "Wiedemann", email = "milan.wiedemann@gmail.com", comment = c(ORCID = "0000-0003-1991-282X"), role = c("aut", "cre")),
     person("Wellcome Trust", role = "fnd"))
@@ -16,12 +16,18 @@ Suggests:
     fs,
     ggplot2,
     gt,
+    htmltools,
     knitr,
+    lubridate,
+    quarto,
+    reactable,
     readr,
     rmarkdown,
     scales,
+    servr,
     stringr,
     testthat (>= 3.0.0),
+    tidyverse,
     withr
 Config/testthat/edition: 3
 URL: https://github.com/bennettoxford/nhstt, https://bennettoxford.github.io/nhstt/
@@ -45,4 +51,4 @@ Imports:
     tools,
     utils,
     vroom
-VignetteBuilder: knitr
+VignetteBuilder: knitr, quarto
