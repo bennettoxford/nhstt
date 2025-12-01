@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,12 +46,19 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-metadata" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Metadata</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-metadata">
 <li><h6 class="dropdown-header" data-toc-skip>Annual metadata</h6></li>
-    <li><a class="dropdown-item" href="articles/metadata-annual.html">Key measures and variables</a></li>
+    <li><a class="dropdown-item" href="articles/metadata-annual.html">Key measures</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Monthly metadata</h6></li>
     <li><a class="dropdown-item" href="articles/metadata-monthly-core.html">Core measures</a></li>
-    <li><a class="dropdown-item" href="articles/metadata-monthly-ea.html">Employment Advisor measures</a></li>
-    <li><a class="dropdown-item" href="articles/metadata-monthly-ltc.html">Long-term Condition measures</a></li>
+    <li><a class="dropdown-item" href="articles/metadata-monthly-ea.html">Employment Advisor (EA) measures</a></li>
+    <li><a class="dropdown-item" href="articles/metadata-monthly-ltc.html">Long-term Condition (LTC) measures</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
+<li><h6 class="dropdown-header" data-toc-skip>Drafts</h6></li>
+    <li><a class="dropdown-item" href="articles/report-monthly-tx-appointments.html">Number of treatment appointments</a></li>
   </ul>
 </li>
       </ul>
@@ -101,7 +108,7 @@
 <h2 id="available-nhs-talking-therapies-data">Available NHS Talking Therapies data<a class="anchor" aria-label="anchor" href="#available-nhs-talking-therapies-data"></a>
 </h2>
 <div class="section level3">
-<h3 id="annual-reports">Annual reports<a class="anchor" aria-label="anchor" href="#annual-reports"></a>
+<h3 id="annual-data">Annual data<a class="anchor" aria-label="anchor" href="#annual-data"></a>
 </h3>
 <table class="table">
 <colgroup>
@@ -128,7 +135,7 @@
 </table>
 </div>
 <div class="section level3">
-<h3 id="monthly-reports">Monthly reports<a class="anchor" aria-label="anchor" href="#monthly-reports"></a>
+<h3 id="monthly-data">Monthly data<a class="anchor" aria-label="anchor" href="#monthly-data"></a>
 </h3>
 <table class="table">
 <colgroup>
@@ -212,17 +219,22 @@
 <tr class="odd">
 <td align="left"><code><a href="reference/get_key_measures_annual.html">get_key_measures_annual()</a></code></td>
 <td align="right">1.2 sec</td>
-<td align="right">16.6 sec</td>
-<td align="right">2.4 min</td>
+<td align="right">15.5 sec</td>
+<td align="right">2.2 min</td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code></td>
-<td align="right">4.4 sec</td>
-<td align="right">0.48 sec</td>
-<td align="right">2.4 min</td>
+<td align="right">4.3 sec</td>
+<td align="right">0.44 sec</td>
+<td align="right">2.3 min</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section level2">
+<h2 id="for-developers">For developers<a class="anchor" aria-label="anchor" href="#for-developers"></a>
+</h2>
+<p>See <a href="DEVELOPERS.html">DEVELOPERS.md</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="licence">Licence<a class="anchor" aria-label="anchor" href="#licence"></a>

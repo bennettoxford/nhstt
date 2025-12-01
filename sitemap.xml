@@ -1,5 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://bennettoxford.github.io/nhstt/404.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/DEVELOPERS.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/LICENSE-text.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/LICENSE.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/how-to-activity-performance-monthly.html</loc></url>
@@ -9,6 +10,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ea.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ltc.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appointments.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/authors.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/index.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/add_period_columns.html</loc></url>

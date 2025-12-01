@@ -13,11 +13,18 @@ Step-by-step guides for analysing NHS TT data
 
 Metadata for annual and monthly reports
 
-- [Metadata for annual key measures and
-  variables](https://bennettoxford.github.io/nhstt/articles/metadata-annual.md):
+- [Metadata for annual key
+  measures](https://bennettoxford.github.io/nhstt/articles/metadata-annual.md):
 - [Core
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.md):
-- [Employment Advisor
+- [Employment Advisor (EA)
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ea.md):
 - [Long-term Condition
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ltc.md):
+
+### Reports
+
+Reports using NHS TT data
+
+- [Report: Treatment
+  appointments](https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appointments.md):

@@ -1,21 +1,7 @@
 # Long-term Condition measures
 
 > **Note:** This package currently only provides metadata for the most
-> recent monthly reporting period.
+> recent monthly reporting period. Older monthly periods might have
+> less, or different measures.
 
-In total there are **12** monthly *LTC* measures:
-
-| ID   | Description                                                                                                                                                                                                                                                                                                                  |
-|:-----|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| M271 | Count of referrals with a first attended integrated care contact date in the reporting period                                                                                                                                                                                                                                |
-| M272 | Count of referrals with a first attended integrated treatment care contact in the reporting period                                                                                                                                                                                                                           |
-| M273 | Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway.                                                                                                                                                                         |
-| M274 | Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway.                                                                                                                                                                                  |
-| M275 | Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started at caseness using standard moved to recovery calculation.                                                                                                    |
-| M276 | Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started ‘not at caseness’ using standard moved to recovery calculation.                                                                                              |
-| M277 | Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores.                                  |
-| M278 | Proportion of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway that moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage. |
-| M283 | Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started 'at caseness' using standard moved to recovery calculation.                                                                                                           |
-| M284 | Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started ‘not at caseness’ using standard moved to recovery calculation.                                                                                                       |
-| M285 | Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores.                                           |
-| M286 | Proportion of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway that moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage.          |
+In total there are **12** monthly Long-term Condition (LTC) measures:
