@@ -30,9 +30,9 @@ check:
 docs-build:
     Rscript --quiet --vanilla -e 'pkgdown::build_site()'
 
-# Preview pkgdown site
+# Preview pkgdown site with HTTP server
 docs-serve:
-    Rscript --quiet --vanilla -e 'pkgdown::preview_site()'
+    Rscript --quiet --vanilla -e 'servr::httw("docs", initpath = "index.html", browser = TRUE)'
 
 # Build and preview pkgdown site
 docs: docs-build docs-serve
