@@ -1,10 +1,10 @@
 ---
-title: "Report: Treatment appointments"
+title: "Monthly treatment appointment measures"
 format: html
 execute:
   echo: false
 vignette: >
-  %\VignetteIndexEntry{Treatment appointments}
+  %\VignetteIndexEntry{Monthly treatment appointment measures}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -86,7 +86,6 @@ clean_org_names <- function(x) {
 
 ```{r}
 #| label: get-appt-data
-#| echo: false
 #| warning: false
 #| message: false
 
@@ -109,11 +108,8 @@ ap_appt <- ap |>
   arrange(org_code2, reporting_period)
 ```
 
-## Select NHS Talking Therapies provider
-
 ```{r}
 #| label: get-org-names
-#| echo: false
 
 org_list <- ap_appt |>
   distinct(org_code2, org_name2) |>
@@ -130,7 +126,6 @@ ojs_define(org_list_ojs = org_list)
 
 ```{ojs}
 //| label: convert-data
-//| echo: false
 
 // Convert R data to JavaScript array of objects
 organisations = transpose(org_list_ojs)
@@ -138,7 +133,6 @@ organisations = transpose(org_list_ojs)
 
 ```{ojs}
 //| label: url-reader-test
-//| echo: false
 
 // Step 1: Just read URL parameter
 urlOrgsParam = {
@@ -149,7 +143,6 @@ urlOrgsParam = {
 
 ```{ojs}
 //| label: parse-url-codes
-//| echo: false
 
 // Step 2: Parse URL parameter into array of codes
 urlOrgCodes = {
@@ -171,7 +164,6 @@ urlOrgCodes = {
 
 ```{ojs}
 //| label: resolve-url-orgs
-//| echo: false
 
 // Step 3: Validate codes and convert to org objects
 initialSelectedOrgs = {
@@ -211,7 +203,6 @@ initialSelectedOrgs = {
 
 ```{ojs}
 //| label: ui-styles
-//| echo: false
 
 // Professional UI styling
 styles = html`<style>
@@ -221,8 +212,8 @@ styles = html`<style>
     padding: 0 4px;
   }
 
-  .nhstt-input-group {
-    margin-bottom: 20px;
+  .nhstt-input-group-wrapper {
+    margin-bottom: 12px;
   }
 
   .nhstt-label {
@@ -233,29 +224,51 @@ styles = html`<style>
     color: #212529;
   }
 
-  .nhstt-input {
+  .nhstt-input-group {
+    display: flex;
     width: 100%;
+    gap: 0;
+    overflow: visible;
+  }
+
+  .nhstt-input {
+    flex: 0 0 75%;
+    width: 75%;
     padding: 10px 12px;
     font-size: 14px;
     border: 1px solid #dee2e6;
-    border-radius: 0.375rem;
+    border-radius: 0.375rem 0 0 0.375rem;
+    border-right: none;
     box-sizing: border-box;
   }
 
   .nhstt-input:focus {
     outline: none;
     border-color: #86b7fe;
+    border-right: 1px solid #86b7fe;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    z-index: 2;
+    position: relative;
   }
 
   .nhstt-select {
-    width: 100%;
+    flex: 0 0 25%;
+    width: 25%;
     padding: 10px 12px;
     font-size: 14px;
     border: 1px solid #dee2e6;
-    border-radius: 0.375rem;
+    border-radius: 0 0.375rem 0.375rem 0;
     box-sizing: border-box;
     background-color: white;
+    position: relative;
+  }
+
+  .nhstt-select:focus {
+    outline: none;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    z-index: 2;
+    position: relative;
   }
 
   .nhstt-select:disabled {
@@ -272,63 +285,77 @@ styles = html`<style>
   }
 
   .nhstt-result-box {
-    margin-top: 20px;
-    padding: 16px;
+    padding: 12px 16px;
     border: 1px solid #dee2e6;
     border-radius: 0.375rem;
     background: white;
-    min-height: 120px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease;
   }
 
-  .nhstt-result-title {
-    font-weight: 600;
-    font-size: 14px;
-    margin: 0 0 12px 0;
-    color: #495057;
-  }
-
-  .nhstt-result-content {
-    margin: 0;
-    font-size: 14px;
-    color: #212529;
+  .nhstt-result-box.at-max {
+    background: #f8f9fa;
   }
 
   .nhstt-result-empty {
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     color: #6c757d;
   }
 
   .nhstt-chip-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 6px;
-    min-height: 28px;
+    width: 100%;
+    overflow: hidden;
   }
 
   .nhstt-chip {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
+    gap: 4px;
+    padding: 3px 8px;
     background: #f8f9fa;
     border: 1px solid #dee2e6;
     border-radius: 0.25rem;
-    font-size: 13px;
+    font-size: 11px;
     color: #212529;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .nhstt-chip.has-three {
+    flex: 0 1 calc(33.333% - 4px);
+  }
+
+  .nhstt-chip.has-two {
+    flex: 0 1 auto;
+  }
+
+  .nhstt-chip.has-one {
+    flex: 0 1 auto;
+  }
+
+  .nhstt-chip-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .nhstt-chip-remove {
     background: none;
     border: none;
     color: #adb5bd;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1;
     cursor: pointer;
     padding: 0;
-    margin-left: 4px;
-    width: 16px;
-    height: 16px;
+    margin-left: 2px;
+    width: 14px;
+    height: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -338,68 +365,13 @@ styles = html`<style>
   .nhstt-chip-remove:hover {
     color: #6c757d;
   }
-
-  .nhstt-selection-info {
-    font-size: 12px;
-    color: #6c757d;
-    margin-top: 8px;
-    font-weight: 600;
-  }
 </style>`
-```
-
-```{ojs}
-//| label: search-input
-//| echo: false
-
-viewof searchQuery = {
-  const container = html`<div class="nhstt-container">
-    <div class="nhstt-input-group">
-      <label class="nhstt-label">Search NHS Talking Therapies provider</label>
-      <input
-        type="text"
-        class="nhstt-input"
-        placeholder="Enter at least 3 characters to search..."
-        value=""
-      />
-      <div class="nhstt-helper-text">Search by organisation name or code</div>
-    </div>
-  </div>`;
-
-  const input = container.querySelector('input');
-  container.value = "";
-
-  input.addEventListener('input', (e) => {
-    container.value = e.target.value;
-    container.dispatchEvent(new Event('input'));
-  });
-
-  return container;
-}
-```
-
-```{ojs}
-//| label: filter-organisations
-//| echo: false
-
-// Filter organisations based on search query
-filteredOrganisations = {
-  if (!searchQuery || searchQuery.length < 3) {
-    return [];
-  }
-
-  const lowerQuery = searchQuery.toLowerCase();
-
-  return organisations.filter(org => {
-    const nameCodeMatch = org.org_name_code.toLowerCase().includes(lowerQuery);
-    return nameCodeMatch;
-  });
-}
 ```
 
 ```{ojs}
 //| label: selected-organisations-state
 //| echo: false
+//| output: false
 
 // Mutable state for selected organisations (max 3)
 // Step 4: Initialize from URL
@@ -407,44 +379,70 @@ mutable selectedOrgs = initialSelectedOrgs
 ```
 
 ```{ojs}
-//| label: select-organisation
-//| echo: false
+//| label: search-and-select
 
-viewof orgToAdd = {
-  const hasResults = filteredOrganisations.length > 0;
-  const showPlaceholder = !searchQuery || searchQuery.length < 3;
+viewof searchAndSelect = {
+  // Reference selectedOrgs to make this cell reactive to it
   const maxReached = selectedOrgs.length >= 3;
-  const isDisabled = !hasResults || maxReached;
 
   const container = html`<div class="nhstt-container">
-    <div class="nhstt-input-group">
-      <label class="nhstt-label">
-        ${hasResults
-          ? `${filteredOrganisations.length} result${filteredOrganisations.length !== 1 ? 's' : ''}`
-          : 'Select organisation'}
-      </label>
-      <select class="nhstt-select" ${isDisabled ? 'disabled' : ''}>
-        <option value="">
-          ${maxReached
-            ? '-- Maximum 3 organisations selected --'
-            : showPlaceholder
-              ? '-- Enter at least 3 characters to search --'
-              : '-- No organisations found --'}
-        </option>
-      </select>
+    <div class="nhstt-input-group-wrapper">
+      <label class="nhstt-label">Search and select up to three NHS Talking Therapies providers</label>
+      <div class="nhstt-input-group">
+        <input
+          type="text"
+          class="nhstt-input"
+          placeholder="Search by name or code (min 3 characters) and select provider ..."
+          value=""
+        />
+        <select class="nhstt-select" ${maxReached ? 'disabled' : ''}>
+          <option value="">${maxReached ? 'Max 3 selected' : 'Select provider'}</option>
+        </select>
+      </div>
     </div>
   </div>`;
 
+  const input = container.querySelector('input');
   const select = container.querySelector('select');
+  container.value = { searchQuery: "", orgToAdd: null };
 
-  if (hasResults && !maxReached) {
-    // Clear placeholder and add real options
-    select.innerHTML = '<option value="">-- Select an organisation --</option>';
+  // Helper function to update dropdown options based on search query
+  function updateDropdownOptions(searchQuery) {
+    // Not enough characters typed
+    if (!searchQuery || searchQuery.length < 3) {
+      select.innerHTML = '<option value="">Enter at least 3 characters</option>';
+      select.disabled = true;
+      return;
+    }
+
+    // Max selections reached
+    if (maxReached) {
+      select.innerHTML = '<option value="">Max 3 selected</option>';
+      select.disabled = true;
+      return;
+    }
+
+    // Filter organisations by search query
+    const lowerQuery = searchQuery.toLowerCase();
+    const filteredOrgs = organisations.filter(org =>
+      org.org_name_code.toLowerCase().includes(lowerQuery)
+    );
+
+    // No search results
+    if (filteredOrgs.length === 0) {
+      select.innerHTML = '<option value="">No results</option>';
+      select.disabled = true;
+      return;
+    }
 
     // Filter out already selected organisations
-    const availableOrgs = filteredOrganisations.filter(org =>
+    const availableOrgs = filteredOrgs.filter(org =>
       !selectedOrgs.some(selected => selected.org_code2 === org.org_code2)
     );
+
+    // Build dropdown options
+    select.disabled = false;
+    select.innerHTML = `<option value="">Select (${availableOrgs.length} found)</option>`;
 
     availableOrgs.forEach((org, i) => {
       const option = document.createElement('option');
@@ -456,16 +454,23 @@ viewof orgToAdd = {
     select._availableOrgs = availableOrgs;
   }
 
-  container.value = null;
+  // Handle search input
+  input.addEventListener('input', (e) => {
+    const searchQuery = e.target.value;
+    container.value = { ...container.value, searchQuery };
+    updateDropdownOptions(searchQuery);
+    container.dispatchEvent(new Event('input'));
+  });
 
+  // Handle organisation selection
   select.addEventListener('change', (e) => {
     const index = parseInt(e.target.value);
-    if (!isNaN(index) && select._availableOrgs) {
-      container.value = select._availableOrgs[index];
-      container.dispatchEvent(new Event('input'));
-      // Reset dropdown after selection
-      select.value = "";
-    }
+    if (isNaN(index) || !select._availableOrgs) return;
+
+    const selectedOrg = select._availableOrgs[index];
+    container.value = { ...container.value, orgToAdd: selectedOrg };
+    container.dispatchEvent(new Event('input'));
+    e.target.value = ""; // Reset dropdown
   });
 
   return container;
@@ -473,8 +478,19 @@ viewof orgToAdd = {
 ```
 
 ```{ojs}
+//| label: extract-search-query
+
+searchQuery = searchAndSelect.searchQuery
+```
+
+```{ojs}
+//| label: extract-org-to-add
+
+orgToAdd = searchAndSelect.orgToAdd
+```
+
+```{ojs}
 //| label: add-organisation-effect
-//| echo: false
 
 // Add organisation to selected list when dropdown changes
 addOrgEffect = {
@@ -491,7 +507,6 @@ addOrgEffect = {
 
 ```{ojs}
 //| label: sync-url
-//| echo: false
 
 // Step 5: Update URL when selected orgs change
 urlSyncEffect = {
@@ -519,36 +534,39 @@ urlSyncEffect = {
 
 ```{ojs}
 //| label: display-selected
-//| echo: false
 
 selectedOrgDisplay = {
   const container = html`<div class="nhstt-container"></div>`;
+  const resultBox = document.createElement('div');
+
+  // Add subtle grey background when at max
+  if (selectedOrgs.length === 3) {
+    resultBox.className = 'nhstt-result-box at-max';
+  } else {
+    resultBox.className = 'nhstt-result-box';
+  }
 
   if (selectedOrgs.length === 0) {
-    container.innerHTML = `
-      <div class="nhstt-result-box">
-        <div class="nhstt-result-title">Selected Organisations (0 of 3)</div>
-        <p class="nhstt-result-empty">No organisations selected. You can select up to 3 organisations.</p>
-      </div>
-    `;
+    const emptyMsg = document.createElement('span');
+    emptyMsg.className = 'nhstt-result-empty';
+    emptyMsg.textContent = 'No organisations selected';
+    resultBox.appendChild(emptyMsg);
   } else {
-    const resultBox = document.createElement('div');
-    resultBox.className = 'nhstt-result-box';
-
-    const title = document.createElement('div');
-    title.className = 'nhstt-result-title';
-    title.textContent = `Selected Organisation${selectedOrgs.length !== 1 ? 's' : ''} (${selectedOrgs.length} of 3)`;
-    resultBox.appendChild(title);
-
     const chipContainer = document.createElement('div');
     chipContainer.className = 'nhstt-chip-container';
 
+    const sizeClass = selectedOrgs.length === 3 ? 'has-three'
+                    : selectedOrgs.length === 2 ? 'has-two'
+                    : 'has-one';
+
     selectedOrgs.forEach(org => {
       const chip = document.createElement('div');
-      chip.className = 'nhstt-chip';
+      chip.className = `nhstt-chip ${sizeClass}`;
 
       const label = document.createElement('span');
+      label.className = 'nhstt-chip-label';
       label.textContent = org.org_name_code;
+      label.title = org.org_name_code; // Show full name on hover
       chip.appendChild(label);
 
       const removeBtn = document.createElement('button');
@@ -564,9 +582,9 @@ selectedOrgDisplay = {
     });
 
     resultBox.appendChild(chipContainer);
-    container.appendChild(resultBox);
   }
 
+  container.appendChild(resultBox);
   return container;
 }
 ```
