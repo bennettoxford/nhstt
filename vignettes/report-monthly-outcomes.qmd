@@ -1,10 +1,10 @@
 ---
-title: "Monthly treatment appointment measures"
+title: "Monthly treatment outcome measures"
 format: html
 execute:
   echo: false
 vignette: >
-  %\VignetteIndexEntry{Monthly treatment appointment measures}
+  %\VignetteIndexEntry{Monthly treatment outcome measures}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -31,9 +31,9 @@ library(nhstt)
 library(tidyverse)
 library(reactable)
 
-# Metadata for the two treatment appointment measures
-metadata_tx_appt <- get_metadata_monthly() |>
-  filter(measure_id %in% c("M120", "M112")) |>
+# Metadata for the three treatment outcome measures
+metadata_outcomes <- get_metadata_monthly() |>
+  filter(measure_id %in% c("M186", "M192", "M195")) |>
   select(measure_id, description)
 
 # Helper function to prepare plot data for a measure
@@ -60,24 +60,20 @@ prepare_plot_data <- function(data, measure) {
 # Get monthly activity performance data
 ap <- get_activity_performance_monthly()
 
-# Prepare plot data for both measures (keep NAs for gap visualization)
-plot_data_m120 <- prepare_plot_data(ap, "M120")
+# Prepare plot data for all three measures (keep NAs for gap visualization)
+plot_data_m186 <- prepare_plot_data(ap, "M186")
+plot_data_m192 <- prepare_plot_data(ap, "M192")
+plot_data_m195 <- prepare_plot_data(ap, "M195")
 
-plot_data_m112 <- ap |>
-  # There is something wrong with data from this service:
-  # - in period 2024-06 they have 41
-  # - in period 2025-07 they have -1.8
-  filter(!org_code2 == "K7Y6R") |>
-  prepare_plot_data("M112")
-
-# Prepare organisation list for filtering (from M120 data)
-org_list <- plot_data_m120 |>
+# Prepare organisation list for filtering (from M186 data)
+org_list <- plot_data_m186 |>
   distinct(org_code2, org_name_code) |>
   arrange(org_code2)
 
 # Pass data to Observable
-ojs_define(plot_data_m120_ojs = plot_data_m120)
-ojs_define(plot_data_m112_ojs = plot_data_m112)
+ojs_define(plot_data_m186_ojs = plot_data_m186)
+ojs_define(plot_data_m192_ojs = plot_data_m192)
+ojs_define(plot_data_m195_ojs = plot_data_m195)
 ojs_define(org_list_ojs = org_list)
 ```
 
@@ -86,11 +82,11 @@ ojs_define(org_list_ojs = org_list)
 ### Measures
 
 ```{r}
-#| label: tab-measures-tx-appt
+#| label: tab-measures-outcomes
 #| echo: false
 
 reactable(
-  metadata_tx_appt,
+  metadata_outcomes,
   searchable = FALSE,
   sortable = FALSE,
   searchMethod = JS(
@@ -103,12 +99,12 @@ reactable(
     });
   }"
   ),
-  defaultPageSize = nrow(metadata_tx_appt),
+  defaultPageSize = nrow(metadata_outcomes),
   columns = list(
     measure_id = colDef(
       name = "Measure ID and description",
       cell = function(value, index) {
-        description <- metadata_tx_appt$description[index]
+        description <- metadata_outcomes$description[index]
         htmltools::tags$div(
           htmltools::tags$code(
             style = "color: #2A788EFF;",
@@ -130,8 +126,9 @@ reactable(
 //| label: convert-report-data
 
 // Convert R data to JavaScript arrays
-plotDataM120 = convertPlotData(transpose(plot_data_m120_ojs))
-plotDataM112 = convertPlotData(transpose(plot_data_m112_ojs))
+plotDataM186 = convertPlotData(transpose(plot_data_m186_ojs))
+plotDataM192 = convertPlotData(transpose(plot_data_m192_ojs))
+plotDataM195 = convertPlotData(transpose(plot_data_m195_ojs))
 organisations = transpose(org_list_ojs)
 ```
 
@@ -297,19 +294,26 @@ selectedOrgDisplay = {
 }
 ```
 
-### Mean number of HI treatment appointments (M112)
+### Reliable improvement (M186)
 
 ```{ojs}
-//| label: time-series-plot-m112
+//| label: time-series-plot-m186
 
-plotM112 = createTimeSeriesPlot(plotDataM112, "Mean HI appointments")
+plotM186 = createTimeSeriesPlot(plotDataM186, "Reliable improvement (%)", [0, 100])
 ```
 
-
-### Mean number of LI treatment appointments (M120)
+### Recovery (M192)
 
 ```{ojs}
-//| label: time-series-plot-m120
+//| label: time-series-plot-m192
 
-plotM120 = createTimeSeriesPlot(plotDataM120, "Mean LI appointments")
+plotM192 = createTimeSeriesPlot(plotDataM192, "Recovery (%)", [0, 100])
+```
+
+### Reliable recovery (M195)
+
+```{ojs}
+//| label: time-series-plot-m195
+
+plotM195 = createTimeSeriesPlot(plotDataM195, "Reliable recovery (%)", [0, 100])
 ```
