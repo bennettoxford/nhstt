@@ -43,6 +43,8 @@ navbar:
         - text: "Drafts"
         - text: "Monthly treatment appointment measures"
           href: articles/report-monthly-tx-appt.html
+        - text: "Monthly treatment outcome measures"
+          href: articles/report-monthly-outcomes.html
 
 reference:
   - title: "Annual data"
@@ -81,3 +83,4 @@ articles:
     desc: "Reports using NHS TT data"
     contents:
       - report-monthly-tx-appt
+      - report-monthly-outcomes
