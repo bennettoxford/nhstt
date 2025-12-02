@@ -328,7 +328,11 @@ function darkenColor(color) {
 //| label: plot-function
 
 // Create interactive time series plot with hover tooltips and highlighting
-function createTimeSeriesPlot(data, yAxisLabel) {
+// Parameters:
+//   data: array of data points with start_date, end_date, value, org_name_code, org_code2
+//   yAxisLabel: label for y-axis
+//   yDomain: optional [min, max] for y-axis (e.g., [0, 100] for percentages). If not provided, auto-scales.
+function createTimeSeriesPlot(data, yAxisLabel, yDomain = null) {
   // Plot dimensions and margins from CONFIG
   const width = 928;
   const height = 400;
@@ -343,7 +347,8 @@ function createTimeSeriesPlot(data, yAxisLabel) {
     .range([marginLeft, width - marginRight]);
 
   const y = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.value)]).nice()
+    .domain(yDomain || [0, d3.max(data, d => d.value)])
+    .nice()
     .range([height - marginBottom, marginTop]);
 
   // Create SVG container
@@ -528,4 +533,3 @@ function createTimeSeriesPlot(data, yAxisLabel) {
   return svg.node();
 }
 ```
-
