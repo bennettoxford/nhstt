@@ -25,7 +25,6 @@ Suggests:
     rmarkdown,
     scales,
     servr,
-    stringr,
     testthat (>= 3.0.0),
     tidyverse,
     withr
@@ -45,6 +44,7 @@ Imports:
     readxl,
     RcppTOML,
     rlang,
+    stringr,
     tibble,
     tidyr,
     tidyselect,
