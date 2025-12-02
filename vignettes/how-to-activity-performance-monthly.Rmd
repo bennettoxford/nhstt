@@ -25,7 +25,6 @@ To illustrate the basic workflow for accessing and visualising this publicly ava
 
 ## Setup
 
-
 ```{r setup, message=FALSE, warning=FALSE}
 # Load nhstt package for data
 library(nhstt)
@@ -38,8 +37,10 @@ library(scales)
 library(stringr)
 library(gt)
 
-# Get all monthly activity performance reports
-activity_performance <- get_activity_performance_monthly()
+# Get 5 monthly activity performance reports
+activity_performance <- get_activity_performance_monthly(
+  periods = c("2024-01", "2024-02", "2024-03", "2024-04", "2024-05")
+)
 ```
 
 We start by loading R packages and downloading the monthly activity and performance dataset with `get_activity_performance_monthly()`. This report contains monthly performance indicators for NHS Talking Therapies services across England.
@@ -55,30 +56,44 @@ Using the `get_metadata_monthly()` function, we can look up the descriptions for
 ```{r}
 # Define measure ids for analysis
 referral_ended_measures <- c(
-  "M057", "M058", "M059", "M060", "M061", "M066", "M340", "M062",
-  "M063", "M066", "M344", "M341", "M069", "M342", "M070", "M071"
+  "M057",
+  "M058",
+  "M059",
+  "M060",
+  "M061",
+  "M066",
+  "M340",
+  "M062",
+  "M063",
+  "M066",
+  "M344",
+  "M341",
+  "M069",
+  "M342",
+  "M070",
+  "M071"
 )
 ```
 
 ```{r tab-measures1, echo=FALSE}
 monthly_metadata <- get_metadata_monthly()
 
-monthly_metadata |> 
-  filter(measure_id %in% referral_ended_measures) |> 
-  select(measure_id, description) |> 
-  gt() |> 
+monthly_metadata |>
+  filter(measure_id %in% referral_ended_measures) |>
+  select(measure_id, description) |>
+  gt() |>
   tab_style(
     style = list(
       cell_text(align = "left", v_align = "top")
     ),
     locations = cells_body(columns = measure_id)
-  ) |> 
+  ) |>
   tab_style(
     style = list(
       cell_text(align = "left", v_align = "top")
     ),
     locations = cells_body(columns = description)
-  ) |> 
+  ) |>
   cols_label(
     measure_id = "ID",
     description = "Description"
@@ -112,22 +127,22 @@ measure_name_to_sentence <- function(x) {
 
 fig_selected_activity_performance <- selected_activity_performance |>
   mutate(
-measure_name_id = paste0(
-  measure_name_to_sentence(measure_name),
+    measure_name_id = paste0(
+      measure_name_to_sentence(measure_name),
       " (",
       measure_id,
       ")"
     )
   ) |>
-    select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
-  
+  select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
+
 levels_order <- fig_selected_activity_performance %>%
-    distinct(measure_id, measure_name_id) %>%
-    arrange(measure_id) %>%
-    pull(measure_name_id)
+  distinct(measure_id, measure_name_id) %>%
+  arrange(measure_id) %>%
+  pull(measure_name_id)
 
 fig_ref_ended_by_service <- fig_selected_activity_performance |>
-  mutate(measure_name_id = factor(measure_name_id, levels = levels_order)) |> 
+  mutate(measure_name_id = factor(measure_name_id, levels = levels_order)) |>
   ggplot(
     aes(
       y = value,
@@ -176,29 +191,38 @@ Here we will explore changes in the following measures related to wait times fro
 ```{r}
 # Define measure ids for analysis
 first_tx_waited_measures <- c(
-  "M039", "M040", "M041", "M042", "M043", "M044", "M045"
+  "M039",
+  "M040",
+  "M041",
+  "M042",
+  "M043",
+  "M044",
+  "M045"
 )
 ```
 
 ```{r tab-measures2, echo=FALSE}
-monthly_metadata |> 
-  filter(measure_id %in% c(
-    first_tx_waited_measures
-    )) |> 
-  select(measure_id, description) |> 
-  gt() |> 
+monthly_metadata |>
+  filter(
+    measure_id %in%
+      c(
+        first_tx_waited_measures
+      )
+  ) |>
+  select(measure_id, description) |>
+  gt() |>
   tab_style(
     style = list(
       cell_text(align = "left", v_align = "top")
     ),
     locations = cells_body(columns = measure_id)
-  ) |> 
+  ) |>
   tab_style(
     style = list(
       cell_text(align = "left", v_align = "top")
     ),
     locations = cells_body(columns = description)
-  ) |> 
+  ) |>
   cols_label(
     measure_id = "ID",
     description = "Description"
@@ -225,28 +249,28 @@ fig_date_breaks <- end_dates[seq(4, length(end_dates), by = 4)]
 
 tidy_wait_measure <- function(x) {
   x |>
-    str_remove("^waiting_for_treatment") |> 
+    str_remove("^waiting_for_treatment") |>
     str_replace_all("_", " ")
 }
 
 fig_selected_activity_performance <- selected_activity_performance |>
   mutate(
-  measure_name_id = paste0(
-  tidy_wait_measure(measure_name),
+    measure_name_id = paste0(
+      tidy_wait_measure(measure_name),
       " (",
       measure_id,
       ")"
     )
   ) |>
-    select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
+  select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
 
 levels_order <- fig_selected_activity_performance %>%
-    distinct(measure_id, measure_name_id) %>%
-    arrange(measure_id) %>%
-    pull(measure_name_id)
+  distinct(measure_id, measure_name_id) %>%
+  arrange(measure_id) %>%
+  pull(measure_name_id)
 
 fig_ref_ended_by_service <- fig_selected_activity_performance |>
-  mutate(measure_name_id = factor(measure_name_id, levels = levels_order)) |> 
+  mutate(measure_name_id = factor(measure_name_id, levels = levels_order)) |>
   ggplot(
     aes(
       y = value,
@@ -293,20 +317,18 @@ Here we identify the 4 providers with the most recorded activity in `M344` acros
 
 ```{r get-top4-m344}
 top4_m344_providers <- activity_performance |>
-  filter(measure_id == "M344") |> 
-  filter(group_type == "Provider") |> 
-  select(org_name2, value) |> 
-  group_by(org_name2) |> 
-  summarise(total = sum(value, na.rm = TRUE)) |> 
-  slice_max(total, n = 4) |> 
+  filter(measure_id == "M344") |>
+  filter(group_type == "Provider") |>
+  select(org_name2, value) |>
+  group_by(org_name2) |>
+  summarise(total = sum(value, na.rm = TRUE)) |>
+  slice_max(total, n = 4) |>
   pull(org_name2)
 ```
 
 We can use this list (`top4_m344_providers`) to filter the data and plot trends for these four providers:
 
 ```{r fig-example3, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 7, fig.width = 10, fig.cap = "Counts of referrals with measure M344 for the four providers with the highest totals."}
-
-
 
 activity_performance |>
   mutate(
@@ -316,9 +338,9 @@ activity_performance |>
       measure_id,
       ")"
     )
-  ) |> 
-  filter(measure_id == "M344") |> 
-  filter(group_type == "Provider") |> 
+  ) |>
+  filter(measure_id == "M344") |>
+  filter(group_type == "Provider") |>
   filter(org_name2 %in% top4_m344_providers) |>
   mutate(
     org_name2 = str_to_title(org_name2),
@@ -367,7 +389,7 @@ raw_activity_performance <- nhstt:::read_raw(
   dataset = "activity_performance",
   period = "2024-12",
   frequency = "monthly",
-  ) 
+)
 
 unique(raw_activity_performance$GROUP_TYPE)
 
@@ -387,11 +409,11 @@ length(unique(raw_activity_performance$ORG_NAME2))
 length(unique(raw_activity_performance$ORG_CODE2))
 # 141
 
-raw_activity_performance |> 
+raw_activity_performance |>
   filter(GROUP_TYPE == "Provider") |>
-  filter(ORG_NAME2 == "ESSEX PARTNERSHIP UNIVERSITY NHS FOUNDATION TRUST") |> 
-  filter(MEASURE_ID == "M344") |> 
-  pull(MEASURE_VALUE_SUPPRESSED) |> 
-  as.numeric() |> 
+  filter(ORG_NAME2 == "ESSEX PARTNERSHIP UNIVERSITY NHS FOUNDATION TRUST") |>
+  filter(MEASURE_ID == "M344") |>
+  pull(MEASURE_VALUE_SUPPRESSED) |>
+  as.numeric() |>
   sum(na.rm = TRUE)
 ```
