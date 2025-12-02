@@ -10,7 +10,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ea.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ltc.html</loc></url>
-<url><loc>https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appointments.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appt.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/authors.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/index.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/add_period_columns.html</loc></url>
@@ -20,6 +20,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/cache_info.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/calculate_data_hash.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/clean_column_values.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/clean_org_names.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/clear_cache.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/convert_to_numeric.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/dot-onAttach.html</loc></url>

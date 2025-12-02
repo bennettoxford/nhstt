@@ -1,0 +1,4 @@
+/* Fix for Quarto OJS echo: false support in pkgdown */
+.hidden {
+  display: none !important;
+}

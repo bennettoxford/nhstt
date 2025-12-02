@@ -141,5 +141,5 @@ Metadata for annual and monthly reports
 
 Reports using NHS TT data
 
-- [Report: Treatment
-  appointments](https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appointments.md):
+- [Monthly treatment appointment
+  measures](https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appt.md):
