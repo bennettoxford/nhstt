@@ -58,6 +58,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><h6 class="dropdown-header" data-toc-skip>Drafts</h6></li>
     <li><a class="dropdown-item" href="../articles/report-monthly-tx-appt.html">Monthly treatment appointment measures</a></li>
+    <li><a class="dropdown-item" href="../articles/report-monthly-outcomes.html">Monthly treatment outcome measures</a></li>
   </ul>
 </li>
       </ul>
@@ -118,16 +119,18 @@ data we’ll look at three examples:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com" class="external-link">gt</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Get all monthly activity performance reports</span></span>
-<span><span class="va">activity_performance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_activity_performance_monthly.html">get_activity_performance_monthly</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Get 5 monthly activity performance reports</span></span>
+<span><span class="va">activity_performance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_activity_performance_monthly.html">get_activity_performance_monthly</a></span><span class="op">(</span></span>
+<span>  periods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2024-01"</span>, <span class="st">"2024-02"</span>, <span class="st">"2024-03"</span>, <span class="st">"2024-04"</span>, <span class="st">"2024-05"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>We start by loading R packages and downloading the monthly activity
 and performance dataset with
 <code><a href="../reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code>. This report contains
 monthly performance indicators for NHS Talking Therapies services across
 England.</p>
 <p>The <code>activity_performance</code> dataset defined above contains
-a total of 217 different activity and performance measures, available
-from May 2023 to September 2025 (29 reporting periods).</p>
+a total of 204 different activity and performance measures, available
+from January 2024 to May 2024 (5 reporting periods).</p>
 <div class="section level3">
 <h3 id="example-1-explore-changes-in-referrals-that-ended">Example 1: Explore changes in referrals that ended<a class="anchor" aria-label="anchor" href="#example-1-explore-changes-in-referrals-that-ended"></a>
 </h3>
@@ -139,8 +142,22 @@ up the descriptions for these measures:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define measure ids for analysis</span></span>
 <span><span class="va">referral_ended_measures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"M057"</span>, <span class="st">"M058"</span>, <span class="st">"M059"</span>, <span class="st">"M060"</span>, <span class="st">"M061"</span>, <span class="st">"M066"</span>, <span class="st">"M340"</span>, <span class="st">"M062"</span>,</span>
-<span>  <span class="st">"M063"</span>, <span class="st">"M066"</span>, <span class="st">"M344"</span>, <span class="st">"M341"</span>, <span class="st">"M069"</span>, <span class="st">"M342"</span>, <span class="st">"M070"</span>, <span class="st">"M071"</span></span>
+<span>  <span class="st">"M057"</span>,</span>
+<span>  <span class="st">"M058"</span>,</span>
+<span>  <span class="st">"M059"</span>,</span>
+<span>  <span class="st">"M060"</span>,</span>
+<span>  <span class="st">"M061"</span>,</span>
+<span>  <span class="st">"M066"</span>,</span>
+<span>  <span class="st">"M340"</span>,</span>
+<span>  <span class="st">"M062"</span>,</span>
+<span>  <span class="st">"M063"</span>,</span>
+<span>  <span class="st">"M066"</span>,</span>
+<span>  <span class="st">"M344"</span>,</span>
+<span>  <span class="st">"M341"</span>,</span>
+<span>  <span class="st">"M069"</span>,</span>
+<span>  <span class="st">"M342"</span>,</span>
+<span>  <span class="st">"M070"</span>,</span>
+<span>  <span class="st">"M071"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Downloading metadata (monthly) for 2025-07</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Download failed (attempt 1/3), retrying...</span></span>
@@ -701,7 +718,13 @@ measures related to wait times available in the dataset.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define measure ids for analysis</span></span>
 <span><span class="va">first_tx_waited_measures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"M039"</span>, <span class="st">"M040"</span>, <span class="st">"M041"</span>, <span class="st">"M042"</span>, <span class="st">"M043"</span>, <span class="st">"M044"</span>, <span class="st">"M045"</span></span>
+<span>  <span class="st">"M039"</span>,</span>
+<span>  <span class="st">"M040"</span>,</span>
+<span>  <span class="st">"M041"</span>,</span>
+<span>  <span class="st">"M042"</span>,</span>
+<span>  <span class="st">"M043"</span>,</span>
+<span>  <span class="st">"M044"</span>,</span>
+<span>  <span class="st">"M045"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div id="eexombwkke" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#eexombwkke table {
@@ -1225,12 +1248,12 @@ with the highest overall counts.</p>
 <code>M344</code> across the whole time period:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">top4_m344_providers</span> <span class="op">&lt;-</span> <span class="va">activity_performance</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_id</span> <span class="op">==</span> <span class="st">"M344"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_type</span> <span class="op">==</span> <span class="st">"Provider"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">org_name2</span>, <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">org_name2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">value</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max</a></span><span class="op">(</span><span class="va">total</span>, n <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_id</span> <span class="op">==</span> <span class="st">"M344"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_type</span> <span class="op">==</span> <span class="st">"Provider"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">org_name2</span>, <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">org_name2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">value</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max</a></span><span class="op">(</span><span class="va">total</span>, n <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">org_name2</span><span class="op">)</span></span></code></pre></div>
 <p>We can use this list (<code>top4_m344_providers</code>) to filter the
 data and plot trends for these four providers:</p>

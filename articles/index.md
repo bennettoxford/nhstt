@@ -28,3 +28,5 @@ Reports using NHS TT data
 
 - [Monthly treatment appointment
   measures](https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appt.md):
+- [Monthly treatment outcome
+  measures](https://bennettoxford.github.io/nhstt/articles/report-monthly-outcomes.md):

@@ -27,8 +27,10 @@ library(scales)
 library(stringr)
 library(gt)
 
-# Get all monthly activity performance reports
-activity_performance <- get_activity_performance_monthly()
+# Get 5 monthly activity performance reports
+activity_performance <- get_activity_performance_monthly(
+  periods = c("2024-01", "2024-02", "2024-03", "2024-04", "2024-05")
+)
 ```
 
 We start by loading R packages and downloading the monthly activity and
@@ -37,9 +39,9 @@ performance dataset with
 This report contains monthly performance indicators for NHS Talking
 Therapies services across England.
 
-The `activity_performance` dataset defined above contains a total of 217
-different activity and performance measures, available from May 2023 to
-September 2025 (29 reporting periods).
+The `activity_performance` dataset defined above contains a total of 204
+different activity and performance measures, available from January 2024
+to May 2024 (5 reporting periods).
 
 ### Example 1: Explore changes in referrals that ended
 
@@ -52,8 +54,22 @@ function, we can look up the descriptions for these measures:
 ``` r
 # Define measure ids for analysis
 referral_ended_measures <- c(
-  "M057", "M058", "M059", "M060", "M061", "M066", "M340", "M062",
-  "M063", "M066", "M344", "M341", "M069", "M342", "M070", "M071"
+  "M057",
+  "M058",
+  "M059",
+  "M060",
+  "M061",
+  "M066",
+  "M340",
+  "M062",
+  "M063",
+  "M066",
+  "M344",
+  "M341",
+  "M069",
+  "M342",
+  "M070",
+  "M071"
 )
 ```
 
@@ -115,7 +131,13 @@ measures related to wait times available in the dataset.
 ``` r
 # Define measure ids for analysis
 first_tx_waited_measures <- c(
-  "M039", "M040", "M041", "M042", "M043", "M044", "M045"
+  "M039",
+  "M040",
+  "M041",
+  "M042",
+  "M043",
+  "M044",
+  "M045"
 )
 ```
 
@@ -166,12 +188,12 @@ Here we identify the 4 providers with the most recorded activity in
 
 ``` r
 top4_m344_providers <- activity_performance |>
-  filter(measure_id == "M344") |> 
-  filter(group_type == "Provider") |> 
-  select(org_name2, value) |> 
-  group_by(org_name2) |> 
-  summarise(total = sum(value, na.rm = TRUE)) |> 
-  slice_max(total, n = 4) |> 
+  filter(measure_id == "M344") |>
+  filter(group_type == "Provider") |>
+  select(org_name2, value) |>
+  group_by(org_name2) |>
+  summarise(total = sum(value, na.rm = TRUE)) |>
+  slice_max(total, n = 4) |>
   pull(org_name2)
 ```
 

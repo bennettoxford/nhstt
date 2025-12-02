@@ -1,31 +1,31 @@
 # Monthly treatment appointment measures
 
-> **Warning**
->
-> This report is in active development and we have not yet done
-> extensive data assurance. This report demonstrates interactive
-> features how we might want to present the data.
-
-This report explores two treatment appointment measures from the
-publicly available NHS Talking Therapies data. The search box allows you
-to search for and select up to three providers to highlight their scores
-over time You can also hover over the lines to explore the data
-interactively.
+``` js
+// Configuration constants
+CONFIG = ({
+  maxSelections: 3,
+  minSearchLength: 3,
+  selectionColors: ["#E69F00", "#56B4E9", "#009E73"], // Orange, Sky Blue, Green
+  chipOpacity: 0.2,
+  plotMargins: {
+    top: 35,
+    right: 20,
+    bottom: 30,
+    left: 40
+  }
+})
+```
 
 ``` js
+// Convert R data to JavaScript format with proper date handling
 function convertPlotData(data) {
-  return transpose(data).map(d => ({
+  return data.map(d => ({
     ...d,
     start_date: new Date(d.start_date),
     end_date: new Date(d.end_date),
     value: d.value === null ? NaN : d.value
   }));
 }
-
-// Convert R data to JavaScript arrays
-plotDataM120 = convertPlotData(plot_data_m120_ojs)
-plotDataM112 = convertPlotData(plot_data_m112_ojs)
-organisations = transpose(org_list_ojs)
 ```
 
 ``` js
@@ -34,14 +34,14 @@ urlOrgsParam = {
   return params.get('orgs') || '';
 }
 
-// Parse URL parameter into array of codes (max 3)
+// Parse URL parameter into array of codes
 urlOrgCodes = {
   if (!urlOrgsParam) return [];
 
   const codes = urlOrgsParam.split(',');
   const trimmed = [];
 
-  for (let i = 0; i < codes.length && i < 3; i++) {
+  for (let i = 0; i < codes.length && i < CONFIG.maxSelections; i++) {
     const code = codes[i].trim();
     if (code.length > 0) {
       trimmed.push(code);
@@ -186,13 +186,14 @@ styles = html`<style>
 
   .nhstt-result-box {
     padding: 12px 16px;
-    border: 1px solid #dee2e6;
+    border: 1px solid #adb5bd;
     border-radius: 0.375rem;
     background: white;
     height: 48px;
     display: flex;
     align-items: center;
     transition: background-color 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
 
   .nhstt-result-box.at-max {
@@ -219,7 +220,7 @@ styles = html`<style>
     gap: 4px;
     padding: 3px 8px;
     background: #f8f9fa;
-    border: 1px solid #dee2e6;
+    border: 1.5px solid #6c757d;
     border-radius: 0.25rem;
     font-size: 11px;
     color: #212529;
@@ -275,24 +276,24 @@ mutable selectedOrgs = initialSelectedOrgs
 
 ``` js
 selectedOrgColorScale = d3.scaleOrdinal()
-  .range(["#E69F00", "#56B4E9", "#009E73"]) // Orange, Sky Blue, Green
+  .range(CONFIG.selectionColors)
 
-// Helper function to get color for an organization
+// Get color for an organisation (selected orgs get distinct colors, others get gray)
 function getSelectedOrgColor(orgCode) {
   const index = selectedOrgs.findIndex(org => org.org_code2 === orgCode);
   return index >= 0 ? selectedOrgColorScale(index) : "#ddd";
 }
 
-// Helper function to get subtle background color for an organization (20% opacity)
+// Get subtle background color for an organisation chip
 function getSelectedOrgBgColor(orgCode) {
   const index = selectedOrgs.findIndex(org => org.org_code2 === orgCode);
   if (index < 0) return "transparent";
   const color = selectedOrgColorScale(index);
-  // Convert hex to rgba with 20% opacity
+  // Convert hex to rgba with opacity from CONFIG
   const r = parseInt(color.slice(1, 3), 16);
   const g = parseInt(color.slice(3, 5), 16);
   const b = parseInt(color.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, 0.2)`;
+  return `rgba(${r}, ${g}, ${b}, ${CONFIG.chipOpacity})`;
 }
 
 // Helper function to darken a color (for hover state)
@@ -312,15 +313,19 @@ function darkenColor(color) {
 ```
 
 ``` js
-// Reusable function to create time series plots
-function createTimeSeriesPlot(data, yAxisLabel) {
-  // Plot dimensions
+// Create interactive time series plot with hover tooltips and highlighting
+// Parameters:
+//   data: array of data points with start_date, end_date, value, org_name_code, org_code2
+//   yAxisLabel: label for y-axis
+//   yDomain: optional [min, max] for y-axis (e.g., [0, 100] for percentages). If not provided, auto-scales.
+function createTimeSeriesPlot(data, yAxisLabel, yDomain = null) {
+  // Plot dimensions and margins from CONFIG
   const width = 928;
   const height = 400;
-  const marginTop = 20;
-  const marginRight = 20;
-  const marginBottom = 30;
-  const marginLeft = 40;
+  const marginTop = CONFIG.plotMargins.top;
+  const marginRight = CONFIG.plotMargins.right;
+  const marginBottom = CONFIG.plotMargins.bottom;
+  const marginLeft = CONFIG.plotMargins.left;
 
   // Create scales
   const x = d3.scaleUtc()
@@ -328,7 +333,8 @@ function createTimeSeriesPlot(data, yAxisLabel) {
     .range([marginLeft, width - marginRight]);
 
   const y = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.value)]).nice()
+    .domain(yDomain || [0, d3.max(data, d => d.value)])
+    .nice()
     .range([height - marginBottom, marginTop]);
 
   // Create SVG container
@@ -349,12 +355,13 @@ function createTimeSeriesPlot(data, yAxisLabel) {
       .call(d3.axisLeft(y))
       .call(g => g.select(".domain").remove())
       .call(g => g.append("text")
-          .attr("x", -marginLeft)
-          .attr("y", 10)
+          .attr("transform", "rotate(-90)")
+          .attr("x", -(height - marginBottom - marginTop) / 2 - marginTop)
+          .attr("y", -marginLeft + 12)
           .attr("fill", "currentColor")
-          .attr("text-anchor", "start")
+          .attr("text-anchor", "middle")
           .style("font-size", "14px")
-          .text(`↑ ${yAxisLabel}`))
+          .text(yAxisLabel))
       .style("font-size", "14px");
 
   // Prepare points and groups
@@ -443,7 +450,7 @@ function createTimeSeriesPlot(data, yAxisLabel) {
     const dateFormatter = d3.timeFormat("%B %Y");
     if (dataPoint) {
       dot.select(".tooltip-provider").text(dataPoint.org_name_code);
-      dot.select(".tooltip-date").text(`Date range: ${dateFormatter(dataPoint.start_date)} to ${dateFormatter(dataPoint.end_date)}`);
+      dot.select(".tooltip-date").text(`Month: ${dateFormatter(dataPoint.start_date)}`);
       dot.select(".tooltip-measure").text(`Measure ID: ${dataPoint.measure_id}`);
       dot.select(".tooltip-value").text(`Mean: ${dataPoint.value.toLocaleString()}`);
 
@@ -513,11 +520,23 @@ function createTimeSeriesPlot(data, yAxisLabel) {
 }
 ```
 
-## Select NHS TT providers
+> **Note:** This report is in active development and designed for
+> feedback on the user interface and visualisation methods. We have not
+> done data assurance, results need to be interpreted carefully.
+
+### Measures
+
+``` js
+plotDataM120 = convertPlotData(transpose(plot_data_m120_ojs))
+plotDataM112 = convertPlotData(transpose(plot_data_m112_ojs))
+organisations = transpose(org_list_ojs)
+```
+
+### Select NHS TT providers
 
 ``` js
 viewof searchAndSelect = {
-  const maxReached = selectedOrgs.length >= 3;
+  const maxReached = selectedOrgs.length >= CONFIG.maxSelections;
 
   const container = html`<div class="nhstt-container">
     <div class="nhstt-input-group-wrapper">
@@ -525,11 +544,11 @@ viewof searchAndSelect = {
         <input
           type="text"
           class="nhstt-input"
-          placeholder="Search by name or code (min 3 characters) and select provider ..."
+          placeholder="Search by name or code (min ${CONFIG.minSearchLength} characters) and select provider ..."
           value=""
         />
         <select class="nhstt-select" ${maxReached ? 'disabled' : ''}>
-          <option value="">${maxReached ? 'Max 3 selected' : 'Select provider'}</option>
+          <option value="">${maxReached ? `Max ${CONFIG.maxSelections} selected` : 'Select provider'}</option>
         </select>
       </div>
     </div>
@@ -540,14 +559,14 @@ viewof searchAndSelect = {
   container.value = { searchQuery: "", orgToAdd: null };
 
   function updateDropdownOptions(searchQuery) {
-    if (!searchQuery || searchQuery.length < 3) {
-      select.innerHTML = '<option value="">Enter at least 3 characters</option>';
+    if (!searchQuery || searchQuery.length < CONFIG.minSearchLength) {
+      select.innerHTML = `<option value="">Enter at least ${CONFIG.minSearchLength} characters</option>`;
       select.disabled = true;
       return;
     }
 
     if (maxReached) {
-      select.innerHTML = '<option value="">Max 3 selected</option>';
+      select.innerHTML = `<option value="">Max ${CONFIG.maxSelections} selected</option>`;
       select.disabled = true;
       return;
     }
@@ -606,7 +625,7 @@ orgToAdd = searchAndSelect.orgToAdd
 
 // Add organisation to selected list when dropdown changes
 addOrgEffect = {
-  if (orgToAdd && selectedOrgs.length < 3) {
+  if (orgToAdd && selectedOrgs.length < CONFIG.maxSelections) {
     const alreadySelected = selectedOrgs.some(org => org.org_code2 === orgToAdd.org_code2);
     if (!alreadySelected) {
       mutable selectedOrgs = [...selectedOrgs, orgToAdd];
@@ -621,7 +640,7 @@ selectedOrgDisplay = {
   const container = html`<div class="nhstt-container" style="margin-bottom: 12px;"></div>`;
   const resultBox = document.createElement('div');
 
-  if (selectedOrgs.length === 3) {
+  if (selectedOrgs.length === CONFIG.maxSelections) {
     resultBox.className = 'nhstt-result-box at-max';
   } else {
     resultBox.className = 'nhstt-result-box';
@@ -636,7 +655,7 @@ selectedOrgDisplay = {
     const chipContainer = document.createElement('div');
     chipContainer.className = 'nhstt-chip-container';
 
-    const sizeClass = selectedOrgs.length === 3 ? 'has-three'
+    const sizeClass = selectedOrgs.length === CONFIG.maxSelections ? 'has-three'
                     : selectedOrgs.length === 2 ? 'has-two'
                     : 'has-one';
 
@@ -671,14 +690,14 @@ selectedOrgDisplay = {
 }
 ```
 
-### Mean number of LI treatment appointments (M120)
-
-``` js
-plotM120 = createTimeSeriesPlot(plotDataM120, "Mean LI appointments (M120)")
-```
-
 ### Mean number of HI treatment appointments (M112)
 
 ``` js
-plotM112 = createTimeSeriesPlot(plotDataM112, "Mean HI appointments (M112)")
+plotM112 = createTimeSeriesPlot(plotDataM112, "Mean HI appointments")
+```
+
+### Mean number of LI treatment appointments (M120)
+
+``` js
+plotM120 = createTimeSeriesPlot(plotDataM120, "Mean LI appointments")
 ```
