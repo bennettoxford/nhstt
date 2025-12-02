@@ -133,3 +133,28 @@ test_that("clean_column_values applies make_clean_str to requested columns", {
     c("mean_last_wsashm", "total")
   )
 })
+
+test_that("clean_org_names formats NHS TT provider names", {
+  providers <- c(
+    "NHS BATH AND NORTH EAST SOMERSET CIC",
+    "TALKINGSPACE PLUS:OXFORD HEALTH NHS FOUNDATION TRUST",
+    "VITAMINDS (BRISTOL) UK",
+    "WEST LONDON:NHS TRUST(ADULTS)",
+    "TEST(SPACE BEFORE BRACKETS)",
+    "TEST:SPACE AFTER COLON",
+    "THE  "
+  )
+
+  expect_equal(
+    clean_org_names(providers),
+    c(
+      "NHS Bath and North East Somerset CIC",
+      "TalkingSpace Plus: Oxford Health NHS Foundation Trust",
+      "VitaMinds (Bristol) UK",
+      "West London: NHS Trust (Adults)",
+      "Test (Space Before Brackets)",
+      "Test: Space After Colon",
+      "The"
+    )
+  )
+})

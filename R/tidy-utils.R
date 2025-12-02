@@ -358,3 +358,81 @@ clean_column_values <- function(df, column_names = NULL) {
       )
     )
 }
+
+
+#' Clean NHS Talking Therapies provider names
+#'
+#' The provider names are all caps in the data, for visualisations they should be clean.
+#'
+#' @param x Character, specifying NHS TT provider name in all caps
+#'
+#' @return Clean NHS TT provider name
+#'
+#' @importFrom stringr str_c str_to_title str_to_lower str_replace_all str_squish regex
+#'
+#' @keywords internal
+
+clean_org_names <- function(x) {
+  lower_case_words <- c(
+    "and",
+    "are",
+    "at",
+    "by",
+    "for",
+    "from",
+    "in",
+    "of",
+    "on",
+    "or",
+    "the",
+    "to",
+    "with",
+    "you"
+  )
+
+  all_caps_words <- c(
+    "NHS",
+    "IAPT",
+    "CIC",
+    "LTD",
+    "UK",
+    "SMS",
+    "HQ",
+    "Bmhc",
+    "Ftb",
+    "Eltt",
+    "Lgbt",
+    "Llr",
+    "Iccs",
+    "Pts"
+  )
+
+  # Pattern assumes that this comes after str_to_title()
+  camel_case_words <- c(
+    "Talkingspace" = "TalkingSpace",
+    "Vitaminds" = "VitaMinds"
+  )
+
+  # lower-case words: only when preceded by a space (not first word)
+  lower_pattern <- str_c(
+    "(?<=\\s)(",
+    str_c(str_to_title(lower_case_words), collapse = "|"),
+    ")\\b"
+  )
+
+  # all-caps words: match Title Case versions, whole words
+  upper_pattern <- str_c(
+    "\\b(",
+    str_c(str_to_title(str_to_lower(all_caps_words)), collapse = "|"),
+    ")\\b"
+  )
+
+  x |>
+    str_replace_all(":\\s*", ": ") |>
+    str_replace_all(regex("(?<=\\S)\\("), " (") |>
+    str_squish() |>
+    str_to_title() |>
+    str_replace_all(regex(lower_pattern), tolower) |>
+    str_replace_all(regex(upper_pattern), toupper) |>
+    str_replace_all(regex(camel_case_words))
+}

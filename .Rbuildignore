@@ -13,3 +13,4 @@ AGENTS.md
 ^codecov\.yml$
 DEVELOPERS.md
 justfile
+vignettes/.quarto
