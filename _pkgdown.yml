@@ -41,9 +41,8 @@ navbar:
     - text: "Reports"
       menu:
         - text: "Drafts"
-        - text: "Number of treatment appointments"
-          href: articles/report-monthly-tx-appointments.html
-        
+        - text: "Monthly treatment appointment measures"
+          href: articles/report-monthly-tx-appt.html
 
 reference:
   - title: "Annual data"
@@ -81,4 +80,4 @@ articles:
   - title: "Reports"
     desc: "Reports using NHS TT data"
     contents:
-      - report-monthly-tx-appointments
+      - report-monthly-tx-appt
