@@ -283,10 +283,9 @@ selectedOrgDisplay = {
 }
 ```
 
-::: {.panel-tabset}
+### Treatment outcome measures
 
-
-### Reliable improvement (M186)
+#### Reliable improvement (M186)
 
 ```{ojs}
 //| label: time-series-plot-m186
@@ -294,7 +293,7 @@ selectedOrgDisplay = {
 plotM186 = createTimeSeriesPlot(plotDataM186, "Reliable improvement (%)", [0, 100])
 ```
 
-### Recovery (M192)
+#### Recovery (M192)
 
 ```{ojs}
 //| label: time-series-plot-m192
@@ -302,15 +301,13 @@ plotM186 = createTimeSeriesPlot(plotDataM186, "Reliable improvement (%)", [0, 10
 plotM192 = createTimeSeriesPlot(plotDataM192, "Recovery (%)", [0, 100])
 ```
 
-### Reliable recovery (M195)
+#### Reliable recovery (M195)
 
 ```{ojs}
 //| label: time-series-plot-m195
 
 plotM195 = createTimeSeriesPlot(plotDataM195, "Reliable recovery (%)", [0, 100])
 ```
-
-:::
 
 ### Measure desriptions
 
