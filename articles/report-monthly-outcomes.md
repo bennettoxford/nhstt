@@ -710,19 +710,21 @@ selectedOrgDisplay = {
 }
 ```
 
-- [Reliable improvement (M186)](#tabset-1-1)
-- [Recovery (M192)](#tabset-1-2)
-- [Reliable recovery (M195)](#tabset-1-3)
+### Treatment outcome measures
 
-&nbsp;
+#### Reliable improvement (M186)
 
-- ``` js
-  plotM186 = createTimeSeriesPlot(plotDataM186, "Reliable improvement (%)", [0, 100])
-  ```
+``` js
+plotM186 = createTimeSeriesPlot(plotDataM186, "Reliable improvement (%)", [0, 100])
+```
+
+#### Recovery (M192)
 
 ``` js
 plotM192 = createTimeSeriesPlot(plotDataM192, "Recovery (%)", [0, 100])
 ```
+
+#### Reliable recovery (M195)
 
 ``` js
 plotM195 = createTimeSeriesPlot(plotDataM195, "Reliable recovery (%)", [0, 100])

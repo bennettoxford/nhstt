@@ -253,162 +253,162 @@
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="292" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 291;"><span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a>styles <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;style&gt;</span></span>
-<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-container {</span></span>
-<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a><span class="vs">    max-width: 800px;</span></span>
-<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin: 0 auto;</span></span>
-<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 0 4px;</span></span>
-<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-input-group-wrapper {</span></span>
-<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin-top: 8px;</span></span>
-<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin-bottom: 12px;</span></span>
-<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-label {</span></span>
-<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: block;</span></span>
-<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-weight: 600;</span></span>
-<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 14px;</span></span>
-<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin-bottom: 6px;</span></span>
-<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #212529;</span></span>
-<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-input-group {</span></span>
-<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: flex;</span></span>
-<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 100%;</span></span>
-<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a><span class="vs">    gap: 0;</span></span>
-<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a><span class="vs">    overflow: visible;</span></span>
-<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-input {</span></span>
-<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 0 75%;</span></span>
-<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 75%;</span></span>
-<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 10px 12px;</span></span>
-<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 14px;</span></span>
-<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: 1px solid #dee2e6;</span></span>
-<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-radius: 0.375rem 0 0 0.375rem;</span></span>
-<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-right: none;</span></span>
-<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-sizing: border-box;</span></span>
-<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-input:focus {</span></span>
-<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a><span class="vs">    outline: none;</span></span>
-<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-color: #86b7fe;</span></span>
-<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-right: 1px solid #86b7fe;</span></span>
-<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);</span></span>
-<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a><span class="vs">    z-index: 2;</span></span>
-<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a><span class="vs">    position: relative;</span></span>
-<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-select {</span></span>
-<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 0 25%;</span></span>
-<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 25%;</span></span>
-<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 10px 12px;</span></span>
-<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 14px;</span></span>
-<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: 1px solid #dee2e6;</span></span>
-<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-radius: 0 0.375rem 0.375rem 0;</span></span>
-<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-sizing: border-box;</span></span>
-<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a><span class="vs">    background-color: white;</span></span>
-<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a><span class="vs">    position: relative;</span></span>
-<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-select:focus {</span></span>
-<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a><span class="vs">    outline: none;</span></span>
-<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-color: #86b7fe;</span></span>
-<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);</span></span>
-<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a><span class="vs">    z-index: 2;</span></span>
-<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a><span class="vs">    position: relative;</span></span>
-<span id="cb4-357"><a href="#cb4-357" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-358"><a href="#cb4-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-359"><a href="#cb4-359" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-select:disabled {</span></span>
-<span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a><span class="vs">    background-color: #e9ecef;</span></span>
-<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #6c757d;</span></span>
-<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a><span class="vs">    cursor: not-allowed;</span></span>
-<span id="cb4-363"><a href="#cb4-363" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-364"><a href="#cb4-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-365"><a href="#cb4-365" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-result-box {</span></span>
-<span id="cb4-366"><a href="#cb4-366" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 12px 16px;</span></span>
-<span id="cb4-367"><a href="#cb4-367" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: 1px solid #dee2e6;</span></span>
-<span id="cb4-368"><a href="#cb4-368" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-radius: 0.375rem;</span></span>
-<span id="cb4-369"><a href="#cb4-369" aria-hidden="true" tabindex="-1"></a><span class="vs">    background: white;</span></span>
-<span id="cb4-370"><a href="#cb4-370" aria-hidden="true" tabindex="-1"></a><span class="vs">    height: 48px;</span></span>
-<span id="cb4-371"><a href="#cb4-371" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: flex;</span></span>
-<span id="cb4-372"><a href="#cb4-372" aria-hidden="true" tabindex="-1"></a><span class="vs">    align-items: center;</span></span>
-<span id="cb4-373"><a href="#cb4-373" aria-hidden="true" tabindex="-1"></a><span class="vs">    transition: background-color 0.2s ease;</span></span>
-<span id="cb4-374"><a href="#cb4-374" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);</span></span>
-<span id="cb4-375"><a href="#cb4-375" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-376"><a href="#cb4-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-377"><a href="#cb4-377" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-result-box.at-max {</span></span>
-<span id="cb4-378"><a href="#cb4-378" aria-hidden="true" tabindex="-1"></a><span class="vs">    background: #f8f9fa;</span></span>
-<span id="cb4-379"><a href="#cb4-379" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-380"><a href="#cb4-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-381"><a href="#cb4-381" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-result-empty {</span></span>
-<span id="cb4-382"><a href="#cb4-382" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin: 0;</span></span>
-<span id="cb4-383"><a href="#cb4-383" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 13px;</span></span>
-<span id="cb4-384"><a href="#cb4-384" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #6c757d;</span></span>
-<span id="cb4-385"><a href="#cb4-385" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-386"><a href="#cb4-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-387"><a href="#cb4-387" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip-container {</span></span>
-<span id="cb4-388"><a href="#cb4-388" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: flex;</span></span>
-<span id="cb4-389"><a href="#cb4-389" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex-wrap: nowrap;</span></span>
-<span id="cb4-390"><a href="#cb4-390" aria-hidden="true" tabindex="-1"></a><span class="vs">    gap: 6px;</span></span>
-<span id="cb4-391"><a href="#cb4-391" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 100%;</span></span>
-<span id="cb4-392"><a href="#cb4-392" aria-hidden="true" tabindex="-1"></a><span class="vs">    overflow: hidden;</span></span>
-<span id="cb4-393"><a href="#cb4-393" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-394"><a href="#cb4-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-395"><a href="#cb4-395" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip {</span></span>
-<span id="cb4-396"><a href="#cb4-396" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: inline-flex;</span></span>
-<span id="cb4-397"><a href="#cb4-397" aria-hidden="true" tabindex="-1"></a><span class="vs">    align-items: center;</span></span>
-<span id="cb4-398"><a href="#cb4-398" aria-hidden="true" tabindex="-1"></a><span class="vs">    gap: 4px;</span></span>
-<span id="cb4-399"><a href="#cb4-399" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 3px 8px;</span></span>
-<span id="cb4-400"><a href="#cb4-400" aria-hidden="true" tabindex="-1"></a><span class="vs">    background: #f8f9fa;</span></span>
-<span id="cb4-401"><a href="#cb4-401" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: 1.5px solid #6c757d;</span></span>
-<span id="cb4-402"><a href="#cb4-402" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-radius: 0.25rem;</span></span>
-<span id="cb4-403"><a href="#cb4-403" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 11px;</span></span>
-<span id="cb4-404"><a href="#cb4-404" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #212529;</span></span>
-<span id="cb4-405"><a href="#cb4-405" aria-hidden="true" tabindex="-1"></a><span class="vs">    white-space: nowrap;</span></span>
-<span id="cb4-406"><a href="#cb4-406" aria-hidden="true" tabindex="-1"></a><span class="vs">    min-width: 0;</span></span>
-<span id="cb4-407"><a href="#cb4-407" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-408"><a href="#cb4-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-409"><a href="#cb4-409" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip.has-three {</span></span>
-<span id="cb4-410"><a href="#cb4-410" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 1 calc(33.333% - 4px);</span></span>
-<span id="cb4-411"><a href="#cb4-411" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-412"><a href="#cb4-412" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-413"><a href="#cb4-413" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip.has-two {</span></span>
-<span id="cb4-414"><a href="#cb4-414" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 1 auto;</span></span>
-<span id="cb4-415"><a href="#cb4-415" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-416"><a href="#cb4-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-417"><a href="#cb4-417" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip.has-one {</span></span>
-<span id="cb4-418"><a href="#cb4-418" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 1 auto;</span></span>
-<span id="cb4-419"><a href="#cb4-419" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-420"><a href="#cb4-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-421"><a href="#cb4-421" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip-label {</span></span>
-<span id="cb4-422"><a href="#cb4-422" aria-hidden="true" tabindex="-1"></a><span class="vs">    overflow: hidden;</span></span>
-<span id="cb4-423"><a href="#cb4-423" aria-hidden="true" tabindex="-1"></a><span class="vs">    text-overflow: ellipsis;</span></span>
-<span id="cb4-424"><a href="#cb4-424" aria-hidden="true" tabindex="-1"></a><span class="vs">    white-space: nowrap;</span></span>
-<span id="cb4-425"><a href="#cb4-425" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-426"><a href="#cb4-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-427"><a href="#cb4-427" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip-remove {</span></span>
-<span id="cb4-428"><a href="#cb4-428" aria-hidden="true" tabindex="-1"></a><span class="vs">    background: none;</span></span>
-<span id="cb4-429"><a href="#cb4-429" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: none;</span></span>
-<span id="cb4-430"><a href="#cb4-430" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #adb5bd;</span></span>
-<span id="cb4-431"><a href="#cb4-431" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 16px;</span></span>
-<span id="cb4-432"><a href="#cb4-432" aria-hidden="true" tabindex="-1"></a><span class="vs">    line-height: 1;</span></span>
-<span id="cb4-433"><a href="#cb4-433" aria-hidden="true" tabindex="-1"></a><span class="vs">    cursor: pointer;</span></span>
-<span id="cb4-434"><a href="#cb4-434" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 0;</span></span>
-<span id="cb4-435"><a href="#cb4-435" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin-left: 2px;</span></span>
-<span id="cb4-436"><a href="#cb4-436" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 14px;</span></span>
-<span id="cb4-437"><a href="#cb4-437" aria-hidden="true" tabindex="-1"></a><span class="vs">    height: 14px;</span></span>
-<span id="cb4-438"><a href="#cb4-438" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: flex;</span></span>
-<span id="cb4-439"><a href="#cb4-439" aria-hidden="true" tabindex="-1"></a><span class="vs">    align-items: center;</span></span>
-<span id="cb4-440"><a href="#cb4-440" aria-hidden="true" tabindex="-1"></a><span class="vs">    justify-content: center;</span></span>
-<span id="cb4-441"><a href="#cb4-441" aria-hidden="true" tabindex="-1"></a><span class="vs">    transition: color 0.15s;</span></span>
-<span id="cb4-442"><a href="#cb4-442" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-443"><a href="#cb4-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-444"><a href="#cb4-444" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip-remove:hover {</span></span>
-<span id="cb4-445"><a href="#cb4-445" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #6c757d;</span></span>
-<span id="cb4-446"><a href="#cb4-446" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
-<span id="cb4-447"><a href="#cb4-447" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/style&gt;`</span></span></code></pre></div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="291" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 290;"><span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a>styles <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;style&gt;</span></span>
+<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-container {</span></span>
+<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a><span class="vs">    max-width: 800px;</span></span>
+<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin: 0 auto;</span></span>
+<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 0 4px;</span></span>
+<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-input-group-wrapper {</span></span>
+<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin-top: 8px;</span></span>
+<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin-bottom: 12px;</span></span>
+<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-label {</span></span>
+<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: block;</span></span>
+<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-weight: 600;</span></span>
+<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 14px;</span></span>
+<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin-bottom: 6px;</span></span>
+<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #212529;</span></span>
+<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-input-group {</span></span>
+<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: flex;</span></span>
+<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 100%;</span></span>
+<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a><span class="vs">    gap: 0;</span></span>
+<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a><span class="vs">    overflow: visible;</span></span>
+<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-input {</span></span>
+<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 0 75%;</span></span>
+<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 75%;</span></span>
+<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 10px 12px;</span></span>
+<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 14px;</span></span>
+<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: 1px solid #dee2e6;</span></span>
+<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-radius: 0.375rem 0 0 0.375rem;</span></span>
+<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-right: none;</span></span>
+<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-sizing: border-box;</span></span>
+<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-input:focus {</span></span>
+<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a><span class="vs">    outline: none;</span></span>
+<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-color: #86b7fe;</span></span>
+<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-right: 1px solid #86b7fe;</span></span>
+<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);</span></span>
+<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a><span class="vs">    z-index: 2;</span></span>
+<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a><span class="vs">    position: relative;</span></span>
+<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-select {</span></span>
+<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 0 25%;</span></span>
+<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 25%;</span></span>
+<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 10px 12px;</span></span>
+<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 14px;</span></span>
+<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: 1px solid #dee2e6;</span></span>
+<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-radius: 0 0.375rem 0.375rem 0;</span></span>
+<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-sizing: border-box;</span></span>
+<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a><span class="vs">    background-color: white;</span></span>
+<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a><span class="vs">    position: relative;</span></span>
+<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-select:focus {</span></span>
+<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a><span class="vs">    outline: none;</span></span>
+<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-color: #86b7fe;</span></span>
+<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);</span></span>
+<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a><span class="vs">    z-index: 2;</span></span>
+<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a><span class="vs">    position: relative;</span></span>
+<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-357"><a href="#cb4-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-358"><a href="#cb4-358" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-select:disabled {</span></span>
+<span id="cb4-359"><a href="#cb4-359" aria-hidden="true" tabindex="-1"></a><span class="vs">    background-color: #e9ecef;</span></span>
+<span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #6c757d;</span></span>
+<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a><span class="vs">    cursor: not-allowed;</span></span>
+<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-363"><a href="#cb4-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-364"><a href="#cb4-364" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-result-box {</span></span>
+<span id="cb4-365"><a href="#cb4-365" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 12px 16px;</span></span>
+<span id="cb4-366"><a href="#cb4-366" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: 1px solid #dee2e6;</span></span>
+<span id="cb4-367"><a href="#cb4-367" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-radius: 0.375rem;</span></span>
+<span id="cb4-368"><a href="#cb4-368" aria-hidden="true" tabindex="-1"></a><span class="vs">    background: white;</span></span>
+<span id="cb4-369"><a href="#cb4-369" aria-hidden="true" tabindex="-1"></a><span class="vs">    height: 48px;</span></span>
+<span id="cb4-370"><a href="#cb4-370" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: flex;</span></span>
+<span id="cb4-371"><a href="#cb4-371" aria-hidden="true" tabindex="-1"></a><span class="vs">    align-items: center;</span></span>
+<span id="cb4-372"><a href="#cb4-372" aria-hidden="true" tabindex="-1"></a><span class="vs">    transition: background-color 0.2s ease;</span></span>
+<span id="cb4-373"><a href="#cb4-373" aria-hidden="true" tabindex="-1"></a><span class="vs">    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);</span></span>
+<span id="cb4-374"><a href="#cb4-374" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-375"><a href="#cb4-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-376"><a href="#cb4-376" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-result-box.at-max {</span></span>
+<span id="cb4-377"><a href="#cb4-377" aria-hidden="true" tabindex="-1"></a><span class="vs">    background: #f8f9fa;</span></span>
+<span id="cb4-378"><a href="#cb4-378" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-379"><a href="#cb4-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-380"><a href="#cb4-380" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-result-empty {</span></span>
+<span id="cb4-381"><a href="#cb4-381" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin: 0;</span></span>
+<span id="cb4-382"><a href="#cb4-382" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 13px;</span></span>
+<span id="cb4-383"><a href="#cb4-383" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #6c757d;</span></span>
+<span id="cb4-384"><a href="#cb4-384" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-385"><a href="#cb4-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-386"><a href="#cb4-386" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip-container {</span></span>
+<span id="cb4-387"><a href="#cb4-387" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: flex;</span></span>
+<span id="cb4-388"><a href="#cb4-388" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex-wrap: nowrap;</span></span>
+<span id="cb4-389"><a href="#cb4-389" aria-hidden="true" tabindex="-1"></a><span class="vs">    gap: 6px;</span></span>
+<span id="cb4-390"><a href="#cb4-390" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 100%;</span></span>
+<span id="cb4-391"><a href="#cb4-391" aria-hidden="true" tabindex="-1"></a><span class="vs">    overflow: hidden;</span></span>
+<span id="cb4-392"><a href="#cb4-392" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-393"><a href="#cb4-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-394"><a href="#cb4-394" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip {</span></span>
+<span id="cb4-395"><a href="#cb4-395" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: inline-flex;</span></span>
+<span id="cb4-396"><a href="#cb4-396" aria-hidden="true" tabindex="-1"></a><span class="vs">    align-items: center;</span></span>
+<span id="cb4-397"><a href="#cb4-397" aria-hidden="true" tabindex="-1"></a><span class="vs">    gap: 4px;</span></span>
+<span id="cb4-398"><a href="#cb4-398" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 3px 8px;</span></span>
+<span id="cb4-399"><a href="#cb4-399" aria-hidden="true" tabindex="-1"></a><span class="vs">    background: #f8f9fa;</span></span>
+<span id="cb4-400"><a href="#cb4-400" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: 1.5px solid #6c757d;</span></span>
+<span id="cb4-401"><a href="#cb4-401" aria-hidden="true" tabindex="-1"></a><span class="vs">    border-radius: 0.25rem;</span></span>
+<span id="cb4-402"><a href="#cb4-402" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 11px;</span></span>
+<span id="cb4-403"><a href="#cb4-403" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #212529;</span></span>
+<span id="cb4-404"><a href="#cb4-404" aria-hidden="true" tabindex="-1"></a><span class="vs">    white-space: nowrap;</span></span>
+<span id="cb4-405"><a href="#cb4-405" aria-hidden="true" tabindex="-1"></a><span class="vs">    min-width: 0;</span></span>
+<span id="cb4-406"><a href="#cb4-406" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-407"><a href="#cb4-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-408"><a href="#cb4-408" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip.has-three {</span></span>
+<span id="cb4-409"><a href="#cb4-409" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 1 calc(33.333% - 4px);</span></span>
+<span id="cb4-410"><a href="#cb4-410" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-411"><a href="#cb4-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-412"><a href="#cb4-412" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip.has-two {</span></span>
+<span id="cb4-413"><a href="#cb4-413" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 1 auto;</span></span>
+<span id="cb4-414"><a href="#cb4-414" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-415"><a href="#cb4-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-416"><a href="#cb4-416" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip.has-one {</span></span>
+<span id="cb4-417"><a href="#cb4-417" aria-hidden="true" tabindex="-1"></a><span class="vs">    flex: 0 1 auto;</span></span>
+<span id="cb4-418"><a href="#cb4-418" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-419"><a href="#cb4-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-420"><a href="#cb4-420" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip-label {</span></span>
+<span id="cb4-421"><a href="#cb4-421" aria-hidden="true" tabindex="-1"></a><span class="vs">    overflow: hidden;</span></span>
+<span id="cb4-422"><a href="#cb4-422" aria-hidden="true" tabindex="-1"></a><span class="vs">    text-overflow: ellipsis;</span></span>
+<span id="cb4-423"><a href="#cb4-423" aria-hidden="true" tabindex="-1"></a><span class="vs">    white-space: nowrap;</span></span>
+<span id="cb4-424"><a href="#cb4-424" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-425"><a href="#cb4-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-426"><a href="#cb4-426" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip-remove {</span></span>
+<span id="cb4-427"><a href="#cb4-427" aria-hidden="true" tabindex="-1"></a><span class="vs">    background: none;</span></span>
+<span id="cb4-428"><a href="#cb4-428" aria-hidden="true" tabindex="-1"></a><span class="vs">    border: none;</span></span>
+<span id="cb4-429"><a href="#cb4-429" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #adb5bd;</span></span>
+<span id="cb4-430"><a href="#cb4-430" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size: 16px;</span></span>
+<span id="cb4-431"><a href="#cb4-431" aria-hidden="true" tabindex="-1"></a><span class="vs">    line-height: 1;</span></span>
+<span id="cb4-432"><a href="#cb4-432" aria-hidden="true" tabindex="-1"></a><span class="vs">    cursor: pointer;</span></span>
+<span id="cb4-433"><a href="#cb4-433" aria-hidden="true" tabindex="-1"></a><span class="vs">    padding: 0;</span></span>
+<span id="cb4-434"><a href="#cb4-434" aria-hidden="true" tabindex="-1"></a><span class="vs">    margin-left: 2px;</span></span>
+<span id="cb4-435"><a href="#cb4-435" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 14px;</span></span>
+<span id="cb4-436"><a href="#cb4-436" aria-hidden="true" tabindex="-1"></a><span class="vs">    height: 14px;</span></span>
+<span id="cb4-437"><a href="#cb4-437" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: flex;</span></span>
+<span id="cb4-438"><a href="#cb4-438" aria-hidden="true" tabindex="-1"></a><span class="vs">    align-items: center;</span></span>
+<span id="cb4-439"><a href="#cb4-439" aria-hidden="true" tabindex="-1"></a><span class="vs">    justify-content: center;</span></span>
+<span id="cb4-440"><a href="#cb4-440" aria-hidden="true" tabindex="-1"></a><span class="vs">    transition: color 0.15s;</span></span>
+<span id="cb4-441"><a href="#cb4-441" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-442"><a href="#cb4-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-443"><a href="#cb4-443" aria-hidden="true" tabindex="-1"></a><span class="vs">  .nhstt-chip-remove:hover {</span></span>
+<span id="cb4-444"><a href="#cb4-444" aria-hidden="true" tabindex="-1"></a><span class="vs">    color: #6c757d;</span></span>
+<span id="cb4-445"><a href="#cb4-445" aria-hidden="true" tabindex="-1"></a><span class="vs">  }</span></span>
+<span id="cb4-446"><a href="#cb4-446" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/style&gt;`</span></span></code></pre></div>
 <div id="ui-styles" class="cell-output cell-output-display">
 <div id="ojs-cell-4" data-nodetype="declaration">
 
@@ -416,8 +416,8 @@
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="300" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 299;"><span id="cb5-300"><a href="#cb5-300" aria-hidden="true" tabindex="-1"></a><span class="co">// Mutable state for selected organisations (max 3)</span></span>
-<span id="cb5-301"><a href="#cb5-301" aria-hidden="true" tabindex="-1"></a>mutable selectedOrgs <span class="op">=</span> initialSelectedOrgs</span></code></pre></div>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="299" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 298;"><span id="cb5-299"><a href="#cb5-299" aria-hidden="true" tabindex="-1"></a><span class="co">// Mutable state for selected organisations (max 3)</span></span>
+<span id="cb5-300"><a href="#cb5-300" aria-hidden="true" tabindex="-1"></a>mutable selectedOrgs <span class="op">=</span> initialSelectedOrgs</span></code></pre></div>
 <div id="selection-state" class="cell-output cell-output-display">
 <div id="ojs-cell-5" data-nodetype="declaration">
 
@@ -425,41 +425,41 @@
 </div>
 </div>
 <div id="color-helpers" class="cell">
-<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="311" data-source-offset="-63"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 310;"><span id="cb6-311"><a href="#cb6-311" aria-hidden="true" tabindex="-1"></a>selectedOrgColorScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleOrdinal</span>()</span>
-<span id="cb6-312"><a href="#cb6-312" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">range</span>(CONFIG<span class="op">.</span><span class="at">selectionColors</span>)</span>
-<span id="cb6-313"><a href="#cb6-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-314"><a href="#cb6-314" aria-hidden="true" tabindex="-1"></a><span class="co">// Get color for an organisation (selected orgs get distinct colors, others get gray)</span></span>
-<span id="cb6-315"><a href="#cb6-315" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getSelectedOrgColor</span>(orgCode) {</span>
-<span id="cb6-316"><a href="#cb6-316" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> index <span class="op">=</span> selectedOrgs<span class="op">.</span><span class="fu">findIndex</span>(org <span class="kw">=&gt;</span> org<span class="op">.</span><span class="at">org_code2</span> <span class="op">===</span> orgCode)<span class="op">;</span></span>
-<span id="cb6-317"><a href="#cb6-317" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> index <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">?</span> <span class="fu">selectedOrgColorScale</span>(index) <span class="op">:</span> <span class="st">"#ddd"</span><span class="op">;</span></span>
-<span id="cb6-318"><a href="#cb6-318" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-319"><a href="#cb6-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-320"><a href="#cb6-320" aria-hidden="true" tabindex="-1"></a><span class="co">// Get subtle background color for an organisation chip</span></span>
-<span id="cb6-321"><a href="#cb6-321" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getSelectedOrgBgColor</span>(orgCode) {</span>
-<span id="cb6-322"><a href="#cb6-322" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> index <span class="op">=</span> selectedOrgs<span class="op">.</span><span class="fu">findIndex</span>(org <span class="kw">=&gt;</span> org<span class="op">.</span><span class="at">org_code2</span> <span class="op">===</span> orgCode)<span class="op">;</span></span>
-<span id="cb6-323"><a href="#cb6-323" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (index <span class="op">&lt;</span> <span class="dv">0</span>) <span class="cf">return</span> <span class="st">"transparent"</span><span class="op">;</span></span>
-<span id="cb6-324"><a href="#cb6-324" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> color <span class="op">=</span> <span class="fu">selectedOrgColorScale</span>(index)<span class="op">;</span></span>
-<span id="cb6-325"><a href="#cb6-325" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Convert hex to rgba with opacity from CONFIG</span></span>
-<span id="cb6-326"><a href="#cb6-326" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
-<span id="cb6-327"><a href="#cb6-327" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">3</span><span class="op">,</span> <span class="dv">5</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
-<span id="cb6-328"><a href="#cb6-328" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> b <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">5</span><span class="op">,</span> <span class="dv">7</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
-<span id="cb6-329"><a href="#cb6-329" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="vs">`rgba(</span><span class="sc">${</span>r<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>b<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>CONFIG<span class="op">.</span><span class="at">chipOpacity</span><span class="sc">}</span><span class="vs">)`</span><span class="op">;</span></span>
-<span id="cb6-330"><a href="#cb6-330" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-331"><a href="#cb6-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-332"><a href="#cb6-332" aria-hidden="true" tabindex="-1"></a><span class="co">// Helper function to darken a color (for hover state)</span></span>
-<span id="cb6-333"><a href="#cb6-333" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">darkenColor</span>(color) {</span>
-<span id="cb6-334"><a href="#cb6-334" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Convert hex to RGB</span></span>
-<span id="cb6-335"><a href="#cb6-335" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
-<span id="cb6-336"><a href="#cb6-336" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">3</span><span class="op">,</span> <span class="dv">5</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
-<span id="cb6-337"><a href="#cb6-337" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> b <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">5</span><span class="op">,</span> <span class="dv">7</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
-<span id="cb6-338"><a href="#cb6-338" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Darken by 30%</span></span>
-<span id="cb6-339"><a href="#cb6-339" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> darkenFactor <span class="op">=</span> <span class="fl">0.7</span><span class="op">;</span></span>
-<span id="cb6-340"><a href="#cb6-340" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> newR <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(r <span class="op">*</span> darkenFactor)<span class="op">;</span></span>
-<span id="cb6-341"><a href="#cb6-341" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> newG <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(g <span class="op">*</span> darkenFactor)<span class="op">;</span></span>
-<span id="cb6-342"><a href="#cb6-342" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> newB <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(b <span class="op">*</span> darkenFactor)<span class="op">;</span></span>
-<span id="cb6-343"><a href="#cb6-343" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Convert back to hex</span></span>
-<span id="cb6-344"><a href="#cb6-344" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="vs">`#</span><span class="sc">${</span>newR<span class="op">.</span><span class="fu">toString</span>(<span class="dv">16</span>)<span class="op">.</span><span class="fu">padStart</span>(<span class="dv">2</span><span class="op">,</span> <span class="st">'0'</span>)<span class="sc">}${</span>newG<span class="op">.</span><span class="fu">toString</span>(<span class="dv">16</span>)<span class="op">.</span><span class="fu">padStart</span>(<span class="dv">2</span><span class="op">,</span> <span class="st">'0'</span>)<span class="sc">}${</span>newB<span class="op">.</span><span class="fu">toString</span>(<span class="dv">16</span>)<span class="op">.</span><span class="fu">padStart</span>(<span class="dv">2</span><span class="op">,</span> <span class="st">'0'</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
-<span id="cb6-345"><a href="#cb6-345" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="310" data-source-offset="-63"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 309;"><span id="cb6-310"><a href="#cb6-310" aria-hidden="true" tabindex="-1"></a>selectedOrgColorScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleOrdinal</span>()</span>
+<span id="cb6-311"><a href="#cb6-311" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">range</span>(CONFIG<span class="op">.</span><span class="at">selectionColors</span>)</span>
+<span id="cb6-312"><a href="#cb6-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-313"><a href="#cb6-313" aria-hidden="true" tabindex="-1"></a><span class="co">// Get color for an organisation (selected orgs get distinct colors, others get gray)</span></span>
+<span id="cb6-314"><a href="#cb6-314" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getSelectedOrgColor</span>(orgCode) {</span>
+<span id="cb6-315"><a href="#cb6-315" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> index <span class="op">=</span> selectedOrgs<span class="op">.</span><span class="fu">findIndex</span>(org <span class="kw">=&gt;</span> org<span class="op">.</span><span class="at">org_code2</span> <span class="op">===</span> orgCode)<span class="op">;</span></span>
+<span id="cb6-316"><a href="#cb6-316" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> index <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">?</span> <span class="fu">selectedOrgColorScale</span>(index) <span class="op">:</span> <span class="st">"#ddd"</span><span class="op">;</span></span>
+<span id="cb6-317"><a href="#cb6-317" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-318"><a href="#cb6-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-319"><a href="#cb6-319" aria-hidden="true" tabindex="-1"></a><span class="co">// Get subtle background color for an organisation chip</span></span>
+<span id="cb6-320"><a href="#cb6-320" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getSelectedOrgBgColor</span>(orgCode) {</span>
+<span id="cb6-321"><a href="#cb6-321" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> index <span class="op">=</span> selectedOrgs<span class="op">.</span><span class="fu">findIndex</span>(org <span class="kw">=&gt;</span> org<span class="op">.</span><span class="at">org_code2</span> <span class="op">===</span> orgCode)<span class="op">;</span></span>
+<span id="cb6-322"><a href="#cb6-322" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (index <span class="op">&lt;</span> <span class="dv">0</span>) <span class="cf">return</span> <span class="st">"transparent"</span><span class="op">;</span></span>
+<span id="cb6-323"><a href="#cb6-323" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> color <span class="op">=</span> <span class="fu">selectedOrgColorScale</span>(index)<span class="op">;</span></span>
+<span id="cb6-324"><a href="#cb6-324" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Convert hex to rgba with opacity from CONFIG</span></span>
+<span id="cb6-325"><a href="#cb6-325" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
+<span id="cb6-326"><a href="#cb6-326" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">3</span><span class="op">,</span> <span class="dv">5</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
+<span id="cb6-327"><a href="#cb6-327" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> b <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">5</span><span class="op">,</span> <span class="dv">7</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
+<span id="cb6-328"><a href="#cb6-328" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="vs">`rgba(</span><span class="sc">${</span>r<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>b<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>CONFIG<span class="op">.</span><span class="at">chipOpacity</span><span class="sc">}</span><span class="vs">)`</span><span class="op">;</span></span>
+<span id="cb6-329"><a href="#cb6-329" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-330"><a href="#cb6-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-331"><a href="#cb6-331" aria-hidden="true" tabindex="-1"></a><span class="co">// Helper function to darken a color (for hover state)</span></span>
+<span id="cb6-332"><a href="#cb6-332" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">darkenColor</span>(color) {</span>
+<span id="cb6-333"><a href="#cb6-333" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Convert hex to RGB</span></span>
+<span id="cb6-334"><a href="#cb6-334" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
+<span id="cb6-335"><a href="#cb6-335" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">3</span><span class="op">,</span> <span class="dv">5</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
+<span id="cb6-336"><a href="#cb6-336" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> b <span class="op">=</span> <span class="pp">parseInt</span>(color<span class="op">.</span><span class="fu">slice</span>(<span class="dv">5</span><span class="op">,</span> <span class="dv">7</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
+<span id="cb6-337"><a href="#cb6-337" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Darken by 30%</span></span>
+<span id="cb6-338"><a href="#cb6-338" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> darkenFactor <span class="op">=</span> <span class="fl">0.7</span><span class="op">;</span></span>
+<span id="cb6-339"><a href="#cb6-339" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> newR <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(r <span class="op">*</span> darkenFactor)<span class="op">;</span></span>
+<span id="cb6-340"><a href="#cb6-340" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> newG <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(g <span class="op">*</span> darkenFactor)<span class="op">;</span></span>
+<span id="cb6-341"><a href="#cb6-341" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> newB <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(b <span class="op">*</span> darkenFactor)<span class="op">;</span></span>
+<span id="cb6-342"><a href="#cb6-342" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Convert back to hex</span></span>
+<span id="cb6-343"><a href="#cb6-343" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="vs">`#</span><span class="sc">${</span>newR<span class="op">.</span><span class="fu">toString</span>(<span class="dv">16</span>)<span class="op">.</span><span class="fu">padStart</span>(<span class="dv">2</span><span class="op">,</span> <span class="st">'0'</span>)<span class="sc">}${</span>newG<span class="op">.</span><span class="fu">toString</span>(<span class="dv">16</span>)<span class="op">.</span><span class="fu">padStart</span>(<span class="dv">2</span><span class="op">,</span> <span class="st">'0'</span>)<span class="sc">}${</span>newB<span class="op">.</span><span class="fu">toString</span>(<span class="dv">16</span>)<span class="op">.</span><span class="fu">padStart</span>(<span class="dv">2</span><span class="op">,</span> <span class="st">'0'</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb6-344"><a href="#cb6-344" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div id="color-helpers-1">
 <div id="ojs-cell-6-1" data-nodetype="declaration">
@@ -944,13 +944,10 @@
 </div>
 </div>
 </div>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-1-1">Reliable improvement (M186)</a></li>
-<li><a href="#tabset-1-2">Recovery (M192)</a></li>
-<li><a href="#tabset-1-3">Reliable recovery (M195)</a></li>
-</ul>
-<ul class="nav nav-tabs" id="NA" role="tablist"><li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#NA" id="NA-tab" type="button" role="tab" aria-controls="NA" aria-selected="true" class="active nav-link">
+<section class="level3"><h3 id="treatment-outcome-measures">Treatment outcome measures<a class="anchor" aria-label="anchor" href="#treatment-outcome-measures"></a>
+</h3>
+<section class="level4"><h4 id="reliable-improvement-m186">Reliable improvement (M186)<a class="anchor" aria-label="anchor" href="#reliable-improvement-m186"></a>
+</h4>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb11" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb11-0"><a href="#cb11-0" aria-hidden="true" tabindex="-1"></a>plotM186 <span class="op">=</span> <span class="fu">createTimeSeriesPlot</span>(plotDataM186<span class="op">,</span> <span class="st">"Reliable improvement (%)"</span><span class="op">,</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span></code></pre></div>
 <div id="time-series-plot-m186" class="cell-output cell-output-display">
@@ -959,10 +956,8 @@
 </div>
 </div>
 </div>
-</button></li></ul>
-<div class="tab-content"><div class="active  tab-pane" id="NA" role="tabpanel" aria-labelledby="NA-tab">
-
-<div id="tabset-1-2">
+</section><section class="level4"><h4 id="recovery-m192">Recovery (M192)<a class="anchor" aria-label="anchor" href="#recovery-m192"></a>
+</h4>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb12" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb12-0"><a href="#cb12-0" aria-hidden="true" tabindex="-1"></a>plotM192 <span class="op">=</span> <span class="fu">createTimeSeriesPlot</span>(plotDataM192<span class="op">,</span> <span class="st">"Recovery (%)"</span><span class="op">,</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span></code></pre></div>
 <div id="time-series-plot-m192" class="cell-output cell-output-display">
@@ -971,8 +966,8 @@
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-1-3">
+</section><section class="level4"><h4 id="reliable-recovery-m195">Reliable recovery (M195)<a class="anchor" aria-label="anchor" href="#reliable-recovery-m195"></a>
+</h4>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb13" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb13-0"><a href="#cb13-0" aria-hidden="true" tabindex="-1"></a>plotM195 <span class="op">=</span> <span class="fu">createTimeSeriesPlot</span>(plotDataM195<span class="op">,</span> <span class="st">"Reliable recovery (%)"</span><span class="op">,</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span></code></pre></div>
 <div id="time-series-plot-m195" class="cell-output cell-output-display">
@@ -981,15 +976,12 @@
 </div>
 </div>
 </div>
-</div>
-</div></div>
-</div>
-<section class="level3"><h3 id="measure-desriptions">Measure desriptions<a class="anchor" aria-label="anchor" href="#measure-desriptions"></a>
+</section></section><section class="level3"><h3 id="measure-desriptions">Measure desriptions<a class="anchor" aria-label="anchor" href="#measure-desriptions"></a>
 </h3>
 <div class="cell">
 <div class="cell-output-display">
-<div class="reactable html-widget html-fill-item" id="htmlwidget-729ebd16ba97b6cf7917" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-729ebd16ba97b6cf7917">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"measure_id":["M185","M186","M191","M192","M193","M195"],"description":["Count of referrals with a discharge date in the reporting period that finished a course of treatment and show reliable improvement","Proportion of referrals with a discharge date in the period that finished a course of treatment that showed reliable improvement expressed as a percentage","Count of referrals with a discharge date in the period that finished a course of treatment where the service user moved to recovery","Proportion of referrals with a discharge date in the period that finished a course of treatment where the service user moved to recovery expressed as a percentage. Denominator is count of referrals finishing in the period minus those finishing a course of treatment who were not at caseness at initial assessment.","Count of referrals with a discharge date in the period that finished a course of treatment and showed reliable recovery (service user moved to recovery and shown reliable improvement).","Proportion of referrals with a discharge date in the period that finished a course of treatment and showed reliable recovery (service user moved to recovery and shown reliable improvement). Denominator is count of referrals finishing in the period minus those finishing a course of treatment who were not at caseness at initial assessment."]},"columns":[{"id":"measure_id","name":"Measure ID and description","type":"character","cell":[{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M185"]},": ","Count of referrals with a discharge date in the reporting period that finished a course of treatment and show reliable improvement"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M186"]},": ","Proportion of referrals with a discharge date in the period that finished a course of treatment that showed reliable improvement expressed as a percentage"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M191"]},": ","Count of referrals with a discharge date in the period that finished a course of treatment where the service user moved to recovery"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M192"]},": ","Proportion of referrals with a discharge date in the period that finished a course of treatment where the service user moved to recovery expressed as a percentage. Denominator is count of referrals finishing in the period minus those finishing a course of treatment who were not at caseness at initial assessment."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M193"]},": ","Count of referrals with a discharge date in the period that finished a course of treatment and showed reliable recovery (service user moved to recovery and shown reliable improvement)."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M195"]},": ","Proportion of referrals with a discharge date in the period that finished a course of treatment and showed reliable recovery (service user moved to recovery and shown reliable improvement). Denominator is count of referrals finishing in the period minus those finishing a course of treatment who were not at caseness at initial assessment."]}]},{"id":"description","name":"description","type":"character","show":false}],"sortable":false,"searchMethod":"function(rows, columnIds, filterValue) {\n    return rows.filter(function(row) {\n      var measure = String(row.values['measure_id']).toLowerCase();\n      var desc = String(row.values['description']).toLowerCase();\n      var search = filterValue.toLowerCase();\n      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;\n    });\n  }","defaultPageSize":6,"outlined":true,"striped":true,"dataKey":"23d7a5eadf8f725d8642e0d404b791f8"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.searchMethod"],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-e2647013046db5fb951f" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e2647013046db5fb951f">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"measure_id":["M185","M186","M191","M192","M193","M195"],"description":["Count of referrals with a discharge date in the reporting period that finished a course of treatment and show reliable improvement","Proportion of referrals with a discharge date in the period that finished a course of treatment that showed reliable improvement expressed as a percentage","Count of referrals with a discharge date in the period that finished a course of treatment where the service user moved to recovery","Proportion of referrals with a discharge date in the period that finished a course of treatment where the service user moved to recovery expressed as a percentage. Denominator is count of referrals finishing in the period minus those finishing a course of treatment who were not at caseness at initial assessment.","Count of referrals with a discharge date in the period that finished a course of treatment and showed reliable recovery (service user moved to recovery and shown reliable improvement).","Proportion of referrals with a discharge date in the period that finished a course of treatment and showed reliable recovery (service user moved to recovery and shown reliable improvement). Denominator is count of referrals finishing in the period minus those finishing a course of treatment who were not at caseness at initial assessment."]},"columns":[{"id":"measure_id","name":"Measure ID and description","type":"character","cell":[{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M185"]},": ","Count of referrals with a discharge date in the reporting period that finished a course of treatment and show reliable improvement"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M186"]},": ","Proportion of referrals with a discharge date in the period that finished a course of treatment that showed reliable improvement expressed as a percentage"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M191"]},": ","Count of referrals with a discharge date in the period that finished a course of treatment where the service user moved to recovery"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M192"]},": ","Proportion of referrals with a discharge date in the period that finished a course of treatment where the service user moved to recovery expressed as a percentage. Denominator is count of referrals finishing in the period minus those finishing a course of treatment who were not at caseness at initial assessment."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M193"]},": ","Count of referrals with a discharge date in the period that finished a course of treatment and showed reliable recovery (service user moved to recovery and shown reliable improvement)."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M195"]},": ","Proportion of referrals with a discharge date in the period that finished a course of treatment and showed reliable recovery (service user moved to recovery and shown reliable improvement). Denominator is count of referrals finishing in the period minus those finishing a course of treatment who were not at caseness at initial assessment."]}]},{"id":"description","name":"description","type":"character","show":false}],"sortable":false,"searchMethod":"function(rows, columnIds, filterValue) {\n    return rows.filter(function(row) {\n      var measure = String(row.values['measure_id']).toLowerCase();\n      var desc = String(row.values['description']).toLowerCase();\n      var search = filterValue.toLowerCase();\n      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;\n    });\n  }","defaultPageSize":6,"outlined":true,"striped":true,"dataKey":"23d7a5eadf8f725d8642e0d404b791f8"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.searchMethod"],"jsHooks":[]}</script>
 </div>
 </div>
 </section><script type="ojs-module-contents">
@@ -1084,7 +1076,8 @@ window._ojs.runtime.interpretFromScriptTags();
       }
     }
   });
-  </script></main>
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

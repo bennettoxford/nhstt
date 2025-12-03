@@ -711,14 +711,15 @@ selectedOrgDisplay = {
 }
 ```
 
-- [Mean HI appointments (M112)](#tabset-1-1)
-- [Mean LI appointments (M120)](#tabset-1-2)
+### Treatment appointment measures
 
-&nbsp;
+#### Mean HI appointments (M112)
 
-- ``` js
-  plotM112 = createTimeSeriesPlot(plotDataM112, "Mean HI appointments")
-  ```
+``` js
+plotM112 = createTimeSeriesPlot(plotDataM112, "Mean HI appointments")
+```
+
+#### Mean LI appointments (M120)
 
 ``` js
 plotM120 = createTimeSeriesPlot(plotDataM120, "Mean LI appointments")

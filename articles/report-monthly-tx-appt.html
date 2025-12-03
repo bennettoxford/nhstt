@@ -936,12 +936,10 @@
 </div>
 </div>
 </div>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-1-1">Mean HI appointments (M112)</a></li>
-<li><a href="#tabset-1-2">Mean LI appointments (M120)</a></li>
-</ul>
-<ul class="nav nav-tabs" id="NA" role="tablist"><li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#NA" id="NA-tab" type="button" role="tab" aria-controls="NA" aria-selected="true" class="active nav-link">
+</section><section class="level3"><h3 id="treatment-appointment-measures">Treatment appointment measures<a class="anchor" aria-label="anchor" href="#treatment-appointment-measures"></a>
+</h3>
+<section class="level4"><h4 id="mean-hi-appointments-m112">Mean HI appointments (M112)<a class="anchor" aria-label="anchor" href="#mean-hi-appointments-m112"></a>
+</h4>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb11" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb11-0"><a href="#cb11-0" aria-hidden="true" tabindex="-1"></a>plotM112 <span class="op">=</span> <span class="fu">createTimeSeriesPlot</span>(plotDataM112<span class="op">,</span> <span class="st">"Mean HI appointments"</span>)</span></code></pre></div>
 <div id="time-series-plot-m112" class="cell-output cell-output-display">
@@ -950,10 +948,8 @@
 </div>
 </div>
 </div>
-</button></li></ul>
-<div class="tab-content"><div class="active  tab-pane" id="NA" role="tabpanel" aria-labelledby="NA-tab">
-
-<div id="tabset-1-2">
+</section><section class="level4"><h4 id="mean-li-appointments-m120">Mean LI appointments (M120)<a class="anchor" aria-label="anchor" href="#mean-li-appointments-m120"></a>
+</h4>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb12" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb12-0"><a href="#cb12-0" aria-hidden="true" tabindex="-1"></a>plotM120 <span class="op">=</span> <span class="fu">createTimeSeriesPlot</span>(plotDataM120<span class="op">,</span> <span class="st">"Mean LI appointments"</span>)</span></code></pre></div>
 <div id="time-series-plot-m120" class="cell-output cell-output-display">
@@ -962,15 +958,12 @@
 </div>
 </div>
 </div>
-</div>
-</div></div>
-</div>
-</section><section class="level3"><h3 id="measure-descriptions">Measure descriptions<a class="anchor" aria-label="anchor" href="#measure-descriptions"></a>
+</section></section><section class="level3"><h3 id="measure-descriptions">Measure descriptions<a class="anchor" aria-label="anchor" href="#measure-descriptions"></a>
 </h3>
 <div class="cell">
 <div class="cell-output-display">
-<div class="reactable html-widget html-fill-item" id="htmlwidget-48f86239f6b7998faddd" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-48f86239f6b7998faddd">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"measure_id":["M082","M112","M120"],"description":["Count of appointments in the reporting period","Mean number of High Intensity treatment appointments for referrals with an end date in the reporting period having finished a course of treatment that had at least one high intensity appointment.","Mean number of Low Intensity treatment appointments for referrals with an end date in the reporting period having finished a course of treatmentthat had at least one low intensity appointment."]},"columns":[{"id":"measure_id","name":"Measure ID and description","type":"character","cell":[{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M082"]},": ","Count of appointments in the reporting period"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M112"]},": ","Mean number of High Intensity treatment appointments for referrals with an end date in the reporting period having finished a course of treatment that had at least one high intensity appointment."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M120"]},": ","Mean number of Low Intensity treatment appointments for referrals with an end date in the reporting period having finished a course of treatmentthat had at least one low intensity appointment."]}]},{"id":"description","name":"description","type":"character","show":false}],"sortable":false,"searchMethod":"function(rows, columnIds, filterValue) {\n    return rows.filter(function(row) {\n      var measure = String(row.values['measure_id']).toLowerCase();\n      var desc = String(row.values['description']).toLowerCase();\n      var search = filterValue.toLowerCase();\n      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;\n    });\n  }","defaultPageSize":3,"outlined":true,"striped":true,"dataKey":"5e1ec8bb8bb76f1023affab9f5af34f9"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.searchMethod"],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-b1199d748c329e523384" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b1199d748c329e523384">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"measure_id":["M082","M112","M120"],"description":["Count of appointments in the reporting period","Mean number of High Intensity treatment appointments for referrals with an end date in the reporting period having finished a course of treatment that had at least one high intensity appointment.","Mean number of Low Intensity treatment appointments for referrals with an end date in the reporting period having finished a course of treatmentthat had at least one low intensity appointment."]},"columns":[{"id":"measure_id","name":"Measure ID and description","type":"character","cell":[{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M082"]},": ","Count of appointments in the reporting period"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M112"]},": ","Mean number of High Intensity treatment appointments for referrals with an end date in the reporting period having finished a course of treatment that had at least one high intensity appointment."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M120"]},": ","Mean number of Low Intensity treatment appointments for referrals with an end date in the reporting period having finished a course of treatmentthat had at least one low intensity appointment."]}]},{"id":"description","name":"description","type":"character","show":false}],"sortable":false,"searchMethod":"function(rows, columnIds, filterValue) {\n    return rows.filter(function(row) {\n      var measure = String(row.values['measure_id']).toLowerCase();\n      var desc = String(row.values['description']).toLowerCase();\n      var search = filterValue.toLowerCase();\n      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;\n    });\n  }","defaultPageSize":3,"outlined":true,"striped":true,"dataKey":"5e1ec8bb8bb76f1023affab9f5af34f9"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.searchMethod"],"jsHooks":[]}</script>
 </div>
 </div>
 </section><script type="ojs-module-contents">
