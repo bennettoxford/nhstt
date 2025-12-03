@@ -528,8 +528,8 @@ cache_info <- function(max_size_mb = 1000) {
   if (size_mb > max_size_mb) {
     cli_warn(c(
       "Cache size ({round(size_mb)} MB) exceeds recommended limit ({max_size_mb} MB)",
-      "i" = "Consider running {.code clear_cache()} to free space",
-      "i" = "Or use {.code clear_cache(\"raw\")} or {.code clear_cache(\"tidy\")} for selective cleanup"
+      "i" = "Consider running {.code cache_clear()} to free space",
+      "i" = "Or use {.code cache_clear(\"raw\")} or {.code cache_clear(\"tidy\")} for selective cleanup"
     ))
   }
 
@@ -566,15 +566,15 @@ cache_info <- function(max_size_mb = 1000) {
 #' @examples
 #' \dontrun{
 #' # Clear all cache
-#' clear_cache()
+#' cache_clear()
 #'
 #' # Clear only raw data cache
-#' clear_cache(type = "raw")
+#' cache_clear(type = "raw")
 #'
 #' # Clear only tidy data cache
-#' clear_cache(type = "tidy")
+#' cache_clear(type = "tidy")
 #' }
-clear_cache <- function(type = "all") {
+cache_clear <- function(type = "all") {
   valid_types <- c("all", "raw", "tidy")
   if (!type %in% valid_types) {
     cli_abort(c(

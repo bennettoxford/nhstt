@@ -98,22 +98,22 @@ test_that("cache_info shows cache directory", {
   expect_true(dir.exists(result$cache_dir))
 })
 
-# clear_cache tests ------------------------------------------------------------
+# cache_clear tests ------------------------------------------------------------
 
-test_that("clear_cache validates type parameter", {
+test_that("cache_clear validates type parameter", {
   expect_error(
-    clear_cache(type = "invalid"),
+    cache_clear(type = "invalid"),
     "Invalid type"
   )
 })
 
-test_that("clear_cache accepts valid types", {
-  expect_invisible(clear_cache(type = "raw"))
-  expect_invisible(clear_cache(type = "tidy"))
-  expect_invisible(clear_cache(type = "all"))
+test_that("cache_clear accepts valid types", {
+  expect_invisible(cache_clear(type = "raw"))
+  expect_invisible(cache_clear(type = "tidy"))
+  expect_invisible(cache_clear(type = "all"))
 })
 
-test_that("clear_cache removes initialization marker when type is all", {
+test_that("cache_clear removes initialization marker when type is all", {
   cache_dir <- get_cache_dir()
   marker_file <- file.path(cache_dir, ".nhstt_initialized")
 
@@ -123,13 +123,13 @@ test_that("clear_cache removes initialization marker when type is all", {
   }
 
   # Clear all cache
-  clear_cache(type = "all")
+  cache_clear(type = "all")
 
   # Marker should be removed
   expect_false(file.exists(marker_file))
 })
 
-test_that("clear_cache keeps initialization marker when type is raw", {
+test_that("cache_clear keeps initialization marker when type is raw", {
   cache_dir <- get_cache_dir()
   marker_file <- file.path(cache_dir, ".nhstt_initialized")
 
@@ -137,13 +137,13 @@ test_that("clear_cache keeps initialization marker when type is raw", {
   file.create(marker_file)
 
   # Clear only raw
-  clear_cache(type = "raw")
+  cache_clear(type = "raw")
 
   # Marker should still exist
   expect_true(file.exists(marker_file))
 })
 
-test_that("clear_cache keeps initialization marker when type is tidy", {
+test_that("cache_clear keeps initialization marker when type is tidy", {
   cache_dir <- get_cache_dir()
   marker_file <- file.path(cache_dir, ".nhstt_initialized")
 
@@ -151,7 +151,7 @@ test_that("clear_cache keeps initialization marker when type is tidy", {
   file.create(marker_file)
 
   # Clear only tidy
-  clear_cache(type = "tidy")
+  cache_clear(type = "tidy")
 
   # Marker should still exist
   expect_true(file.exists(marker_file))
