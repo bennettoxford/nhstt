@@ -40,10 +40,10 @@ navbar:
           href: articles/metadata-monthly-ltc.html
     - text: "Reports"
       menu:
-        - text: "Drafts"
-        - text: "Monthly treatment appointment measures"
+        - text: "Monthly"
+        - text: "Appointment measures"
           href: articles/report-monthly-tx-appt.html
-        - text: "Monthly treatment outcome measures"
+        - text: "Outcome measures"
           href: articles/report-monthly-outcomes.html
 
 reference:
@@ -80,7 +80,7 @@ articles:
       - metadata-monthly-ea
       - metadata-monthly-ltc
   - title: "Reports"
-    desc: "Reports using NHS TT data"
+    desc: "Reports based on monthly and annual NHS TT measures"
     contents:
       - report-monthly-tx-appt
       - report-monthly-outcomes

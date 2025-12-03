@@ -31,44 +31,66 @@ library(nhstt)
 library(tidyverse)
 library(reactable)
 
-# Metadata for the two treatment appointment measures
+# Metadata for the treatment appointment measures and reference measure
 metadata_tx_appt <- get_metadata_monthly() |>
-  filter(measure_id %in% c("M120", "M112")) |>
+  filter(measure_id %in% c("M120", "M112", "M082")) |>
   select(measure_id, description)
 
-# Helper function to prepare plot data for a measure
-prepare_plot_data <- function(data, measure) {
-  data |>
-    filter(measure_id == measure) |>
+# Helper function to prepare paired plot data (mean + count reference)
+prepare_paired_plot_data <- function(data, mean_measure, count_measure) {
+  # Get mean data
+  mean_data <- data |>
+    filter(measure_id == mean_measure) |>
     select(
       reporting_period,
       start_date,
       end_date,
       org_code2,
       org_name2,
-      measure_id,
       value
     ) |>
+    rename(mean_value = value) |>
+    mutate(mean_measure_id = mean_measure)
+
+  # Get count reference data
+  count_data <- data |>
+    filter(measure_id == count_measure) |>
+    select(reporting_period, org_code2, value) |>
+    rename(count_value = value) |>
+    mutate(count_measure_id = count_measure)
+
+  # Join and prepare
+  mean_data |>
+    left_join(count_data, by = c("reporting_period", "org_code2")) |>
     arrange(org_code2, reporting_period) |>
     mutate(
       org_name_clean = nhstt:::clean_org_names(org_name2),
       org_name_code = paste0(org_name_clean, " (", org_code2, ")")
     ) |>
-    select(start_date, end_date, value, org_name_code, org_code2, measure_id)
+    select(
+      start_date,
+      end_date,
+      mean_value,
+      count_value,
+      org_name_code,
+      org_code2,
+      mean_measure_id,
+      count_measure_id
+    )
 }
 
 # Get monthly activity performance data
 ap <- get_activity_performance_monthly()
 
-# Prepare plot data for both measures (keep NAs for gap visualization)
-plot_data_m120 <- prepare_plot_data(ap, "M120")
+# Prepare paired data for both appointment measures with M082 as reference
+plot_data_m120 <- prepare_paired_plot_data(ap, "M120", "M082")
 
 plot_data_m112 <- ap |>
   # There is something wrong with data from this service:
   # - in period 2024-06 they have 41
   # - in period 2025-07 they have -1.8
   filter(!org_code2 == "K7Y6R") |>
-  prepare_plot_data("M112")
+  prepare_paired_plot_data("M112", "M082")
 
 # Prepare organisation list for filtering (from M120 data)
 org_list <- plot_data_m120 |>
@@ -82,49 +104,6 @@ ojs_define(org_list_ojs = org_list)
 ```
 
 > **Note:** This report is in active development and designed for feedback on the user interface and visualisation methods. We have not done data assurance, results need to be interpreted carefully.
-
-### Measures
-
-```{r}
-#| label: tab-measures-tx-appt
-#| echo: false
-
-reactable(
-  metadata_tx_appt,
-  searchable = FALSE,
-  sortable = FALSE,
-  searchMethod = JS(
-    "function(rows, columnIds, filterValue) {
-    return rows.filter(function(row) {
-      var measure = String(row.values['measure_id']).toLowerCase();
-      var desc = String(row.values['description']).toLowerCase();
-      var search = filterValue.toLowerCase();
-      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;
-    });
-  }"
-  ),
-  defaultPageSize = nrow(metadata_tx_appt),
-  columns = list(
-    measure_id = colDef(
-      name = "Measure ID and description",
-      cell = function(value, index) {
-        description <- metadata_tx_appt$description[index]
-        htmltools::tags$div(
-          htmltools::tags$code(
-            style = "color: #2A788EFF;",
-            value
-          ),
-          ": ",
-          description
-        )
-      }
-    ),
-    description = colDef(show = FALSE)
-  ),
-  outlined = TRUE,
-  striped = TRUE
-)
-```
 
 ```{ojs}
 //| label: convert-report-data
@@ -297,7 +276,9 @@ selectedOrgDisplay = {
 }
 ```
 
-### Mean number of HI treatment appointments (M112)
+::: {.panel-tabset}
+
+### Mean HI appointments (M112)
 
 ```{ojs}
 //| label: time-series-plot-m112
@@ -305,11 +286,55 @@ selectedOrgDisplay = {
 plotM112 = createTimeSeriesPlot(plotDataM112, "Mean HI appointments")
 ```
 
-
-### Mean number of LI treatment appointments (M120)
+### Mean LI appointments (M120)
 
 ```{ojs}
 //| label: time-series-plot-m120
 
 plotM120 = createTimeSeriesPlot(plotDataM120, "Mean LI appointments")
+```
+
+:::
+
+### Measure descriptions
+
+```{r}
+#| label: tab-measures-tx-appt
+#| echo: false
+
+reactable(
+  metadata_tx_appt,
+  searchable = FALSE,
+  sortable = FALSE,
+  searchMethod = JS(
+    "function(rows, columnIds, filterValue) {
+    return rows.filter(function(row) {
+      var measure = String(row.values['measure_id']).toLowerCase();
+      var desc = String(row.values['description']).toLowerCase();
+      var search = filterValue.toLowerCase();
+      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;
+    });
+  }"
+  ),
+  defaultPageSize = nrow(metadata_tx_appt),
+  columns = list(
+    measure_id = colDef(
+      name = "Measure ID and description",
+      cell = function(value, index) {
+        description <- metadata_tx_appt$description[index]
+        htmltools::tags$div(
+          htmltools::tags$code(
+            style = "color: #2A788EFF;",
+            value
+          ),
+          ": ",
+          description
+        )
+      }
+    ),
+    description = colDef(show = FALSE)
+  ),
+  outlined = TRUE,
+  striped = TRUE
+)
 ```
