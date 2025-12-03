@@ -33,37 +33,69 @@ library(reactable)
 
 # Metadata for the three treatment outcome measures
 metadata_outcomes <- get_metadata_monthly() |>
-  filter(measure_id %in% c("M186", "M192", "M195")) |>
+  filter(
+    measure_id %in%
+      c(
+        "M185",
+        "M186",
+        "M191",
+        "M192",
+        "M193",
+        "M195"
+      )
+  ) |>
   select(measure_id, description)
 
-# Helper function to prepare plot data for a measure
-prepare_plot_data <- function(data, measure) {
-  data |>
-    filter(measure_id == measure) |>
+# Helper function to prepare paired plot data (percentage + count)
+prepare_paired_plot_data <- function(data, pct_measure, count_measure) {
+  # Get percentage data
+  pct_data <- data |>
+    filter(measure_id == pct_measure) |>
     select(
       reporting_period,
       start_date,
       end_date,
       org_code2,
       org_name2,
-      measure_id,
       value
     ) |>
+    rename(pct_value = value) |>
+    mutate(pct_measure_id = pct_measure)
+
+  # Get count data
+  count_data <- data |>
+    filter(measure_id == count_measure) |>
+    select(reporting_period, org_code2, value) |>
+    rename(count_value = value) |>
+    mutate(count_measure_id = count_measure)
+
+  # Join and prepare
+  pct_data |>
+    left_join(count_data, by = c("reporting_period", "org_code2")) |>
     arrange(org_code2, reporting_period) |>
     mutate(
       org_name_clean = nhstt:::clean_org_names(org_name2),
       org_name_code = paste0(org_name_clean, " (", org_code2, ")")
     ) |>
-    select(start_date, end_date, value, org_name_code, org_code2, measure_id)
+    select(
+      start_date,
+      end_date,
+      pct_value,
+      count_value,
+      org_name_code,
+      org_code2,
+      pct_measure_id,
+      count_measure_id
+    )
 }
 
 # Get monthly activity performance data
 ap <- get_activity_performance_monthly()
 
-# Prepare plot data for all three measures (keep NAs for gap visualization)
-plot_data_m186 <- prepare_plot_data(ap, "M186")
-plot_data_m192 <- prepare_plot_data(ap, "M192")
-plot_data_m195 <- prepare_plot_data(ap, "M195")
+# Prepare paired data for all three outcome measures (keep NAs for gap visualization)
+plot_data_m186 <- prepare_paired_plot_data(ap, "M186", "M185")
+plot_data_m192 <- prepare_paired_plot_data(ap, "M192", "M191")
+plot_data_m195 <- prepare_paired_plot_data(ap, "M195", "M193")
 
 # Prepare organisation list for filtering (from M186 data)
 org_list <- plot_data_m186 |>
@@ -79,48 +111,6 @@ ojs_define(org_list_ojs = org_list)
 
 > **Note:** This report is in active development and designed for feedback on the user interface and visualisation methods. We have not done data assurance, results need to be interpreted carefully.
 
-### Measures
-
-```{r}
-#| label: tab-measures-outcomes
-#| echo: false
-
-reactable(
-  metadata_outcomes,
-  searchable = FALSE,
-  sortable = FALSE,
-  searchMethod = JS(
-    "function(rows, columnIds, filterValue) {
-    return rows.filter(function(row) {
-      var measure = String(row.values['measure_id']).toLowerCase();
-      var desc = String(row.values['description']).toLowerCase();
-      var search = filterValue.toLowerCase();
-      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;
-    });
-  }"
-  ),
-  defaultPageSize = nrow(metadata_outcomes),
-  columns = list(
-    measure_id = colDef(
-      name = "Measure ID and description",
-      cell = function(value, index) {
-        description <- metadata_outcomes$description[index]
-        htmltools::tags$div(
-          htmltools::tags$code(
-            style = "color: #2A788EFF;",
-            value
-          ),
-          ": ",
-          description
-        )
-      }
-    ),
-    description = colDef(show = FALSE)
-  ),
-  outlined = TRUE,
-  striped = TRUE
-)
-```
 
 ```{ojs}
 //| label: convert-report-data
@@ -132,7 +122,6 @@ plotDataM195 = convertPlotData(transpose(plot_data_m195_ojs))
 organisations = transpose(org_list_ojs)
 ```
 
-### Select NHS TT providers
 
 ```{ojs}
 //| label: search-select-input
@@ -294,6 +283,9 @@ selectedOrgDisplay = {
 }
 ```
 
+::: {.panel-tabset}
+
+
 ### Reliable improvement (M186)
 
 ```{ojs}
@@ -316,4 +308,49 @@ plotM192 = createTimeSeriesPlot(plotDataM192, "Recovery (%)", [0, 100])
 //| label: time-series-plot-m195
 
 plotM195 = createTimeSeriesPlot(plotDataM195, "Reliable recovery (%)", [0, 100])
+```
+
+:::
+
+### Measure desriptions
+
+```{r}
+#| label: tab-measures-outcomes
+#| echo: false
+
+reactable(
+  metadata_outcomes,
+  searchable = FALSE,
+  sortable = FALSE,
+  searchMethod = JS(
+    "function(rows, columnIds, filterValue) {
+    return rows.filter(function(row) {
+      var measure = String(row.values['measure_id']).toLowerCase();
+      var desc = String(row.values['description']).toLowerCase();
+      var search = filterValue.toLowerCase();
+      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;
+    });
+  }"
+  ),
+  defaultPageSize = nrow(metadata_outcomes),
+  columns = list(
+    measure_id = colDef(
+      name = "Measure ID and description",
+      cell = function(value, index) {
+        description <- metadata_outcomes$description[index]
+        htmltools::tags$div(
+          htmltools::tags$code(
+            style = "color: #2A788EFF;",
+            value
+          ),
+          ": ",
+          description
+        )
+      }
+    ),
+    description = colDef(show = FALSE)
+  ),
+  outlined = TRUE,
+  striped = TRUE
+)
 ```
