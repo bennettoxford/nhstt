@@ -276,9 +276,9 @@ selectedOrgDisplay = {
 }
 ```
 
-::: {.panel-tabset}
+### Treatment appointment measures
 
-### Mean HI appointments (M112)
+#### Mean HI appointments (M112)
 
 ```{ojs}
 //| label: time-series-plot-m112
@@ -286,15 +286,13 @@ selectedOrgDisplay = {
 plotM112 = createTimeSeriesPlot(plotDataM112, "Mean HI appointments")
 ```
 
-### Mean LI appointments (M120)
+#### Mean LI appointments (M120)
 
 ```{ojs}
 //| label: time-series-plot-m120
 
 plotM120 = createTimeSeriesPlot(plotDataM120, "Mean LI appointments")
 ```
-
-:::
 
 ### Measure descriptions
 
