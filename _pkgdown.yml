@@ -61,7 +61,7 @@ reference:
   - title: "Cache management"
     contents:
       - cache_info
-      - clear_cache
+      - cache_clear
   - title: "Helper functions"
     contents:
       - available_nhstt_reports
