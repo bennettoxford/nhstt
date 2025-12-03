@@ -18,12 +18,16 @@ CONFIG = ({
 
 ``` js
 // Convert R data to JavaScript format with proper date handling
+// Handles: simple value, paired pct_value/count_value (outcomes), paired mean_value/count_value (appointments)
 function convertPlotData(data) {
   return data.map(d => ({
     ...d,
     start_date: new Date(d.start_date),
     end_date: new Date(d.end_date),
-    value: d.value === null ? NaN : d.value
+    value: d.value === null ? NaN : d.value,
+    pct_value: d.pct_value === null ? NaN : d.pct_value,
+    mean_value: d.mean_value === null ? NaN : d.mean_value,
+    count_value: d.count_value === null ? NaN : d.count_value
   }));
 }
 ```
@@ -186,7 +190,7 @@ styles = html`<style>
 
   .nhstt-result-box {
     padding: 12px 16px;
-    border: 1px solid #adb5bd;
+    border: 1px solid #dee2e6;
     border-radius: 0.375rem;
     background: white;
     height: 48px;
@@ -327,13 +331,16 @@ function createTimeSeriesPlot(data, yAxisLabel, yDomain = null) {
   const marginBottom = CONFIG.plotMargins.bottom;
   const marginLeft = CONFIG.plotMargins.left;
 
+  // Helper to get the value from data (handles pct_value, mean_value, or value)
+  const getValue = d => !isNaN(d.pct_value) ? d.pct_value : (!isNaN(d.mean_value) ? d.mean_value : d.value);
+
   // Create scales
   const x = d3.scaleUtc()
     .domain(d3.extent(data, d => d.start_date))
     .range([marginLeft, width - marginRight]);
 
   const y = d3.scaleLinear()
-    .domain(yDomain || [0, d3.max(data, d => d.value)])
+    .domain(yDomain || [0, d3.max(data, d => getValue(d))])
     .nice()
     .range([height - marginBottom, marginTop]);
 
@@ -365,8 +372,8 @@ function createTimeSeriesPlot(data, yAxisLabel, yDomain = null) {
       .style("font-size", "14px");
 
   // Prepare points and groups
-  const points = data.filter(d => !isNaN(d.value)).map((d) =>
-    [x(d.start_date), y(d.value), d.org_name_code, d]
+  const points = data.filter(d => !isNaN(getValue(d))).map((d) =>
+    [x(d.start_date), y(getValue(d)), d.org_name_code, d]
   );
   const groups = d3.rollup(points, v => Object.assign(v, {z: v[0][2]}), d => d[2]);
   const selectedOrgCodes = selectedOrgs.map(org => org.org_code2);
@@ -410,17 +417,17 @@ function createTimeSeriesPlot(data, yAxisLabel, yDomain = null) {
       .attr("rx", 4)
       .attr("ry", 4)
       .attr("x", 8)
-      .attr("y", -60)
+      .attr("y", -56)
       .attr("width", 200)
       .attr("height", 55);
 
-  dot.append("text").attr("class", "tooltip-provider").attr("x", 13).attr("y", -47)
+  dot.append("text").attr("class", "tooltip-provider").attr("x", 13).attr("y", -43)
       .attr("font-weight", "bold").attr("font-size", "13px").attr("fill", "black");
-  dot.append("text").attr("class", "tooltip-date").attr("x", 13).attr("y", -34)
+  dot.append("text").attr("class", "tooltip-date").attr("x", 13).attr("y", -30)
       .attr("font-size", "12px").attr("fill", "black");
-  dot.append("text").attr("class", "tooltip-measure").attr("x", 13).attr("y", -21)
+  dot.append("text").attr("class", "tooltip-value").attr("x", 13).attr("y", -17)
       .attr("font-size", "12px").attr("fill", "black");
-  dot.append("text").attr("class", "tooltip-value").attr("x", 13).attr("y", -8)
+  dot.append("text").attr("class", "tooltip-count").attr("x", 13).attr("y", -4)
       .attr("font-size", "12px").attr("fill", "black");
 
   // Interaction handlers
@@ -451,21 +458,37 @@ function createTimeSeriesPlot(data, yAxisLabel, yDomain = null) {
     if (dataPoint) {
       dot.select(".tooltip-provider").text(dataPoint.org_name_code);
       dot.select(".tooltip-date").text(`Month: ${dateFormatter(dataPoint.start_date)}`);
-      dot.select(".tooltip-measure").text(`Measure ID: ${dataPoint.measure_id}`);
-      dot.select(".tooltip-value").text(`Mean: ${dataPoint.value.toLocaleString()}`);
+
+      // Check data type and show appropriate tooltip
+      const isPctData = !isNaN(dataPoint.pct_value);
+      const isMeanData = !isNaN(dataPoint.mean_value);
+
+      if (isPctData) {
+        // For outcomes: Percentage (M186): 67% \n Count (M185): 430
+        dot.select(".tooltip-value").text(`Percentage (${dataPoint.pct_measure_id}): ${dataPoint.pct_value.toLocaleString()}%`);
+        dot.select(".tooltip-count").text(`Count (${dataPoint.count_measure_id}): ${dataPoint.count_value.toLocaleString()}`);
+      } else if (isMeanData) {
+        // For appointments: Mean (M120): 5.2 \n Count (M082): 140
+        dot.select(".tooltip-value").text(`Mean (${dataPoint.mean_measure_id}): ${dataPoint.mean_value.toLocaleString()}`);
+        dot.select(".tooltip-count").text(`Count (${dataPoint.count_measure_id}): ${dataPoint.count_value.toLocaleString()}`);
+      } else {
+        // Fallback for simple value data
+        dot.select(".tooltip-value").text(`Value: ${dataPoint.value.toLocaleString()}`);
+        dot.select(".tooltip-count").text("");
+      }
 
       // Calculate tooltip width
       const providerWidth = dot.select(".tooltip-provider").node().getComputedTextLength();
       const dateWidth = dot.select(".tooltip-date").node().getComputedTextLength();
-      const measureWidth = dot.select(".tooltip-measure").node().getComputedTextLength();
       const valueWidth = dot.select(".tooltip-value").node().getComputedTextLength();
-      const maxWidth = Math.max(providerWidth, dateWidth, measureWidth, valueWidth);
+      const countWidth = dot.select(".tooltip-count").node().getComputedTextLength();
+      const maxWidth = Math.max(providerWidth, dateWidth, valueWidth, countWidth);
       const padding = 10;
       const tooltipWidth = maxWidth + (padding * 2);
 
       // Position tooltip to keep within bounds
       let tooltipX = 8;
-      let tooltipY = -60;
+      let tooltipY = -56;
       if (x + tooltipX + tooltipWidth > width - marginRight) {
         tooltipX = -(tooltipWidth + 8);
       }
@@ -479,8 +502,8 @@ function createTimeSeriesPlot(data, yAxisLabel, yDomain = null) {
       const textOffsetY = tooltipY + 13;
       dot.select(".tooltip-provider").attr("x", textOffsetX).attr("y", textOffsetY);
       dot.select(".tooltip-date").attr("x", textOffsetX).attr("y", textOffsetY + 13);
-      dot.select(".tooltip-measure").attr("x", textOffsetX).attr("y", textOffsetY + 26);
-      dot.select(".tooltip-value").attr("x", textOffsetX).attr("y", textOffsetY + 39);
+      dot.select(".tooltip-value").attr("x", textOffsetX).attr("y", textOffsetY + 26);
+      dot.select(".tooltip-count").attr("x", textOffsetX).attr("y", textOffsetY + 39);
     }
 
     dot.attr("transform", `translate(${x},${y})`);
@@ -524,16 +547,12 @@ function createTimeSeriesPlot(data, yAxisLabel, yDomain = null) {
 > feedback on the user interface and visualisation methods. We have not
 > done data assurance, results need to be interpreted carefully.
 
-### Measures
-
 ``` js
 plotDataM186 = convertPlotData(transpose(plot_data_m186_ojs))
 plotDataM192 = convertPlotData(transpose(plot_data_m192_ojs))
 plotDataM195 = convertPlotData(transpose(plot_data_m195_ojs))
 organisations = transpose(org_list_ojs)
 ```
-
-### Select NHS TT providers
 
 ``` js
 viewof searchAndSelect = {
@@ -691,20 +710,22 @@ selectedOrgDisplay = {
 }
 ```
 
-### Reliable improvement (M186)
+- [Reliable improvement (M186)](#tabset-1-1)
+- [Recovery (M192)](#tabset-1-2)
+- [Reliable recovery (M195)](#tabset-1-3)
 
-``` js
-plotM186 = createTimeSeriesPlot(plotDataM186, "Reliable improvement (%)", [0, 100])
-```
+&nbsp;
 
-### Recovery (M192)
+- ``` js
+  plotM186 = createTimeSeriesPlot(plotDataM186, "Reliable improvement (%)", [0, 100])
+  ```
 
 ``` js
 plotM192 = createTimeSeriesPlot(plotDataM192, "Recovery (%)", [0, 100])
 ```
 
-### Reliable recovery (M195)
-
 ``` js
 plotM195 = createTimeSeriesPlot(plotDataM195, "Reliable recovery (%)", [0, 100])
 ```
+
+### Measure desriptions

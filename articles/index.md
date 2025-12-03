@@ -24,7 +24,7 @@ Metadata for annual and monthly reports
 
 ### Reports
 
-Reports using NHS TT data
+Reports based on monthly and annual NHS TT measures
 
 - [Monthly treatment appointment
   measures](https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appt.md):
