@@ -41,14 +41,14 @@ get_raw_cache_dir <- function(frequency) {
 
 #' Get tidy data cache directory for a dataset
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #'
 #' @return Character path to tidy cache directory
 #'
 #' @keywords internal
 get_tidy_cache_dir <- function(dataset, frequency) {
-  validate_dataset(dataset)
+  validate_dataset(dataset, frequency)
   validate_frequency(frequency)
 
   tidy_dir <- file.path(get_cache_dir(), "tidy", frequency, dataset)
@@ -62,7 +62,7 @@ get_tidy_cache_dir <- function(dataset, frequency) {
 
 #' Get raw data cache path
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #'
@@ -70,7 +70,7 @@ get_tidy_cache_dir <- function(dataset, frequency) {
 #'
 #' @keywords internal
 get_raw_cache_path <- function(dataset, period, frequency) {
-  validate_dataset(dataset)
+  validate_dataset(dataset, frequency)
   validate_frequency(frequency)
   validate_period(period, dataset, frequency)
 
@@ -80,7 +80,7 @@ get_raw_cache_path <- function(dataset, period, frequency) {
 
 #' Get versioned tidy cache path
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #' @param dataset_version Character, specifying dataset version (e.g., "1.0.0"). Default NULL
@@ -156,7 +156,7 @@ get_package_data_path <- function(
 #'
 #' Returns the path to the JSON file that stores version metadata for a dataset
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #'
 #' @return Character path to .versions.json file
@@ -168,7 +168,7 @@ get_tidy_versions_json_path <- function(dataset, frequency) {
 
 #' Check if tidy cache exists
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #'
@@ -182,7 +182,7 @@ tidy_cache_exists <- function(dataset, period, frequency) {
 
 #' Check if raw data exists
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #'
@@ -197,7 +197,7 @@ raw_cache_exists <- function(dataset, period, frequency) {
 #' Write tidy data to Parquet cache
 #'
 #' @param data Tibble, containing cleaned data
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #' @param raw_data_hash Character, specifying SHA256 hash of raw data
@@ -231,7 +231,7 @@ write_tidy_cache <- function(
 
 #' Load tidy data from Parquet cache
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #'
@@ -253,7 +253,7 @@ load_tidy_cache <- function(dataset, period, frequency) {
 
 #' Record version metadata
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #' @param raw_data_hash Character, specifying SHA256 hash
@@ -343,7 +343,7 @@ read_raw_downloads_json <- function(frequency) {
 
 #' Record raw download metadata
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #' @param url Character, specifying source URL

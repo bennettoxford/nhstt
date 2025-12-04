@@ -4,10 +4,12 @@
 \alias{validate_dataset}
 \title{Validate dataset name}
 \usage{
-validate_dataset(dataset)
+validate_dataset(dataset, frequency)
 }
 \arguments{
-\item{dataset}{Character, specifying dataset name to validate (e.g., "key_measures", "activity_performance")}
+\item{dataset}{Character, specifying dataset name}
+
+\item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
 }
 \value{
 Invisible TRUE if valid, aborts otherwise

@@ -30,7 +30,7 @@ get_activity_performance_monthly <- function(
   use_cache = TRUE
 ) {
   frequency <- "monthly"
-  dataset <- "activity_performance"
+  dataset <- "activity_performance_monthly"
 
   periods <- resolve_periods(periods, dataset, frequency)
   periods <- rev(periods)
@@ -79,7 +79,7 @@ get_metadata_monthly <- function(
   use_cache = TRUE
 ) {
   frequency <- "monthly"
-  dataset <- "metadata"
+  dataset <- "metadata_measures_monthly"
 
   periods <- resolve_periods(periods, dataset, frequency)
   periods <- rev(periods)

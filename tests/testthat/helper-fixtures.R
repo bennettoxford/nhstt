@@ -81,10 +81,10 @@ expected_tidy_columns <- function(dataset, frequency) {
 #' @examples
 #' \dontrun{
 #' # Single period
-#' raw_data <- load_raw_data("key_measures", "2023-24", "annual")
+#' raw_data <- load_raw_data("key_measures_annual", "2023-24", "annual")
 #'
 #' # Multiple periods
-#' raw_data <- load_raw_data("key_measures", c("2023-24", "2024-25"), "annual")
+#' raw_data <- load_raw_data("key_measures_annual", c("2023-24", "2024-25"), "annual")
 #' }
 load_raw_data <- function(dataset, periods, frequency) {
   raw_data <- purrr::map(

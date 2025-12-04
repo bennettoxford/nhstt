@@ -19,7 +19,7 @@ test_that("get_metadata_measures_annual returns combined main and additional dat
   )
 
   # Should have both key_measures and additional datasets
-  expect_true("key_measures" %in% result$dataset_name)
+  expect_true("key_measures_annual" %in% result$dataset_name)
 })
 
 
@@ -47,5 +47,5 @@ test_that("get_metadata_variables_annual returns combined main and additional da
   )
 
   # Should have both key_measures and additional datasets
-  expect_true("key_measures" %in% result$dataset_name)
+  expect_true("key_measures_annual" %in% result$dataset_name)
 })

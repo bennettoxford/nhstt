@@ -8,8 +8,8 @@
 #' @return Combined tibble
 #' @keywords internal
 load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
-  dataset_main <- paste0(dataset_base, "_main")
-  dataset_additional <- paste0(dataset_base, "_additional")
+  dataset_main <- paste0(dataset_base, "_main_", frequency)
+  dataset_additional <- paste0(dataset_base, "_additional_", frequency)
 
   main_df <- if (
     use_cache && tidy_cache_exists(dataset_main, period, frequency)
@@ -50,7 +50,11 @@ get_metadata_measures_annual <- function(
   frequency <- "annual"
   dataset_base <- "metadata_measures"
 
-  periods <- resolve_periods(periods, paste0(dataset_base, "_main"), frequency)
+  periods <- resolve_periods(
+    periods,
+    paste0(dataset_base, "_main_", frequency),
+    frequency
+  )
   periods <- rev(periods)
 
   data_list <- map(
@@ -81,7 +85,11 @@ get_metadata_variables_annual <- function(
   frequency <- "annual"
   dataset_base <- "metadata_variables"
 
-  periods <- resolve_periods(periods, paste0(dataset_base, "_main"), frequency)
+  periods <- resolve_periods(
+    periods,
+    paste0(dataset_base, "_main_", frequency),
+    frequency
+  )
   periods <- rev(periods)
 
   data_list <- map(
