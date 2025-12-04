@@ -40,7 +40,7 @@ tidy_config_metadata_measures_main <- function() {
         description_of_measure = "description"
       ),
       mutate = list(
-        dataset_name = list(value = "key_measures")
+        dataset_name = list(value = "key_measures_annual")
       ),
       select = c(
         "reporting_period",
@@ -93,7 +93,7 @@ tidy_config_metadata_variables_main <- function() {
         data_value_s_used_in_variable_b = "values_for_variable_b"
       ),
       mutate = list(
-        dataset_name = list(value = "key_measures")
+        dataset_name = list(value = "key_measures_annual")
       ),
       select = c(
         "reporting_period",

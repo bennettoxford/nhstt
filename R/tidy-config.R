@@ -5,13 +5,13 @@
 #' @keywords internal
 tidy_config_registry <- function() {
   list(
-    key_measures = tidy_config_key_measures,
-    activity_performance = tidy_config_activity_performance,
-    metadata = tidy_config_metadata,
-    metadata_measures_main = tidy_config_metadata_measures_main,
-    metadata_measures_additional = tidy_config_metadata_measures_additional,
-    metadata_variables_main = tidy_config_metadata_variables_main,
-    metadata_variables_additional = tidy_config_metadata_variables_additional
+    key_measures_annual = tidy_config_key_measures,
+    activity_performance_monthly = tidy_config_activity_performance,
+    metadata_measures_monthly = tidy_config_metadata,
+    metadata_measures_main_annual = tidy_config_metadata_measures_main,
+    metadata_measures_additional_annual = tidy_config_metadata_measures_additional,
+    metadata_variables_main_annual = tidy_config_metadata_variables_main,
+    metadata_variables_additional_annual = tidy_config_metadata_variables_additional
   )
 }
 
@@ -107,7 +107,7 @@ validate_tidy_config <- function(config) {
 
 #' Retrieve tidy configuration for a dataset/frequency combination
 #'
-#' @param dataset Character, dataset name (e.g., "key_measures")
+#' @param dataset Character, dataset name (e.g., "key_measures_annual")
 #' @param frequency Character, "annual" or "monthly"
 #'
 #' @return Named list of configuration values
@@ -116,7 +116,7 @@ validate_tidy_config <- function(config) {
 #'
 #' @keywords internal
 get_tidy_config <- function(dataset, frequency) {
-  validate_dataset(dataset)
+  validate_dataset(dataset, frequency)
   validate_frequency(frequency)
 
   tidy_config <- load_tidy_config()
@@ -151,7 +151,7 @@ get_tidy_config <- function(dataset, frequency) {
 #' Supports both wide-to-long pivoting (key_measures) and long-format data (activity_performance).
 #'
 #' @param raw_data_list Named list, specifying raw tibbles (e.g., list("2023-24" = df))
-#' @param dataset Character, specifying dataset name (e.g., "key_measures")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual")
 #' @param frequency Character, specifying frequency ("annual" or "monthly")
 #'
 #' @return Tibble in tidy long format
@@ -362,7 +362,7 @@ apply_mutate <- function(df, mutate_config) {
 #' Orchestrates the complete tidy pipeline: read raw → tidy → cache.
 #' This replaces all dataset-specific fetch_and_tidy_* functions.
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying frequency ("annual" or "monthly")
 #'

@@ -7,7 +7,7 @@
 get_tidy_config(dataset, frequency)
 }
 \arguments{
-\item{dataset}{Character, dataset name (e.g., "key_measures")}
+\item{dataset}{Character, dataset name (e.g., "key_measures_annual")}
 
 \item{frequency}{Character, "annual" or "monthly"}
 }
