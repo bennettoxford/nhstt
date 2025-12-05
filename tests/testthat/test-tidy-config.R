@@ -1,5 +1,3 @@
-# Tidy config loading tests ---------------------------------------------------
-
 test_that("load_tidy_config returns a list", {
   tidy_config <- load_tidy_config()
 
@@ -18,16 +16,18 @@ test_that("load_tidy_config has metadata dataset", {
   expect_true("metadata_measures_monthly" %in% names(tidy_config))
 })
 
-test_that("key_measures has annual frequency in tidy config", {
+test_that("key_measures config contains expected sections", {
   tidy_config <- load_tidy_config()
 
-  expect_true("annual" %in% names(tidy_config$key_measures_annual))
+  expect_true("filter" %in% names(tidy_config$key_measures_annual))
+  expect_true("pivot_longer" %in% names(tidy_config$key_measures_annual))
 })
 
-test_that("metadata has monthly frequency in tidy config", {
+test_that("metadata config contains expected sections", {
   tidy_config <- load_tidy_config()
 
-  expect_true("monthly" %in% names(tidy_config$metadata_measures_monthly))
+  expect_true("rename" %in% names(tidy_config$metadata_measures_monthly))
+  expect_true("select" %in% names(tidy_config$metadata_measures_monthly))
 })
 
 test_that("get_tidy_config returns configuration for dataset", {
@@ -46,7 +46,6 @@ test_that("get_tidy_config returns configuration for metadata dataset", {
   expect_true("select" %in% names(config))
 })
 
-# Config validation tests ------------------------------------------------------
 
 test_that("validate_tidy_config accepts valid config", {
   tidy_config <- load_tidy_config()
@@ -63,43 +62,171 @@ test_that("validate_tidy_config errors with empty config", {
   )
 })
 
-test_that("validate_tidy_config errors with invalid frequency", {
+test_that("validate_tidy_config errors when pivot_longer missing measure_cols", {
   invalid_config <- list(
     test_dataset = list(
-      quarterly = list(
-        id_cols = c("org_code")
+      pivot_longer = list(
+        id_cols = c("org_code"),
+        sep = "^(count)_(.+)$",
+        names_to = c("stat", "name")
       )
     )
   )
 
   expect_error(
     validate_tidy_config(invalid_config),
-    "invalid frequency"
+    "missing measure_cols"
   )
 })
 
-test_that("validate_tidy_config errors when pivot_longer missing required fields", {
+test_that("validate_tidy_config errors when pivot_longer missing sep or names_to", {
   invalid_config <- list(
     test_dataset = list(
-      annual = list(
-        pivot_longer = list(
-          id_cols = c("org_code"),
-          measure_cols = c("count_referrals")
-          # Missing: sep and into
-        )
+      pivot_longer = list(
+        id_cols = c("org_code"),
+        measure_cols = c("count_referrals")
       )
     )
   )
 
   expect_error(
     validate_tidy_config(invalid_config),
-    "missing sep|missing into"
+    "missing sep|missing names_to"
   )
 })
 
-# Key measures dataset tests ---------------------------------------------------
-# Note: Tests use 2024-25 (newest format) and 2017-18 (oldest format) to ensure
-# backwards compatibility across the full historical range
+
+test_that("separate_columns splits column into two parts", {
+  df <- tibble::tibble(
+    measure_name = c("count_referrals", "percentage_recovery", "mean_age"),
+    value = c(100, 50.5, 35)
+  )
+
+  separate_config <- list(
+    measure_name = list(
+      into = c("measure_statistic", "measure_name"),
+      sep = "^([^_]+)_(.+)$",
+      remove = TRUE
+    )
+  )
+
+  result <- separate_columns(df, separate_config)
+
+  expect_named(
+    result,
+    c("value", "measure_statistic", "measure_name"),
+    ignore.order = TRUE
+  )
+  expect_equal(result$measure_statistic, c("count", "percentage", "mean"))
+  expect_equal(result$measure_name, c("referrals", "recovery", "age"))
+})
+
+test_that("separate_columns keeps original column when remove = FALSE", {
+  df <- tibble::tibble(
+    measure_name = c("count_referrals", "percentage_recovery")
+  )
+
+  separate_config <- list(
+    measure_name = list(
+      into = c("measure_statistic", "measure_name"),
+      sep = "^([^_]+)_(.+)$",
+      remove = FALSE
+    )
+  )
+
+  result <- separate_columns(df, separate_config)
+
+  expect_true("measure_source" %in% names(result))
+  expect_equal(
+    result$measure_source,
+    c("count_referrals", "percentage_recovery")
+  )
+  expect_equal(result$measure_statistic, c("count", "percentage"))
+  expect_equal(result$measure_name, c("referrals", "recovery"))
+})
+
+test_that("separate_columns handles values without separator", {
+  df <- tibble::tibble(
+    measure_name = c("count_referrals", "total")
+  )
+
+  separate_config <- list(
+    measure_name = list(
+      into = c("measure_statistic", "measure_name"),
+      sep = "^([^_]+)_(.+)$",
+      remove = TRUE
+    )
+  )
+
+  result <- separate_columns(df, separate_config)
+
+  expect_equal(result$measure_statistic, c("count", "total"))
+  expect_equal(result$measure_name, c("referrals", "total"))
+})
+
+
+test_that("mutate_columns creates column with constant value", {
+  df <- tibble::tibble(org_code = c("A", "B"), value = c(10, 20))
+
+  mutate_config <- list(
+    dataset_name = list(value = "key_measures_annual")
+  )
+
+  result <- mutate_columns(df, mutate_config)
+
+  expect_true("dataset_name" %in% names(result))
+  expect_equal(
+    result$dataset_name,
+    c("key_measures_annual", "key_measures_annual")
+  )
+})
+
+test_that("mutate_columns formats date column", {
+  df <- tibble::tibble(
+    start_date = as.Date(c("2023-04-01", "2024-04-01")),
+    value = c(10, 20)
+  )
+
+  mutate_config <- list(
+    reporting_period = list(
+      source_column = "start_date",
+      "function" = "format",
+      args = list(
+        format = "%Y-%m"
+      )
+    )
+  )
+
+  result <- mutate_columns(df, mutate_config)
+
+  expect_true("reporting_period" %in% names(result))
+  expect_equal(result$reporting_period, c("2023-04", "2024-04"))
+})
+
+test_that("mutate_columns handles multiple mutations", {
+  df <- tibble::tibble(
+    start_date = as.Date("2023-04-01"),
+    value = 10
+  )
+
+  mutate_config <- list(
+    dataset_name = list(value = "test_dataset"),
+    reporting_period = list(
+      source_column = "start_date",
+      "function" = "format",
+      args = list(
+        format = "%Y-%m"
+      )
+    )
+  )
+
+  result <- mutate_columns(df, mutate_config)
+
+  expect_true(all(c("dataset_name", "reporting_period") %in% names(result)))
+  expect_equal(result$dataset_name, "test_dataset")
+  expect_equal(result$reporting_period, "2023-04")
+})
+
 
 test_that("tidy_dataset returns a tibble (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
@@ -112,7 +239,6 @@ test_that("tidy_dataset has expected columns (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # Get expected columns from schema
   expected_cols <- expected_tidy_columns("key_measures_annual", "annual")
 
   expect_named(result, expected_cols, ignore.order = FALSE)
@@ -122,7 +248,6 @@ test_that("tidy_dataset has correct column order (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # First 3 columns should always be date/period columns
   expect_equal(
     names(result)[1:3],
     c(
@@ -137,7 +262,6 @@ test_that("tidy_dataset column types are correct (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # Check key column types
   expect_type(result$reporting_period, "character")
   expect_s3_class(result$start_date, "Date")
   expect_s3_class(result$end_date, "Date")
@@ -146,7 +270,7 @@ test_that("tidy_dataset column types are correct (key_measures)", {
   expect_type(result$org_name, "character")
   expect_type(result$measure_statistic, "character")
   expect_type(result$measure_name, "character")
-  # Value could be numeric or character depending on measure
+
   expect_true(is.numeric(result$value) || is.character(result$value))
 })
 
@@ -154,7 +278,6 @@ test_that("tidy_dataset has no missing required columns (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # These columns should never be all NA
   required_cols <- c(
     "reporting_period",
     "start_date",
@@ -176,7 +299,6 @@ test_that("tidy_dataset snapshot test for column names (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # Snapshot test - will alert if column names change unexpectedly
   expect_snapshot(names(result))
 })
 
@@ -184,15 +306,11 @@ test_that("tidy_dataset converts to long format (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # Long format means more rows than original (each measure becomes a row)
-  # With our 5-row fixture and multiple measures, should have many more rows
   raw_fixture <- load_raw_fixture("key_measures_annual", "2024-25", "annual")
   expect_gt(nrow(result), nrow(raw_fixture))
 })
 
 test_that("tidy_dataset handles multiple periods and schema variations (key_measures)", {
-  # Test oldest (no underscores) and newest (with underscores) to ensure
-  # backwards compatibility across full historical range
   raw_list <- load_raw_data(
     "key_measures_annual",
     c("2017-18", "2024-25"),
@@ -200,10 +318,8 @@ test_that("tidy_dataset handles multiple periods and schema variations (key_meas
   )
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # Should have data from both periods
   expect_setequal(unique(result$reporting_period), c("2017-18", "2024-25"))
 
-  # Should have combined rows from both periods
   n_rows_1718 <- nrow(load_raw_fixture(
     "key_measures_annual",
     "2017-18",
@@ -217,7 +333,6 @@ test_that("tidy_dataset handles multiple periods and schema variations (key_meas
   expect_gt(nrow(result), n_rows_1718)
   expect_gt(nrow(result), n_rows_2425)
 
-  # Both periods should have same tidy schema despite different raw formats
   expect_named(result, expected_tidy_columns("key_measures_annual", "annual"))
 })
 
@@ -225,10 +340,8 @@ test_that("tidy_dataset cleans column names (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # All column names should be lowercase snake_case
   expect_true(all(grepl("^[a-z][a-z0-9_]*$", names(result))))
 
-  # No spaces or special characters
   expect_false(any(grepl("\\s", names(result))))
   expect_false(any(grepl("[A-Z]", names(result))))
 })
@@ -237,14 +350,11 @@ test_that("tidy_dataset applies org_type filter from config (key_measures)", {
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # Get expected filter values from config
   config <- get_tidy_config("key_measures_annual", "annual")
 
-  # If org_type filter is defined in config, verify it's applied
   if (!is.null(config$filters$org_type)) {
     expect_true(all(result$org_type %in% config$filters$org_type))
   } else {
-    # If no filter defined, just check column exists
     expect_true("org_type" %in% names(result))
   }
 })
@@ -253,20 +363,15 @@ test_that("tidy_dataset applies variable_type filter from config (key_measures)"
   raw_list <- load_raw_data("key_measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "key_measures_annual", "annual")
 
-  # Get expected filter values from config
   config <- get_tidy_config("key_measures_annual", "annual")
 
-  # If variable_type filter is defined in config, verify it's applied
   if (!is.null(config$filters$variable_type)) {
     expect_true(all(result$variable_type %in% config$filters$variable_type))
   } else {
-    # If no filter defined, just check column exists
     expect_true("variable_type" %in% names(result))
   }
 })
 
-# Activity performance dataset tests -------------------------------------------
-# Note: Tests use 2025-09 (newest) and 2025-06 (oldest) monthly periods
 
 test_that("tidy_dataset returns a tibble (activity_performance)", {
   raw_data <- load_raw_data(
@@ -287,7 +392,6 @@ test_that("tidy_dataset has expected columns (activity_performance)", {
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # Get expected columns from schema
   expected_cols <- expected_tidy_columns(
     "activity_performance_monthly",
     "monthly"
@@ -304,7 +408,6 @@ test_that("tidy_dataset has correct column order (activity_performance)", {
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # First 3 columns should always be date/period columns
   expect_equal(
     names(result)[1:3],
     c(
@@ -323,7 +426,6 @@ test_that("tidy_dataset column types are correct (activity_performance)", {
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # Check key column types
   expect_type(result$reporting_period, "character")
   expect_s3_class(result$start_date, "Date")
   expect_s3_class(result$end_date, "Date")
@@ -357,7 +459,6 @@ test_that("tidy_dataset has no missing required columns (activity_performance)",
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # These columns should never be all NA
   required_cols <- c(
     "reporting_period",
     "start_date",
@@ -383,7 +484,6 @@ test_that("tidy_dataset snapshot test for column names (activity_performance)", 
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # Snapshot test - will alert if column names change unexpectedly
   expect_snapshot(names(result))
 })
 
@@ -395,13 +495,10 @@ test_that("tidy_dataset data remains in long format (activity_performance)", {
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # In long format, each measure is in its own row (not pivoted to wide)
-  # Check we have measure columns with multiple unique values
   expect_true("measure_name" %in% names(result))
   expect_true("measure_statistic" %in% names(result))
   expect_gt(length(unique(result$measure_name)), 1)
 
-  # Should have single value column (not multiple measure-specific columns)
   expect_true("value" %in% names(result))
   expect_false(any(grepl("^count_", names(result))))
 })
@@ -427,17 +524,14 @@ test_that("tidy_dataset handles multiple periods (activity_performance)", {
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # Should have data from both periods (ISO format: "2025-06", "2025-09")
   expect_setequal(
     unique(result$reporting_period),
     c("2025-06", "2025-09")
   )
 
-  # Both periods should have data (at least 1 row each)
   expect_gt(sum(result$reporting_period == "2025-06"), 0)
   expect_gt(sum(result$reporting_period == "2025-09"), 0)
 
-  # All data should still respect filters from config
   config <- get_tidy_config("activity_performance_monthly", "monthly")
   if (!is.null(config$filters$group_type)) {
     expect_true(all(result$group_type %in% config$filters$group_type))
@@ -452,10 +546,8 @@ test_that("tidy_dataset cleans column names (activity_performance)", {
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # All column names should be lowercase snake_case
   expect_true(all(grepl("^[a-z][a-z0-9_]*$", names(result))))
 
-  # No spaces or special characters
   expect_false(any(grepl("\\s", names(result))))
   expect_false(any(grepl("[A-Z]", names(result))))
 })
@@ -468,11 +560,9 @@ test_that("tidy_dataset reporting_period in ISO format (activity_performance)", 
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # reporting_period should be ISO format (YYYY-MM) derived from start_date
   expected_periods <- format(result$start_date, "%Y-%m")
   expect_equal(result$reporting_period, expected_periods)
 
-  # For Sep 2025 fixture, should be "2025-09"
   expect_true(all(result$reporting_period == "2025-09"))
 })
 
@@ -497,19 +587,15 @@ test_that("tidy_dataset applies group_type filter from config (activity_performa
   )
   result <- tidy_dataset(raw_data, "activity_performance_monthly", "monthly")
 
-  # Get expected filter values from config
   config <- get_tidy_config("activity_performance_monthly", "monthly")
 
-  # If group_type filter is defined in config, verify it's applied
   if (!is.null(config$filters$group_type)) {
     expect_true(all(result$group_type %in% config$filters$group_type))
   } else {
-    # If no filter defined, just check column exists
     expect_true("group_type" %in% names(result))
   }
 })
 
-# Metadata dataset tests -------------------------------------------------------
 
 test_that("tidy_dataset returns a tibble (metadata)", {
   raw_data <- load_raw_data("metadata_measures_monthly", "2025-07", "monthly")
@@ -544,7 +630,6 @@ test_that("tidy_dataset keeps descriptive fields for metadata", {
   ))
 })
 
-# Annual metadata (measures/variables) -----------------------------------------
 
 test_that("tidy_dataset returns tibble for metadata measures main", {
   raw_data <- load_raw_data(

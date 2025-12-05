@@ -1,5 +1,5 @@
-# NHS Talking Therapies raw data config
-# Archives: Shared download sources
+# NHS Talking Therapies raw data configuration
+# Archives define shared download sources, datasets specify which files to extract
 archives:
   # Annual main data report archives (contain multiple CSV files)
   annual_main:

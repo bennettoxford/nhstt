@@ -2,19 +2,19 @@
 % Please edit documentation in R/tidy-config.R
 \name{get_tidy_config}
 \alias{get_tidy_config}
-\title{Retrieve tidy configuration for a dataset/frequency combination}
+\title{Get tidy configuration for a dataset}
 \usage{
 get_tidy_config(dataset, frequency)
 }
 \arguments{
 \item{dataset}{Character, dataset name (e.g., "key_measures_annual")}
 
-\item{frequency}{Character, "annual" or "monthly"}
+\item{frequency}{Character, "annual" or "monthly" (used for validation only)}
 }
 \value{
 Named list of configuration values
 }
 \description{
-Retrieve tidy configuration for a dataset/frequency combination
+Get tidy configuration for a dataset
 }
 \keyword{internal}

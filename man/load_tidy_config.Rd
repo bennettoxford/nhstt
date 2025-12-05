@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidy-config.R
 \name{load_tidy_config}
 \alias{load_tidy_config}
-\title{Load all tidy configurations}
+\title{Load all tidy configurations from YAML}
 \usage{
 load_tidy_config()
 }
@@ -10,6 +10,6 @@ load_tidy_config()
 List containing all tidy configurations
 }
 \description{
-Load all tidy configurations
+Load all tidy configurations from YAML
 }
 \keyword{internal}

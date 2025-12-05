@@ -7,7 +7,7 @@
 #'
 #' @keywords internal
 load_raw_config <- function() {
-  config_path <- system.file("nhstt_data", "raw_config.yml", package = "nhstt")
+  config_path <- system.file("config", "raw_config.yml", package = "nhstt")
 
   if (config_path == "") {
     cli_abort("raw_config.yml not found in package installation")
