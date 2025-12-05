@@ -1,27 +1,21 @@
-#' Registry of tidy configuration functions
-#'
-#' @return Named list of tidy configuration functions
-#'
-#' @keywords internal
-tidy_config_registry <- function() {
-  list(
-    key_measures_annual = tidy_config_key_measures,
-    activity_performance_monthly = tidy_config_activity_performance,
-    metadata_measures_monthly = tidy_config_metadata,
-    metadata_measures_main_annual = tidy_config_metadata_measures_main,
-    metadata_measures_additional_annual = tidy_config_metadata_measures_additional,
-    metadata_variables_main_annual = tidy_config_metadata_variables_main,
-    metadata_variables_additional_annual = tidy_config_metadata_variables_additional
-  )
-}
-
-#' Load all tidy configurations
+#' Load all tidy configurations from YAML
 #'
 #' @return List containing all tidy configurations
 #'
+#' @importFrom yaml read_yaml
+#'
 #' @keywords internal
 load_tidy_config <- function() {
-  configs <- lapply(tidy_config_registry(), function(fn) fn())
+  config_path <- system.file(
+    "config",
+    "tidy_config.yml",
+    package = "nhstt",
+    mustWork = TRUE
+  )
+
+  config <- read_yaml(config_path)
+  configs <- config$datasets
+
   validate_tidy_config(configs)
   configs
 }
@@ -42,73 +36,52 @@ validate_tidy_config <- function(config) {
 
   # Validate each dataset
   for (dataset_name in names(config)) {
-    dataset <- config[[dataset_name]]
+    dataset_config <- config[[dataset_name]]
 
-    # Check for frequency sections
-    valid_frequencies <- c("annual", "monthly")
-    freq_names <- names(dataset)
+    # If pivot_longer exists (wide-to-long), validate structure
+    has_pivot <- !is.null(dataset_config$pivot_longer) &&
+      length(dataset_config$pivot_longer) > 0
+    if (has_pivot) {
+      pivot_config <- dataset_config$pivot_longer
 
-    if (length(freq_names) == 0) {
-      cli_abort(
-        "Dataset {.val {dataset_name}} must have at least one frequency (annual/monthly)"
-      )
-    }
-
-    invalid_freqs <- setdiff(freq_names, valid_frequencies)
-    if (length(invalid_freqs) > 0) {
-      cli_abort(c(
-        "Dataset {.val {dataset_name}} has invalid frequency: {.val {invalid_freqs}}",
-        "i" = "Valid frequencies: {.val {valid_frequencies}}"
-      ))
-    }
-
-    # Validate each frequency section
-    for (freq in freq_names) {
-      freq_config <- dataset[[freq]]
-
-      # If pivot_longer exists (wide-to-long), validate structure
-      has_pivot <- !is.null(freq_config$pivot_longer) &&
-        length(freq_config$pivot_longer) > 0
-      if (has_pivot) {
-        pivot_config <- freq_config$pivot_longer
-
-        # Must have required fields
-        if (
-          is.null(pivot_config$measure_cols) ||
-            length(pivot_config$measure_cols) == 0
-        ) {
-          cli_abort(
-            "Dataset {.val {dataset_name}} ({freq}) pivot_longer missing measure_cols"
-          )
-        }
-        if (is.null(pivot_config$sep)) {
-          cli_abort(
-            "Dataset {.val {dataset_name}} ({freq}) pivot_longer missing sep pattern"
-          )
-        }
-        if (is.null(pivot_config$into) || length(pivot_config$into) == 0) {
-          cli_abort(
-            "Dataset {.val {dataset_name}} ({freq}) pivot_longer missing into columns"
-          )
-        }
-      }
-
-      # Validate select section if present
-      if (!is.null(freq_config$select) && length(freq_config$select) == 0) {
-        cli_warn(
-          "Dataset {.val {dataset_name}} ({freq}) select is empty - no columns will be selected"
+      # Must have required fields
+      if (
+        is.null(pivot_config$measure_cols) ||
+          length(pivot_config$measure_cols) == 0
+      ) {
+        cli_abort(
+          "Dataset {.val {dataset_name}} pivot_longer missing measure_cols"
         )
       }
+      if (is.null(pivot_config$sep)) {
+        cli_abort(
+          "Dataset {.val {dataset_name}} pivot_longer missing sep pattern"
+        )
+      }
+      if (
+        is.null(pivot_config$names_to) || length(pivot_config$names_to) == 0
+      ) {
+        cli_abort(
+          "Dataset {.val {dataset_name}} pivot_longer missing names_to columns"
+        )
+      }
+    }
+
+    # Validate select section if present
+    if (!is.null(dataset_config$select) && length(dataset_config$select) == 0) {
+      cli_warn(
+        "Dataset {.val {dataset_name}} select is empty - no columns will be selected"
+      )
     }
   }
 
   invisible(TRUE)
 }
 
-#' Retrieve tidy configuration for a dataset/frequency combination
+#' Get tidy configuration for a dataset
 #'
 #' @param dataset Character, dataset name (e.g., "key_measures_annual")
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual" or "monthly" (used for validation only)
 #'
 #' @return Named list of configuration values
 #'
@@ -121,25 +94,26 @@ get_tidy_config <- function(dataset, frequency) {
 
   tidy_config <- load_tidy_config()
 
-  dataset_config <- tidy_config[[dataset]][[frequency]]
+  dataset_config <- tidy_config[[dataset]]
 
   if (is.null(dataset_config)) {
     cli_abort(c(
-      "Tidy configuration not found for {.val {dataset}} ({frequency})",
-      "i" = "Check tidy_config_{dataset}.R"
+      "Tidy configuration not found for {.val {dataset}}",
+      "i" = "Check tidy_config.yml"
     ))
   }
 
   # Set defaults for all config sections
   dataset_config$clean_column_names <- dataset_config$clean_column_names %||%
     FALSE
-  dataset_config$rename <- dataset_config$rename %||% character()
+  dataset_config$rename <- dataset_config$rename %||% list()
   dataset_config$filter <- dataset_config$filter %||% list()
-  dataset_config$type_convert <- dataset_config$type_convert %||% character()
+  dataset_config$as_numeric <- dataset_config$as_numeric %||% character()
   dataset_config$separate <- dataset_config$separate %||% list()
   dataset_config$mutate <- dataset_config$mutate %||% list()
   dataset_config$pivot_longer <- dataset_config$pivot_longer %||% list()
-  dataset_config$clean_values <- dataset_config$clean_values %||% character()
+  dataset_config$clean_column_values <- dataset_config$clean_column_values %||%
+    character()
   dataset_config$select <- dataset_config$select %||% character()
 
   dataset_config
@@ -157,7 +131,6 @@ get_tidy_config <- function(dataset, frequency) {
 #' @return Tibble in tidy long format
 #'
 #' @importFrom purrr imap list_rbind
-#' @importFrom janitor make_clean_names
 #' @importFrom dplyr select rename mutate if_else
 #' @importFrom rlang .data
 #' @importFrom tidyselect any_of
@@ -173,12 +146,12 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
 
     # Clean column names to snake_case
     if (isTRUE(config$clean_column_names)) {
-      names(df) <- make_clean_names(names(df))
+      names(df) <- clean_str(names(df))
     }
 
     # Rename columns (standardize raw input)
     if (!is.null(config$rename) && length(config$rename) > 0) {
-      df <- rename_columns(df, config$rename)
+      df <- rename_columns(df, config$rename, period = period)
     }
 
     # Parse dates if start_date/end_date columns exist
@@ -195,18 +168,18 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
     }
 
     # Convert columns to numeric
-    if (length(config$type_convert) > 0) {
-      df <- convert_to_numeric(df, config$type_convert)
+    if (length(config$as_numeric) > 0) {
+      df <- convert_to_numeric(df, config$as_numeric)
     }
 
     # Separate columns (split one column into multiple)
     if (!is.null(config$separate) && length(config$separate) > 0) {
-      df <- apply_separate(df, config$separate)
+      df <- separate_columns(df, config$separate)
     }
 
     # Mutate columns (create new columns from existing)
     if (!is.null(config$mutate) && length(config$mutate) > 0) {
-      df <- apply_mutate(df, config$mutate)
+      df <- mutate_columns(df, config$mutate)
     }
 
     df
@@ -228,10 +201,10 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
   # === AFTER PIVOTING / AFTER COMBINING DATA ===
 
   # Clean values in specified columns
-  if (length(config$clean_values) > 0) {
+  if (length(config$clean_column_values) > 0) {
     combined <- clean_column_values(
       combined,
-      column_names = config$clean_values
+      column_names = config$clean_column_values
     )
   }
 
@@ -243,7 +216,7 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
   combined
 }
 
-#' Apply column separation from configuration
+#' Separate columns based on regex patterns
 #'
 #' Splits columns into multiple columns based on regex patterns (like tidyr::separate)
 #'
@@ -256,7 +229,7 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
 #' @importFrom rlang .data
 #'
 #' @keywords internal
-apply_separate <- function(df, separate_config) {
+separate_columns <- function(df, separate_config) {
   for (col_name in names(separate_config)) {
     col_config <- separate_config[[col_name]]
 
@@ -265,34 +238,33 @@ apply_separate <- function(df, separate_config) {
       sep_pattern <- col_config$sep
       remove <- col_config$remove %||% TRUE
 
+      # Save original column values before any mutations
+      # (important if col_name is in 'into', we don't want to overwrite before extracting)
+      original_values <- df[[col_name]]
+
       # Backup original column if remove = FALSE
       if (!remove) {
         # Rename original to measure_source (convention)
-        df <- mutate(df, measure_source = .data[[col_name]])
+        df <- mutate(df, measure_source = original_values)
       }
 
       # Extract first part (before separator)
       if (length(into) >= 1) {
-        df <- mutate(
-          df,
-          !!into[1] := sub(sep_pattern, "\\1", .data[[col_name]])
-        )
+        df[[into[1]]] <- sub(sep_pattern, "\\1", original_values)
       }
 
       # Extract second part (after separator)
       if (length(into) >= 2) {
-        df <- mutate(
-          df,
-          !!into[2] := if_else(
-            grepl("_", .data[[col_name]]),
-            sub(sep_pattern, "\\2", .data[[col_name]]),
-            .data[[col_name]]
-          )
+        df[[into[2]]] <- if_else(
+          grepl("_", original_values),
+          sub(sep_pattern, "\\2", original_values),
+          original_values
         )
       }
 
       # Remove original column if remove = TRUE
-      if (remove && col_name %in% names(df)) {
+      # (but not if it's one of the 'into' columns - in that case it contains extracted value)
+      if (remove && col_name %in% names(df) && !(col_name %in% into)) {
         df[[col_name]] <- NULL
       }
     }
@@ -301,7 +273,7 @@ apply_separate <- function(df, separate_config) {
   df
 }
 
-#' Apply column mutations from configuration
+#' Create new columns from existing data
 #'
 #' Creates new columns from existing data (like dplyr::mutate)
 #'
@@ -314,7 +286,7 @@ apply_separate <- function(df, separate_config) {
 #' @importFrom rlang .data
 #'
 #' @keywords internal
-apply_mutate <- function(df, mutate_config) {
+mutate_columns <- function(df, mutate_config) {
   for (new_col in names(mutate_config)) {
     col_config <- mutate_config[[new_col]]
 
@@ -342,14 +314,18 @@ apply_mutate <- function(df, mutate_config) {
       next
     }
 
-    # Handle date formatting
-    if (!is.null(col_config$fn) && col_config$fn == "format") {
-      from_col <- col_config$from
-      if (from_col %in% names(df)) {
-        df <- mutate(
-          df,
-          !!new_col := format(.data[[from_col]], format = col_config$format)
-        )
+    # Handle function calls (e.g., format)
+    if (!is.null(col_config[["function"]])) {
+      source_col <- col_config$source_column
+      func_name <- col_config[["function"]]
+      if (source_col %in% names(df)) {
+        if (func_name == "format") {
+          format_str <- col_config$args$format
+          df <- mutate(
+            df,
+            !!new_col := format(.data[[source_col]], format = format_str)
+          )
+        }
       }
     }
   }

@@ -51,7 +51,7 @@ get_activity_performance_monthly <- function(
 
 #' Get monthly metadata for NHS Talking Therapies measures
 #'
-#' Retrieves the definitions, derivations, and construction notes for each
+#' Gets the definitions, derivations, and construction notes for each
 #' reported measure.
 #'
 #' @inheritParams get_activity_performance_monthly

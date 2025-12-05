@@ -16,7 +16,7 @@ If NULL (default), returns all available monthly periods}
 Tibble with metadata for each measure
 }
 \description{
-Retrieves the definitions, derivations, and construction notes for each
+Gets the definitions, derivations, and construction notes for each
 reported measure.
 }
 \details{

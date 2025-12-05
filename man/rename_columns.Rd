@@ -4,17 +4,25 @@
 \alias{rename_columns}
 \title{Rename columns}
 \usage{
-rename_columns(df, rename_mapping)
+rename_columns(df, rename_config, period = NULL)
 }
 \arguments{
 \item{df}{Tibble, specifying data with columns to rename}
 
-\item{rename_mapping}{Named character vector, specifying old_name = new_name mapping}
+\item{rename_config}{List or named vector, specifying rename configuration.
+Can contain:
+\itemize{
+\item Simple mappings: \code{new_name: old_name} (applied to all periods)
+\item Period-specific mappings: \code{"YYYY-YY": {new_name: old_name}}
+}}
+
+\item{period}{Character, specifying current period (e.g., "2023-24", "2025-09")}
 }
 \value{
 Tibble with renamed columns
 }
 \description{
-Renames columns using a mapping (for year-specific inconsistencies)
+Renames columns using a mapping (for year-specific inconsistencies).
+Supports both global renames (applied to all periods) and period-specific renames.
 }
 \keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidy-utils.R
 \name{convert_to_numeric}
 \alias{convert_to_numeric}
-\title{Tidy dataset values}
+\title{Convert measure columns to numeric}
 \usage{
 convert_to_numeric(df, measure_cols)
 }
@@ -12,7 +12,7 @@ convert_to_numeric(df, measure_cols)
 \item{measure_cols}{Character vector, specifying measure column names}
 }
 \value{
-Tibble with tidy values
+Tibble with measure columns as numeric
 }
 \description{
 Converts NULL to NA and coerces measure columns to numeric
