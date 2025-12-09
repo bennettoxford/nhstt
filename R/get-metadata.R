@@ -6,6 +6,10 @@
 #' @param use_cache Whether to use cache
 #'
 #' @return Combined tibble
+#'
+#' @importFrom cli cli_alert_warning
+#' @importFrom arrow read_parquet
+#'
 #' @keywords internal
 load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
   dataset_main <- paste0(dataset_base, "_main_", frequency)
@@ -16,7 +20,22 @@ load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
   ) {
     load_tidy_cache(dataset_main, period, frequency)
   } else {
-    download_and_tidy(dataset_main, period, frequency)
+    tryCatch(
+      {
+        download_and_tidy(dataset_main, period, frequency)
+      },
+      error = function(e) {
+        package_path <- get_package_data_path(dataset_main, period, frequency)
+        if (!is.null(package_path)) {
+          cli_alert_warning(
+            "Download failed, using package metadata for {dataset_main} {period}"
+          )
+          read_parquet(package_path)
+        } else {
+          stop(e)
+        }
+      }
+    )
   }
 
   additional_df <- if (
@@ -24,7 +43,26 @@ load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
   ) {
     load_tidy_cache(dataset_additional, period, frequency)
   } else {
-    download_and_tidy(dataset_additional, period, frequency)
+    tryCatch(
+      {
+        download_and_tidy(dataset_additional, period, frequency)
+      },
+      error = function(e) {
+        package_path <- get_package_data_path(
+          dataset_additional,
+          period,
+          frequency
+        )
+        if (!is.null(package_path)) {
+          cli_alert_warning(
+            "Download failed, using package metadata for {dataset_additional} {period}"
+          )
+          read_parquet(package_path)
+        } else {
+          stop(e)
+        }
+      }
+    )
   }
 
   list_rbind(list(main_df, additional_df))
@@ -34,6 +72,11 @@ load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
 #'
 #' Combines the "Data measures (main)" and "Data measures (additional)"
 #' sheets released alongside the annual NHS Talking Therapies reports.
+#'
+#' @details
+#' If network download fails (e.g., in GitHub Actions), falls back to bundled
+#' metadata shipped with the package. This is a temporary workaround for
+#' `digital.nhs.uk` blocking CI environments.
 #'
 #' @inheritParams get_key_measures_annual
 #'
@@ -69,6 +112,11 @@ get_metadata_measures_annual <- function(
 #'
 #' Combines the "Variables (main)" and "Variables (additional)" sheets
 #' released alongside the annual NHS Talking Therapies reports.
+#'
+#' @details
+#' If network download fails (e.g., in GitHub Actions), falls back to bundled
+#' metadata shipped with the package. This is a temporary workaround for
+#' `digital.nhs.uk` not allowing me to download from GitHub actions.
 #'
 #' @inheritParams get_key_measures_annual
 #'

@@ -19,6 +19,11 @@ Tibble containing metadata rows for each annual measure field
 Combines the "Data measures (main)" and "Data measures (additional)"
 sheets released alongside the annual NHS Talking Therapies reports.
 }
+\details{
+If network download fails (e.g., in GitHub Actions), falls back to bundled
+metadata shipped with the package. This is a temporary workaround for
+\code{digital.nhs.uk} blocking CI environments.
+}
 \examples{
 \dontrun{
 measures_meta <- get_metadata_measures_annual()
