@@ -2,7 +2,7 @@
 % Please edit documentation in R/raw-config.R
 \name{load_raw_config}
 \alias{load_raw_config}
-\title{Load raw data configuration from TOML}
+\title{Load raw data configuration from YAML}
 \usage{
 load_raw_config()
 }
@@ -10,6 +10,6 @@ load_raw_config()
 List containing parsed raw data configuration
 }
 \description{
-Load raw data configuration from TOML
+Load raw data configuration from YAML
 }
 \keyword{internal}

@@ -1,4 +1,4 @@
-test_that("make_clean_str normalises NHS source column names", {
+test_that("clean_str converts CamelCase to snake_case", {
   raw_names <- c(
     "ORG_CODE1",
     "MEASURE_NAME",
@@ -12,7 +12,7 @@ test_that("make_clean_str normalises NHS source column names", {
   )
 
   expect_equal(
-    make_clean_str(raw_names),
+    clean_str(raw_names),
     c(
       "org_code1",
       "measure_name",
@@ -27,16 +27,17 @@ test_that("make_clean_str normalises NHS source column names", {
   )
 })
 
-test_that("tidy_numeric_values converts suppression markers to NA", {
+test_that("replace_suppression_with_na converts suppression markers to NA", {
   suppression_values <- c("*", "-", "", "N/A", "NA", "NULL", "Null", "null")
-  numeric_values <- tidy_numeric_values(suppression_values)
 
-  expect_type(numeric_values, "double")
-  expect_true(all(is.na(numeric_values)))
+  result <- replace_suppression_with_na(suppression_values)
+
+  expect_type(result, "double")
+  expect_true(all(is.na(result)))
 })
 
-test_that("tidy_numeric_values coerces numeric strings", {
-  result <- tidy_numeric_values(c("10", "45.6"))
+test_that("replace_suppression_with_na coerces numeric strings", {
+  result <- replace_suppression_with_na(c("10", "45.6"))
 
   expect_equal(result, c(10, 45.6))
 })
@@ -48,19 +49,15 @@ test_that("convert_to_numeric only cleans configured measure columns", {
     "B"       , "*"                 , "300"
   )
 
-  tidied <- convert_to_numeric(df, c("count_gp_referrals"))
+  result <- convert_to_numeric(df, c("count_gp_referrals"))
 
-  expect_equal(tidied$count_gp_referrals, c(10, NA))
-  expect_equal(tidied$count_other, c("200", "300"))
+  expect_equal(result$count_gp_referrals, c(10, NA))
+  expect_equal(result$count_other, c("200", "300"))
 })
 
 test_that("rename_columns renames present columns only", {
-  df <- tibble::tibble(
-    org_code = "A123",
-    sites = 2
-  )
-
-  mapping <- c(org_code = "org_code", sites = "site_count", missing = "ignored")
+  df <- tibble::tibble(org_code = "A123", sites = 2)
+  mapping <- c(org_code = "org_code", site_count = "sites", ignored = "missing")
 
   result <- rename_columns(df, mapping)
 
@@ -68,8 +65,67 @@ test_that("rename_columns renames present columns only", {
   expect_equal(result$site_count, 2)
 })
 
+test_that("rename_columns handles different measures across periods", {
+  df_2023 <- tibble::tibble(
+    count_referrals = 100,
+    count_recovery = 50,
+    percentage_recovery = 25.0
+  )
+  df_2024 <- tibble::tibble(count_referrals = 200)
+
+  config <- list(
+    count_referrals = "count_referrals",
+    count_recovery = "count_recovery",
+    percentage_recovery = "percentage_recovery"
+  )
+
+  result_2023 <- rename_columns(df_2023, config)
+  result_2024 <- rename_columns(df_2024, config)
+
+  expect_named(
+    result_2023,
+    c("count_referrals", "count_recovery", "percentage_recovery")
+  )
+  expect_equal(result_2023$count_referrals, 100)
+  expect_equal(result_2023$count_recovery, 50)
+  expect_equal(result_2023$percentage_recovery, 25.0)
+  expect_named(result_2024, "count_referrals")
+  expect_equal(result_2024$count_referrals, 200)
+})
+
+test_that("rename_columns applies period-specific overrides", {
+  df_old <- tibble::tibble(count_referrals_old = 100)
+  df_new <- tibble::tibble(count_referrals = 200)
+
+  config <- list(
+    count_referrals = "count_referrals",
+    "2023-24" = list(count_referrals = "count_referrals_old")
+  )
+
+  result_old <- rename_columns(df_old, config, period = "2023-24")
+  result_new <- rename_columns(df_new, config, period = "2024-25")
+
+  expect_equal(result_old$count_referrals, 100)
+  expect_equal(result_new$count_referrals, 200)
+})
+
+test_that("rename_columns works without period parameter", {
+  df <- tibble::tibble(reporting_period_start = "2023-04-01")
+
+  config <- list(
+    start_date = "reporting_period_start",
+    "2023-24" = list(start_date = "period_start")
+  )
+
+  result <- rename_columns(df, config, period = NULL)
+
+  expect_named(result, "start_date")
+  expect_equal(result$start_date, "2023-04-01")
+})
+
 test_that("add_period_columns handles annual periods", {
   df <- tibble::tibble(reporting_period = c("2023-24", "2024-25"))
+
   result <- add_period_columns(df)
 
   expect_equal(
@@ -84,6 +140,7 @@ test_that("add_period_columns handles annual periods", {
 
 test_that("add_period_columns handles monthly periods", {
   df <- tibble::tibble(reporting_period = c("2025-09", "2025-10"))
+
   result <- add_period_columns(df)
 
   expect_equal(
@@ -103,20 +160,20 @@ test_that("is_financial_year_period recognises valid formats", {
 })
 
 test_that("parse_annual_period_bounds expands FY codes", {
-  bounds <- parse_annual_period_bounds("FY2021-22")
+  result <- parse_annual_period_bounds("FY2021-22")
 
-  expect_equal(bounds$start, as.Date("2021-04-01"))
-  expect_equal(bounds$end, as.Date("2022-03-31"))
+  expect_equal(result$start, as.Date("2021-04-01"))
+  expect_equal(result$end, as.Date("2022-03-31"))
 })
 
 test_that("parse_monthly_period_bounds returns month start/end", {
-  bounds <- parse_monthly_period_bounds("2024-02")
+  result <- parse_monthly_period_bounds("2024-02")
 
-  expect_equal(bounds$start, as.Date("2024-02-01"))
-  expect_equal(bounds$end, as.Date("2024-02-29"))
+  expect_equal(result$start, as.Date("2024-02-01"))
+  expect_equal(result$end, as.Date("2024-02-29"))
 })
 
-test_that("clean_column_values applies make_clean_str to requested columns", {
+test_that("clean_column_values applies clean_str to requested columns", {
   df <- tibble::tibble(
     measure = c("Count_GPReferrals", "Count_IPTAppts"),
     statistic = c("Mean_LastWSASHM", "Total")
@@ -134,6 +191,105 @@ test_that("clean_column_values applies make_clean_str to requested columns", {
   )
 })
 
+test_that("filter_rows filters based on single column", {
+  df <- tibble::tibble(
+    org_type = c("England", "Provider", "CCG", "England"),
+    value = 1:4
+  )
+  filter_config <- list(org_type = c("England", "Provider"))
+
+  result <- filter_rows(df, filter_config)
+
+  expect_equal(nrow(result), 3)
+  expect_true(all(result$org_type %in% c("England", "Provider")))
+})
+
+test_that("filter_rows filters based on multiple columns", {
+  df <- tibble::tibble(
+    org_type = c("England", "Provider", "CCG", "Provider"),
+    variable_type = c("Total", "Age Group", "Total", "Total"),
+    value = 1:4
+  )
+  filter_config <- list(
+    org_type = c("England", "Provider"),
+    variable_type = "Total"
+  )
+
+  result <- filter_rows(df, filter_config)
+
+  expect_equal(nrow(result), 2)
+  expect_equal(result$org_type, c("England", "Provider"))
+  expect_true(all(result$variable_type == "Total"))
+})
+
+test_that("filter_rows ignores missing columns", {
+  df <- tibble::tibble(org_type = c("England", "Provider"), value = 1:2)
+  filter_config <- list(org_type = "England", missing_col = "value")
+
+  result <- filter_rows(df, filter_config)
+
+  expect_equal(nrow(result), 1)
+  expect_equal(result$org_type, "England")
+})
+
+test_that("filter_rows returns unchanged data with empty config", {
+  df <- tibble::tibble(org_type = c("England", "Provider"), value = 1:2)
+
+  result <- filter_rows(df, list())
+
+  expect_identical(result, df)
+})
+
+test_that("pivot_longer_measures converts wide to long format", {
+  data_list <- list(
+    "2023-24" = tibble::tibble(
+      org_code = c("A", "B"),
+      count_referrals = c(100, 200),
+      count_recovery = c(50, 100),
+      percentage_recovery = c(50.0, 50.0)
+    )
+  )
+  pivot_config <- list(
+    measure_cols = c(
+      "count_referrals",
+      "count_recovery",
+      "percentage_recovery"
+    ),
+    sep = "^(count|percentage)_(.+)$",
+    names_to = c("measure_statistic", "measure_name")
+  )
+
+  result <- pivot_longer_measures(data_list, pivot_config)
+
+  expect_s3_class(result, "tbl_df")
+  expect_true("reporting_period" %in% names(result))
+  expect_true("measure_statistic" %in% names(result))
+  expect_true("measure_name" %in% names(result))
+  expect_true("value" %in% names(result))
+  expect_equal(nrow(result), 6)
+  expect_equal(unique(result$measure_name), c("referrals", "recovery"))
+  expect_setequal(unique(result$measure_statistic), c("count", "percentage"))
+})
+
+test_that("pivot_longer_measures combines multiple periods", {
+  data_list <- list(
+    "2023-24" = tibble::tibble(org_code = "A", count_referrals = 100),
+    "2024-25" = tibble::tibble(org_code = "B", count_referrals = 200)
+  )
+  pivot_config <- list(
+    measure_cols = "count_referrals",
+    sep = "^(count)_(.+)$",
+    names_to = c("measure_statistic", "measure_name")
+  )
+
+  result <- pivot_longer_measures(data_list, pivot_config)
+
+  expect_equal(nrow(result), 2)
+  expect_setequal(result$reporting_period, c("2023-24", "2024-25"))
+  expect_equal(result$org_code, c("A", "B"))
+  expect_equal(result$value, c(100, 200))
+})
+
 test_that("clean_org_names formats NHS TT provider names", {
   providers <- c(
     "NHS BATH AND NORTH EAST SOMERSET CIC",
@@ -145,8 +301,10 @@ test_that("clean_org_names formats NHS TT provider names", {
     "THE  "
   )
 
+  result <- clean_org_names(providers)
+
   expect_equal(
-    clean_org_names(providers),
+    result,
     c(
       "NHS Bath and North East Somerset CIC",
       "TalkingSpace Plus: Oxford Health NHS Foundation Trust",

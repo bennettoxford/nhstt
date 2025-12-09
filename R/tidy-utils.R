@@ -1,29 +1,32 @@
-#' Make clean strings
+#' Clean strings to snake_case
 #'
-#' @param x Character, specifying string to clean (e.g., "CamelCase")
+#' @param x Character, specifying string to clean (e.g., "CamelCase" or "Column Name")
 #'
 #' @return Clean string
 #'
 #' @keywords internal
-make_clean_str <- function(x) {
+clean_str <- function(x) {
   x |>
+    gsub("[^a-zA-Z0-9]+", "_", x = _) |>
     gsub("([a-z])([A-Z])", "\\1_\\2", x = _) |>
-    gsub("([A-Z])([A-Z][a-z])", "\\1_\\2", x = _) |>
+    gsub("([A-Z]+)([A-Z][a-z])", "\\1_\\2", x = _) |>
+    gsub("_{2,}", "_", x = _) |>
+    gsub("^_|_$", "", x = _) |>
     tolower()
 }
 
-#' Tidy numeric values
+#' Replace NHS suppression markers with NA
 #'
-#' Converts NHS suppression markers to NA
+#' Converts NHS suppression markers ("*", "-", "NULL", etc.) to NA and coerces to numeric
 #'
-#' @param x Character or numeric vector, specifying values to tidy
+#' @param x Character or numeric vector, specifying values to convert
 #'
 #' @return Numeric vector with suppression markers as NA
 #'
 #' @importFrom dplyr case_when
 #'
 #' @keywords internal
-tidy_numeric_values <- function(x) {
+replace_suppression_with_na <- function(x) {
   if (is.numeric(x)) {
     return(x)
   }
@@ -36,14 +39,14 @@ tidy_numeric_values <- function(x) {
   suppressWarnings(as.numeric(x))
 }
 
-#' Tidy dataset values
+#' Convert measure columns to numeric
 #'
 #' Converts NULL to NA and coerces measure columns to numeric
 #'
 #' @param df Tibble, specifying data to tidy
 #' @param measure_cols Character vector, specifying measure column names
 #'
-#' @return Tibble with tidy values
+#' @return Tibble with measure columns as numeric
 #'
 #' @importFrom dplyr mutate across
 #' @importFrom tidyselect all_of
@@ -55,34 +58,72 @@ convert_to_numeric <- function(df, measure_cols) {
   df |>
     mutate(across(
       all_of(measure_cols_present),
-      tidy_numeric_values
+      replace_suppression_with_na
     ))
 }
 
 #' Rename columns
 #'
-#' Renames columns using a mapping (for year-specific inconsistencies)
+#' Renames columns using a mapping (for year-specific inconsistencies).
+#' Supports both global renames (applied to all periods) and period-specific renames.
 #'
 #' @param df Tibble, specifying data with columns to rename
-#' @param rename_mapping Named character vector, specifying old_name = new_name mapping
+#' @param rename_config List or named vector, specifying rename configuration.
+#'   Can contain:
+#'   - Simple mappings: `new_name: old_name` (applied to all periods)
+#'   - Period-specific mappings: `"YYYY-YY": {new_name: old_name}`
+#' @param period Character, specifying current period (e.g., "2023-24", "2025-09")
 #'
 #' @return Tibble with renamed columns
 #'
 #' @importFrom dplyr rename
 #'
 #' @keywords internal
-rename_columns <- function(df, rename_mapping) {
-  if (is.null(rename_mapping) || length(rename_mapping) == 0) {
+rename_columns <- function(df, rename_config, period = NULL) {
+  if (is.null(rename_config) || length(rename_config) == 0) {
     return(df)
   }
 
-  valid_mapping <- rename_mapping[names(rename_mapping) %in% names(df)]
+  # Separate global and period-specific renames
+  is_period_key <- grepl("^\\d{4}-(\\d{2}|\\d{2})$", names(rename_config))
+
+  # Extract global renames (not period-specific)
+  global_renames <- rename_config[!is_period_key]
+
+  # Extract period-specific renames for current period
+  period_renames <- list()
+  if (!is.null(period) && period %in% names(rename_config)) {
+    period_renames <- rename_config[[period]]
+  }
+
+  # Combine: period-specific renames take precedence over global
+  # Start with global, then override with period-specific
+  all_renames <- global_renames
+  if (length(period_renames) > 0) {
+    # Override global renames with period-specific ones
+    all_renames[names(period_renames)] <- period_renames
+  }
+
+  if (length(all_renames) == 0) {
+    return(df)
+  }
+
+  # Convert to character vector (unlist if needed)
+  all_renames_vec <- unlist(all_renames)
+
+  # Only apply renames for columns that exist in the data
+  # Note: all_renames_vec has new_name as name, old_name as value
+  valid_mapping <- all_renames_vec[all_renames_vec %in% names(df)]
 
   if (length(valid_mapping) == 0) {
     return(df)
   }
 
-  rename(df, !!!stats::setNames(names(valid_mapping), valid_mapping))
+  # Apply renames: new_name = old_name
+  # YAML format is: new_name: old_name -> c(new_name = "old_name")
+  # For dplyr, we need: c(new_name = old_name)
+  # Keep the mapping as-is (just ensure it's unnamed properly)
+  rename(df, !!!stats::setNames(unname(valid_mapping), names(valid_mapping)))
 }
 
 #' Filter rows
@@ -131,7 +172,7 @@ filter_rows <- function(df, filter_config) {
 #'   - id_cols: Character vector, ID columns to preserve
 #'   - measure_cols: Character vector, measure columns to pivot
 #'   - sep: Character, regex pattern to separate measure names
-#'   - into: Character vector, output column names for separated parts
+#'   - names_to: Character vector, output column names for separated parts
 #'
 #' @return Tibble in long format
 #'
@@ -144,7 +185,7 @@ filter_rows <- function(df, filter_config) {
 pivot_longer_measures <- function(data_list, pivot_config) {
   measure_cols <- pivot_config$measure_cols
   sep_pattern <- pivot_config$sep
-  into <- pivot_config$into
+  names_to <- pivot_config$names_to
 
   data_list |>
     imap(\(df, reporting_period) {
@@ -158,7 +199,7 @@ pivot_longer_measures <- function(data_list, pivot_config) {
     ) |>
     extract(
       col = "full_measure",
-      into = into,
+      into = names_to,
       regex = sep_pattern,
       remove = TRUE
     )
@@ -326,9 +367,9 @@ parse_monthly_period_bounds <- function(period) {
   )
 }
 
-#' Clean column values with make_clean_str
+#' Clean column values to snake_case
 #'
-#' Applies make_clean_str to values in specified columns
+#' Applies clean_str to values in specified columns
 #'
 #' @param df Tibble, specifying data with columns to clean
 #' @param column_names Character vector, specifying column names to clean (e.g., c("measure", "statistic"))
@@ -354,7 +395,7 @@ clean_column_values <- function(df, column_names = NULL) {
     mutate(
       across(
         all_of(columns_to_clean),
-        make_clean_str
+        clean_str
       )
     )
 }

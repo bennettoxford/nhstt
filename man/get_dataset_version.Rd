@@ -7,7 +7,7 @@
 get_dataset_version(dataset, frequency)
 }
 \arguments{
-\item{dataset}{Character, specifying dataset name (e.g., "key_measures", "activity_performance")}
+\item{dataset}{Character, specifying dataset name}
 
 \item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
 }

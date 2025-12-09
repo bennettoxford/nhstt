@@ -7,7 +7,7 @@
 load_tidy_cache(dataset, period, frequency)
 }
 \arguments{
-\item{dataset}{Character, specifying dataset name (e.g., "key_measures", "activity_performance")}
+\item{dataset}{Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")}
 
 \item{period}{Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)}
 

@@ -7,7 +7,7 @@
 available_nhstt_reports()
 }
 \value{
-Tibble with dataset and frequency information (one row per dataset-frequency combination)
+Tibble with dataset and frequency information (one row per dataset)
 }
 \description{
 Returns a tibble with information about available datasets including
