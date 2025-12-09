@@ -7,7 +7,7 @@
 get_tidy_versions_json_path(dataset, frequency)
 }
 \arguments{
-\item{dataset}{Character, specifying dataset name (e.g., "key_measures", "activity_performance")}
+\item{dataset}{Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")}
 
 \item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
 }

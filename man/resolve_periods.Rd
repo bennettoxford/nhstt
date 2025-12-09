@@ -9,7 +9,7 @@ resolve_periods(periods, dataset, frequency)
 \arguments{
 \item{periods}{Character vector or NULL, specifying periods (e.g., c("2023-24", "2024-25") for annual, c("2025-08", "2025-09") for monthly). Default NULL returns all periods}
 
-\item{dataset}{Character, specifying dataset name (e.g., "key_measures", "activity_performance")}
+\item{dataset}{Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")}
 
 \item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
 }

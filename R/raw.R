@@ -155,7 +155,7 @@ download_and_store <- function(
 
 #' Download and cache raw data
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #' @param use_cache Logical, specifying whether to use cached data if available. Default TRUE
@@ -190,7 +190,7 @@ download_raw <- function(dataset, period, frequency, use_cache = TRUE) {
     url = url,
     source_format = source_format,
     file_path = file_path,
-    csv_pattern = source_info$csv_pattern,
+    csv_pattern = source_info$csv_file,
     sheet = source_info$sheet,
     range = source_info$range
   )
@@ -201,7 +201,7 @@ download_raw <- function(dataset, period, frequency, use_cache = TRUE) {
 #' Downloads (if needed) and reads a single raw dataset file into memory.
 #' All data is stored as parquet files (archives are extracted during download).
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures", "activity_performance")
+#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
 #' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #' @param use_cache Logical, specifying whether to use cached data if available. Default TRUE

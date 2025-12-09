@@ -14,7 +14,7 @@ pivot_longer_measures(data_list, pivot_config)
 \item id_cols: Character vector, ID columns to preserve
 \item measure_cols: Character vector, measure columns to pivot
 \item sep: Character, regex pattern to separate measure names
-\item into: Character vector, output column names for separated parts
+\item names_to: Character vector, output column names for separated parts
 }}
 }
 \value{

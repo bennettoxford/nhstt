@@ -1,0 +1,228 @@
+# NHS Talking Therapies tidy data configuration
+# Tidy options: clean_column_names, rename, filter, as_numeric, separate, mutate, pivot_longer, clean_column_values, select
+# Rename format: new_name: old_name (use "YYYY-YY"/"YYYY-MM" keys for period-specific renames)
+datasets:
+  key_measures_annual:
+    clean_column_names: true
+
+    filter:
+      org_type:
+        - England
+        - Commissioning Region
+        - STP
+        - CCG
+        - Provider
+      variable_type:
+        - Total
+        - Age Group
+        - Consultation Medium
+        - Disability Type
+        - Ethnic Group
+        - BME Group
+        - Indices of Deprivation Decile
+        - Long Term Condition Status
+        - Mental Health Care Cluster
+        - Gender
+        - Sexual Orientation Type
+        - Problem Descriptor
+        - Presenting Complaint
+        - Stepped Care Pathway
+        - Religion
+        - Waiting Time
+
+    pivot_longer:
+      id_cols:
+        - org_type
+        - org_code
+        - org_name
+        - variable_type
+        - variable_a
+        - variable_b
+
+      measure_cols:
+        - count_referrals_received
+        - count_finished_course_treatment
+        - count_at_caseness
+        - count_not_at_caseness
+        - count_improvement
+        - percentage_improvement
+        - count_deterioration
+        - percentage_deterioration
+        - count_no_reliable_change
+        - percentage_no_reliable_change
+        - count_reliable_recovery
+        - percentage_reliable_recovery
+        - count_recovery
+        - percentage_recovery
+
+      sep: "^(count|mean|median|percentage|sum)_(.+)$"
+      names_to:
+        - measure_statistic
+        - measure_name
+
+    clean_column_values:
+      - measure_name
+      - measure_statistic
+
+    select:
+      - reporting_period
+      - start_date
+      - end_date
+      - org_type
+      - org_code
+      - org_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - measure_id
+      - measure_name
+      - measure_statistic
+      - value
+
+  activity_performance_monthly:
+    clean_column_names: true
+
+    rename:
+      start_date: reporting_period_start
+      end_date: reporting_period_end
+      value: measure_value_suppressed
+
+    filter:
+      group_type:
+        - England
+        - Commissioning Region
+        - Integrated Care Board (ICB)
+        - Provider
+
+    as_numeric:
+      - value
+
+    separate:
+      measure_name:
+        into:
+          - measure_statistic
+          - measure_name
+        sep: "^([^_]+)_(.+)$"
+        remove: false
+
+    mutate:
+      reporting_period:
+        source_column: start_date
+        function: format
+        args:
+          format: "%Y-%m"
+
+    clean_column_values:
+      - measure_name
+      - measure_statistic
+
+    select:
+      - reporting_period
+      - start_date
+      - end_date
+      - group_type
+      - org_code1
+      - org_name1
+      - org_code2
+      - org_name2
+      - measure_id
+      - measure_name
+      - measure_statistic
+      - value
+
+  metadata_measures_monthly:
+    clean_column_names: true
+
+    rename:
+      measure_id: measure_reference_number
+      description: description_of_measure_where_possible_measures_are_described_in_terms_of_the_classes_of_information_defined_in_nhs_data_dictionary
+      derivation_uids: ui_ds_of_derivations_used_defined_in_technical_output_specification
+
+    select:
+      - reporting_period
+      - measure_type
+      - frequency
+      - measure_id
+      - measure_name
+      - description
+      - derivation_uids
+      - tables_used
+      - construction
+
+  metadata_measures_main_annual:
+    clean_column_names: true
+
+    rename:
+      field_name: csv_field_name
+      description: description_of_measure
+
+    mutate:
+      dataset_name:
+        value: "key_measures_annual"
+
+    select:
+      - reporting_period
+      - dataset_name
+      - field_name
+      - description
+      - technical_construction
+      - additional_notes
+
+  metadata_measures_additional_annual:
+    clean_column_names: true
+
+    rename:
+      dataset_name: name_of_additional_csv_data_file
+      field_name: csv_field_name
+      description: description_of_measure
+
+    select:
+      - reporting_period
+      - dataset_name
+      - field_name
+      - description
+      - technical_construction
+      - additional_notes
+
+  metadata_variables_main_annual:
+    clean_column_names: true
+
+    rename:
+      fields_for_variable_type: data_field_s_used_for_variable_type
+      values_for_variable_a: data_value_s_used_in_variable_a
+      values_for_variable_b: data_value_s_used_in_variable_b
+
+    mutate:
+      dataset_name:
+        value: "key_measures_annual"
+
+    select:
+      - reporting_period
+      - dataset_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - fields_for_variable_type
+      - values_for_variable_a
+      - values_for_variable_b
+      - notes
+
+  metadata_variables_additional_annual:
+    clean_column_names: true
+
+    rename:
+      dataset_name: name_of_additional_csv_data_file
+      fields_for_variable_type: data_field_s_used_for_variable_type
+      values_for_variable_a: data_value_s_used_in_variable_a
+      values_for_variable_b: data_value_s_used_in_variable_b
+
+    select:
+      - reporting_period
+      - dataset_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - fields_for_variable_type
+      - values_for_variable_a
+      - values_for_variable_b
+      - notes

@@ -31,7 +31,7 @@ get_key_measures_annual <- function(
   use_cache = TRUE
 ) {
   frequency <- "annual"
-  dataset <- "key_measures"
+  dataset <- "key_measures_annual"
 
   periods <- resolve_periods(periods, dataset, frequency)
   periods <- rev(periods)

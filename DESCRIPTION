@@ -38,11 +38,9 @@ Imports:
     curl,
     digest,
     dplyr,
-    janitor,
     jsonlite,
     purrr,
     readxl,
-    RcppTOML,
     rlang,
     stringr,
     tibble,
@@ -50,5 +48,6 @@ Imports:
     tidyselect,
     tools,
     utils,
-    vroom
+    vroom,
+    yaml
 VignetteBuilder: knitr, quarto

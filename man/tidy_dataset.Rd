@@ -9,7 +9,7 @@ tidy_dataset(raw_data_list, dataset, frequency)
 \arguments{
 \item{raw_data_list}{Named list, specifying raw tibbles (e.g., list("2023-24" = df))}
 
-\item{dataset}{Character, specifying dataset name (e.g., "key_measures")}
+\item{dataset}{Character, specifying dataset name (e.g., "key_measures_annual")}
 
 \item{frequency}{Character, specifying frequency ("annual" or "monthly")}
 }

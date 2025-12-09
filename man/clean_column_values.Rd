@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidy-utils.R
 \name{clean_column_values}
 \alias{clean_column_values}
-\title{Clean column values with make_clean_str}
+\title{Clean column values to snake_case}
 \usage{
 clean_column_values(df, column_names = NULL)
 }
@@ -15,6 +15,6 @@ clean_column_values(df, column_names = NULL)
 Tibble with cleaned column values
 }
 \description{
-Applies make_clean_str to values in specified columns
+Applies clean_str to values in specified columns
 }
 \keyword{internal}

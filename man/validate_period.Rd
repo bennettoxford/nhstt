@@ -9,7 +9,7 @@ validate_period(period, dataset, frequency)
 \arguments{
 \item{period}{Character, specifying reporting period to validate (e.g., "2023-24" for annual, "2025-09" for monthly)}
 
-\item{dataset}{Character, specifying dataset name (e.g., "key_measures", "activity_performance")}
+\item{dataset}{Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")}
 
 \item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
 }

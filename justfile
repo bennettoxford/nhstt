@@ -19,8 +19,14 @@ build:
     Rscript --quiet --vanilla -e 'pak::local_install()'
 
 # Run all tests
-test:
+test-unit:
     Rscript --quiet --vanilla -e 'devtools::test()'
+
+# Run integration tests (downloads real data)
+test-integration:
+    Rscript tests/integration.R
+
+test: test-unit test-integration
 
 # Run R CMD check
 check:
