@@ -12,8 +12,7 @@ list_available_periods(dataset, frequency, include_development = FALSE)
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures",
-  "activity_performance")
+  Character, specifying dataset name
 
 - frequency:
 

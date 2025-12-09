@@ -1,6 +1,6 @@
-# Clean column values with make_clean_str
+# Clean column values to snake_case
 
-Applies make_clean_str to values in specified columns
+Applies clean_str to values in specified columns
 
 ## Usage
 

@@ -1,6 +1,6 @@
-# Retrieve tidy configuration for a dataset/frequency combination
+# Get tidy configuration for a dataset
 
-Retrieve tidy configuration for a dataset/frequency combination
+Get tidy configuration for a dataset
 
 ## Usage
 
@@ -12,11 +12,11 @@ get_tidy_config(dataset, frequency)
 
 - dataset:
 
-  Character, dataset name (e.g., "key_measures")
+  Character, dataset name (e.g., "key_measures_annual")
 
 - frequency:
 
-  Character, "annual" or "monthly"
+  Character, "annual" or "monthly" (used for validation only)
 
 ## Value
 

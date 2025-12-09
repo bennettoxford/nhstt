@@ -18,7 +18,7 @@ tidy_dataset(raw_data_list, dataset, frequency)
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures")
+  Character, specifying dataset name (e.g., "key_measures_annual")
 
 - frequency:
 

@@ -12,8 +12,8 @@ get_tidy_cache_path(dataset, period, frequency, dataset_version = NULL)
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures",
-  "activity_performance")
+  Character, specifying dataset name (e.g., "key_measures_annual",
+  "activity_performance_monthly")
 
 - period:
 

@@ -25,7 +25,7 @@ pivot_longer_measures(data_list, pivot_config)
 
   - sep: Character, regex pattern to separate measure names
 
-  - into: Character vector, output column names for separated parts
+  - names_to: Character vector, output column names for separated parts
 
 ## Value
 

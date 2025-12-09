@@ -12,13 +12,12 @@ get_source_config(dataset, period, frequency)
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures",
-  "activity_performance")
+  Character, specifying dataset name
 
 - period:
 
   Character, specifying reporting period (e.g., "2023-24" for annual,
-  "2025-09" for monthly)
+  "2025-09" for monthly")
 
 - frequency:
 
@@ -26,4 +25,5 @@ get_source_config(dataset, period, frequency)
 
 ## Value
 
-List with url, format, csv_pattern
+List with url, format, and format-specific fields (csv_file, sheet,
+range)

@@ -12,8 +12,8 @@ download_raw(dataset, period, frequency, use_cache = TRUE)
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures",
-  "activity_performance")
+  Character, specifying dataset name (e.g., "key_measures_annual",
+  "activity_performance_monthly")
 
 - period:
 

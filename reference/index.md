@@ -23,7 +23,7 @@
 
 - [`cache_info()`](https://bennettoxford.github.io/nhstt/reference/cache_info.md)
   : Display cache information
-- [`clear_cache()`](https://bennettoxford.github.io/nhstt/reference/clear_cache.md)
+- [`cache_clear()`](https://bennettoxford.github.io/nhstt/reference/cache_clear.md)
   : Clear cache
 
 ## Helper functions

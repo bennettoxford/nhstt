@@ -1,6 +1,6 @@
-# Load raw data configuration from TOML
+# Load raw data configuration from YAML
 
-Load raw data configuration from TOML
+Load raw data configuration from YAML
 
 ## Usage
 

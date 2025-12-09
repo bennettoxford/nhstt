@@ -1,4 +1,4 @@
-# Tidy dataset values
+# Convert measure columns to numeric
 
 Converts NULL to NA and coerces measure columns to numeric
 
@@ -20,4 +20,4 @@ convert_to_numeric(df, measure_cols)
 
 ## Value
 
-Tibble with tidy values
+Tibble with measure columns as numeric

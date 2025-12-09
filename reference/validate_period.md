@@ -17,8 +17,8 @@ validate_period(period, dataset, frequency)
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures",
-  "activity_performance")
+  Character, specifying dataset name (e.g., "key_measures_annual",
+  "activity_performance_monthly")
 
 - frequency:
 

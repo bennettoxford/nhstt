@@ -5,15 +5,18 @@ Validate dataset name
 ## Usage
 
 ``` r
-validate_dataset(dataset)
+validate_dataset(dataset, frequency)
 ```
 
 ## Arguments
 
 - dataset:
 
-  Character, specifying dataset name to validate (e.g., "key_measures",
-  "activity_performance")
+  Character, specifying dataset name
+
+- frequency:
+
+  Character, specifying report frequency ("annual" or "monthly")
 
 ## Value
 

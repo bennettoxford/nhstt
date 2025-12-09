@@ -1,6 +1,6 @@
-# Load all tidy configurations
+# Load all tidy configurations from YAML
 
-Load all tidy configurations
+Load all tidy configurations from YAML
 
 ## Usage
 

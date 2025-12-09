@@ -73,10 +73,10 @@ referral_ended_measures <- c(
 )
 ```
 
-    #> ℹ Downloading metadata (monthly) for 2025-07
+    #> ℹ Downloading metadata_measures_monthly (monthly) for 2025-07
     #> ! Download failed (attempt 1/3), retrying...
-    #> ℹ Downloading metadata (monthly) for 2025-07! Download failed (attempt 2/3), retrying...
-    #> ℹ Downloading metadata (monthly) for 2025-07✖ Downloading metadata (monthly) for 2025-07 ... failed
+    #> ℹ Downloading metadata_measures_monthly (monthly) for 2025-07! Download failed (attempt 2/3), retrying...
+    #> ℹ Downloading metadata_measures_monthly (monthly) for 2025-07✖ Downloading metadata_measures_monthly (monthly) for 2025-07 ... failed
     #> 
     #> ! Download failed, using package metadata for 2025-07
 

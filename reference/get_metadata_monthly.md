@@ -1,6 +1,6 @@
 # Get monthly metadata for NHS Talking Therapies measures
 
-Retrieves the definitions, derivations, and construction notes for each
+Gets the definitions, derivations, and construction notes for each
 reported measure.
 
 ## Usage

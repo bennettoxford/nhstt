@@ -25,6 +25,13 @@ get_metadata_variables_annual(periods = NULL, use_cache = TRUE)
 
 Tibble containing metadata rows for each annual variable definition
 
+## Details
+
+If network download fails (e.g., in GitHub Actions), falls back to
+bundled metadata shipped with the package. This is a temporary
+workaround for `digital.nhs.uk` not allowing me to download from GitHub
+actions.
+
 ## Examples
 
 ``` r

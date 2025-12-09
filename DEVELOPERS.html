@@ -85,11 +85,20 @@
 </ul></div>
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
-<p>Currently only (fast) unit tests. The full data pipleline including downloads is not included in the test at the moment.</p>
+<p>Unit tests are implemented with <em>teststhat</em> in <code>tests/testthat</code> (run <code>just test-unit</code>). To keep unit tests fast but still test the full pipeline (download and tidy) integration tests are in <code>tests/integration.R</code> (run <code>just test-integration</code>). There may be a way to also add integration tests to testthat without running them every time (possible using environment variables), but I haven’t explored that yet. The just recipe <code>just test</code> runs both tests.</p>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a></h2>
 <p>Documentation is built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a></h2>
+<p>Data source and transformation configs live in <code>inst/config/</code> as YAML files (<code>raw_config.yml</code> for raw download sources, <code>tidy_config.yml</code> for data cleaning).</p>
+</div>
+<div class="section level2">
+<h2 id="ojs-reports">OJS Reports<a class="anchor" aria-label="anchor" href="#ojs-reports"></a></h2>
+<p>Interactive reports in <code>vignettes/report-*.qmd</code> use <a href="https://quarto.org/docs/interactive/ojs/" class="external-link">Observable JavaScript (OJS)</a> in Quarto with shared code in <code>_shared-code.qmd</code>. Reports support URL parameters (<code>?orgs=code1,code2</code>) for organization selection and use <a href="https://observablehq.com/@observablehq/plot-gallery" class="external-link">Observable Plot</a> (or <a href="https://observablehq.com/@d3/gallery" class="external-link">D3</a>) for visualizations.</p>
+<p>We could drop OJS, but then we’d loose some interactivity between URL parameters and UI components (e.g., plots and tables). Alternatively we could do some of that using R-based approaches with (<a href="https://plotly.com/r/" class="external-link">plotly</a>, or <a href="https://jkunst.com/highcharter/" class="external-link">Highcharts</a>). For similar interactivity we would need Shiny.</p>
 </div>
 <div class="section level2">
 <h2 id="development-workflow">Development workflow<a class="anchor" aria-label="anchor" href="#development-workflow"></a></h2>

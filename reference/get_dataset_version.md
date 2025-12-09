@@ -12,8 +12,7 @@ get_dataset_version(dataset, frequency)
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures",
-  "activity_performance")
+  Character, specifying dataset name
 
 - frequency:
 
