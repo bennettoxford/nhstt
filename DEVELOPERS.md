@@ -22,8 +22,10 @@ just list
 
 ## Testing
 
-Currently only (fast) unit tests.
-The full data pipleline including downloads is not included in the test at the moment.
+Unit tests are implemented with _teststhat_ in `tests/testthat` (run `just test-unit`).
+To keep unit tests fast but still test the full pipeline (download and tidy) integration tests are in `tests/integration.R` (run `just test-integration`).
+There may be a way to also add integration tests to testthat without running them every time (possible using environment variables), but I haven't explored that yet.
+The just recipe `just test` runs both tests.
 
 ## Documentation
 

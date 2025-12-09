@@ -38,7 +38,6 @@ Imports:
     curl,
     digest,
     dplyr,
-    janitor,
     jsonlite,
     purrr,
     readxl,
