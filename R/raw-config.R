@@ -173,7 +173,7 @@ validate_dataset_metadata <- function(dataset_name, dataset) {
   }
 
   # Validate frequency
-  valid_frequencies <- c("annual", "monthly")
+  valid_frequencies <- c("annual", "monthly", "live")
   if (!dataset$frequency %in% valid_frequencies) {
     cli_abort(c(
       "Dataset {.val {dataset_name}} has invalid frequency: {.val {dataset$frequency}}",
@@ -277,7 +277,7 @@ validate_dataset_sources <- function(dataset_name, dataset, config) {
       }
 
       # Validate format
-      valid_formats <- c("csv", "zip", "rar", "xlsx")
+      valid_formats <- c("csv", "zip", "rar", "xlsx", "api")
       if (!source$format %in% valid_formats) {
         cli_abort(c(
           "Dataset {.val {dataset_name}} source {i} has invalid format: {.val {source$format}}",
@@ -375,13 +375,13 @@ validate_dataset <- function(dataset, frequency) {
 
 #' Validate frequency
 #'
-#' @param frequency Character, specifying report frequency to validate ("annual" or "monthly")
+#' @param frequency Character, specifying report frequency to validate ("annual", "monthly", or "live")
 #'
 #' @return Invisible TRUE if valid, aborts otherwise
 #'
 #' @keywords internal
 validate_frequency <- function(frequency) {
-  valid_frequencies <- c("annual", "monthly")
+  valid_frequencies <- c("annual", "monthly", "live")
 
   if (!frequency %in% valid_frequencies) {
     cli_abort(c(

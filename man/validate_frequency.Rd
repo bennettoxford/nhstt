@@ -7,7 +7,7 @@
 validate_frequency(frequency)
 }
 \arguments{
-\item{frequency}{Character, specifying report frequency to validate ("annual" or "monthly")}
+\item{frequency}{Character, specifying report frequency to validate ("annual", "monthly", or "live")}
 }
 \value{
 Invisible TRUE if valid, aborts otherwise

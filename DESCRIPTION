@@ -1,6 +1,6 @@
 Package: nhstt
 Title: NHS Talking Therapies for anxiety and depression reports in R
-Version: 0.2.2
+Version: 0.3.0
 Authors@R: c(
     person("Milan", "Wiedemann", email = "milan.wiedemann@gmail.com", comment = c(ORCID = "0000-0003-1991-282X"), role = c("aut", "cre")),
     person("Wellcome Trust", role = "fnd"))
@@ -38,6 +38,7 @@ Imports:
     curl,
     digest,
     dplyr,
+    httr2,
     jsonlite,
     purrr,
     readxl,

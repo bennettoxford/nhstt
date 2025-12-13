@@ -134,6 +134,7 @@ datasets:
     clean_column_names: true
 
     rename:
+      measure_type: meaure_type
       measure_id: measure_reference_number
       description: description_of_measure_where_possible_measures_are_described_in_terms_of_the_classes_of_information_defined_in_nhs_data_dictionary
       derivation_uids: ui_ds_of_derivations_used_defined_in_technical_output_specification
