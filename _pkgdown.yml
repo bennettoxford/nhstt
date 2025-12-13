@@ -51,6 +51,10 @@ navbar:
           href: articles/metadata-monthly-ea.html
         - text: "Long-term Condition (LTC) measures"
           href: articles/metadata-monthly-ltc.html
+        - text: -------
+        - text: "Organisation metadata"
+        - text: "NHS Talking Therapies providers"
+          href: articles/metadata-ods.html
     - text: "Reports"
       menu:
         - text: "Monthly"
@@ -71,6 +75,7 @@ reference:
       - get_metadata_measures_annual
       - get_metadata_variables_annual
       - get_metadata_monthly
+      - get_metadata_providers
   - title: "Cache management"
     contents:
       - cache_info
@@ -92,6 +97,7 @@ articles:
       - metadata-monthly-core
       - metadata-monthly-ea
       - metadata-monthly-ltc
+      - metadata-ods
   - title: "Reports"
     desc: "Reports based on monthly and annual NHS TT measures"
     contents:

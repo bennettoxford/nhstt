@@ -237,3 +237,17 @@ datasets:
         format: "xlsx"
         sheet: "Measures"
         range: "A5:H427"
+
+  metadata_providers:
+    title: "Provider organisation metadata"
+    description: "NHS TT provider metadata from Organisation Data Service (ODS)"
+    version: "0.1.0"
+    get_function: "get_metadata_providers"
+    frequency: "live"
+    type: "metadata"
+    copyright: "Copyright NHS England"
+    license: "OGL-UK-3.0"
+    sources:
+      - period: "current"
+        url: "https://directory.spineservices.nhs.uk/ORD/2-0-0/organisations"
+        format: "api"

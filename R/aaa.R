@@ -22,5 +22,15 @@ utils::globalVariables(c(
   "reporting_period",
   "reporting_period_end",
   "reporting_period_start",
-  "value"
+  "value",
+  # Variables for get_metadata_providers
+  "org_name",
+  "org_code",
+  "town",
+  "icb_name",
+  "region_name",
+  "status",
+  "postcode",
+  "icb_code",
+  "region_code"
 ))
