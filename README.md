@@ -56,9 +56,10 @@ ap_monthly <- get_activity_performance_monthly()
 
 | Function | First period | Last period | Count periods | Version |
 |:---|:---|:---|---:|---:|
-| `get_metadata_monthly()` | 2025-07 | 2025-07 | 1 | 0.1.0 |
 | `get_metadata_measures_annual()` | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | `get_metadata_variables_annual()` | 2024-25 | 2024-25 | 1 | 0.1.0 |
+| `get_metadata_monthly()` | 2025-07 | 2025-07 | 1 | 0.1.0 |
+| `get_metadata_providers()` | current | current | 1 | 0.1.0 |
 
 ## Time to download and tidy the data
 
@@ -67,8 +68,8 @@ be a bit faster or slower depending on your internet and computer.
 
 | Function | Download per period | Tidy per period | Total (all periods) |
 |:---|---:|---:|---:|
-| `get_key_measures_annual()` | 1.2 sec | 15.5 sec | 2.2 min |
-| `get_activity_performance_monthly()` | 4.3 sec | 0.44 sec | 2.3 min |
+| `get_key_measures_annual()` | 1.2 sec | 16.6 sec | 2.4 min |
+| `get_activity_performance_monthly()` | 8.3 sec | 0.02 sec | 4 min |
 
 ## For developers
 
