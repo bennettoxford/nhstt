@@ -17,7 +17,7 @@ Tibble with dataset and frequency information (one row per dataset)
 
 ``` r
 available_nhstt_reports()
-#> # A tibble: 7 × 8
+#> # A tibble: 8 × 8
 #>   dataset        frequency title get_function first_period last_period n_periods
 #>   <chr>          <chr>     <chr> <chr>        <chr>        <chr>           <int>
 #> 1 key_measures_… annual    Key … get_key_mea… 2017-18      2024-25             8
@@ -27,5 +27,6 @@ available_nhstt_reports()
 #> 5 metadata_vari… annual    Annu… get_metadat… 2024-25      2024-25             1
 #> 6 metadata_vari… annual    Annu… get_metadat… 2024-25      2024-25             1
 #> 7 metadata_meas… monthly   Mont… get_metadat… 2025-07      2025-07             1
+#> 8 metadata_prov… live      Prov… get_metadat… current      current             1
 #> # ℹ 1 more variable: version <chr>
 ```

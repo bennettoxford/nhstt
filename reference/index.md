@@ -18,6 +18,8 @@
   : Get annual metadata for variable derivations
 - [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md)
   : Get monthly metadata for NHS Talking Therapies measures
+- [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md)
+  : Get provider organisation metadata from ODS
 
 ## Cache management
 

@@ -21,6 +21,8 @@ Metadata for annual and monthly reports
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ea.md):
 - [Long-term Condition
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ltc.md):
+- [NHS Talking Therapies providers
+  metadata](https://bennettoxford.github.io/nhstt/articles/metadata-ods.md):
 
 ### Reports
 

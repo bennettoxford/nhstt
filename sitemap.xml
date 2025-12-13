@@ -10,6 +10,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ea.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ltc.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-ods.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/report-monthly-outcomes.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/report-monthly-tx-appt.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/authors.html</loc></url>
@@ -36,7 +37,10 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/get_ods_data.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/get_org_types.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_package_data_path.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_raw_cache_dir.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_raw_cache_path.html</loc></url>
