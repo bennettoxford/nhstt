@@ -23,6 +23,7 @@ utils::globalVariables(c(
   "reporting_period_end",
   "reporting_period_start",
   "value",
+  "measure_type",
   # Variables for get_metadata_providers
   "org_name",
   "org_code",
