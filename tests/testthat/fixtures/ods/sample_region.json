@@ -1,0 +1,18 @@
+{
+  "Organisation": {
+    "OrgId": {
+      "extension": "Y60"
+    },
+    "Name": "NHS England Midlands",
+    "Status": "Active",
+    "Roles": {
+      "Role": [
+        {
+          "id": "RO209",
+          "primaryRole": true,
+          "Status": "Active"
+        }
+      ]
+    }
+  }
+}

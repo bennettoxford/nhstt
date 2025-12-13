@@ -180,13 +180,13 @@ benchmark_dataset <- function(dataset, period, frequency, get_function) {
 }
 
 time_km_annual <- benchmark_dataset(
-  "key_measures",
+  "key_measures_annual",
   "2024-25",
   "annual",
   get_key_measures_annual
 )
 time_ap_monthly <- benchmark_dataset(
-  "activity_performance",
+  "activity_performance_monthly",
   "2025-08",
   "monthly",
   get_activity_performance_monthly

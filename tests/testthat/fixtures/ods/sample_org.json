@@ -1,0 +1,58 @@
+{
+  "Organisation": {
+    "OrgId": {
+      "extension": "RXT"
+    },
+    "Name": "Nottinghamshire Healthcare NHS Foundation Trust",
+    "Status": "Active",
+    "GeoLoc": {
+      "Location": {
+        "PostCode": "NG3 6AA",
+        "Town": "Nottingham"
+      }
+    },
+    "Roles": {
+      "Role": [
+        {
+          "id": "RO197",
+          "primaryRole": true,
+          "Status": "Active"
+        }
+      ]
+    },
+    "Rels": {
+      "Rel": [
+        {
+          "id": "RE4",
+          "Status": "Active",
+          "Target": {
+            "OrgId": {
+              "extension": "QF7"
+            },
+            "PrimaryRoleId": {
+              "id": "RO98"
+            }
+          }
+        },
+        {
+          "id": "RE4",
+          "Status": "Active",
+          "Target": {
+            "OrgId": {
+              "extension": "15M"
+            },
+            "PrimaryRoleId": {
+              "id": "RO261"
+            }
+          }
+        }
+      ]
+    },
+    "Date": [
+      {
+        "Type": "Operational",
+        "Start": "2003-04-01"
+      }
+    ]
+  }
+}
