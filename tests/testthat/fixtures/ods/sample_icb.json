@@ -1,0 +1,34 @@
+{
+  "Organisation": {
+    "OrgId": {
+      "extension": "15M"
+    },
+    "Name": "NHS Nottingham and Nottinghamshire Integrated Care Board",
+    "Status": "Active",
+    "Roles": {
+      "Role": [
+        {
+          "id": "RO261",
+          "primaryRole": true,
+          "Status": "Active"
+        }
+      ]
+    },
+    "Rels": {
+      "Rel": [
+        {
+          "id": "RE4",
+          "Status": "Active",
+          "Target": {
+            "OrgId": {
+              "extension": "Y60"
+            },
+            "PrimaryRoleId": {
+              "id": "RO209"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

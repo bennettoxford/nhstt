@@ -1,0 +1,94 @@
+---
+title: "NHS Talking Therapies providers metadata"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{metadata-ods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+library(nhstt)
+library(dplyr)
+library(reactable)
+library(htmltools)
+
+# Get provider metadata from ODS
+metadata_ods <- get_metadata_providers(use_cache = TRUE) |>
+  select(
+    org_name,
+    org_code,
+    town,
+    icb_name,
+    region_name,
+    status
+  ) |>
+  arrange(desc(status == "Active"), org_name)
+```
+
+This table shows all NHS Talking Therapies providers available in the annual data reports and information about their location (town, ICB, region). The data comes from the [NHS Organisation Data Service](https://www.odsdatasearchandexport.nhs.uk/).
+
+```{r ods-providers, echo=FALSE}
+reactable(
+  metadata_ods,
+  searchable = TRUE,
+  sortable = TRUE,
+  defaultPageSize = 20,
+  columns = list(
+    org_name = colDef(
+      name = "NHS TT provider",
+      minWidth = 250,
+      cell = function(value, index) {
+        name <- metadata_ods$org_name[index]
+        code <- metadata_ods$org_code[index]
+
+        htmltools::tagList(
+          htmltools::tags$div(htmltools::tags$strong(name)),
+          htmltools::tags$div(code)
+        )
+      }
+    ),
+    org_code = colDef(show = FALSE),
+    town = colDef(
+      name = "Location",
+      minWidth = 250,
+      cell = function(value, index) {
+        town <- metadata_ods$town[index]
+        icb <- metadata_ods$icb_name[index]
+        region <- metadata_ods$region_name[index]
+
+        htmltools::tagList(
+          htmltools::tags$div(
+            htmltools::tags$strong("Town: "),
+            town
+          ),
+          htmltools::tags$div(
+            htmltools::tags$strong("ICB: "),
+            icb
+          ),
+          htmltools::tags$div(
+            htmltools::tags$strong("Region: "),
+            region
+          )
+        )
+      }
+    ),
+    icb_name = colDef(show = FALSE),
+    region_name = colDef(show = FALSE),
+    status = colDef(
+      name = "Status",
+      minWidth = 60
+    )
+  ),
+  pagination = FALSE,
+  outlined = TRUE,
+  striped = TRUE
+)
+```
