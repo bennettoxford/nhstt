@@ -32,3 +32,5 @@
 
 - [`available_nhstt_reports()`](https://bennettoxford.github.io/nhstt/reference/available_nhstt_reports.md)
   : List available NHS Talking Therapies reports
+- [`summarise_percentiles()`](https://bennettoxford.github.io/nhstt/reference/summarise_percentiles.md)
+  : Calculate percentiles for a numeric variable

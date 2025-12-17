@@ -28,7 +28,7 @@ library(stringr)
 # Get key_measures data
 # When running this for the first time it will download and tidy the reports
 key_measures <- get_key_measures_annual(
-  periods = c("2020-21", "2021-22", "2022-23", "2023-24", "2024-25")
+  periods = c("2022-23", "2023-24", "2024-25")
 )
 ```
 
@@ -68,8 +68,7 @@ selected_measures <- selected_measures |>
       levels = c("referrals_received", "finished_course_treatment"),
       labels = c("Referrals received", "Finished course of treatment")
     )
-  ) |>
-  filter(end_date > "2020-03-31")
+  )
 ```
 
 ## Create figure
