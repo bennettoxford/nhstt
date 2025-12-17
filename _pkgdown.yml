@@ -83,6 +83,7 @@ reference:
   - title: "Helper functions"
     contents:
       - available_nhstt_reports
+      - summarise_percentiles
 
 articles:
   - title: "How-to guides"
