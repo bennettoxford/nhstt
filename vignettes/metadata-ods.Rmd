@@ -40,7 +40,7 @@ reactable(
   metadata_ods,
   searchable = TRUE,
   sortable = TRUE,
-  defaultPageSize = 20,
+  defaultPageSize = 10,
   columns = list(
     org_name = colDef(
       name = "NHS TT provider",
@@ -87,7 +87,6 @@ reactable(
       minWidth = 60
     )
   ),
-  pagination = FALSE,
   outlined = TRUE,
   striped = TRUE
 )

@@ -15,29 +15,25 @@ summarise_percentiles(
 \arguments{
 \item{df}{Data frame or tibble containing the data to summarise}
 
-\item{period_col}{Column name for the period variable (unquoted), used for
-ordering results. Typically a date column like \code{end_date}}
+\item{period_col}{Column name for the period variable, used for
+ordering results. Typically a date column e.g., \code{end_date}}
 
-\item{value_col}{Column name for the numeric variable to calculate
-percentiles from (unquoted)}
+\item{value_col}{Column name for the numeric variable to calculate percentiles}
 
 \item{percentiles}{Numeric vector of percentiles to calculate, specified as
 proportions between 0 and 1. Default is \code{seq(0.1, 0.9, 0.1)} (10th to 90th
 percentiles by 10s)}
 
-\item{group_by}{Optional grouping variables (unquoted). Can be a single
-column name or a vector of column names using \code{c()}. Default is \code{NULL}
-(no grouping beyond period)}
+\item{group_by}{Optional grouping variables. Can be a single
+column name or a vector of column names using \code{c()}. Default is \code{NULL}.}
 }
 \value{
-A tibble with columns for the period, percentile values, calculated
-values, and any grouping variables. Results are sorted by period
-(descending) and percentile (ascending)
+A tibble with columns for the period, percentile values, calculated values, and any grouping variables.
 }
 \description{
 Summarises a numeric variable by calculating specified percentiles,
-optionally grouped by period and other variables. Useful for creating
-percentile distributions over time or across groups.
+optionally grouped by period and other grouping variables. Useful for creating
+percentile distributions over time or across different measures.
 }
 \examples{
 \dontrun{
