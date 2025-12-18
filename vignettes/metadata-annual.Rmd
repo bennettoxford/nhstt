@@ -23,7 +23,7 @@ library(reactable)
 
 # Metadata for annual measures
 metadata_measures_annual <- get_metadata_measures_annual() |>
-  filter(dataset_name == "key_measures") |>
+  filter(dataset_name == "key_measures_annual") |>
   select(field_name, description)
 
 metadata_measures_annual_standard <- metadata_measures_annual |>
@@ -51,7 +51,7 @@ metadata_measures_annual_measures <- metadata_measures_annual |>
 
 # Metadata for annual variables
 metadata_variables_annual <- get_metadata_variables_annual() |>
-  filter(dataset_name == "key_measures") |>
+  filter(dataset_name == "key_measures_annual") |>
   select(
     variable_type,
     variable_type,
@@ -70,17 +70,7 @@ reactable(
   metadata_measures_annual_measures,
   searchable = TRUE,
   sortable = FALSE,
-  searchMethod = JS(
-    "function(rows, columnIds, filterValue) {
-    return rows.filter(function(row) {
-      var field = String(row.values['field_name']).toLowerCase();
-      var desc = String(row.values['description']).toLowerCase();
-      var search = filterValue.toLowerCase();
-      return field.indexOf(search) >= 0 || desc.indexOf(search) >= 0;
-    });
-  }"
-  ),
-  defaultPageSize = nrow(metadata_measures_annual_measures),
+  defaultPageSize = 10,
   columns = list(
     field_name = colDef(
       name = "Column name and description",
@@ -96,7 +86,7 @@ reactable(
         )
       }
     ),
-    description = colDef(show = FALSE)
+    description = colDef(show = FALSE, searchable = TRUE)
   ),
   outlined = TRUE,
   striped = TRUE
@@ -115,7 +105,7 @@ reactable(
   metadata_measures_annual_standard,
   searchable = FALSE,
   sortable = FALSE,
-  defaultPageSize = nrow(metadata_measures_annual_standard),
+  defaultPageSize = 10,
   columns = list(
     field_name = colDef(
       name = "Column name and description",
@@ -131,7 +121,7 @@ reactable(
         )
       }
     ),
-    description = colDef(show = FALSE)
+    description = colDef(show = FALSE, searchable = TRUE)
   ),
   outlined = TRUE,
   striped = TRUE
@@ -156,7 +146,7 @@ reactable(
   metadata_variables_annual,
   searchable = TRUE,
   sortable = FALSE,
-  defaultPageSize = nrow(metadata_variables_annual),
+  defaultPageSize = 10,
   columns = list(
     variable_type = colDef(
       name = "Variable type",
