@@ -1,8 +1,9 @@
 # Calculate percentiles for a numeric variable
 
 Summarises a numeric variable by calculating specified percentiles,
-optionally grouped by period and other variables. Useful for creating
-percentile distributions over time or across groups.
+optionally grouped by period and other grouping variables. Useful for
+creating percentile distributions over time or across different
+measures.
 
 ## Usage
 
@@ -24,13 +25,12 @@ summarise_percentiles(
 
 - period_col:
 
-  Column name for the period variable (unquoted), used for ordering
-  results. Typically a date column like `end_date`
+  Column name for the period variable, used for ordering results.
+  Typically a date column e.g., `end_date`
 
 - value_col:
 
-  Column name for the numeric variable to calculate percentiles from
-  (unquoted)
+  Column name for the numeric variable to calculate percentiles
 
 - percentiles:
 
@@ -40,15 +40,14 @@ summarise_percentiles(
 
 - group_by:
 
-  Optional grouping variables (unquoted). Can be a single column name or
-  a vector of column names using [`c()`](https://rdrr.io/r/base/c.html).
-  Default is `NULL` (no grouping beyond period)
+  Optional grouping variables. Can be a single column name or a vector
+  of column names using [`c()`](https://rdrr.io/r/base/c.html). Default
+  is `NULL`.
 
 ## Value
 
 A tibble with columns for the period, percentile values, calculated
-values, and any grouping variables. Results are sorted by period
-(descending) and percentile (ascending)
+values, and any grouping variables.
 
 ## Examples
 
