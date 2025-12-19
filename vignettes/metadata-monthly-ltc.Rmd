@@ -35,17 +35,7 @@ reactable(
   metadata_monthly_ltc,
   searchable = TRUE,
   sortable = FALSE,
-  searchMethod = JS(
-    "function(rows, columnIds, filterValue) {
-    return rows.filter(function(row) {
-      var measure = String(row.values['measure_id']).toLowerCase();
-      var desc = String(row.values['description']).toLowerCase();
-      var search = filterValue.toLowerCase();
-      return measure.indexOf(search) >= 0 || desc.indexOf(search) >= 0;
-    });
-  }"
-  ),
-  defaultPageSize = nrow(metadata_monthly_ltc),
+  defaultPageSize = 10,
   columns = list(
     measure_id = colDef(
       name = "Measure ID and description",
@@ -61,7 +51,7 @@ reactable(
         )
       }
     ),
-    description = colDef(show = FALSE)
+    description = colDef(show = FALSE, searchable = TRUE)
   ),
   outlined = TRUE,
   striped = TRUE
