@@ -4,7 +4,7 @@
 
 - [just](https://github.com/casey/just)
 - R (version 4.0 or higher)
-- [air](https://github.com/r-lib/air) for code formatting
+- [air](https://github.com/posit-dev/air/) for code formatting
 
 ## Local development environment
 
