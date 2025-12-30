@@ -477,3 +477,21 @@ clean_org_names <- function(x) {
     str_replace_all(regex(upper_pattern), toupper) |>
     str_replace_all(regex(camel_case_words))
 }
+
+#' Extract SNOMED CT codes from text
+#'
+#' Extracts SNOMED CT codes from a character vector using regex matching.
+#'
+#' @param x A character vector containing text
+#'
+#' @return A list of character vectors
+#'
+#' @importFrom stringr str_extract_all
+#'
+#'
+str_extract_snomed <- function(x) {
+  snomed_regex_pattern <- "[1-9][0-9]{5,17}" 
+  snomed_codes <- str_extract_all(x, snomed_regex_pattern)
+
+  snomed_codes
+}

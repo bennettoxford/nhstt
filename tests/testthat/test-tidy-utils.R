@@ -1,3 +1,63 @@
+test_that(" Test extract snomed code - one code in string ", {
+  measure_dsc <- "Validated_PresentingComplaint = '83482000' 
+  AND ADSM = 'BIQ' "
+  snomed_code <- str_extract_snomed(measure_dsc)
+
+  expect_equal(
+    snomed_code,
+    list(c("83482000"))
+  )
+})
+
+test_that("Test extract snomed code - multiple codes in string", {
+  measure_dsc <- "TherapyType_Last NOT IN
+(748051000000105, 748101000000105, 748041000000107)"
+  snomed_code <- str_extract_snomed(measure_dsc)
+
+  expect_equal(
+    snomed_code,
+    list(c("748051000000105", "748101000000105", "748041000000107"))
+  )
+})
+
+test_that("Test extract snomed code - no codes present", {
+  measure_dsc <- "No diagnosis codes"
+  snomed_code <- str_extract_snomed(measure_dsc)
+
+  expect_equal(
+    snomed_code,
+    list(c(character(0)))
+  )
+})
+
+test_that("Test extract snomed code - empty string", {
+  measure_dsc <- " "
+  snomed_code <- str_extract_snomed(measure_dsc)
+
+  expect_equal(
+    snomed_code,
+    list(c(_NA_character_))
+  )
+})
+
+test_that(" Test extract snomed code - one code in tibble ", {
+  df <- tibble::tribble(
+    ~measure_id , ~technical_construction ,
+    "M1"        , "10gt"                    ,
+    "M2"        , "*" ,
+    "M3", " ",
+    "M4", "22434676588, 4335, five"
+  )
+  df |> dplyr::mutate(
+    snomed_codes = str_extract_snomed(technical_construction)
+  )
+
+  expect_equal(
+    df$snomed_codes,
+    list(c(_NA_character_, _NA_character_, _NA_character_),"22434676588", "4335")
+  )
+})
+
 test_that("clean_str converts CamelCase to snake_case", {
   raw_names <- c(
     "ORG_CODE1",
