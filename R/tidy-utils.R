@@ -412,7 +412,6 @@ clean_column_values <- function(df, column_names = NULL) {
 #' @importFrom stringr str_c str_to_title str_to_lower str_replace_all str_squish regex
 #'
 #' @keywords internal
-
 clean_org_names <- function(x) {
   lower_case_words <- c(
     "and",
@@ -476,4 +475,34 @@ clean_org_names <- function(x) {
     str_replace_all(regex(lower_pattern), tolower) |>
     str_replace_all(regex(upper_pattern), toupper) |>
     str_replace_all(regex(camel_case_words))
+}
+
+#' Extract SNOMED CT codes from text
+#'
+#' To extract SNOMED CT codes we use a regex pattern that matches 6 to 18 digit numbers that don't start with zero.
+#'
+#' @param x A character vector containing text
+#'
+#' @return A list of character vectors
+#'
+#' @importFrom stringr str_extract_all str_c
+#' @importFrom purrr map_chr
+#' @keywords internal
+str_extract_snomed <- function(x) {
+  snomed_regex_pattern <- "\\b[1-9][0-9]{5,17}\\b"
+  snomed_codes_list <- str_extract_all(x, snomed_regex_pattern)
+
+  # Note: Codes are collapsed into a single character string per input element to prioritise human readability.
+  # This simplifies inspection but is less convient for downstream analysis workflows.
+  # Return NA if no code found
+  # Otherwise collapse all codes into one string
+  snomed_codes <- map_chr(
+    snomed_codes_list,
+    ~ if (length(.x) == 0) {
+      NA_character_
+    } else {
+      str_c(.x, collapse = ", ")
+    }
+  )
+  snomed_codes
 }

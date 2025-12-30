@@ -1,3 +1,63 @@
+test_that("str_extract_snomed returns string with all matches", {
+  string <- c("Code one: 123456, Code two: 1234567", "No code")
+  match <- str_extract_snomed(string)
+
+  expect_equal(
+    match,
+    c(
+      "123456, 1234567",
+      NA_character_
+    )
+  )
+})
+
+test_that("str_extract_snomed returns NA_character for empty string", {
+  string <- ""
+  match <- str_extract_snomed(string)
+
+  expect_equal(
+    match,
+    NA_character_
+  )
+})
+
+test_that("str_extract_snomed returns NA_character for 19+ digit",
+{
+  string <- c("Code too long: 218954566244485696558", "SNOMED code: 6597962, another code: 5468696")
+  match <- str_extract_snomed(string)
+
+  expect_equal(
+    match,
+    c(NA_character_, 
+      "6597962, 5468696")
+  )
+
+})
+
+test_that("str_extract_snomed works with mutate", {
+  df <- tibble::tribble(
+    ~measure_id , ~technical_construction                                    ,
+    "M1"        , "Good SNOMED code 123456789"                               ,
+    "M2"        , "Almost SNOMED code 012345678 but leading zero"            ,
+    "M3"        , "No SNOMED code"                                           ,
+    "M4"        , "SNOMED code one: 123456789101112, SNOMED code two 123456"
+  )
+  df_output <- df |>
+    dplyr::mutate(
+      snomed_codes = str_extract_snomed(technical_construction)
+    )
+
+  expect_equal(
+    df_output$snomed_codes,
+    c(
+      "123456789",
+      NA_character_,
+      NA_character_,
+      "123456789101112, 123456"
+    )
+  )
+})
+
 test_that("clean_str converts CamelCase to snake_case", {
   raw_names <- c(
     "ORG_CODE1",
