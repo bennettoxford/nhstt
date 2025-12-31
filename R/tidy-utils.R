@@ -412,7 +412,6 @@ clean_column_values <- function(df, column_names = NULL) {
 #' @importFrom stringr str_c str_to_title str_to_lower str_replace_all str_squish regex
 #'
 #' @keywords internal
-
 clean_org_names <- function(x) {
   lower_case_words <- c(
     "and",
@@ -487,11 +486,19 @@ clean_org_names <- function(x) {
 #' @return A list of character vectors
 #'
 #' @importFrom stringr str_extract_all
-#'
-#'
 str_extract_snomed <- function(x) {
-  snomed_regex_pattern <- "[1-9][0-9]{5,17}" 
-  snomed_codes <- str_extract_all(x, snomed_regex_pattern)
+  snomed_regex_pattern <- "\\b[1-9][0-9]{5,17}\\b"
+  snomed_codes_list <- stringr::str_extract_all(x, snomed_regex_pattern)
 
+  # Return NA if no code found
+  # Otherwise collapse all codes into one string
+  snomed_codes <- purrr::map_chr(
+    snomed_codes_list,
+    ~ if (length(.x) == 0) {
+      NA_character_
+    } else {
+      stringr::str_c(.x, collapse = ", ")
+    }
+  )
   snomed_codes
 }

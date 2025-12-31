@@ -1,60 +1,47 @@
-test_that(" Test extract snomed code - one code in string ", {
-  measure_dsc <- "Validated_PresentingComplaint = '83482000' 
-  AND ADSM = 'BIQ' "
-  snomed_code <- str_extract_snomed(measure_dsc)
+test_that("str_extract_snomed returns string with all matches", {
+  string <- c("Code one: 123456, Code two: 1234567", "No code")
+  match <- str_extract_snomed(string)
 
   expect_equal(
-    snomed_code,
-    list(c("83482000"))
+    match,
+    c(
+      "123456, 1234567",
+      NA_character_
+    )
   )
 })
 
-test_that("Test extract snomed code - multiple codes in string", {
-  measure_dsc <- "TherapyType_Last NOT IN
-(748051000000105, 748101000000105, 748041000000107)"
-  snomed_code <- str_extract_snomed(measure_dsc)
+test_that("str_extract_snomed returns NA_character for empty string", {
+  string <- ""
+  match <- str_extract_snomed(string)
 
   expect_equal(
-    snomed_code,
-    list(c("748051000000105", "748101000000105", "748041000000107"))
+    match,
+    NA_character_
   )
 })
 
-test_that("Test extract snomed code - no codes present", {
-  measure_dsc <- "No diagnosis codes"
-  snomed_code <- str_extract_snomed(measure_dsc)
-
-  expect_equal(
-    snomed_code,
-    list(c(character(0)))
-  )
-})
-
-test_that("Test extract snomed code - empty string", {
-  measure_dsc <- " "
-  snomed_code <- str_extract_snomed(measure_dsc)
-
-  expect_equal(
-    snomed_code,
-    list(c(_NA_character_))
-  )
-})
-
-test_that(" Test extract snomed code - one code in tibble ", {
+test_that("str_extract_snomed works with mutate", {
   df <- tibble::tribble(
-    ~measure_id , ~technical_construction ,
-    "M1"        , "10gt"                    ,
-    "M2"        , "*" ,
-    "M3", " ",
-    "M4", "22434676588, 4335, five"
+    ~measure_id , ~technical_construction                                    ,
+    "M1"        , "Good SNOMED code 123456789"                               ,
+    "M2"        , "Almost SNOMED code 012345678 but leading zero"            ,
+    "M3"        , "No SNOMED code"                                           ,
+    "M4"        , "SNOMED code one: 123456789101112, SNOMED code two 123456"
   )
-  df |> dplyr::mutate(
-    snomed_codes = str_extract_snomed(technical_construction)
-  )
+  df_output <- df |>
+    dplyr::mutate(
+      snomed_codes = str_extract_snomed(technical_construction)
+    )
 
   expect_equal(
-    df$snomed_codes,
-    list(c(_NA_character_, _NA_character_, _NA_character_),"22434676588", "4335")
+    df_output$snomed_codes,
+    c(
+      "123456789",
+      NA_character_,
+      NA_character_,
+      "123456789101112, 123456"
+    )
   )
 })
 
