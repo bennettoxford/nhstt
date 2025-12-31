@@ -485,14 +485,16 @@ clean_org_names <- function(x) {
 #'
 #' @return A list of character vectors
 #'
-#' @importFrom stringr str_extract_all
+#' @importFrom stringr str_extract_all str_c
+#' @importFrom purrr map_chr
+#' @keywords internal
 str_extract_snomed <- function(x) {
   snomed_regex_pattern <- "\\b[1-9][0-9]{5,17}\\b"
-  snomed_codes_list <- stringr::str_extract_all(x, snomed_regex_pattern)
+  snomed_codes_list <- str_extract_all(x, snomed_regex_pattern)
 
   # Return NA if no code found
   # Otherwise collapse all codes into one string
-  snomed_codes <- purrr::map_chr(
+  snomed_codes <- map_chr(
     snomed_codes_list,
     ~ if (length(.x) == 0) {
       NA_character_

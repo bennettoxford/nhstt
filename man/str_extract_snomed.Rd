@@ -15,3 +15,4 @@ A list of character vectors
 \description{
 Extracts SNOMED CT codes from a character vector using regex matching.
 }
+\keyword{internal}
