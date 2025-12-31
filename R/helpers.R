@@ -17,7 +17,9 @@
 #' @return A tibble with columns for the period, percentile values, calculated values, and any grouping variables.
 #'
 #' @importFrom dplyr reframe mutate ungroup arrange desc
+#' @importFrom stats quantile
 #' @importFrom rlang enquo
+
 #'
 #' @export
 #'

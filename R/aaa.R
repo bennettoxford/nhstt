@@ -33,5 +33,7 @@ utils::globalVariables(c(
   "status",
   "postcode",
   "icb_code",
-  "region_code"
+  "region_code",
+  "percentile",
+  "quantile"
 ))
