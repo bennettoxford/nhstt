@@ -3,21 +3,35 @@
 #' @return List containing all tidy configurations
 #'
 #' @importFrom yaml read_yaml
+#' @importFrom cli cli_abort
 #'
 #' @keywords internal
 load_tidy_config <- function() {
-  config_path <- system.file(
-    "config",
-    "tidy_config.yml",
-    package = "nhstt",
-    mustWork = TRUE
+  # Load all tidy config files
+  config_files <- c(
+    "tidy_annual_data_config.yml",
+    "tidy_monthly_data_config.yml",
+    "tidy_metadata_config.yml"
   )
 
-  config <- read_yaml(config_path)
-  configs <- config$datasets
+  all_configs <- list()
+  for (file in config_files) {
+    config_path <- system.file("config", file, package = "nhstt")
 
-  validate_tidy_config(configs)
-  configs
+    if (config_path == "") {
+      cli_abort("{file} not found in package installation")
+    }
+
+    config <- read_yaml(config_path)
+
+    # Merge datasets from this file
+    if ("datasets" %in% names(config)) {
+      all_configs <- c(all_configs, config$datasets)
+    }
+  }
+
+  validate_tidy_config(all_configs)
+  all_configs
 }
 
 #' Validate tidy configuration structure
