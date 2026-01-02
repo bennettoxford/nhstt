@@ -1,0 +1,101 @@
+# NHS Talking Therapies tidy metadata configuration
+# Tidy options: clean_column_names, rename, filter, as_numeric, separate, mutate, pivot_longer, clean_column_values, select
+# Rename format: new_name: old_name (use "YYYY-YY"/"YYYY-MM" keys for period-specific renames)
+datasets:
+  metadata_measures_monthly:
+    clean_column_names: true
+
+    rename:
+      measure_type: meaure_type
+      measure_id: measure_reference_number
+      description: description_of_measure_where_possible_measures_are_described_in_terms_of_the_classes_of_information_defined_in_nhs_data_dictionary
+      derivation_uids: ui_ds_of_derivations_used_defined_in_technical_output_specification
+
+    select:
+      - reporting_period
+      - measure_type
+      - frequency
+      - measure_id
+      - measure_name
+      - description
+      - derivation_uids
+      - tables_used
+      - construction
+
+  metadata_measures_main_annual:
+    clean_column_names: true
+
+    rename:
+      field_name: csv_field_name
+      description: description_of_measure
+
+    mutate:
+      dataset_name:
+        value: "key_measures_annual"
+
+    select:
+      - reporting_period
+      - dataset_name
+      - field_name
+      - description
+      - technical_construction
+      - additional_notes
+
+  metadata_measures_additional_annual:
+    clean_column_names: true
+
+    rename:
+      dataset_name: name_of_additional_csv_data_file
+      field_name: csv_field_name
+      description: description_of_measure
+
+    select:
+      - reporting_period
+      - dataset_name
+      - field_name
+      - description
+      - technical_construction
+      - additional_notes
+
+  metadata_variables_main_annual:
+    clean_column_names: true
+
+    rename:
+      fields_for_variable_type: data_field_s_used_for_variable_type
+      values_for_variable_a: data_value_s_used_in_variable_a
+      values_for_variable_b: data_value_s_used_in_variable_b
+
+    mutate:
+      dataset_name:
+        value: "key_measures_annual"
+
+    select:
+      - reporting_period
+      - dataset_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - fields_for_variable_type
+      - values_for_variable_a
+      - values_for_variable_b
+      - notes
+
+  metadata_variables_additional_annual:
+    clean_column_names: true
+
+    rename:
+      dataset_name: name_of_additional_csv_data_file
+      fields_for_variable_type: data_field_s_used_for_variable_type
+      values_for_variable_a: data_value_s_used_in_variable_a
+      values_for_variable_b: data_value_s_used_in_variable_b
+
+    select:
+      - reporting_period
+      - dataset_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - fields_for_variable_type
+      - values_for_variable_a
+      - values_for_variable_b
+      - notes

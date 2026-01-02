@@ -1,0 +1,80 @@
+# NHS Talking Therapies tidy annual data configuration
+# Tidy options: clean_column_names, rename, filter, as_numeric, separate, mutate, pivot_longer, clean_column_values, select
+# Rename format: new_name: old_name (use "YYYY-YY"/"YYYY-MM" keys for period-specific renames)
+datasets:
+  key_measures_annual:
+    clean_column_names: true
+
+    filter:
+      org_type:
+        - England
+        - Commissioning Region
+        - STP
+        - CCG
+        - Provider
+      variable_type:
+        - Total
+        - Age Group
+        - Consultation Medium
+        - Disability Type
+        - Ethnic Group
+        - BME Group
+        - Indices of Deprivation Decile
+        - Long Term Condition Status
+        - Mental Health Care Cluster
+        - Gender
+        - Sexual Orientation Type
+        - Problem Descriptor
+        - Presenting Complaint
+        - Stepped Care Pathway
+        - Religion
+        - Waiting Time
+
+    pivot_longer:
+      id_cols:
+        - org_type
+        - org_code
+        - org_name
+        - variable_type
+        - variable_a
+        - variable_b
+
+      measure_cols:
+        - count_referrals_received
+        - count_finished_course_treatment
+        - count_at_caseness
+        - count_not_at_caseness
+        - count_improvement
+        - percentage_improvement
+        - count_deterioration
+        - percentage_deterioration
+        - count_no_reliable_change
+        - percentage_no_reliable_change
+        - count_reliable_recovery
+        - percentage_reliable_recovery
+        - count_recovery
+        - percentage_recovery
+
+      sep: "^(count|mean|median|percentage|sum)_(.+)$"
+      names_to:
+        - measure_statistic
+        - measure_name
+
+    clean_column_values:
+      - measure_name
+      - measure_statistic
+
+    select:
+      - reporting_period
+      - start_date
+      - end_date
+      - org_type
+      - org_code
+      - org_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - measure_id
+      - measure_name
+      - measure_statistic
+      - value
