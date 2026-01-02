@@ -12,14 +12,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/bennettoxford/nhstt/blob/main/DESCRIPTION)
 
-Wiedemann M (2025). *nhstt: NHS Talking Therapies for anxiety and
+Wiedemann M (2026). *nhstt: NHS Talking Therapies for anxiety and
 depression reports in R*. R package version 0.3.0,
 <https://github.com/bennettoxford/nhstt>.
 
     @Manual{,
       title = {nhstt: NHS Talking Therapies for anxiety and depression reports in R},
       author = {Milan Wiedemann},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.3.0},
       url = {https://github.com/bennettoxford/nhstt},
     }
