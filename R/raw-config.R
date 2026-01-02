@@ -7,15 +7,44 @@
 #'
 #' @keywords internal
 load_raw_config <- function() {
-  config_path <- system.file("config", "raw_config.yml", package = "nhstt")
+  # Load all raw config files
+  config_files <- c(
+    "raw_annual_data_config.yml",
+    "raw_monthly_data_config.yml",
+    "raw_metadata_config.yml"
+  )
 
-  if (config_path == "") {
-    cli_abort("raw_config.yml not found in package installation")
+  configs <- list()
+  for (file in config_files) {
+    config_path <- system.file("config", file, package = "nhstt")
+
+    if (config_path == "") {
+      cli_abort("{file} not found in package installation")
+    }
+
+    configs[[file]] <- read_yaml(config_path)
   }
 
-  config <- read_yaml(config_path)
-  validate_raw_config(config)
-  config
+  # Merge configs
+  merged_config <- list(
+    archives = list(),
+    datasets = list()
+  )
+
+  for (config in configs) {
+    # Merge archives section
+    if ("archives" %in% names(config)) {
+      merged_config$archives <- c(merged_config$archives, config$archives)
+    }
+
+    # Merge datasets section
+    if ("datasets" %in% names(config)) {
+      merged_config$datasets <- c(merged_config$datasets, config$datasets)
+    }
+  }
+
+  validate_raw_config(merged_config)
+  merged_config
 }
 
 #' Validate raw configuration structure
