@@ -42,3 +42,12 @@ docs-serve:
 
 # Build and preview pkgdown site
 docs: docs-build docs-serve
+
+# Update archive schemas (extracts column names from raw data)
+update-schemas:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(); \
+        dir.create("inst/schemas", recursive = TRUE, showWarnings = FALSE); \
+        schemas <- extract_archive_schemas("annual_main"); \
+        write.csv(schemas, "inst/schemas/annual_main_schemas.csv", row.names = FALSE); \
+        message("✓ Updated inst/schemas/annual_main_schemas.csv")'
