@@ -95,23 +95,29 @@
 <p>Documentation is built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a></h2>
-<p>Data source and transformation configs live in <code>inst/config/</code> as YAML files (<code>raw_config.yml</code> for raw download sources, <code>tidy_config.yml</code> for data cleaning).</p>
-</div>
-<div class="section level2">
-<h2 id="ojs-reports">OJS Reports<a class="anchor" aria-label="anchor" href="#ojs-reports"></a></h2>
-<p>Interactive reports in <code>vignettes/report-*.qmd</code> use <a href="https://quarto.org/docs/interactive/ojs/" class="external-link">Observable JavaScript (OJS)</a> in Quarto with shared code in <code>_shared-code.qmd</code>. Reports support URL parameters (<code>?orgs=code1,code2</code>) for organization selection and use <a href="https://observablehq.com/@observablehq/plot-gallery" class="external-link">Observable Plot</a> (or <a href="https://observablehq.com/@d3/gallery" class="external-link">D3</a>) for visualizations.</p>
-<p>We could drop OJS, but then we’d loose some interactivity between URL parameters and UI components (e.g., plots and tables). Alternatively we could do some of that using R-based approaches with (<a href="https://plotly.com/r/" class="external-link">plotly</a>, or <a href="https://jkunst.com/highcharter/" class="external-link">Highcharts</a>). For similar interactivity we would need Shiny.</p>
-</div>
-<div class="section level2">
 <h2 id="development-workflow">Development workflow<a class="anchor" aria-label="anchor" href="#development-workflow"></a></h2>
-<ol style="list-style-type: decimal"><li>Make changes to code</li>
+<ol style="list-style-type: decimal"><li>Install package locally: <code>just build</code> (or <code><a href="https://pak.r-lib.org/reference/local_install.html" class="external-link">pak::local_install()</a></code>)</li>
+<li>Make changes to code</li>
 <li>Run <code>just fix</code> to format</li>
 <li>Run <code>just document</code> if you changed roxygen2 docs</li>
 <li>Run <code>just test</code> to verify tests pass</li>
+<li>For schema updates: <code>just update-schemas</code>
+</li>
 <li>Run <code>just check</code> before submitting a PR</li>
 <li>Update docs with <code>just docs</code> if needed</li>
 </ol></div>
+<div class="section level2">
+<h2 id="configuration-files">Configuration files<a class="anchor" aria-label="anchor" href="#configuration-files"></a></h2>
+<p>Data sources and transformations are defined in <code>inst/config/</code> as YAML files:</p>
+<p><strong>Raw data sources</strong> (archives, URLs, periods): - <code>raw_annual_data_config.yml</code>: Annual datasets - <code>raw_monthly_data_config.yml</code>: Monthly datasets - <code>raw_metadata_config.yml</code>: Metadata</p>
+<p><strong>Tidy transformations</strong> (filters, derivations, output columns): - <code>tidy_annual_data_config.yml</code> - <code>tidy_monthly_data_config.yml</code> - <code>tidy_metadata_config.yml</code></p>
+<p><strong>Schemas</strong> (auto-generated column tracking): - Run <code>just update-schemas</code> after modifying <code>raw_annual_data_config.yml</code> - Schemas saved to <code>inst/schemas/annual_main_schemas.csv</code></p>
+</div>
+<div class="section level2">
+<h2 id="dev-utilities">Dev utilities<a class="anchor" aria-label="anchor" href="#dev-utilities"></a></h2>
+<p>Internal functions in <code>R/dev-utils.R</code> help explore archive contents before exposing new data through the package: - <code>list_available_archives()</code>: See all archives and periods - <code>list_archive_files("annual_main", "2024-25")</code>: List CSV files in an archive - <code>read_archive_file("annual_main", "2024-25", "main")</code>: Read specific files - <code>compare_schemas("main")</code>: Compare column changes across periods</p>
+<p>Access via <code>devtools::load_all()</code> or <code>nhstt:::function_name()</code>.</p>
+</div>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
