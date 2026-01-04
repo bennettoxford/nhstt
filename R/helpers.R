@@ -18,6 +18,7 @@
 #'
 #' @importFrom dplyr reframe mutate ungroup arrange desc
 #' @importFrom rlang enquo
+#' @importFrom stats quantile
 #'
 #' @export
 #'
