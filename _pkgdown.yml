@@ -67,6 +67,7 @@ reference:
   - title: "Annual data"
     contents:
       - get_key_measures_annual
+      - get_proms_annual
   - title: "Monthly data"
     contents:
       - get_activity_performance_monthly
