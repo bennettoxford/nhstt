@@ -21,17 +21,17 @@ test_that("str_extract_snomed returns NA_character for empty string", {
   )
 })
 
-test_that("str_extract_snomed returns NA_character for 19+ digit",
-{
-  string <- c("Code too long: 218954566244485696558", "SNOMED code: 6597962, another code: 5468696")
+test_that("str_extract_snomed returns NA_character for 19+ digit", {
+  string <- c(
+    "Code too long: 218954566244485696558",
+    "SNOMED code: 6597962, another code: 5468696"
+  )
   match <- str_extract_snomed(string)
 
   expect_equal(
     match,
-    c(NA_character_, 
-      "6597962, 5468696")
+    c(NA_character_, "6597962, 5468696")
   )
-
 })
 
 test_that("str_extract_snomed works with mutate", {
@@ -54,6 +54,86 @@ test_that("str_extract_snomed works with mutate", {
       NA_character_,
       NA_character_,
       "123456789101112, 123456"
+    )
+  )
+})
+
+
+test_that("str_extract_icd10 returns string with all matches", {
+  string <- c("Diagnosis: F32.1, History of: Z865", "No code")
+  match <- str_extract_icd10(string)
+
+  expect_equal(
+    match,
+    c(
+      "F321, Z865",
+      NA_character_
+    )
+  )
+})
+
+test_that("str_extract_icd10 returns NA_character for empty string", {
+  string <- ""
+  match <- str_extract_icd10(string)
+
+  expect_equal(
+    match,
+    NA_character_
+  )
+})
+
+test_that("str_extract_icd10 handles codes with and without decimals", {
+  string <- c(
+    "Code with decimal: F32.1",
+    "Code without decimal: F32",
+    "Both: F32 and F32.1"
+  )
+  match <- str_extract_icd10(string)
+
+  expect_equal(
+    match,
+    c(
+      "F321",
+      "F32",
+      "F32, F321"
+    )
+  )
+})
+
+test_that("str_extract_icd10 returns NA_character for invalid codes", {
+  string <- c("Too short: A1", "Lowercase: f32.1", "Too many decimals: A00.123")
+  match <- str_extract_icd10(string)
+
+  expect_equal(
+    match,
+    c(
+      NA_character_,
+      NA_character_,
+      NA_character_
+    )
+  )
+})
+
+test_that("str_extract_icd10 works with mutate", {
+  df <- tibble::tribble(
+    ~measure_id , ~technical_construction             ,
+    "M1"        , "Valid ICD-10 code F321"            ,
+    "M2"        , "Invalid code A1"                   ,
+    "M3"        , "No ICD-10 code"                    ,
+    "M4"        , "Multiple codes: F32, F32.1, Z86.5"
+  )
+  df_output <- df |>
+    dplyr::mutate(
+      icd10_codes = str_extract_icd10(technical_construction)
+    )
+
+  expect_equal(
+    df_output$icd10_codes,
+    c(
+      "F321",
+      NA_character_,
+      NA_character_,
+      "F32, F321, Z865"
     )
   )
 })

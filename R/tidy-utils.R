@@ -506,3 +506,37 @@ str_extract_snomed <- function(x) {
   )
   snomed_codes
 }
+
+#' Extract ICD-10 codes from text
+#'
+#' To extract ICD-10 codes we use a regex pattern that matches the standard ICD-10 format:
+#' a letter (A-Z) followed by two digits, optionally followed by a decimal point and 1-2 more digits.
+#'
+#' @param x A character vector containing text
+#'
+#' @return A character vector with extracted standardised ICD-10 codes (comma-separated with no decimal point) or NA
+#'
+#' @importFrom stringr str_extract_all str_c str_remove_all
+#' @importFrom purrr map_chr
+#' @keywords internal
+str_extract_icd10 <- function(x) {
+  icd10_regex_pattern <- "\\b[A-Z][0-9]{2,3}(\\.[0-9]{1,2})?\\b(?!\\.)"
+  icd10_codes_list <- str_extract_all(x, icd10_regex_pattern)
+
+  # Note: Codes are collapsed into a single character string per input element to prioritise human readability.
+  # This simplifies inspection but is less convient for downstream analysis workflows.
+  # Return NA if no code found
+  # Otherwise collapse all codes into one string
+  icd10_codes <- map_chr(
+    icd10_codes_list,
+    ~ if (length(.x) == 0) {
+      NA_character_
+    } else {
+      str_c(
+        str_remove_all(.x, "\\."), # standardises icd10 codes removing decimal points
+        collapse = ", "
+      )
+    }
+  )
+  icd10_codes
+}
