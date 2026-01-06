@@ -48,6 +48,9 @@ update-schemas:
     Rscript --quiet --vanilla -e '\
         devtools::load_all(); \
         dir.create("inst/schemas", recursive = TRUE, showWarnings = FALSE); \
-        schemas <- extract_archive_schemas("annual_main"); \
-        write.csv(schemas, "inst/schemas/annual_main_schemas.csv", row.names = FALSE); \
-        message("✓ Updated inst/schemas/annual_main_schemas.csv")'
+        schemas_main <- extract_archive_schemas("annual_main"); \
+        write.csv(schemas_main, "inst/schemas/annual_main_schemas.csv", row.names = FALSE); \
+        message("Updated inst/schemas/annual_main_schemas.csv"); \
+        schemas_tbo <- extract_archive_schemas("annual_tbo"); \
+        write.csv(schemas_tbo, "inst/schemas/annual_tbo_schemas.csv", row.names = FALSE); \
+        message("Updated inst/schemas/annual_tbo_schemas.csv")'
