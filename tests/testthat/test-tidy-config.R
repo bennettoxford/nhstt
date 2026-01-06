@@ -702,3 +702,171 @@ test_that("tidy_dataset returns tibble for metadata variables additional", {
   )
   expect_true(any(grepl("therapy", result$dataset_name)))
 })
+
+
+test_that("tidy_dataset returns a tibble (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expect_s3_class(result, "tbl_df")
+})
+
+test_that("tidy_dataset has expected columns (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expected_cols <- expected_tidy_columns("proms_annual", "annual")
+
+  expect_named(result, expected_cols, ignore.order = FALSE)
+})
+
+test_that("tidy_dataset has correct column order (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expect_equal(
+    names(result)[1:3],
+    c(
+      "reporting_period",
+      "start_date",
+      "end_date"
+    )
+  )
+})
+
+test_that("tidy_dataset column types are correct (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expect_type(result$reporting_period, "character")
+  expect_s3_class(result$start_date, "Date")
+  expect_s3_class(result$end_date, "Date")
+  expect_type(result$org_type, "character")
+  expect_type(result$org_code, "character")
+  expect_type(result$org_name, "character")
+  expect_type(result$variable_type, "character")
+  expect_type(result$variable_a, "character")
+  expect_type(result$variable_b, "character")
+  expect_type(result$measure_statistic, "character")
+  expect_type(result$measure_name, "character")
+
+  expect_true(is.numeric(result$value))
+})
+
+test_that("tidy_dataset sets variable_type to PROMs (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expect_true(all(result$variable_type == "PROMs"))
+})
+
+test_that("tidy_dataset renames variable_a to diagnosis (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  # Check that variable_a contains diagnosis values
+  expect_true("variable_a" %in% names(result))
+  expect_true(any(!is.na(result$variable_a)))
+})
+
+test_that("tidy_dataset renames variable_b to therapy_type (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  # Check that variable_b contains therapy type values
+  expect_true("variable_b" %in% names(result))
+  expect_true(any(!is.na(result$variable_b)))
+})
+
+test_that("tidy_dataset converts suppressed values to NA (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  # Check that suppression markers (*,-,NULL) are converted to NA
+  # Row 5 in fixture has these markers
+  expect_true(any(is.na(result$value)))
+
+  # Verify numeric values are preserved
+  expect_true(is.numeric(result$value))
+})
+
+test_that("tidy_dataset extracts correct measure statistics (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  # Check that measure statistics are correctly extracted
+  expected_stats <- c("count", "mean", "sd", "percentage", "effect_size")
+  expect_true(all(result$measure_statistic %in% expected_stats))
+})
+
+test_that("tidy_dataset has no missing required columns (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  required_cols <- c(
+    "reporting_period",
+    "start_date",
+    "end_date",
+    "measure_name",
+    "measure_statistic",
+    "value"
+  )
+
+  for (col in required_cols) {
+    expect_true(
+      !all(is.na(result[[col]])),
+      info = paste0(col, " should not be all NA")
+    )
+  }
+})
+
+test_that("tidy_dataset snapshot test for column names (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expect_snapshot(names(result))
+})
+
+test_that("tidy_dataset converts to long format (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  raw_fixture <- load_raw_fixture("proms_annual", "2024-25", "annual")
+  expect_gt(nrow(result), nrow(raw_fixture))
+})
+
+test_that("tidy_dataset cleans column names (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expect_true(all(grepl("^[a-z][a-z0-9_]*$", names(result))))
+
+  expect_false(any(grepl("\\s", names(result))))
+  expect_false(any(grepl("[A-Z]", names(result))))
+})
+
+test_that("tidy_dataset handles multiple periods and schema variations (proms_annual)", {
+  raw_list <- load_raw_data(
+    "proms_annual",
+    c("2022-23", "2024-25"),
+    "annual"
+  )
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expect_setequal(unique(result$reporting_period), c("2022-23", "2024-25"))
+
+  n_rows_2223 <- nrow(load_raw_fixture(
+    "proms_annual",
+    "2022-23",
+    "annual"
+  ))
+  n_rows_2425 <- nrow(load_raw_fixture(
+    "proms_annual",
+    "2024-25",
+    "annual"
+  ))
+  expect_gt(nrow(result), n_rows_2223)
+  expect_gt(nrow(result), n_rows_2425)
+
+  expect_named(result, expected_tidy_columns("proms_annual", "annual"))
+})
