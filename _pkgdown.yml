@@ -34,6 +34,8 @@ navbar:
         - text: "Annual data"
         - text: "Key measures"
           href: articles/how-to-key-measures-annual.html
+        - text: "PROMS"
+          href: articles/how-to-proms-annual.html
         - text: -------
         - text: "Monthly data"
         - text: "Activity and performance"
@@ -92,6 +94,7 @@ articles:
     contents:
       - how-to-activity-performance-monthly
       - how-to-key-measures-annual
+      - how-to-proms-annual
   - title: "Metadata"
     desc: "Metadata for annual and monthly reports"
     contents:
