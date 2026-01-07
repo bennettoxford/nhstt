@@ -26,6 +26,17 @@ archives:
     - period: "2017-18"
       url: "https://files.digital.nhs.uk/82/2CCBED/psych-ther-ann-2017-18-csvs.zip"
       format: "zip"
+  # Annual therapy-based outcomes report archives
+  annual_tbo:
+    - period: "2024-25"
+      url: "https://files.digital.nhs.uk/B7/464F54/ther-based-outcomes2425-2.zip"
+      format: "zip"
+    - period: "2023-24"
+      url: "https://files.digital.nhs.uk/FB/021DCD/ther-based-outcomes2324.zip"
+      format: "zip"
+    - period: "2022-23"
+      url: "https://files.digital.nhs.uk/70/F00866/ther-based-outcomes2223.zip"
+      format: "zip"
 
 datasets:
   key_measures_annual:
@@ -54,3 +65,19 @@ datasets:
         csv_file: "psych-ther-ann-rep-csv-2018-19-main-csv.csv"
       - period: "2017-18"
         csv_file: "psych-ther-ann-rep-csv-2017-18-main-csv.csv"
+  proms_annual:
+    title: "Patient Reported Outcome Measures (Annual)"
+    description: "Patient Reported Outcome Measures (PROMs) mean and SD broken down by providers"
+    version: "0.1.0"
+    get_function: "get_proms_annual"
+    frequency: "annual"
+    copyright: "Copyright NHS England"
+    license: "OGL-UK-3.0"
+    archive: "annual_tbo"
+    sources:
+      - period: "2024-25"
+        csv_file: "Therapy Based Outcomes Table 4-2.csv"
+      - period: "2023-24"
+        csv_file: "Therapy Based Outcomes Table 4.csv"
+      - period: "2022-23"
+        csv_file: "Table4_AllTherapies.csv"

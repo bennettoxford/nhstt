@@ -61,3 +61,13 @@ test_that("get_metadata_variables_annual uses correct dataset names", {
   )
   expect_true(length(periods) > 0)
 })
+
+test_that("get_proms_annual uses correct dataset name", {
+  # Should not error when resolving periods
+  expect_no_error(
+    {
+      periods <- resolve_periods(NULL, "proms_annual", "annual")
+    }
+  )
+  expect_true(length(periods) > 0)
+})
