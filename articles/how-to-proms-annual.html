@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>How to use the annual key measures data • nhstt</title>
+<title>How to use the annual PROMs data • nhstt</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="How to use the annual key measures data">
+<meta property="og:title" content="How to use the annual PROMs data">
 <!-- Privacy-friendly analytics by Plausible --><script async src="https://plausible.io/js/pa-dJqtwvYY2LG5zy4L5xF4g.js"></script><script>
   window.plausible = window.plausible || function() {
     (plausible.q = plausible.q || []).push(arguments)
@@ -93,11 +93,11 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>How to use the annual key measures data</h1>
+      <h1>How to use the annual PROMs data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/how-to-key-measures-annual.Rmd" class="external-link"><code>vignettes/how-to-key-measures-annual.Rmd</code></a></small>
-      <div class="d-none name"><code>how-to-key-measures-annual.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/how-to-proms-annual.Rmd" class="external-link"><code>vignettes/how-to-proms-annual.Rmd</code></a></small>
+      <div class="d-none name"><code>how-to-proms-annual.Rmd</code></div>
     </div>
 
     
@@ -109,77 +109,79 @@ functions, but results should not be interpreted as validated
 analyses.</p>
 </blockquote>
 <p>This example demonstrates how to explore annual NHS Talking Therapies
-reports using the <code>nhstt</code> package. We’ll look at regional
-trends in depression referrals and finished treatments to illustrate the
-basic workflow for accessing and visualising this publicly available
-data.</p>
+PROMS (Patient Reported Outcome Measures) data using the
+<code>nhstt</code> package. We’ll look at effect sizes for depression
+treatment across selected therapy types to illustrate the basic workflow
+for accessing and visualising this publicly available data.</p>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
 <p>We start by loading the necessary packages and downloading the annual
-key measures dataset with <code><a href="../reference/get_key_measures_annual.html">get_key_measures_annual()</a></code>. This
-report contains annual performance indicators for NHS Talking Therapies
-services across England.</p>
+PROMS dataset with <code><a href="../reference/get_proms_annual.html">get_proms_annual()</a></code>. This report contains
+clinical outcome measures including PHQ-9, GAD-7, and WSAS scores for
+NHS Talking Therapies services across England.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bennettoxford/nhstt" class="external-link">nhstt</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Get key_measures data</span></span>
+<span><span class="co"># Get PROMS data</span></span>
 <span><span class="co"># When running this for the first time it will download and tidy the reports</span></span>
-<span><span class="va">key_measures</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_key_measures_annual.html">get_key_measures_annual</a></span><span class="op">(</span></span>
-<span>  periods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2022-23"</span>, <span class="st">"2023-24"</span>, <span class="st">"2024-25"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">proms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_proms_annual.html">get_proms_annual</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="select-data-for-analysis">Select data for analysis<a class="anchor" aria-label="anchor" href="#select-data-for-analysis"></a>
 </h2>
-<p>Here we filter the data to focus on received referrals and finished
-treatments at the regional level. This step requires careful exploration
-of the underlying data structure.</p>
+<p>Here we filter the data to focus on effect sizes for GAD-7 and PHQ-9
+measures at the national England level for depression, selecting six
+specific therapy types: applied relaxation, CBT, collaborative care,
+brief psychodynamic psychotherapy, and computer-based guided and
+non-guided self-help. This step requires careful exploration of the
+underlying data structure.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Select data for analysis</span></span>
-<span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">key_measures</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_type</span> <span class="op">==</span> <span class="st">"Commissioning Region"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">selected_proms</span> <span class="op">&lt;-</span> <span class="va">proms</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_type</span> <span class="op">==</span> <span class="st">"England"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">org_name</span> <span class="op">==</span> <span class="st">"UNKNOWN"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>    <span class="va">measure_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"referrals_received"</span>, <span class="st">"finished_course_treatment"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_statistic</span> <span class="op">==</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_a</span> <span class="op">==</span> <span class="st">"Depression"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>    <span class="va">start_date</span>,</span>
-<span>    <span class="va">end_date</span>,</span>
-<span>    <span class="va">org_name</span>,</span>
-<span>    <span class="va">variable_a</span>,</span>
-<span>    <span class="va">measure_statistic</span>,</span>
-<span>    <span class="va">measure_name</span>,</span>
-<span>    <span class="va">value</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Tidy data for analysis</span></span>
-<span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">selected_measures</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">variable_b</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Applied relaxation"</span>,</span>
+<span>        <span class="st">"Cognitive Behaviour Therapy (CBT)"</span>,</span>
+<span>        <span class="st">"Collaborative Care"</span>,</span>
+<span>        <span class="st">"Brief psychodynamic psychotherapy"</span>,</span>
+<span>        <span class="st">"Guided Self Help (Computer)"</span>,</span>
+<span>        <span class="st">"Non-Guided Self Help (Computer)"</span></span>
+<span>      <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"phq"</span>, <span class="st">"gad"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_statistic</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"effect_size"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    org_name <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/case.html" class="external-link">str_to_title</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html" class="external-link">str_remove</a></span><span class="op">(</span><span class="va">org_name</span>, <span class="st">"\\s*COMMISSIONING REGION$"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    org_name <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace_all</a></span><span class="op">(</span><span class="va">org_name</span>, <span class="st">"\\b(Of|And)\\b"</span>, <span class="va">tolower</span><span class="op">)</span>,</span>
 <span>    measure_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
 <span>      <span class="va">measure_name</span>,</span>
-<span>      levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"referrals_received"</span>, <span class="st">"finished_course_treatment"</span><span class="op">)</span>,</span>
-<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Referrals received"</span>, <span class="st">"Finished course of treatment"</span><span class="op">)</span></span>
+<span>      levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gad"</span>, <span class="st">"phq"</span><span class="op">)</span>,</span>
+<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GAD-7"</span>, <span class="st">"PHQ-9"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    measure_statistic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
+<span>      <span class="va">measure_statistic</span>,</span>
+<span>      levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"effect_size"</span><span class="op">)</span>,</span>
+<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Effect size"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="create-figure">Create figure<a class="anchor" aria-label="anchor" href="#create-figure"></a>
 </h2>
-<p>Finally, we visualise the trends over time for each region.</p>
+<p>Finally, we visualise the effect sizes for GAD-7 and PHQ-9 across the
+selected therapy types for depression treatment in England, showing
+trends for two reporting periods.</p>
 <div class="figure">
-<img src="how-to-key-measures-annual_files/figure-html/fig-example-1.png" class="r-plt" alt="Trends for counts of referrals received and finished course of treatment for depression broken down by region." width="768"><p class="caption">
-Trends for counts of referrals received and finished course of treatment
-for depression broken down by region.
+<img src="how-to-proms-annual_files/figure-html/fig-example-1.png" class="r-plt" alt="GAD-7 and PHQ-9 effect sizes by therapy type for depression treatment in England." width="768"><p class="caption">
+GAD-7 and PHQ-9 effect sizes by therapy type for depression treatment in
+England.
 </p>
 </div>
 </div>

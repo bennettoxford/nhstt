@@ -132,6 +132,8 @@ Step-by-step guides for analysing NHS TT data
   data](https://bennettoxford.github.io/nhstt/articles/how-to-activity-performance-monthly.md):
 - [How to use the annual key measures
   data](https://bennettoxford.github.io/nhstt/articles/how-to-key-measures-annual.md):
+- [How to use the annual PROMs
+  data](https://bennettoxford.github.io/nhstt/articles/how-to-proms-annual.md):
 
 ### Metadata
 

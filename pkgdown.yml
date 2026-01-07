@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   how-to-activity-performance-monthly: how-to-activity-performance-monthly.html
   how-to-key-measures-annual: how-to-key-measures-annual.html
+  how-to-proms-annual: how-to-proms-annual.html
   metadata-annual: metadata-annual.html
   metadata-monthly-core: metadata-monthly-core.html
   metadata-monthly-ea: metadata-monthly-ea.html
@@ -11,7 +12,7 @@ articles:
   metadata-ods: metadata-ods.html
   report-monthly-outcomes: report-monthly-outcomes.html
   report-monthly-tx-appt: report-monthly-tx-appt.html
-last_built: 2026-01-07T15:59Z
+last_built: 2026-01-07T19:17Z
 urls:
   reference: https://bennettoxford.github.io/nhstt/reference
   article: https://bennettoxford.github.io/nhstt/articles
