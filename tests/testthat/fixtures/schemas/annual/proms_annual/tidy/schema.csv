@@ -1,0 +1,6 @@
+"reporting_period","start_date","end_date","org_type","org_code","org_name","variable_type","variable_a","variable_b","measure_name","measure_statistic","value"
+"2024-25",2024-04-01,2025-03-31,"Commissioning Region","UNKNOWN","UNKNOWN","PROMs","Total","Guided Self Help (Book)","total_finishing_course_treatment","count",245
+"2024-25",2024-04-01,2025-03-31,"Commissioning Region","UNKNOWN","UNKNOWN","PROMs","Total","Guided Self Help (Book)","courses_of_therapy","count",130
+"2024-25",2024-04-01,2025-03-31,"Commissioning Region","UNKNOWN","UNKNOWN","PROMs","Total","Guided Self Help (Book)","not_caseness","count",10
+"2024-25",2024-04-01,2025-03-31,"Commissioning Region","UNKNOWN","UNKNOWN","PROMs","Total","Guided Self Help (Book)","ther_recovery","count",40
+"2024-25",2024-04-01,2025-03-31,"Commissioning Region","UNKNOWN","UNKNOWN","PROMs","Total","Guided Self Help (Book)","ther_recovery","percentage",32

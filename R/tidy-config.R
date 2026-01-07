@@ -181,11 +181,6 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
       df <- filter_rows(df, filter_config = config$filter)
     }
 
-    # Convert columns to numeric
-    if (length(config$as_numeric) > 0) {
-      df <- convert_to_numeric(df, config$as_numeric)
-    }
-
     # Separate columns (split one column into multiple)
     if (!is.null(config$separate) && length(config$separate) > 0) {
       df <- separate_columns(df, config$separate)
@@ -213,6 +208,11 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
   }
 
   # === AFTER PIVOTING / AFTER COMBINING DATA ===
+
+  # Convert columns to numeric (applied after pivot to handle "value" column)
+  if (length(config$as_numeric) > 0) {
+    combined <- convert_to_numeric(combined, config$as_numeric)
+  }
 
   # Clean values in specified columns
   if (length(config$clean_column_values) > 0) {
