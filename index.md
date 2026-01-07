@@ -35,6 +35,7 @@ ap_monthly <- get_activity_performance_monthly()
 | Function                                                                                                  | First period | Last period | Count periods | Version |
 |:----------------------------------------------------------------------------------------------------------|:-------------|:------------|--------------:|--------:|
 | [`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md) | 2017-18      | 2024-25     |             8 |   0.2.0 |
+| [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md)               | 2022-23      | 2024-25     |             3 |   0.1.0 |
 
 ### Monthly data
 
@@ -58,8 +59,9 @@ be a bit faster or slower depending on your internet and computer.
 
 | Function                                                                                                                    | Download per period | Tidy per period | Total (all periods) |
 |:----------------------------------------------------------------------------------------------------------------------------|--------------------:|----------------:|--------------------:|
-| [`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md)                   |             1.2 sec |        16.6 sec |             2.4 min |
-| [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) |             8.3 sec |        0.02 sec |               4 min |
+| [`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md)                   |             1.4 sec |        17.1 sec |             2.5 min |
+| [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md)                                 |            0.63 sec |        58.5 sec |               3 min |
+| [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) |               5 sec |        0.52 sec |             2.7 min |
 
 ## For developers
 

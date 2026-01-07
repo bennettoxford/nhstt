@@ -4,6 +4,8 @@
 
 - [`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md)
   : Get annual key performance measures
+- [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md)
+  : Get annual Patient Reported Outcome (PROMs) measures
 
 ## Monthly data
 
