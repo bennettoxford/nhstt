@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-annual.R
 \name{get_proms_annual}
 \alias{get_proms_annual}
-\title{Get annual Patient Reported Outcome (PROMs) measures}
+\title{Get annual Patient Reported Outcome measures (PROMs)}
 \usage{
 get_proms_annual(periods = NULL, use_cache = TRUE)
 }
@@ -16,7 +16,8 @@ If NULL (default), returns all available annual periods}
 Tibble with key measures data in long format
 }
 \description{
-Get annual Patient Reported Outcome Measures (PROMs) mean and SD broken down by providers
+Get annual Patient Reported Outcome Measures (PROMs) mean and SD broken down by
+therapy type, problem descriptor, and providers.
 }
 \details{
 Raw data is automatically stored in parquet format for efficient compression.
