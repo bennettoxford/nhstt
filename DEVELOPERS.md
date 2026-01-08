@@ -5,6 +5,8 @@
 - [just](https://github.com/casey/just)
 - R (version 4.0 or higher)
 - [air](https://github.com/posit-dev/air/) for code formatting
+- [Quarto CLI](https://quarto.org/docs/get-started/) and the [quarto R
+  package](https://github.com/quarto-dev/quarto-r)
 
 ## Local development environment
 
