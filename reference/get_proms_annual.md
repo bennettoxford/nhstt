@@ -1,7 +1,7 @@
-# Get annual Patient Reported Outcome (PROMs) measures
+# Get annual Patient Reported Outcome measures (PROMs)
 
 Get annual Patient Reported Outcome Measures (PROMs) mean and SD broken
-down by providers
+down by therapy type, problem descriptor, and providers.
 
 ## Usage
 
