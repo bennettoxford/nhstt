@@ -50,9 +50,10 @@ get_key_measures_annual <- function(
   list_rbind(data_list)
 }
 
-#' Get annual Patient Reported Outcome (PROMs) measures
+#' Get annual Patient Reported Outcome measures (PROMs)
 #'
-#' Get annual Patient Reported Outcome Measures (PROMs) mean and SD broken down by providers
+#' Get annual Patient Reported Outcome Measures (PROMs) mean and SD broken down by
+#' therapy type, problem descriptor, and providers.
 #'
 #' @param periods Character vector, specifying periods (e.g., "2023-24", "2024-25").
 #' If NULL (default), returns all available annual periods
