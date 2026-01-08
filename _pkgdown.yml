@@ -2,6 +2,7 @@ url: https://bennettoxford.github.io/nhstt/
 
 template:
   bootstrap: 5
+  assets: false
   includes:
     in_header: |
       <!-- Privacy-friendly analytics by Plausible -->
@@ -34,7 +35,7 @@ navbar:
         - text: "Annual data"
         - text: "Key measures"
           href: articles/how-to-key-measures-annual.html
-        - text: "PROMS"
+        - text: "PROMs"
           href: articles/how-to-proms-annual.html
         - text: -------
         - text: "Monthly data"
