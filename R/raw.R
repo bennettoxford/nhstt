@@ -255,6 +255,13 @@ extract_csv_from_archive <- function(archive_path, csv_pattern) {
         cli_abort("No CSV files found in raw data file")
       }
 
+      normalized_temp_dir <- normalizePath(temp_dir, winslash = "/", mustWork = TRUE)
+      normalized_csv_files <- normalizePath(csv_files, winslash = "/", mustWork = TRUE)
+      relative_paths <- sub(paste0("^", normalized_temp_dir, "/"), "", normalized_csv_files)
+
+      matches <- grepl(csv_pattern, basename(csv_files), ignore.case = TRUE) |. grepl(csv_pattern, relative_paths, ignore.case = TRUE)
+      matching_file <- csv_files[matches]
+
       matching_file <- keep(
         csv_files,
         \(f) grepl(csv_pattern, basename(f), ignore.case = TRUE)
@@ -263,7 +270,7 @@ extract_csv_from_archive <- function(archive_path, csv_pattern) {
       if (length(matching_file) == 0) {
         cli_abort(c(
           "No file matching pattern {.val {csv_pattern}} found in raw data file",
-          "i" = "Available files: {.file {basename(csv_files)}}"
+          "i" = "Available files: {.file {relative_paths}}}"
         ))
       }
 
