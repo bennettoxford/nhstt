@@ -37,6 +37,9 @@ archives:
     - period: "2022-23"
       url: "https://files.digital.nhs.uk/70/F00866/ther-based-outcomes2223.zip"
       format: "zip"
+    - period: "2021-22"
+      url: "https://files.digital.nhs.uk/15/82C006/ther-based-outcomes-2122.zip"
+      format: "zip"
 
 datasets:
   key_measures_annual:

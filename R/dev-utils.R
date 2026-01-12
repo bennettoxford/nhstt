@@ -151,7 +151,8 @@ list_archive_files <- function(archive_name, periods = NULL) {
                   recursive = TRUE,
                   ignore.case = TRUE
                 )
-                sort(csv_files)
+                # Normalise to basenames so downstream matching works even when archives contain nested directories
+                sort(unique(basename(csv_files)))
               },
               finally = {
                 unlink(temp_dir, recursive = TRUE)
