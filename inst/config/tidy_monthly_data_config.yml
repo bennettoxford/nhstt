@@ -1,6 +1,7 @@
 # NHS Talking Therapies tidy monthly data configuration
 # Tidy options: clean_column_names, rename, filter, as_numeric, separate, mutate, pivot_longer, clean_column_values, select
 # Rename format: new_name: old_name (use "YYYY-YY"/"YYYY-MM" keys for period-specific renames)
+# clean_column_values format: list of {column: name, strip_numbers: true/false}
 datasets:
   activity_performance_monthly:
     clean_column_names: true
@@ -36,8 +37,10 @@ datasets:
           format: "%Y-%m"
 
     clean_column_values:
-      - measure_name
-      - measure_statistic
+      - column: measure_name
+        strip_numbers: false
+      - column: measure_statistic
+        strip_numbers: false
 
     select:
       - reporting_period

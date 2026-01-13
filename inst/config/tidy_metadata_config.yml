@@ -1,6 +1,7 @@
 # NHS Talking Therapies tidy metadata configuration
 # Tidy options: clean_column_names, rename, filter, as_numeric, separate, mutate, pivot_longer, clean_column_values, select
 # Rename format: new_name: old_name (use "YYYY-YY"/"YYYY-MM" keys for period-specific renames)
+# clean_column_values format: list of {column: name, strip_numbers: true/false}
 datasets:
   metadata_measures_monthly:
     clean_column_names: true

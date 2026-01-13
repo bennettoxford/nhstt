@@ -870,3 +870,97 @@ test_that("tidy_dataset handles multiple periods and schema variations (proms_an
 
   expect_named(result, expected_tidy_columns("proms_annual", "annual"))
 })
+
+test_that("clean_column_values supports column format without strip_numbers", {
+  df <- tibble::tibble(
+    col1 = c("Value123", "Test456"),
+    col2 = c("Other789", "Data012")
+  )
+
+  config <- list(
+    clean_column_values = list(
+      list(column = "col1", strip_numbers = FALSE),
+      list(column = "col2", strip_numbers = FALSE)
+    )
+  )
+
+  # Apply transformations
+  result <- df
+  clean_config <- config$clean_column_values
+  for (item in clean_config) {
+    col_name <- item$column
+    strip_nums <- item$strip_numbers %||% FALSE
+    result <- clean_column_values(
+      result,
+      column_names = col_name,
+      strip_numbers = strip_nums
+    )
+  }
+
+  expect_equal(result$col1, c("value123", "test456"))
+  expect_equal(result$col2, c("other789", "data012"))
+})
+
+test_that("clean_column_values supports column format with strip_numbers", {
+  df <- tibble::tibble(
+    col1 = c("Value123", "Test456"),
+    col2 = c("Other789", "Data012")
+  )
+
+  config <- list(
+    clean_column_values = list(
+      list(column = "col1", strip_numbers = TRUE),
+      list(column = "col2", strip_numbers = TRUE)
+    )
+  )
+
+  # Apply transformations
+  result <- df
+  clean_config <- config$clean_column_values
+  for (item in clean_config) {
+    col_name <- item$column
+    strip_nums <- item$strip_numbers %||% FALSE
+    result <- clean_column_values(
+      result,
+      column_names = col_name,
+      strip_numbers = strip_nums
+    )
+  }
+
+  expect_equal(result$col1, c("value", "test"))
+  expect_equal(result$col2, c("other", "data"))
+})
+
+test_that("clean_column_values supports mixed strip_numbers per column", {
+  df <- tibble::tibble(
+    measure_name = c("Count123Referrals", "Sum456Items"),
+    therapy_type = c("20 Guided_Self_Help", "50 CBT_Therapy")
+  )
+
+  config <- list(
+    clean_column_values = list(
+      list(column = "measure_name", strip_numbers = FALSE),
+      list(column = "therapy_type", strip_numbers = TRUE)
+    )
+  )
+
+  # Apply transformations
+  result <- df
+  clean_config <- config$clean_column_values
+
+  for (item in clean_config) {
+    col_name <- item$column
+    strip_nums <- item$strip_numbers %||% FALSE
+    result <- clean_column_values(
+      result,
+      column_names = col_name,
+      strip_numbers = strip_nums
+    )
+  }
+
+  # measure_name should keep numbers
+  expect_equal(result$measure_name, c("count123referrals", "sum456items"))
+
+  # therapy_type should strip numbers
+  expect_equal(result$therapy_type, c("guided_self_help", "cbt_therapy"))
+})

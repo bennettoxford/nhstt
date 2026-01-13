@@ -167,6 +167,45 @@ test_that("clean_str converts CamelCase to snake_case", {
   )
 })
 
+test_that("clean_str strips numbers when strip_numbers = TRUE", {
+  raw_names <- c(
+    "ORG_CODE1",
+    "Count_AccessingServices28days",
+    "Count_AccessingServices57to90days",
+    "Mean_LastWSASHM",
+    "Item123Test",
+    "10_Guide_Book"
+  )
+
+  expect_equal(
+    clean_str(raw_names, strip_numbers = TRUE),
+    c(
+      "org_code",
+      "count_accessing_services_days",
+      "count_accessing_services_to_days",
+      "mean_last_wsashm",
+      "item_test",
+      "guide_book"
+    )
+  )
+})
+
+test_that("clean_str preserves numbers by default", {
+  raw_names <- c("Count123", "Test456Word")
+
+  # Default behaviour (strip_numbers = FALSE)
+  expect_equal(
+    clean_str(raw_names),
+    c("count123", "test456word")
+  )
+
+  # Explicit FALSE
+  expect_equal(
+    clean_str(raw_names, strip_numbers = FALSE),
+    c("count123", "test456word")
+  )
+})
+
 test_that("replace_suppression_with_na converts suppression markers to NA", {
   suppression_values <- c("*", "-", "", "N/A", "NA", "NULL", "Null", "null")
 
@@ -328,6 +367,28 @@ test_that("clean_column_values applies clean_str to requested columns", {
   expect_equal(
     result$statistic,
     c("mean_last_wsashm", "total")
+  )
+})
+
+test_that("clean_column_values strips numbers when strip_numbers = TRUE", {
+  df <- tibble::tibble(
+    measure = c("Count123Referrals", "Count456Items"),
+    statistic = c("Mean789Score", "Total")
+  )
+
+  result <- clean_column_values(
+    df,
+    c("measure", "statistic"),
+    strip_numbers = TRUE
+  )
+
+  expect_equal(
+    result$measure,
+    c("count_referrals", "count_items")
+  )
+  expect_equal(
+    result$statistic,
+    c("mean_score", "total")
   )
 })
 

@@ -1,13 +1,17 @@
 #' Clean strings to snake_case
 #'
 #' @param x Character, specifying string to clean (e.g., "CamelCase" or "Column Name")
+#' @param strip_numbers Logical, specifying whether to remove numbers from the string (default FALSE)
 #'
 #' @return Clean string
 #'
 #' @keywords internal
-clean_str <- function(x) {
+clean_str <- function(x, strip_numbers = FALSE) {
+  # Define pattern based on whether to strip numbers
+  pattern <- if (strip_numbers) "[^a-zA-Z]+" else "[^a-zA-Z0-9]+"
+
   x |>
-    gsub("[^a-zA-Z0-9]+", "_", x = _) |>
+    gsub(pattern, "_", x = _) |>
     gsub("([a-z])([A-Z])", "\\1_\\2", x = _) |>
     gsub("([A-Z]+)([A-Z][a-z])", "\\1_\\2", x = _) |>
     gsub("_{2,}", "_", x = _) |>
@@ -373,6 +377,7 @@ parse_monthly_period_bounds <- function(period) {
 #'
 #' @param df Tibble, specifying data with columns to clean
 #' @param column_names Character vector, specifying column names to clean (e.g., c("measure", "statistic"))
+#' @param strip_numbers Logical, specifying whether to remove numbers from strings (default FALSE)
 #'
 #' @return Tibble with cleaned column values
 #'
@@ -380,7 +385,11 @@ parse_monthly_period_bounds <- function(period) {
 #' @importFrom tidyselect all_of
 #'
 #' @keywords internal
-clean_column_values <- function(df, column_names = NULL) {
+clean_column_values <- function(
+  df,
+  column_names = NULL,
+  strip_numbers = FALSE
+) {
   if (is.null(column_names) || length(column_names) == 0) {
     return(df)
   }
@@ -395,7 +404,7 @@ clean_column_values <- function(df, column_names = NULL) {
     mutate(
       across(
         all_of(columns_to_clean),
-        clean_str
+        \(x) clean_str(x, strip_numbers = strip_numbers)
       )
     )
 }

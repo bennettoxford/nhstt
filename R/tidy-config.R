@@ -216,10 +216,23 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
 
   # Clean values in specified columns
   if (length(config$clean_column_values) > 0) {
-    combined <- clean_column_values(
-      combined,
-      column_names = config$clean_column_values
-    )
+    # Format: list of {column: "name", strip_numbers: true/false}
+    for (item in config$clean_column_values) {
+      if (!is.list(item) || is.null(item$column)) {
+        cli_abort(
+          "clean_column_values must be a list of {column: name, strip_numbers: true/false}"
+        )
+      }
+
+      col_name <- item$column
+      strip_nums <- item$strip_numbers %||% FALSE
+
+      combined <- clean_column_values(
+        combined,
+        column_names = col_name,
+        strip_numbers = strip_nums
+      )
+    }
   }
 
   # Select and order final columns
