@@ -71,6 +71,7 @@ be a bit faster or slower depending on your internet and computer.
 |:---|---:|---:|---:|
 | `get_key_measures_annual()` | 1.4 sec | 17.1 sec | 2.5 min |
 | `get_proms_annual()` | 0.63 sec | 58.5 sec | 3 min |
+| `get_therapy_types_annual()` | -- sec | -- sec | -- min |
 | `get_activity_performance_monthly()` | 5 sec | 0.52 sec | 2.7 min |
 
 ## For developers

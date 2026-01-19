@@ -191,6 +191,12 @@ time_proms_annual <- benchmark_dataset(
   "annual",
   get_proms_annual
 )
+time_therapy_annual <- benchmark_dataset(
+  "therapy_types_annual",
+  "2024-25",
+  "annual",
+  get_therapy_types_annual
+)
 time_ap_monthly <- benchmark_dataset(
   "activity_performance_monthly",
   "2025-08",
@@ -207,21 +213,25 @@ performance_data <- tibble::tibble(
   Function = c(
     "`get_key_measures_annual()`",
     "`get_proms_annual()`",
+    "`get_therapy_types_annual()`",
     "`get_activity_performance_monthly()`"
   ),
   Download_per_period = c(
     time_km_annual$download,
     time_proms_annual$download,
+    time_therapy_annual$download,
     time_ap_monthly$download
   ),
-  Tidy_per_period = c(
+  Tidy_per_period = c(  
     time_km_annual$tidy,
     time_proms_annual$tidy,
+    time_therapy_annual$tidy,
     time_ap_monthly$tidy
   ),
   Total_all_periods = c(
     time_km_annual$total,
     time_proms_annual$total,
+    time_therapy_annual$total,
     time_ap_monthly$total
   )
 )
