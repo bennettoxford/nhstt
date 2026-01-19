@@ -121,20 +121,20 @@ get_proms_annual <- function(
 #' @examples
 #' \dontrun{
 #' # Get all annual periods
-#' therapy_types_df <- get_therapy_types_by_appt_annual()
+#' therapy_types_df <- get_therapy_types_annual()
 #'
 #' # Get specific annual periods
-#' therapy_types_df <- get_therapy_types_by_appt_annual(periods = c("2023-24", "2024-25"))
+#' therapy_types_df <- get_therapy_types_annual(periods = c("2023-24", "2024-25"))
 #'
 #' # Bypass cache to use latest tidying logic
-#' therapy_types_df <- get_therapy_types_by_appt_annual(periods = "2023-24", use_cache = FALSE)
+#' therapy_types_df <- get_therapy_types_annual(periods = "2023-24", use_cache = FALSE)
 #' }
-get_therapy_types_by_appt_annual <- function(
+get_therapy_types_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
   frequency <- "annual"
-  dataset <- "therapy_types_by_appt_annual"
+  dataset <- "therapy_types_annual"
 
   periods <- resolve_periods(periods, dataset, frequency)
   periods <- rev(periods)
