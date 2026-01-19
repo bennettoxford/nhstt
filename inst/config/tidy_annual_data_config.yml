@@ -171,7 +171,7 @@ datasets:
       - measure_statistic
       - value
   
-  therapy_types_by_appt_annual:
+  therapy_types_annual:
     clean_column_names: true
 
     pivot_longer:
