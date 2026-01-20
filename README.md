@@ -67,12 +67,14 @@ ap_monthly <- get_activity_performance_monthly()
 Approximate download and processing times per period. Your times might
 be a bit faster or slower depending on your internet and computer.
 
+Benchmarks generated on: MacBook Pro 13-inch (2020, 2 GHz Quad-Core Intel Core i5, 16GB RAM)
+
 | Function | Download per period | Tidy per period | Total (all periods) |
 |:---|---:|---:|---:|
-| `get_key_measures_annual()` | 1.4 sec | 17.1 sec | 2.5 min |
-| `get_proms_annual()` | 0.63 sec | 58.5 sec | 3 min |
-| `get_therapy_types_annual()` | -- sec | -- sec | -- min |
-| `get_activity_performance_monthly()` | 5 sec | 0.52 sec | 2.7 min |
+| `get_key_measures_annual()` | 1.8 sec | 40.1 sec | 5.6 min |
+| `get_proms_annual()` | 0.9 sec | 1.5 min | 4.4 min |
+| `get_therapy_types_annual()` | 0.4 sec | 0.25 sec | 2 sec |
+| `get_activity_performance_monthly()` | 2.7 sec | 1.3 sec | 1.9 min |
 
 ## For developers
 
