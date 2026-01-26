@@ -1,4 +1,0 @@
-reporting_period,start_date,end_date,org_type,org_code,org_name,variable_type,variable_a,variable_b,measure_name,measure_statistic,value
-2024-25,2024-04-01,2025-03-31,England,All,All,Therapy Type,all_therapies,NA,1therapy,count,100
-2024-25,2024-04-01,2025-03-31,England,All,All,Therapy Type,all_therapies,NA,2therapies,count,50
-2024-25,2024-04-01,2025-03-31,England,All,All,Therapy Type,cbt,NA,1therapy,count,60

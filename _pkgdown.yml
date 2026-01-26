@@ -71,7 +71,7 @@ reference:
     contents:
       - get_key_measures_annual
       - get_proms_annual
-      - get_therapy_types_annual
+      - get_therapy_position_annual
   - title: "Monthly data"
     contents:
       - get_activity_performance_monthly

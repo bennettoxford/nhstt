@@ -171,26 +171,31 @@ datasets:
       - measure_statistic
       - value
   
-  therapy_types_annual:
+  therapy_position_annual:
     clean_column_names: true
+
+    rename:
+      variable_a: therapy_type
+      count_position_1: count_1therapy
+      count_position_2: count_2therapies
+      count_position_3: count_3therapies
+      count_position_4: count_4therapies
 
     pivot_longer:
       id_cols:
-        - therapy_type
+        - variable_a
       
       measure_cols:
-        - count_1therapy
-        - count_2therapies
-        - count_3therapies
-        - count_4therapies
+        - count_position_1
+        - count_position_2
+        - count_position_3
+        - count_position_4
 
       sep: "^(count)_(.+)$"
       names_to:
       - measure_statistic
       - measure_name
     
-    rename:
-      variable_a: therapy_type
 
     mutate:
       org_type:
@@ -200,7 +205,7 @@ datasets:
       org_name: 
         value: "All"
       variable_type:
-        value: "Therapy Type"
+        value: "therapy_type"
       variable_b:
         value: "NA"
 

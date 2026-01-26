@@ -42,10 +42,11 @@ ap_monthly <- get_activity_performance_monthly()
 
 ### Annual data
 
-| Function                    | First period | Last period | Count periods | Version |
-|:----------------------------|:-------------|:------------|--------------:|--------:|
-| `get_key_measures_annual()` | 2017-18      | 2024-25     |             8 |   0.2.0 |
-| `get_proms_annual()`        | 2022-23      | 2024-25     |             3 |   0.1.0 |
+| Function | First period | Last period | Count periods | Version |
+|:---|:---|:---|---:|---:|
+| `get_key_measures_annual()` | 2017-18 | 2024-25 | 8 | 0.2.0 |
+| `get_proms_annual()` | 2022-23 | 2024-25 | 3 | 0.1.0 |
+| `get_therapy_position_annual()` | 2022-23 | 2024-25 | 3 | 0.1.0 |
 
 ### Monthly data
 
@@ -65,16 +66,15 @@ ap_monthly <- get_activity_performance_monthly()
 ## Time to download and tidy the data
 
 Approximate download and processing times per period. Your times might
-be a bit faster or slower depending on your internet and computer.
-
-Benchmarks generated on: MacBook Pro 13-inch (2020, 2 GHz Quad-Core Intel Core i5, 16GB RAM)
+be a bit faster or slower depending on your internet speed and computer
+setup.
 
 | Function | Download per period | Tidy per period | Total (all periods) |
 |:---|---:|---:|---:|
-| `get_key_measures_annual()` | 1.8 sec | 40.1 sec | 5.6 min |
-| `get_proms_annual()` | 0.9 sec | 1.5 min | 4.4 min |
-| `get_therapy_types_annual()` | 0.4 sec | 0.25 sec | 2 sec |
-| `get_activity_performance_monthly()` | 2.7 sec | 1.3 sec | 1.9 min |
+| `get_key_measures_annual()` | 1.2 sec | 16 sec | 2.3 min |
+| `get_proms_annual()` | 0.52 sec | 31.2 sec | 1.6 min |
+| `get_therapy_position_annual()` | 0.26 sec | 0.07 sec | 1 sec |
+| `get_activity_performance_monthly()` | 4.3 sec | 0.52 sec | 2.4 min |
 
 ## For developers
 
