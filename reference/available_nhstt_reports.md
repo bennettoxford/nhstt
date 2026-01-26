@@ -21,8 +21,8 @@ available_nhstt_reports()
 #>    dataset       frequency title get_function first_period last_period n_periods
 #>    <chr>         <chr>     <chr> <chr>        <chr>        <chr>           <int>
 #>  1 key_measures… annual    Key … get_key_mea… 2017-18      2024-25             8
-#>  2 proms_annual  annual    Pati… get_proms_a… 2022-23      2024-25             3
-#>  3 therapy_posi… annual    Ther… get_therapy… 2022-23      2024-25             3
+#>  2 proms_annual  annual    Pati… get_proms_a… 2021-22      2024-25             4
+#>  3 therapy_posi… annual    Ther… get_therapy… 2021-22      2024-25             4
 #>  4 activity_per… monthly   Acti… get_activit… 2023-05      2025-09            29
 #>  5 metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1
 #>  6 metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1
