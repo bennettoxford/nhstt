@@ -36,6 +36,10 @@ load_raw_fixture <- function(dataset, period, frequency) {
 #'
 #' @return Tibble with expected tidy schema
 #' @keywords internal
+#'
+#' @note Schema files are currently only used to validate column names and order,
+#'   not values. Value validation is done via explicit tests (e.g.,
+#'   "tidy_dataset sets variable_type to X"). I should consider adding value validation later.
 load_tidy_schema <- function(dataset, frequency) {
   schema_path <- test_path(
     "fixtures",
