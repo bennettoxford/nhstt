@@ -224,69 +224,56 @@ read_raw <- function(dataset, period, frequency, use_cache = TRUE) {
 #' @importFrom tools file_ext
 #' @importFrom utils unzip
 #' @importFrom archive archive_extract
-#' @importFrom purrr keep
 #'
 #' @keywords internal
 extract_csv_from_archive <- function(archive_path, csv_pattern) {
   file_ext <- tolower(file_ext(archive_path))
   temp_dir <- tempfile()
   dir.create(temp_dir)
-  tryCatch(
-    {
-      if (file_ext == "zip") {
-        unzip(archive_path, exdir = temp_dir)
-      } else if (file_ext == "rar") {
-        archive_extract(archive_path, dir = temp_dir)
-      } else {
-        cli_abort(
-          "Unsupported file type: {.val {file_ext}}. Only .zip and .rar supported."
-        )
-      }
+  on.exit(unlink(temp_dir, recursive = TRUE), add = TRUE)
 
-      csv_files <- list.files(
-        temp_dir,
-        pattern = "\\.csv$",
-        full.names = TRUE,
-        recursive = TRUE,
-        ignore.case = TRUE
-      )
+  if (file_ext == "zip") {
+    unzip(archive_path, exdir = temp_dir, junkpaths = TRUE)
+  } else if (file_ext == "rar") {
+    archive_extract(archive_path, dir = temp_dir)
+  } else {
+    cli_abort(
+      "Unsupported file type: {.val {file_ext}}. Only .zip and .rar supported."
+    )
+  }
 
-      if (length(csv_files) == 0) {
-        cli_abort("No CSV files found in raw data file")
-      }
-
-      normalized_temp_dir <- normalizePath(temp_dir, winslash = "/", mustWork = TRUE)
-      normalized_csv_files <- normalizePath(csv_files, winslash = "/", mustWork = TRUE)
-      relative_paths <- sub(paste0("^", normalized_temp_dir, "/"), "", normalized_csv_files)
-
-      matches <- grepl(csv_pattern, basename(csv_files), ignore.case = TRUE) |. grepl(csv_pattern, relative_paths, ignore.case = TRUE)
-      matching_file <- csv_files[matches]
-
-      matching_file <- keep(
-        csv_files,
-        \(f) grepl(csv_pattern, basename(f), ignore.case = TRUE)
-      )
-
-      if (length(matching_file) == 0) {
-        cli_abort(c(
-          "No file matching pattern {.val {csv_pattern}} found in raw data file",
-          "i" = "Available files: {.file {relative_paths}}}"
-        ))
-      }
-
-      if (length(matching_file) > 1) {
-        cli_warn(c(
-          "Multiple files match pattern {.val {csv_pattern}}",
-          "i" = "Using first match: {.file {basename(matching_file[1])}}"
-        ))
-      }
-
-      vroom(matching_file[1], show_col_types = FALSE)
-    },
-    finally = {
-      unlink(temp_dir, recursive = TRUE)
-    }
+  csv_files <- list.files(
+    temp_dir,
+    pattern = "\\.csv$",
+    full.names = TRUE,
+    ignore.case = TRUE
   )
+
+  if (length(csv_files) == 0) {
+    cli_abort("No CSV files found in archive")
+  }
+
+  matching_files <- csv_files[grepl(
+    csv_pattern,
+    basename(csv_files),
+    ignore.case = TRUE
+  )]
+
+  if (length(matching_files) == 0) {
+    cli_abort(c(
+      "No file matching pattern {.val {csv_pattern}} found in archive",
+      "i" = "Available files: {.file {basename(csv_files)}}"
+    ))
+  }
+
+  if (length(matching_files) > 1) {
+    cli_warn(c(
+      "Multiple files match pattern {.val {csv_pattern}}",
+      "i" = "Using first match: {.file {basename(matching_files[1])}}"
+    ))
+  }
+
+  vroom(matching_files[1], show_col_types = FALSE)
 }
 
 #' Calculate SHA256 hash of data
