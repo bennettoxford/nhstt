@@ -26,7 +26,12 @@ load_raw_fixture <- function(dataset, period, frequency) {
     )
   }
 
-  vroom::vroom(fixture_path, show_col_types = FALSE, delim = ",")
+  vroom::vroom(
+    fixture_path,
+    show_col_types = FALSE,
+    delim = ",",
+    col_types = vroom::cols(.default = "c")
+  )
 }
 
 #' Load tidy schema for testing
