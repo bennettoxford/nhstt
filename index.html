@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,13 +126,6 @@
 <h3 id="annual-data">Annual data<a class="anchor" aria-label="anchor" href="#annual-data"></a>
 </h3>
 <table class="table">
-<colgroup>
-<col width="36%">
-<col width="17%">
-<col width="16%">
-<col width="18%">
-<col width="11%">
-</colgroup>
 <thead><tr class="header">
 <th align="left">Function</th>
 <th align="left">First period</th>
@@ -150,6 +143,13 @@
 </tr>
 <tr class="even">
 <td align="left"><code><a href="reference/get_proms_annual.html">get_proms_annual()</a></code></td>
+<td align="left">2022-23</td>
+<td align="left">2024-25</td>
+<td align="right">3</td>
+<td align="right">0.1.0</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="reference/get_therapy_position_annual.html">get_therapy_position_annual()</a></code></td>
 <td align="left">2022-23</td>
 <td align="left">2024-25</td>
 <td align="right">3</td>
@@ -232,7 +232,7 @@
 <div class="section level2">
 <h2 id="time-to-download-and-tidy-the-data">Time to download and tidy the data<a class="anchor" aria-label="anchor" href="#time-to-download-and-tidy-the-data"></a>
 </h2>
-<p>Approximate download and processing times per period. Your times might be a bit faster or slower depending on your internet and computer.</p>
+<p>Approximate download and processing times per period. Your times might be a bit faster or slower depending on your internet speed and computer setup.</p>
 <table class="table">
 <colgroup>
 <col width="25%">
@@ -249,21 +249,27 @@
 <tbody>
 <tr class="odd">
 <td align="left"><code><a href="reference/get_key_measures_annual.html">get_key_measures_annual()</a></code></td>
-<td align="right">1.4 sec</td>
-<td align="right">17.1 sec</td>
-<td align="right">2.5 min</td>
+<td align="right">1.2 sec</td>
+<td align="right">16 sec</td>
+<td align="right">2.3 min</td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="reference/get_proms_annual.html">get_proms_annual()</a></code></td>
-<td align="right">0.63 sec</td>
-<td align="right">58.5 sec</td>
-<td align="right">3 min</td>
+<td align="right">0.52 sec</td>
+<td align="right">31.2 sec</td>
+<td align="right">1.6 min</td>
 </tr>
 <tr class="odd">
+<td align="left"><code><a href="reference/get_therapy_position_annual.html">get_therapy_position_annual()</a></code></td>
+<td align="right">0.26 sec</td>
+<td align="right">0.07 sec</td>
+<td align="right">1 sec</td>
+</tr>
+<tr class="even">
 <td align="left"><code><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code></td>
-<td align="right">5 sec</td>
+<td align="right">4.3 sec</td>
 <td align="right">0.52 sec</td>
-<td align="right">2.7 min</td>
+<td align="right">2.4 min</td>
 </tr>
 </tbody>
 </table>
@@ -316,6 +322,7 @@
 <ul class="list-unstyled">
 <li>Milan Wiedemann <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1991-282X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Lola Ojedele <br><small class="roles"> Author </small> <a href="https://orcid.org/0009-0008-4895-6913" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Viveck Kingsley <br><small class="roles"> Author </small> <a href="https://orcid.org/0009-0003-0864-7132" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Wellcome Trust <br><small class="roles"> Funder </small>   </li>
 </ul>
 </div>
@@ -327,7 +334,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Milan Wiedemann, Lola Ojedele, Wellcome Trust.</p>
+  <p>Developed by Milan Wiedemann, Lola Ojedele, Viveck Kingsley, Wellcome Trust.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -6,6 +6,8 @@
   : Get annual key performance measures
 - [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md)
   : Get annual Patient Reported Outcome measures (PROMs)
+- [`get_therapy_position_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_position_annual.md)
+  : Get position of therapy types within the referral pathways
 
 ## Monthly data
 
