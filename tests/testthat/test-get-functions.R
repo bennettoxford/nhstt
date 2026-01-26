@@ -71,3 +71,13 @@ test_that("get_proms_annual uses correct dataset name", {
   )
   expect_true(length(periods) > 0)
 })
+
+test_that("get_therapy_position_annual uses correct dataset name", {
+  # Should not error when resolving periods
+  expect_no_error(
+    {
+      periods <- resolve_periods(NULL, "therapy_position_annual", "annual")
+    }
+  )
+  expect_true(length(periods) > 0)
+})

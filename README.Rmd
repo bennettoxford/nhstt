@@ -191,6 +191,12 @@ time_proms_annual <- benchmark_dataset(
   "annual",
   get_proms_annual
 )
+time_therapy_position_annual <- benchmark_dataset(
+  "therapy_position_annual",
+  "2024-25",
+  "annual",
+  get_therapy_position_annual
+)
 time_ap_monthly <- benchmark_dataset(
   "activity_performance_monthly",
   "2025-08",
@@ -200,28 +206,32 @@ time_ap_monthly <- benchmark_dataset(
 ```
 
 Approximate download and processing times per period.
-Your times might be a bit faster or slower depending on your internet and computer.
+Your times might be a bit faster or slower depending on your internet speed and computer setup.
 
 ```{r performance-table, echo = FALSE}
 performance_data <- tibble::tibble(
   Function = c(
     "`get_key_measures_annual()`",
     "`get_proms_annual()`",
+    "`get_therapy_position_annual()`",
     "`get_activity_performance_monthly()`"
   ),
-  Download_per_period = c(
+  download_per_period = c(
     time_km_annual$download,
     time_proms_annual$download,
+    time_therapy_position_annual$download,
     time_ap_monthly$download
   ),
-  Tidy_per_period = c(
+  tidy_per_period = c(
     time_km_annual$tidy,
     time_proms_annual$tidy,
+    time_therapy_position_annual$tidy,
     time_ap_monthly$tidy
   ),
-  Total_all_periods = c(
+  total_all_periods = c(
     time_km_annual$total,
     time_proms_annual$total,
+    time_therapy_position_annual$total,
     time_ap_monthly$total
   )
 )
