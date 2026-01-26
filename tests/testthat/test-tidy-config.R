@@ -870,3 +870,124 @@ test_that("tidy_dataset handles multiple periods and schema variations (proms_an
 
   expect_named(result, expected_tidy_columns("proms_annual", "annual"))
 })
+
+test_that("tidy_dataset returns a tibble (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expect_s3_class(result, "tbl_df")
+})
+
+test_that("tidy_dataset has expected columns (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expected_cols <- expected_tidy_columns("therapy_position_annual", "annual")
+
+  expect_named(result, expected_cols, ignore.order = FALSE)
+})
+
+test_that("tidy_dataset has correct column order (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expect_equal(
+    names(result)[1:3],
+    c(
+      "reporting_period",
+      "start_date",
+      "end_date"
+    )
+  )
+})
+
+test_that("tidy_dataset column types are correct (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expect_type(result$reporting_period, "character")
+  expect_s3_class(result$start_date, "Date")
+  expect_s3_class(result$end_date, "Date")
+  expect_type(result$org_type, "character")
+  expect_type(result$org_code, "character")
+  expect_type(result$org_name, "character")
+  expect_type(result$variable_type, "character")
+  expect_type(result$variable_a, "character")
+  expect_type(result$variable_b, "character")
+  expect_type(result$measure_statistic, "character")
+  expect_type(result$measure_name, "character")
+
+  expect_true(is.numeric(result$value) || is.character(result$value))
+})
+
+test_that("tidy_dataset sets variable_type to therapy_type (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expect_true(all(result$variable_type == "therapy_type"))
+})
+
+test_that("tidy_dataset cleans therapy_type values (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expect_true("variable_a" %in% names(result))
+  expect_true(all(grepl("^[a-z0-9_]+$", result$variable_a)))
+})
+
+test_that("tidy_dataset converts to long format (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  raw_fixture <- load_raw_fixture(
+    "therapy_position_annual",
+    "2024-25",
+    "annual"
+  )
+  expect_gt(nrow(result), nrow(raw_fixture))
+})
+
+test_that("tidy_dataset snapshot test for column names (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expect_snapshot(names(result))
+})
+
+test_that("tidy_dataset handles all periods (therapy_position_annual)", {
+  raw_list <- load_raw_data(
+    "therapy_position_annual",
+    c("2022-23", "2023-24", "2024-25"),
+    "annual"
+  )
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expect_setequal(
+    unique(result$reporting_period),
+    c("2022-23", "2023-24", "2024-25")
+  )
+
+  n_rows_2223 <- nrow(load_raw_fixture(
+    "therapy_position_annual",
+    "2022-23",
+    "annual"
+  ))
+  n_rows_2324 <- nrow(load_raw_fixture(
+    "therapy_position_annual",
+    "2023-24",
+    "annual"
+  ))
+  n_rows_2425 <- nrow(load_raw_fixture(
+    "therapy_position_annual",
+    "2024-25",
+    "annual"
+  ))
+  expect_gt(nrow(result), n_rows_2223)
+  expect_gt(nrow(result), n_rows_2324)
+  expect_gt(nrow(result), n_rows_2425)
+
+  expect_named(
+    result,
+    expected_tidy_columns("therapy_position_annual", "annual")
+  )
+})
