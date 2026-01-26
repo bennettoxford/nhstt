@@ -848,13 +848,21 @@ test_that("tidy_dataset cleans column names (proms_annual)", {
 test_that("tidy_dataset handles multiple periods and schema variations (proms_annual)", {
   raw_list <- load_raw_data(
     "proms_annual",
-    c("2022-23", "2024-25"),
+    c("2021-22", "2022-23", "2024-25"),
     "annual"
   )
   result <- tidy_dataset(raw_list, "proms_annual", "annual")
 
-  expect_setequal(unique(result$reporting_period), c("2022-23", "2024-25"))
+  expect_setequal(
+    unique(result$reporting_period),
+    c("2021-22", "2022-23", "2024-25")
+  )
 
+  n_rows_2122 <- nrow(load_raw_fixture(
+    "proms_annual",
+    "2021-22",
+    "annual"
+  ))
   n_rows_2223 <- nrow(load_raw_fixture(
     "proms_annual",
     "2022-23",
@@ -865,6 +873,7 @@ test_that("tidy_dataset handles multiple periods and schema variations (proms_an
     "2024-25",
     "annual"
   ))
+  expect_gt(nrow(result), n_rows_2122)
   expect_gt(nrow(result), n_rows_2223)
   expect_gt(nrow(result), n_rows_2425)
 
@@ -957,16 +966,21 @@ test_that("tidy_dataset snapshot test for column names (therapy_position_annual)
 test_that("tidy_dataset handles all periods (therapy_position_annual)", {
   raw_list <- load_raw_data(
     "therapy_position_annual",
-    c("2022-23", "2023-24", "2024-25"),
+    c("2021-22", "2022-23", "2023-24", "2024-25"),
     "annual"
   )
   result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
 
   expect_setequal(
     unique(result$reporting_period),
-    c("2022-23", "2023-24", "2024-25")
+    c("2021-22", "2022-23", "2023-24", "2024-25")
   )
 
+  n_rows_2122 <- nrow(load_raw_fixture(
+    "therapy_position_annual",
+    "2021-22",
+    "annual"
+  ))
   n_rows_2223 <- nrow(load_raw_fixture(
     "therapy_position_annual",
     "2022-23",
@@ -982,6 +996,7 @@ test_that("tidy_dataset handles all periods (therapy_position_annual)", {
     "2024-25",
     "annual"
   ))
+  expect_gt(nrow(result), n_rows_2122)
   expect_gt(nrow(result), n_rows_2223)
   expect_gt(nrow(result), n_rows_2324)
   expect_gt(nrow(result), n_rows_2425)
