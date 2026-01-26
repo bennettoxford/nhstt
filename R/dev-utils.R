@@ -471,3 +471,63 @@ compare_schemas <- function(
 
   invisible(comparison)
 }
+
+#' Create raw fixture file for testing
+#'
+#' Downloads raw data for a dataset/period and saves the first n rows as a
+#' fixture CSV file for offline testing.
+#'
+#' @param dataset Character, dataset name (e.g., "therapy_position_annual")
+#' @param period Character, period (e.g., "2021-22")
+#' @param frequency Character, "annual" or "monthly"
+#' @param n_rows Integer, number of rows to save (default 5)
+#' @param overwrite Logical, whether to overwrite existing fixture (default FALSE)
+#'
+#' @return Invisibly returns the fixture path
+#'
+#' @note No unit tests - would require mocking download work.
+#'
+#' @importFrom cli cli_alert_success cli_alert_warning cli_abort
+#' @importFrom utils write.csv head
+#'
+#' @keywords internal
+create_raw_fixture <- function(
+  dataset,
+  period,
+  frequency,
+  n_rows = 5,
+  overwrite = FALSE
+) {
+  fixture_path <- file.path(
+    "tests",
+    "testthat",
+    "fixtures",
+    "schemas",
+    frequency,
+    dataset,
+    "raw",
+    paste0(period, ".csv")
+  )
+
+  if (file.exists(fixture_path) && !overwrite) {
+    cli_alert_warning("Fixture already exists: {.file {fixture_path}}")
+    cli_alert_warning("Use {.arg overwrite = TRUE} to replace")
+    return(invisible(fixture_path))
+  }
+
+  # Ensure directory exists
+  fixture_dir <- dirname(fixture_path)
+  if (!dir.exists(fixture_dir)) {
+    dir.create(fixture_dir, recursive = TRUE)
+  }
+
+  raw_data <- read_raw(dataset, period, frequency, use_cache = TRUE)
+  fixture_data <- head(raw_data, n_rows)
+  write.csv(fixture_data, fixture_path, row.names = FALSE)
+
+  cli_alert_success(
+    "Created fixture: {.file {fixture_path}} ({nrow(fixture_data)} rows, {ncol(fixture_data)} cols)"
+  )
+
+  invisible(fixture_path)
+}
