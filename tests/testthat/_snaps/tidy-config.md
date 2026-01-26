@@ -28,7 +28,7 @@
        [7] "variable_type"     "variable_a"        "variable_b"       
       [10] "measure_name"      "measure_statistic" "value"            
 
-# tidy_dataset snapshot test for column names (therapy_types_annual)
+# tidy_dataset snapshot test for column names (therapy_position_annual)
 
     Code
       names(result)
