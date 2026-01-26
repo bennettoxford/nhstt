@@ -84,6 +84,8 @@ datasets:
         csv_file: "Therapy Based Outcomes Table 4.csv"
       - period: "2022-23"
         csv_file: "Table4_AllTherapies.csv"
+      - period: "2021-22"
+        csv_file: "Table4_AllTherapies.csv"
   therapy_position_annual:
     title: "Therapy types by number of therapies per appointment"
     description: "Counts of attended appointments by therapy type, broken down by the total number of therapies recorded per appointment"
@@ -99,4 +101,6 @@ datasets:
       - period: "2023-24"
         csv_file: "Therapy Based Outcomes Table 1.csv"
       - period: "2022-23"
+        csv_file: "Table1.csv"
+      - period: "2021-22"
         csv_file: "Table1.csv"
