@@ -40,6 +40,10 @@ archives:
     - period: "2021-22"
       url: "https://files.digital.nhs.uk/15/82C006/ther-based-outcomes-2122.zip"
       format: "zip"
+    - period: "2020-21"
+      url: "https://files.digital.nhs.uk/69/BB5398/ther-based-outcomes2021.zip"
+      format: "zip"
+
 
 datasets:
   key_measures_annual:
@@ -86,6 +90,8 @@ datasets:
         csv_file: "Table4_AllTherapies.csv"
       - period: "2021-22"
         csv_file: "Table4_AllTherapies.csv"
+      - period: "2020-21"
+        csv_file: "Table4.csv"
   therapy_position_annual:
     title: "Therapy types by number of therapies per appointment"
     description: "Counts of attended appointments by therapy type, broken down by the total number of therapies recorded per appointment"
@@ -104,3 +110,5 @@ datasets:
         csv_file: "Table1.csv"
       - period: "2021-22"
         csv_file: "Table1.csv"
+      - period: "2020-21"
+        csv_file: "Table 1.csv"
