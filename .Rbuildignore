@@ -15,4 +15,8 @@ DEVELOPERS.md
 justfile
 vignettes/.quarto
 vignettes/_*
+vignettes/.*_files$
+vignettes/.*\.html$
+vignettes/.*\.knit\.md$
 tests/integration.R
+resources

@@ -9,3 +9,7 @@ AGENTS.md
 docs
 .Rhistory
 nhstt.Rproj
+resources
+vignettes/*_files/
+vignettes/*.html
+vignettes/*.knit.md

@@ -86,6 +86,10 @@ reference:
       - summarise_percentiles
 
 articles:
+  - title: "Paper"
+    desc: "Manuscript describing the nhstt package and datasets"
+    contents:
+      - nhstt-r-pkg-overview
   - title: "How-to guides"
     desc: "Step-by-step guides for analysing NHS TT data"
     contents:

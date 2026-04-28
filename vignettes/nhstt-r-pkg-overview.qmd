@@ -1,0 +1,277 @@
+---
+title: "Navigating publicly available NHS Talking Therapies data: Research opportunities and chanllanges"
+author:
+  - name: Milan Wiedemann
+    orcid: 0000-0003-1991-282X
+    email: milan.wiedemann@phc.ox.ac.uk
+    corresponding: true
+    affiliation:
+      - ref: ox-phc-bennett
+  - name: Lola Ojedele
+    orcid: 0009-0008-4895-6913
+    email: lola.ojedele@phc.ox.ac.uk
+    affiliation:
+      - ref: ox-phc-bennett
+  - name: Viveck Kingsley
+    orcid: 0009-0003-0864-7132
+    email: viveck.kingsley@phc.ox.ac.uk
+    affiliation:
+      - ref: ox-phc-bennett
+  - name: Rob Saunders
+    orcid: 0000-0002-7077-8729
+    email: r.saunders@ucl.ac.uk
+    affiliation:
+      - ref: ucl
+  - name: David Clark
+    orcid: 0000-0002-8173-6022
+    email: david.clark@psy.ox.ac.uk
+    affiliation:
+      - ref: ox-psy
+  - name: Helen Curtis
+    orcid: 0000-0003-3429-9576
+    email: helen.curtis@phc.ox.ac.uk
+    affiliation:
+      - ref: ox-phc-bennett
+  - name: Sebastian Bacon
+    orcid: 0000-0002-6354-3454
+    email: sebastian.bacon@phc.ox.ac.uk
+    affiliation:
+      - ref: ox-phc-bennett
+affiliations:
+  - id: ox-phc-bennett
+    name: Nuffield Department of Primary Care Health Sciences, University of Oxford
+    city: Oxford
+    country: UK
+  - id: ucl
+    name: University College London
+    city: London
+    country: UK
+  - id: ox-psy
+    name: Department of Experimental Psychology, University of Oxford
+    city: Oxford
+    country: UK
+bibliography: references.bib
+format: html
+execute:
+  echo: true
+  eval: false
+vignette: >
+  %\VignetteIndexEntry{nhstt-r-pkg-overview}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| eval: true
+#| message: false
+library(nhstt)
+library(dplyr)
+library(stringr)
+library(gt)
+```
+
+## Abstract
+
+NHS Talking Therapies for Anxiety and Depression (NHS TT) is England's national programme for evidence-based psychological therapies, treating over 670,000 patients per year.
+Since its launch in 2008, NHS England has published aggregate data from NHS TT services at monthly, quarterly, and annual frequencies, covering referral activity, waiting times, clinical outcomes, and patient-reported outcome measures broken down by service, region, and demographic group.
+These datasets offer a valuable resource for researchers, clinicians, and policymakers seeking to understand treatment access, outcomes, and service variation at a national scale.
+However, working with the data in practice is difficult for several reasons: the data is spread across hundreds of separately named files; file formats and variable naming conventions have changed substantially over time.
+We introduce `nhstt`, an open-source R package that provides access to these publicly available aggregate data in a tidy, research-ready format.
+The package includes monthly, quarterly, and annual data from 2017-18 to the present, including annual key performance measures, Patient Reported Outcome Measures (PROMs), and therapy-type data.
+We describe the underlying datasets, research opportunities, challenges, and practical guidance demonstrating how the data can be used to examine trends over time and variation across NHS Talking Therapies providers.
+
+**Keywords:** NHS Talking Therapies, IAPT, psychological therapies, mental health, R package, open data, real-world evidence, reproducible research
+
+## Introduction
+
+### Real-world evidence for psychological therapies
+
+- Randomised controlled trials (RCTs) remain the gold standard for evaluating the efficacy of psychological therapies and understanding the mechanisms of change, but they have well-recognised limitations in understanding how treatments work in routine clinical practice [@Clark2018b; @Clark2013]
+- RCTs typically recruit highly selected populations, operate under controlled conditions, and are rarely large enough to examine variation in outcomes by demographic subgroup or to detect uncommon adverse effects
+- Complementary evidence from large, routinely collected real-world datasets is therefore needed to understand how treatments perform when delivered at scale [@Kazdin2008]
+
+- Common mental health conditions, in particular anxiety disorders and depression, are among the most prevalent and burdensome health conditions globally
+- In England, approximately one in six adults experiences a common mental health problem at any given time [@TheNationalCollaboratingCentreForMentalHealth2024]
+- Prior to 2008, access to evidence-based psychological treatments for these conditions was severely limited [@Clark2011; @Clark2018b]
+- Large-scale, routinely collected implementation data that could address questions about how outcomes vary across patient groups, which service configurations improve access, and whether treatments remain effective outside trial conditions were largely absent
+- In most countries, large routine implementation datasets do not exist, so these questions remain unanswered [@Clark2018b]
+- England is an exception
+
+### NHS Talking Therapies for Anxiety and Depression
+
+- In 2008, following sustained advocacy from clinicians and economists, England launched the Improving Access to Psychological Therapies (IAPT) programme [@Clark2018b]
+- The programme established psychological therapy services based on NICE-recommended treatments in every part of the country, based on a public promise that patients would: (1) receive the relevant NICE-recommended psychological therapies for their presenting problem; (2) delivered by clinicians specially trained in those therapies; and (3) have their outcomes recorded, with aggregate reports made publicly available [@Clark2011; @Clark2018a]
+- From a small beginning treating approximately 98,000 patients in its first year at a cost of £33 million, the programme grew to treat over 670,000 patients per year at a cost of approximately £900 million [@Clark2018b]
+- In 2023 the programme was renamed NHS Talking Therapies for Anxiety and Depression (NHS TT) [@TheNationalCollaboratingCentreForMentalHealth2024]
+
+- The national dataset now contains records for approximately 8 million treated patients, the world's largest routine implementation dataset for psychological therapies [@NHSEngland2026; @Clark2018b]
+- Each service collects the same standardised minimum dataset (MDS), including detailed information on patient demographics, some physical health information, types and dose of treatment, wait times, and employment
+- A session-by-session routine outcome monitoring system is used throughout therapy to track treatment progress, ensuring that pre- and post-treatment measures of anxiety, depression (PHQ-9 and GAD-7), and functional impairment (WSAS) are available for approximately 98% of all patients who receive even a minimal dose of therapy
+- Outcome recording at this scale and completeness is not available in most routine health datasets
+
+- In 2023 the programme expanded to include a broader range of presentations, integrated employment support advisors, and strengthened its focus on equalities in access and outcomes [@TheNationalCollaboratingCentreForMentalHealth2024]
+
+### Publicly available NHS TT aggregate data
+
+- NHS England publishes aggregated statistical reports at three main frequencies: monthly, quarterly, and annual
+- All datasets are publicly available under the Open Government Licence v3.0
+
+- **Monthly**: released approximately six weeks after each calendar month; 205 core activity and performance measures, 110 employment adviser measures, and 12 long-term conditions measures; broken down by England total, Integrated Care Board (ICB), and provider; available from May 2023
+- **Quarterly**: three-month aggregated data; greater demographic breakdowns (e.g., ethnic group, religion) than monthly releases, but less extensively validated than the annual reports; [TODO: confirm availability and coverage]
+- **Annual**: released after the end of each NHS financial year (April-March); consists of processed and validated episode-level data derived from the monthly reports; extensively validated and cleaned to remove duplicates; most comprehensive coverage of referral activity, waiting times, clinical outcomes, and PROMs (PHQ-9, GAD-7, WSAS) by therapy type, across a wide range of demographic and clinical subgroups; available from 2017-18
+
+- NHS England also publishes interactive dashboards for point-and-click visualisations of a subset of measures, but these do not provide programmatic or reproducible access to the underlying data
+
+### Why is this package needed?
+
+- Working with the NHS TT aggregate data requires several preparatory steps before analysis is possible; these challenges reflect documented broader problems with NHS England open data [@Bacon2020]
+
+- **Data distribution**: the data is spread across hundreds of separately hosted files across all publications to date, each with distinct URL patterns, naming conventions, and archive formats (CSV, ZIP, RAR, Excel); datasets move location without notice and are not consistently indexed or discoverable
+- **Data decay over time**: variable names, file formats, and organisational geographies have changed across reporting periods, including the replacement of Clinical Commissioning Groups with Integrated Care Boards in 2022-23; structural and semantic changes of this kind are not always documented and must be accounted for when constructing longitudinal analyses
+- **Data structure**: the raw data is published in wide format with suppressed values requiring consistent handling, and metadata is distributed across separate files with different structures across reporting periods
+- **Reproducibility**: independent efforts by different research groups to locate, download, and process these files represent duplicated effort; a common starting point reduces the risk of inconsistent processing decisions and supports analyses that can be validated and built upon
+
+- We therefore introduce `nhstt`, an open-source R package that handles these preparatory steps and provides reproducible access to all publicly available NHS TT aggregate data in a tidy, analysis-ready format
+
+## Methods
+
+### Implementation
+
+#### Data sources
+
+- All data is derived from publicly available NHS England publications
+- Two main source types: (1) archive files (ZIP or RAR) containing CSV files, used for most annual datasets; and (2) individual CSV or Excel files accessed directly, used for monthly datasets and metadata
+- All source URLs and file paths are specified in YAML configuration files bundled with the package (`inst/config/`), recording exactly which files were used and where they came from
+- Each source URL is fixed at the time of processing, so analyses can be traced back to the exact source files used
+
+#### Data curation
+
+- The raw data require substantial curation before they can be combined across reporting periods
+- For each new NHS England release, the package authors apply the following steps: (1) column names are standardised to snake_case; (2) period-specific variable renames are applied to account for naming changes across reporting years; (3) rows are filtered to retain meaningful organisation types (England, Commissioning Region/ICB, Provider); (4) data is reshaped from wide to long format, with measure name and statistic type (count, percentage, mean, SD) held in separate columns; (5) a `reporting_period` identifier (e.g., "2023-24" or "2023-05") and `start_date`/`end_date` columns are added; and (6) suppressed values are handled consistently
+- All processing steps are specified in `tidy_*_data_config.yml` configuration files rather than hard-coded, making it straightforward to add new reporting periods or update logic as the data structure evolves
+- The curated, analysis-ready datasets are deposited as versioned Apache Parquet files in a public data repository (GitHub/Zenodo), providing a stable, citable data release alongside each package version
+
+#### Data access and caching
+
+- Users download the cleaned Parquet files directly rather than processing raw NHS England files; this reduces download time and means everyone is working from the same version of the data
+- Downloaded files are cached locally using the `arrow` package, providing efficient compression and fast re-loading on subsequent calls
+- By default, functions return cached data if available (`use_cache = TRUE`), avoiding repeated downloads
+- Set `use_cache = FALSE` to refresh the local cache, for example after a package update that includes new reporting periods
+
+### R package: nhstt
+
+- The package is freely available from GitHub at <https://github.com/bennettoxford/nhstt> and can be installed using `pak::pak("bennettoxford/nhstt")`
+- It requires R version 4.1.0 or higher and is compatible with Linux, macOS, and Windows
+- Online documentation, including function references and usage vignettes, is available at <https://bennettoxford.github.io/nhstt/>
+
+@tbl-datasets summarises the datasets available in the current version of the package.
+
+```{r}
+#| label: tbl-datasets
+#| echo: false
+#| eval: true
+#| tbl-cap: "Datasets available in the `nhstt` R package."
+nhstt:::available_nhstt_reports() |>
+  filter(!str_detect(title, "metadata")) |>
+  mutate(periods = paste0(first_period, " to ", last_period)) |>
+  select(get_function, title, frequency, periods) |>
+  gt() |>
+  cols_label(
+    get_function = "Function",
+    title = "Dataset",
+    frequency = "Frequency",
+    periods = "Periods available"
+  ) |>
+  fmt_markdown(columns = get_function)
+```
+
+- All functions return a tibble in long format with consistent column naming
+- Annual datasets share a common output schema: `reporting_period`, `start_date`, `end_date`, `org_type`, `org_code`, `org_name`, `variable_type`, `variable_a`, `variable_b`, `measure_name`, `measure_statistic`, `value`
+- Four metadata functions (`get_metadata_measures_annual()`, `get_metadata_variables_annual()`, `get_metadata_monthly()`, `get_metadata_providers()`) return field definitions, variable descriptions, and provider information needed to interpret the output
+
+### Data and software availability
+
+- Data are publicly available from NHS England under the Open Government Licence v3.0
+- Package source code available at <https://github.com/bennettoxford/nhstt> under the MIT licence
+
+## Use cases
+
+- Present two worked examples illustrating common uses of the aggregate NHS TT data.
+- Further examples and detailed usage guides are available at <https://bennettoxford.github.io/nhstt/>.
+
+### Example 1: Variation in annual clinical outcomes across providers
+
+- Use `get_key_measures_annual()` to retrieve annual key measures data
+- Filter to provider level (`org_type == "Provider"`)
+- Focus on a single reporting year (e.g., 2023-24) to show cross-provider variation
+- Select a set of outcome measures available in `get_metadata_measures_annual()`: recovery rate, reliable improvement, reliable deterioration
+- Show distribution of recovery rates across providers (e.g., histogram or dot plot)
+- Optionally overlay the national average as a reference line
+- Use `get_metadata_variables_annual()` to confirm the variable breakdown used (e.g., Total / Total to avoid double-counting demographic subgroups)
+- Discuss what the spread tells us: wide variation in outcomes across providers is a feature of the data that would be impossible to see from national totals alone
+
+### Example 2: Monthly trends in referrals that ended
+
+- Use `get_activity_performance_monthly()` to retrieve monthly data
+- Filter to England total (`org_type == "England"`) across all available months (2023-05 to present)
+- Identify the relevant measure using `get_metadata_monthly()`: filter to `measure_type == "Core"` and search for measures related to referrals that ended (e.g., measure covering finished courses of treatment or ended referrals)
+- Plot the monthly count over time as a line chart
+- Highlight any notable patterns: seasonal variation, post-pandemic recovery, changes around the IAPT to NHS TT rename in 2023
+- This example illustrates how the monthly data complement the annual publications by providing more timely, higher-frequency signals for monitoring service activity
+
+## Discussion
+
+### Strengths
+
+- `nhstt` gives researchers a consistent, ready-to-use version of the NHS TT aggregate data without the need to locate, download, or clean the raw NHS England files themselves
+- The package authors handle all data processing for each new NHS England release, reducing the risk of inconsistent or incorrect manual processing across research groups
+- Cleaned datasets are deposited as versioned Parquet files in a public repository alongside each package release, so the data used in any analysis can be identified and retrieved
+- All processing steps are written in configuration files, making them easy to check and update as the data structure changes
+- Local Parquet caching means data is only downloaded once
+
+- Covers all NHS TT services in England, aggregating the experiences of hundreds of thousands of patients per year
+- Near-complete standardised PROs (PHQ-9, GAD-7, WSAS) for approximately 98% of treated patients, which is not available in most routine health datasets
+- The data is particularly useful for monitoring outcomes at population level, examining trends over time, and comparing performance across services and regions
+
+### Considerations for users
+
+- **Is aggregate data sufficient?**: data report counts, percentages, means, and SDs across groups, not individual records
+  - Cannot study individual trajectories, person-level associations, or control for confounding
+  - Individual-level data available via application to NHS England (approximately one year) or through OpenSAFELY
+  - Several studies have used individual-level extracts: @Gruber2022 on healthcare costs post-treatment, @ElBaou2023a on cardiovascular risk after treatment for depression
+
+- **Has the data quality changed over the period I am studying?**:
+  - *Structural*: recurring changes to variable names, file formats, and archive structures; use metadata functions to verify measure definitions for the reporting periods being analysed
+  - *Contextual*: the COVID-19 pandemic disrupted referral patterns, service delivery, and outcome recording
+  - *Semantic*: CCGs replaced by ICBs in 2022-23, introducing a discontinuity in regional longitudinal analyses
+
+- **Is this dataset fit for purpose for my research question?**: start with the research question, not the data source, and assess whether aggregate data is appropriate
+  - The data work well for service-level monitoring, national or regional trends, and cross-organisational comparisons
+  - Individual-level data or linked datasets are needed for causal inference, individual-level prediction, or analyses requiring adjustment for confounders
+
+### Future directions
+
+- Data updated as new NHS England publications are released
+- Bug reports and suggestions via <https://github.com/bennettoxford/nhstt/issues>
+- A Wellcome Trust-funded initiative is working to integrate individual-level NHS TT data into OpenSAFELY, enabling privacy-preserving linkage with primary care, hospital, and mortality data
+- `nhstt` supports this by making it straightforward to explore what questions can be answered with the publicly available aggregate data before applying for individual-level access
+
+### Conclusion
+
+- `nhstt` is a freely available R package providing programmatic, reproducible access to publicly available NHS TT aggregate data
+- Covers XX datasets across monthly, quarterly, and annual frequencies, spanning 2017-18 to the present
+- The NHS TT programme produces one of the most comprehensive routine datasets for psychological therapy outcomes in the world, and `nhstt` makes this publicly available aggregate data accessible in a consistent and reproducible way
+- We hope `nhstt` is useful to researchers, clinicians, and policymakers working with this data, and that it helps build familiarity with the NHS TT dataset ahead of the individual-level access that will become available through OpenSAFELY
+
+---
+
+## Funding
+
+This project is funded by the Wellcome Trust (317455/Z/24/Z).
+The views expressed are those of the authors and not necessarily those of the Wellcome Trust or NHS England.
+
+---
+
+## References
