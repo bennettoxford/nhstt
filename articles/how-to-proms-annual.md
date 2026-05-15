@@ -19,6 +19,7 @@ This report contains clinical outcome measures including PHQ-9, GAD-7,
 and WSAS scores for NHS Talking Therapies services across England.
 
 ``` r
+
 # Load packages
 library(nhstt)
 library(ggplot2)
@@ -41,6 +42,7 @@ non-guided self-help. This step requires careful exploration of the
 underlying data structure.
 
 ``` r
+
 selected_proms <- proms |>
   filter(org_type == "England") |>
   filter(!org_name == "UNKNOWN") |>

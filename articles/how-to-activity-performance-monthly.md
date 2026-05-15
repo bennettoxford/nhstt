@@ -16,6 +16,7 @@ three examples:
 ## Setup
 
 ``` r
+
 # Load nhstt package for data
 library(nhstt)
 
@@ -52,6 +53,7 @@ Using the
 function, we can look up the descriptions for these measures:
 
 ``` r
+
 # Define measure ids for analysis
 referral_ended_measures <- c(
   "M057",
@@ -80,23 +82,23 @@ referral_ended_measures <- c(
     #> 
     #> ! Download failed, using package metadata for 2025-07
 
-| ID   | Description                                                                                                                                                                |
-|:-----|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| M057 | Count of referrals that ended in the reporting period with an end code of 'Not suitable for IAPT service - no action taken or directed back to referrer’                   |
-| M058 | Count of referrals that ended in the reporting period with an end code of ‘Not suitable for IAPT service - signposted elsewhere with mutual agreement of patient’          |
-| M059 | Count of referrals that ended in the reporting period with an end code of 'Discharged by mutual agreement following advice and support'                                    |
-| M060 | Count of referrals that ended in the reporting period with an end code of 'Referred to another therapy service by mutual agreement'                                        |
-| M061 | Count of referrals that ended in the reporting period with an end code of 'Suitable for IAPT service, but patient declined treatment that was offered'                     |
-| M062 | Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen but not taken on for a course of treatment)’                                     |
-| M063 | Count of referrals that ended in the reporting period with an end code of 'Not known (Seen but not taken on for a course of treatment)'                                    |
+| ID | Description |
+|:---|:---|
+| M057 | Count of referrals that ended in the reporting period with an end code of 'Not suitable for IAPT service - no action taken or directed back to referrer’ |
+| M058 | Count of referrals that ended in the reporting period with an end code of ‘Not suitable for IAPT service - signposted elsewhere with mutual agreement of patient’ |
+| M059 | Count of referrals that ended in the reporting period with an end code of 'Discharged by mutual agreement following advice and support' |
+| M060 | Count of referrals that ended in the reporting period with an end code of 'Referred to another therapy service by mutual agreement' |
+| M061 | Count of referrals that ended in the reporting period with an end code of 'Suitable for IAPT service, but patient declined treatment that was offered' |
+| M062 | Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen but not taken on for a course of treatment)’ |
+| M063 | Count of referrals that ended in the reporting period with an end code of 'Not known (Seen but not taken on for a course of treatment)' |
 | M066 | Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’ |
-| M069 | Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen and taken on for a course of treatment)’                                         |
-| M070 | Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’                                        |
-| M340 | Count of referrals that ended in the reporting period with an end code of ‘Incomplete Assessment (Patient dropped out)’                                                    |
-| M341 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’                                        |
-| M342 | Count of referrals that ended in the reporting period with an end code of ‘Not assessed’                                                                                   |
-| M344 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’                                |
-| M071 | Count of referrals that ended in the reporting period with an invalid end code                                                                                             |
+| M069 | Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen and taken on for a course of treatment)’ |
+| M070 | Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’ |
+| M340 | Count of referrals that ended in the reporting period with an end code of ‘Incomplete Assessment (Patient dropped out)’ |
+| M341 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’ |
+| M342 | Count of referrals that ended in the reporting period with an end code of ‘Not assessed’ |
+| M344 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’ |
+| M071 | Count of referrals that ended in the reporting period with an invalid end code |
 
 #### Analysis
 
@@ -104,6 +106,7 @@ Here we filter the data to include all measures defined above in
 `referral_ended_measures` and select all service providers:
 
 ``` r
+
 # Select data for analysis
 selected_activity_performance <- activity_performance |>
   filter(measure_id %in% c(referral_ended_measures)) |>
@@ -129,6 +132,7 @@ times from referrral to first treatment. Note that there are other
 measures related to wait times available in the dataset.
 
 ``` r
+
 # Define measure ids for analysis
 first_tx_waited_measures <- c(
   "M039",
@@ -141,15 +145,15 @@ first_tx_waited_measures <- c(
 )
 ```
 
-| ID   | Description                                                                                                             |
-|:-----|:------------------------------------------------------------------------------------------------------------------------|
-| M039 | Count of referrals yet to have a first treatment who have been waiting 0 to 2 weeks at the end of the reporting period  |
-| M040 | Count of referrals yet to have a first treatment who have been waiting 0 to 4 weeks at the end of the reporting period  |
-| M041 | Count of referrals yet to have a first treatment who have been waiting 0 to 6 weeks at the end of the reporting period  |
+| ID | Description |
+|:---|:---|
+| M039 | Count of referrals yet to have a first treatment who have been waiting 0 to 2 weeks at the end of the reporting period |
+| M040 | Count of referrals yet to have a first treatment who have been waiting 0 to 4 weeks at the end of the reporting period |
+| M041 | Count of referrals yet to have a first treatment who have been waiting 0 to 6 weeks at the end of the reporting period |
 | M042 | Count of referrals yet to have a first treatment who have been waiting 0 to 12 weeks at the end of the reporting period |
 | M043 | Count of referrals yet to have a first treatment who have been waiting 0 to 18 weeks at the end of the reporting period |
 | M044 | Count of referrals yet to have a first treatment who have been waiting over 18 weeks at the end of the reporting period |
-| M045 | Count of referrals yet to have a first treatment who have been waiting over 90 days at the end of the reporting period  |
+| M045 | Count of referrals yet to have a first treatment who have been waiting over 90 days at the end of the reporting period |
 
 #### Analysis
 
@@ -157,6 +161,7 @@ Here we filter the data to include all measures defined above in
 `first_tx_waited_measures` and select all service providers:
 
 ``` r
+
 # Select data for analysis
 selected_activity_performance <- activity_performance |>
   filter(measure_id %in% first_tx_waited_measures) |>
@@ -187,6 +192,7 @@ Here we identify the 4 providers with the most recorded activity in
 `M344` across the whole time period:
 
 ``` r
+
 top4_m344_providers <- activity_performance |>
   filter(measure_id == "M344") |>
   filter(group_type == "Provider") |>

@@ -18,6 +18,7 @@ This report contains annual performance indicators for NHS Talking
 Therapies services across England.
 
 ``` r
+
 # Load packages
 library(nhstt)
 library(ggplot2)
@@ -39,6 +40,7 @@ treatments at the regional level. This step requires careful exploration
 of the underlying data structure.
 
 ``` r
+
 # Select data for analysis
 selected_measures <- key_measures |>
   filter(org_type == "Commissioning Region") |>
