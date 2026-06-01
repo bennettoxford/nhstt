@@ -31,3 +31,7 @@ metadata shipped with the package. This is a temporary workaround for
 metadata <- get_metadata_monthly()
 }
 }
+\references{
+NHS England.
+\href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors}{NHS Talking Therapies Monthly Statistics Including Employment Advisors}
+}

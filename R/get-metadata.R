@@ -78,6 +78,10 @@ load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
 #' metadata shipped with the package. This is a temporary workaround for
 #' `digital.nhs.uk` blocking CI environments.
 #'
+#' @references
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
+#'
 #' @inheritParams get_key_measures_annual
 #'
 #' @return Tibble containing metadata rows for each annual measure field
@@ -117,6 +121,10 @@ get_metadata_measures_annual <- function(
 #' If network download fails (e.g., in GitHub Actions), falls back to bundled
 #' metadata shipped with the package. This is a temporary workaround for
 #' `digital.nhs.uk` not allowing me to download from GitHub actions.
+#'
+#' @references
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
 #' @inheritParams get_key_measures_annual
 #'
