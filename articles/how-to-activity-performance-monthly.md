@@ -1,214 +1,162 @@
-# How to use the monthly activity and performance data
+# Exploring monthly changes in treatment end codes with the \*nhstt\* R package
 
-> **Note:** This guide is for illustration purposes only and may contain
-> errors. It demonstrates example usage of the dataset and functions,
-> but results should not be interpreted as validated analyses.
+In this post we introduce the [*nhstt* R
+package](https://bennettoxford.github.io/nhstt/), which provides a
+consistent interface for accessing publicly available NHS Talking
+Therapies (NHS TT) data in a tidy, analysis-ready format. We use
+treatment end codes from the monthly activity and performance data as a
+worked example, but the same approach applies to any of the measures in
+the dataset. The examples are descriptive and intended to illustrate
+what can be done with the data, not to draw conclusions about individual
+services.
 
-This example demonstrates how to explore monthly NHS Talking Therapies
-reports using the `nhstt` package. To illustrate the basic workflow for
-accessing and visualising this publicly available data we’ll look at
-three examples:
+In our [previous
+post](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/)
+we introduced NHS TT and the detailed aggregate data that NHS England
+publishes openly. These datasets cover various measures, including
+referral activity, waiting times, clinical outcomes, and
+patient-reported outcome measures at monthly, quarterly, and annual
+reporting periods. The value of these public data has been demonstrated
+by Clark et al. (2018), who used publicly available NHS TT reports to
+study between-service variation in clinical outcomes. They found that
+organisational factors including waiting times, missed appointments, and
+the proportion of patients receiving a course of treatment were
+associated with rates of reliable recovery and improvement. This
+illustrates the broader role of public reporting in supporting
+transparency, benchmarking, and research on variation in routine
+psychological therapy services (Clark et al. 2018; Clark 2018). The
+monthly data complement the annual publications by providing more timely
+signals for monitoring service activity and identifying measures or
+periods that warrant closer investigation.
 
-1.  Measures describing different treatment end codes
-2.  Measures describing wait times from referral to first treatment
-3.  Comparing a measure across different providers
+## Treatment end codes
 
-## Setup
+When a referral ends in the reporting period, NHS TT services record a
+reason using a standardised treatment end code. These codes group
+referral outcomes into three categories: (1) referred but not seen, (2)
+seen but not taken on for a course of treatment, and (3) seen and taken
+on for a course of treatment. This post focuses on the last category,
+which covers patients who received two or more sessions, and captures
+the recorded reason their treatment ended.
 
-``` r
+The monthly dataset includes counts for each end code, available from
+May 2023 to March 2026. The table below shows the five end codes in this
+group, with total recorded events and the number of services
+contributing data. The four most commonly recorded end codes are used in
+the charts below. The Deceased end code (M069) is recorded in too few
+referrals to visualise. All [descriptions of monthly
+measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html)
+implemented in the *nhstt* R package can be explored online.
 
-# Load nhstt package for data
-library(nhstt)
+| ID | Description | Total events | NHS TT services |
+|:---|:---|----|----|
+| M066 | Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’ | 1,292,385 | 160 |
+| M344 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’ | 744,270 | 149 |
+| M070 | Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’ | 74,100 | 61 |
+| M341 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’ | 58,940 | 72 |
+| M069 | Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen and taken on for a course of treatment)’ | 50 | 7 |
 
-# Load other packages for analysis
-library(ggplot2)
-library(lubridate)
-library(dplyr)
-library(scales)
-library(stringr)
-library(gt)
+End codes for referrals seen and taken on for a course of treatment in
+the monthly NHS TT dataset (May 2023 to March 2026), with total recorded
+events and number of services contributing data. {.table .gt_table
+quarto-disable-processing="false" quarto-bootstrap="false"}
 
-# Get 5 monthly activity performance reports
-activity_performance <- get_activity_performance_monthly(
-  periods = c("2024-01", "2024-02", "2024-03", "2024-04", "2024-05")
-)
-```
+## Monthly trends and variation in treatment end codes
 
-We start by loading R packages and downloading the monthly activity and
-performance dataset with
-[`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md).
-This report contains monthly performance indicators for NHS Talking
-Therapies services across England.
+Across 35 reporting periods, these monthly counts make it possible to
+look beyond annual totals and examine whether patterns in treatment end
+codes are stable or change over time. We first show service-level trends
+across all services, then use decile bands to place two example services
+in context.
 
-The `activity_performance` dataset defined above contains a total of 204
-different activity and performance measures, available from January 2024
-to May 2024 (5 reporting periods).
+### Trends across all services
 
-### Example 1: Explore changes in referrals that ended
+The figure below shows the raw monthly counts for the four most commonly
+recorded end codes across all NHS TT services. Each line represents one
+service, showing both the scale of between-service variation and whether
+it is stable over time. Because these are counts rather than rates,
+differences between services will partly reflect differences in service
+size.
 
-#### Define measures related to referrals that ended
+![End codes for referrals seen and taken on for a course of treatment in
+the monthly NHS TT dataset: monthly counts across all NHS TT services
+for the four most commonly recorded end
+codes.](how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-1.png)
 
-Using the
-[`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md)
-function, we can look up the descriptions for these measures:
+End codes for referrals seen and taken on for a course of treatment in
+the monthly NHS TT dataset: monthly counts across all NHS TT services
+for the four most commonly recorded end codes.
 
-``` r
+Across all four end codes, most services record counts within a similar
+range and follow broadly consistent trends over the reporting period. A
+small number of services stand out as consistent outliers, particularly
+for referrals that ended with *Completed* (M066) and *Before care
+professional planned* (M344).
 
-# Define measure ids for analysis
-referral_ended_measures <- c(
-  "M057",
-  "M058",
-  "M059",
-  "M060",
-  "M061",
-  "M066",
-  "M340",
-  "M062",
-  "M063",
-  "M066",
-  "M344",
-  "M341",
-  "M069",
-  "M342",
-  "M070",
-  "M071"
-)
-```
+### Comparing services with decile bands
 
-    #> ℹ Downloading metadata_measures_monthly (monthly) for 2025-07
-    #> ! Download failed (attempt 1/3), retrying...
-    #> ℹ Downloading metadata_measures_monthly (monthly) for 2025-07! Download failed (attempt 2/3), retrying...
-    #> ℹ Downloading metadata_measures_monthly (monthly) for 2025-07✖ Downloading metadata_measures_monthly (monthly) for 2025-07 ... failed
-    #> 
-    #> ! Download failed, using package metadata for 2025-07
+The figure below uses decile bands to place the two example services in
+the context of the full distribution across all NHS TT services. The
+shaded bands show the distribution from the 10th to the 90th percentile
+in decile steps, with darker shading closer to the median. A service
+outside the bands falls in the top or bottom 10% for that month. The
+width of the bands reflects how much variation there is between
+services, with wider bands indicating greater spread. These charts
+summarise activity patterns and are not intended as rankings of service
+quality.
 
-| ID | Description |
-|:---|:---|
-| M057 | Count of referrals that ended in the reporting period with an end code of 'Not suitable for IAPT service - no action taken or directed back to referrer’ |
-| M058 | Count of referrals that ended in the reporting period with an end code of ‘Not suitable for IAPT service - signposted elsewhere with mutual agreement of patient’ |
-| M059 | Count of referrals that ended in the reporting period with an end code of 'Discharged by mutual agreement following advice and support' |
-| M060 | Count of referrals that ended in the reporting period with an end code of 'Referred to another therapy service by mutual agreement' |
-| M061 | Count of referrals that ended in the reporting period with an end code of 'Suitable for IAPT service, but patient declined treatment that was offered' |
-| M062 | Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen but not taken on for a course of treatment)’ |
-| M063 | Count of referrals that ended in the reporting period with an end code of 'Not known (Seen but not taken on for a course of treatment)' |
-| M066 | Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’ |
-| M069 | Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen and taken on for a course of treatment)’ |
-| M070 | Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’ |
-| M340 | Count of referrals that ended in the reporting period with an end code of ‘Incomplete Assessment (Patient dropped out)’ |
-| M341 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’ |
-| M342 | Count of referrals that ended in the reporting period with an end code of ‘Not assessed’ |
-| M344 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’ |
-| M071 | Count of referrals that ended in the reporting period with an invalid end code |
+![End codes for referrals seen and taken on for a course of treatment in
+the monthly NHS TT dataset: decile charts across all NHS TT services for
+the four most commonly recorded end codes. Shaded bands show the 10th to
+90th percentile range in decile steps. The dark line shows the median.
+Two example services are shown as coloured
+lines.](how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-deciles-1.png)
 
-#### Analysis
+End codes for referrals seen and taken on for a course of treatment in
+the monthly NHS TT dataset: decile charts across all NHS TT services for
+the four most commonly recorded end codes. Shaded bands show the 10th to
+90th percentile range in decile steps. The dark line shows the median.
+Two example services are shown as coloured lines.
 
-Here we filter the data to include all measures defined above in
-`referral_ended_measures` and select all service providers:
+*Service A* sits above the median for completed referrals (M066) and
+tracks closer to the median for the remaining end codes. *Service B*
+records consistently high counts of completed referrals, sitting in the
+top 10% of services throughout the reporting period, and also starts
+above the median for end codes before the patient requested (M341) and
+care professional planned (M344), trending closer towards the median
+over the reporting period.
 
-``` r
+## Try it yourself
 
-# Select data for analysis
-selected_activity_performance <- activity_performance |>
-  filter(measure_id %in% c(referral_ended_measures)) |>
-  filter(group_type == "Provider")
-```
+The *nhstt* package makes it easier to access publicly available NHS TT
+data, is free to use, and is updated regularly as NHS England publishes
+new reports. It provides access to each dataset in a tidy,
+analysis-ready format, with no need to locate or parse the underlying
+files. Whether you are interested in trends in referral activity,
+variation in waiting times across services, or changes in clinical
+outcomes over time, the data are there to be explored. Worked examples
+and detailed usage guides are available on the [*nhstt* R package
+website](https://bennettoxford.github.io/nhstt/). We recommend checking
+the NHS England [data quality
+notes](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx)
+before using these data, as they describe known issues affecting
+specific reporting periods or measures.
 
-Now we can visualise the trends over time broken down by codes for
-referrals that ended for each service provider. Note that the y-axis
-scales are not fixed to allow better visualisation of trends for
-measures with different count ranges.
+If you use the package for a new analysis or have ideas for how it could
+be extended, we would love to hear about it. For questions or to report
+an issue, please [open an issue on
+GitHub](https://github.com/bennettoxford/nhstt/issues) or get in touch
+with [Milan Wiedemann](https://www.phc.ox.ac.uk/team/milan-wiedemann).
 
-![Trends for counts of different referrals that ended
-measures.](how-to-activity-performance-monthly_files/figure-html/fig-example-1.png)
+## References
 
-Trends for counts of different referrals that ended measures.
+Clark, David M. 2018. “Realising the Mass Public Benefit of
+Evidence-Based Psychological Therapies: The IAPT Program.” *Annual
+Review of Clinical Psychology*, ahead of print, January 19.
+<https://doi.org/10.1146/annurev-clinpsy-050817-084833>.
 
-### Example 2: Explore wait times from referrral to first treatment
-
-#### Define measures
-
-Here we will explore changes in the following measures related to wait
-times from referrral to first treatment. Note that there are other
-measures related to wait times available in the dataset.
-
-``` r
-
-# Define measure ids for analysis
-first_tx_waited_measures <- c(
-  "M039",
-  "M040",
-  "M041",
-  "M042",
-  "M043",
-  "M044",
-  "M045"
-)
-```
-
-| ID | Description |
-|:---|:---|
-| M039 | Count of referrals yet to have a first treatment who have been waiting 0 to 2 weeks at the end of the reporting period |
-| M040 | Count of referrals yet to have a first treatment who have been waiting 0 to 4 weeks at the end of the reporting period |
-| M041 | Count of referrals yet to have a first treatment who have been waiting 0 to 6 weeks at the end of the reporting period |
-| M042 | Count of referrals yet to have a first treatment who have been waiting 0 to 12 weeks at the end of the reporting period |
-| M043 | Count of referrals yet to have a first treatment who have been waiting 0 to 18 weeks at the end of the reporting period |
-| M044 | Count of referrals yet to have a first treatment who have been waiting over 18 weeks at the end of the reporting period |
-| M045 | Count of referrals yet to have a first treatment who have been waiting over 90 days at the end of the reporting period |
-
-#### Analysis
-
-Here we filter the data to include all measures defined above in
-`first_tx_waited_measures` and select all service providers:
-
-``` r
-
-# Select data for analysis
-selected_activity_performance <- activity_performance |>
-  filter(measure_id %in% first_tx_waited_measures) |>
-  filter(group_type == "Provider")
-```
-
-Now we can visualise the trends over time broken down by different
-waiting time periods from referral to first treatment, with one line for
-each service provider.
-
-![Trends for counts of different waiting time periods from referral to
-first treatment for each
-service.](how-to-activity-performance-monthly_files/figure-html/fig-example2-1.png)
-
-Trends for counts of different waiting time periods from referral to
-first treatment for each service.
-
-### Example 3: Compare a measure across different providers
-
-We can also focus on a single measure and compare counts across
-different services. In this example we look at measure `M344` (*Count of
-referrals that ended in the reporting period with an end code of
-‘Termination of treatment earlier than Care Professional planned’*) and
-visualise trends over time for the four providers with the highest
-overall counts.
-
-Here we identify the 4 providers with the most recorded activity in
-`M344` across the whole time period:
-
-``` r
-
-top4_m344_providers <- activity_performance |>
-  filter(measure_id == "M344") |>
-  filter(group_type == "Provider") |>
-  select(org_name2, value) |>
-  group_by(org_name2) |>
-  summarise(total = sum(value, na.rm = TRUE)) |>
-  slice_max(total, n = 4) |>
-  pull(org_name2)
-```
-
-We can use this list (`top4_m344_providers`) to filter the data and plot
-trends for these four providers:
-
-![Counts of referrals with measure M344 for the four providers with the
-highest
-totals.](how-to-activity-performance-monthly_files/figure-html/fig-example3-1.png)
-
-Counts of referrals with measure M344 for the four providers with the
-highest totals.
+Clark, David M, Lauren Canvin, John Green, Richard Layard, Stephen
+Pilling, and Magdalena Janecka. 2018. “Transparency about the Outcomes
+of Mental Health Services (IAPT Approach): An Analysis of Public Data.”
+*The Lancet* 391 (10121): 679–86.
+<https://doi.org/10.1016/S0140-6736(17)32133-5>.

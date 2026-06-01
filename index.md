@@ -44,7 +44,7 @@ ap_monthly <- get_activity_performance_monthly()
 
 | Function | First period | Last period | Count periods | Version |
 |:---|:---|:---|---:|---:|
-| [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) | 2023-05 | 2025-09 | 29 | 0.2.0 |
+| [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) | 2023-05 | 2026-03 | 35 | 0.3.0 |
 
 ### Metadata
 
@@ -63,10 +63,10 @@ setup.
 
 | Function | Download per period | Tidy per period | Total (all periods) |
 |:---|---:|---:|---:|
-| [`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md) | 1.9 sec | 32.5 sec | 4.6 min |
-| [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md) | 0.88 sec | 1.1 min | 6.7 min |
-| [`get_therapy_position_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_position_annual.md) | 0.66 sec | 0.86 sec | 9.1 sec |
-| [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) | 2.6 sec | 1.5 sec | 2 min |
+| [`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md) | 1.6 sec | 58.6 sec | 8 min |
+| [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md) | 0.52 sec | 1.9 min | 11.3 min |
+| [`get_therapy_position_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_position_annual.md) | 0.24 sec | 0.09 sec | 2 sec |
+| [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) | 4.6 sec | 0.5 sec | 3 min |
 
 ## For developers
 

@@ -29,6 +29,15 @@ Tibble with activity and performance data in long format
 Raw data is automatically stored in parquet format for efficient
 compression.
 
+## References
+
+NHS England. [NHS Talking Therapies Monthly Statistics Including
+Employment
+Advisors](https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors)
+
+NHS England. [NHS Talking Therapies Data Quality Note (monthly,
+quarterly)](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx)
+
 ## Examples
 
 ``` r

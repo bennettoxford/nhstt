@@ -35,6 +35,11 @@ Tibble with key measures data in long format
 Raw data is automatically stored in parquet format for efficient
 compression.
 
+## References
+
+NHS England. [NHS Talking Therapies for Anxiety and Depression Annual
+Reports](https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports)
+
 ## Examples
 
 ``` r
