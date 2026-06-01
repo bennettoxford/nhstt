@@ -423,6 +423,23 @@ test_that("available_nhstt_reports shows correct first and last periods", {
   expect_equal(km_annual$last_period, "2024-25")
 })
 
+test_that("available_nhstt_reports shows correct period counts for activity_performance_monthly", {
+  reports <- available_nhstt_reports()
+  monthly <- reports[reports$dataset == "activity_performance_monthly", ]
+
+  # Update when adding new monthly periods (currently 2023-05 through 2026-03)
+  expect_equal(monthly$n_periods, 35)
+})
+
+test_that("available_nhstt_reports shows correct first and last periods for activity_performance_monthly", {
+  reports <- available_nhstt_reports()
+  monthly <- reports[reports$dataset == "activity_performance_monthly", ]
+
+  expect_equal(monthly$first_period, "2023-05")
+  # Update when adding new monthly periods
+  expect_equal(monthly$last_period, "2026-03")
+})
+
 # Config validation tests ------------------------------------------------------
 
 test_that("validate_raw_config accepts valid config", {

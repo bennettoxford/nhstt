@@ -11,6 +11,13 @@
 #' @details
 #' Raw data is automatically stored in parquet format for efficient compression.
 #'
+#' @references
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors}{NHS Talking Therapies Monthly Statistics Including Employment Advisors}
+#'
+#' NHS England.
+#' \href{https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx}{NHS Talking Therapies Data Quality Note (monthly, quarterly)}
+#'
 #' @importFrom purrr map list_rbind
 #'
 #' @export
@@ -64,6 +71,16 @@ get_activity_performance_monthly <- function(
 #' If network download fails (e.g., in GitHub Actions), falls back to bundled
 #' metadata shipped with the package. This is a temporary workaround for
 #' `digital.nhs.uk` blocking CI environments.
+#'
+#' @references
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors}{NHS Talking Therapies Monthly Statistics Including Employment Advisors}
+#'
+#' NHS England.
+#' \href{https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/reports/nhstalkingtherapies-monthly-metadata-20260511.xlsx}{NHS Talking Therapies Monthly Statistics Including Employment Advisors: Metadata (monthly)}
+#'
+#' NHS England.
+#' \href{https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx}{NHS Talking Therapies Data Quality Note}
 #'
 #' @importFrom purrr map list_rbind
 #' @importFrom arrow read_parquet
