@@ -34,3 +34,7 @@ proms_df <- get_proms_annual(periods = c("2023-24", "2024-25"))
 proms_df <- get_proms_annual(periods = "2023-24", use_cache = FALSE)
 }
 }
+\references{
+NHS England.
+\href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
+}

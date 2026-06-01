@@ -1,5 +1,12 @@
 url: https://bennettoxford.github.io/nhstt/
 
+repo:
+  url:
+    home: https://github.com/bennettoxford/nhstt/
+    source: https://github.com/bennettoxford/nhstt/blob/main/
+    issue: https://github.com/bennettoxford/nhstt/issues/
+    user: https://github.com/
+
 template:
   bootstrap: 5
   assets: false
@@ -53,14 +60,6 @@ navbar:
         - text: "Organisation metadata"
         - text: "NHS Talking Therapies providers"
           href: articles/metadata-ods.html
-    - text: "Reports"
-      menu:
-        - text: "Monthly"
-        - text: "Appointment measures"
-          href: articles/report-monthly-tx-appt.html
-        - text: "Outcome measures"
-          href: articles/report-monthly-outcomes.html
-
 reference:
   - title: "Annual data"
     contents:
@@ -100,8 +99,3 @@ articles:
       - metadata-monthly-ea
       - metadata-monthly-ltc
       - metadata-ods
-  - title: "Reports"
-    desc: "Reports based on monthly and annual NHS TT measures"
-    contents:
-      - report-monthly-tx-appt
-      - report-monthly-outcomes

@@ -502,6 +502,13 @@ get_source_config <- function(dataset, period, frequency) {
 #'
 #' @return Tibble with dataset and frequency information (one row per dataset)
 #'
+#' @references
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
+#'
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors}{NHS Talking Therapies Monthly Statistics Including Employment Advisors}
+#'
 #' @importFrom tibble tibble
 #' @importFrom purrr map_chr
 #'
