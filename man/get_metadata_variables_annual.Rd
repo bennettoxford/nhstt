@@ -29,3 +29,7 @@ metadata shipped with the package. This is a temporary workaround for
 variables_meta <- get_metadata_variables_annual()
 }
 }
+\references{
+NHS England.
+\href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
+}

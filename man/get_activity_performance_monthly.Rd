@@ -33,3 +33,7 @@ activity_df <- get_activity_performance_monthly(periods = c("2025-09", "2025-08"
 activity_df <- get_activity_performance_monthly(periods = "2025-09", use_cache = FALSE)
 }
 }
+\references{
+NHS England.
+\href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors}{NHS Talking Therapies Monthly Statistics Including Employment Advisors}
+}

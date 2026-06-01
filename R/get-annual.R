@@ -12,6 +12,10 @@
 #' @details
 #' Raw data is automatically stored in parquet format for efficient compression.
 #'
+#' @references
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
+#'
 #' @importFrom purrr map list_rbind
 #'
 #' @export
@@ -63,6 +67,10 @@ get_key_measures_annual <- function(
 #'
 #' @details
 #' Raw data is automatically stored in parquet format for efficient compression.
+#'
+#' @references
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
 #' @importFrom purrr map list_rbind
 #'
@@ -117,6 +125,10 @@ get_proms_annual <- function(
 #'
 #' @details
 #' Raw data is automatically stored in parquet format for efficient compression.
+#'
+#' @references
+#' NHS England.
+#' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
 #' @importFrom purrr map list_rbind
 #'
