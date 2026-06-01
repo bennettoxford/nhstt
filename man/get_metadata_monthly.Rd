@@ -34,4 +34,10 @@ metadata <- get_metadata_monthly()
 \references{
 NHS England.
 \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors}{NHS Talking Therapies Monthly Statistics Including Employment Advisors}
+
+NHS England.
+\href{https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/reports/nhstalkingtherapies-monthly-metadata-20260511.xlsx}{NHS Talking Therapies Monthly Statistics Including Employment Advisors: Metadata (monthly)}
+
+NHS England.
+\href{https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx}{NHS Talking Therapies Data Quality Note}
 }

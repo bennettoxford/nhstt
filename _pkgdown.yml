@@ -1,5 +1,12 @@
 url: https://bennettoxford.github.io/nhstt/
 
+repo:
+  url:
+    home: https://github.com/bennettoxford/nhstt/
+    source: https://github.com/bennettoxford/nhstt/blob/main/
+    issue: https://github.com/bennettoxford/nhstt/issues/
+    user: https://github.com/
+
 template:
   bootstrap: 5
   assets: false

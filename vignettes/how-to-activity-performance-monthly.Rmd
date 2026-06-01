@@ -1,5 +1,6 @@
 ---
-title: "How to use the monthly activity and performance data"
+title: "Exploring monthly changes in treatment end codes with the *nhstt* R package"
+bibliography: references.bib
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{how-to-activity-performance-monthly}
@@ -7,117 +8,113 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r options, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+In this post we introduce the [*nhstt* R package](https://bennettoxford.github.io/nhstt/), which provides a consistent interface for accessing publicly available NHS Talking Therapies (NHS TT) data in a tidy, analysis-ready format.
+We use treatment end codes from the monthly activity and performance data as a worked example, but the same approach applies to any of the measures in the dataset.
+The examples are descriptive and intended to illustrate what can be done with the data, not to draw conclusions about individual services.
 
-> **Note:** This guide is for illustration purposes only and may contain errors. It demonstrates example usage of the dataset and functions, but results should not be interpreted as validated analyses.
+In our [previous post](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/) we introduced NHS TT and the detailed aggregate data that NHS England publishes openly.
+These datasets cover various measures, including referral activity, waiting times, clinical outcomes, and patient-reported outcome measures at monthly, quarterly, and annual reporting periods.
+The value of these public data has been demonstrated by @Clark2018a, who used publicly available NHS TT reports to study between-service variation in clinical outcomes.
+They found that organisational factors including waiting times, missed appointments, and the proportion of patients receiving a course of treatment were associated with rates of reliable recovery and improvement.
+This illustrates the broader role of public reporting in supporting transparency, benchmarking, and research on variation in routine psychological therapy services [@Clark2018a; @Clark2018b].
+The monthly data complement the annual publications by providing more timely signals for monitoring service activity and identifying measures or periods that warrant closer investigation.
 
-This example demonstrates how to explore monthly NHS Talking Therapies reports using the `nhstt` package.
-To illustrate the basic workflow for accessing and visualising this publicly available data we'll look at three examples:
-
-1. Measures describing different treatment end codes 
-1. Measures describing wait times from referral to first treatment
-1. Comparing a measure across different providers
-
-## Setup
-
-```{r setup, message=FALSE, warning=FALSE}
-# Load nhstt package for data
+```{r}
+#| label: setup
+#| include: false
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(nhstt)
-
-# Load other packages for analysis
 library(ggplot2)
 library(lubridate)
 library(dplyr)
+library(tidyr)
 library(scales)
 library(stringr)
+library(paletteer)
 library(gt)
-
-# Get 5 monthly activity performance reports
-activity_performance <- get_activity_performance_monthly(
-  periods = c("2024-01", "2024-02", "2024-03", "2024-04", "2024-05")
-)
 ```
 
-We start by loading R packages and downloading the monthly activity and performance dataset with `get_activity_performance_monthly()`. This report contains monthly performance indicators for NHS Talking Therapies services across England.
+```{r}
+#| label: plot-theme
+#| message: false
+#| warning: false
+# Plot theme: define a custom ggplot2 theme and shared axis scales applied across all figures.
+# Custom ggplot theme applied to all figures
 
-The `activity_performance` dataset defined above contains a total of `r length(unique(activity_performance$measure_id))` different activity and performance measures, available from `r format(min(activity_performance$start_date), "%B %Y")` to `r format(max(activity_performance$end_date), "%B %Y")` (`r length(unique(activity_performance$reporting_period))` reporting periods).
+theme_nhstt <- function(base_size = 13) {
+  theme_classic(base_size = base_size) +
+    theme(
+      panel.grid.major = element_line(colour = "gray90", linetype = "dotted"),
+      strip.text = element_text(face = "bold"),
+      strip.background = element_rect(linewidth = 0),
+      strip.text.x = element_text(size = base_size, face = "bold"),
+      legend.title = element_text(size = base_size),
+      legend.text = element_text(size = base_size * 0.95)
+    )
+}
 
-### Example 1: Explore changes in referrals that ended
+# Shared axis scales and facet layout used across figures
+nhstt_scales <- function(ncol = 2) {
+  list(
+    scale_x_date(labels = label_date("%b\n%Y")),
+    scale_y_continuous(labels = label_number(accuracy = 1), limits = c(0, NA)),
+    labs(x = NULL, y = NULL),
+    facet_wrap(
+      vars(measure_name_id),
+      scales = "fixed",
+      ncol = ncol,
+      axes = "all"
+    )
+  )
+}
 
-#### Define measures related to referrals that ended
-
-Using the `get_metadata_monthly()` function, we can look up the descriptions for these measures:
+theme_set(theme_nhstt())
+```
 
 ```{r}
-# Define measure ids for analysis
+#| label: load-data
+#| message: false
+#| warning: false
+# Load data: download monthly activity and performance data and measure metadata.
+# Load monthly activity and performance data
+
+df_activity_performance <- get_activity_performance_monthly()
+START_DATE_NHSTT <- min(df_activity_performance$start_date)
+END_DATE_NHSTT <- max(df_activity_performance$end_date)
+
+# Load measure metadata
+df_monthly_metadata <- get_metadata_monthly()
+```
+
+```{r}
+#| label: define-measures
+#| message: false
+#| warning: false
+# Define measures: select treatment end codes, filter to provider level, and prepare figure labels.
+# All five end codes from the seen and taken on for a course of treatment group
+
 referral_ended_measures <- c(
-  "M057",
-  "M058",
-  "M059",
-  "M060",
-  "M061",
-  "M066",
-  "M340",
-  "M062",
-  "M063",
   "M066",
   "M344",
   "M341",
-  "M069",
-  "M342",
   "M070",
-  "M071"
+  "M069"
 )
-```
 
-```{r tab-measures1, echo=FALSE}
-monthly_metadata <- get_metadata_monthly()
-
-monthly_metadata |>
+# Filter to provider-level data for selected measures
+df_activity_performance_selected <- df_activity_performance |>
   filter(measure_id %in% referral_ended_measures) |>
-  select(measure_id, description) |>
-  gt() |>
-  tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
-    ),
-    locations = cells_body(columns = measure_id)
-  ) |>
-  tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
-    ),
-    locations = cells_body(columns = description)
-  ) |>
-  cols_label(
-    measure_id = "ID",
-    description = "Description"
-  )
-```
-
-#### Analysis
-
-Here we filter the data to include all measures defined above in `referral_ended_measures` and select all service providers:
-
-```{r select-data}
-# Select data for analysis
-selected_activity_performance <- activity_performance |>
-  filter(measure_id %in% c(referral_ended_measures)) |>
   filter(group_type == "Provider")
-```
 
-Now we can visualise the trends over time broken down by codes for referrals that ended for each service provider. Note that the y-axis scales are not fixed to allow better visualisation of trends for measures with different count ranges.
+# Four most commonly recorded end codes used in the charts (M069 table only)
+selected_measures <- c(
+  "M066",
+  "M070",
+  "M341",
+  "M344"
+)
 
-```{r fig-example, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 14, fig.width = 10, fig.cap = "Trends for counts of different referrals that ended measures."}
-
-end_dates <- unique(selected_activity_performance$end_date)
-fig_date_breaks <- end_dates[seq(4, length(end_dates), by = 4)]
-
+# Helper to convert measure names to sentence case for figure labels
 measure_name_to_sentence <- function(x) {
   x |>
     str_remove("^ended_") |>
@@ -125,7 +122,18 @@ measure_name_to_sentence <- function(x) {
     str_to_sentence()
 }
 
-fig_selected_activity_performance <- selected_activity_performance |>
+# Two example services highlighted in the deciles chart
+selected_service_labels <- c(
+  RNUDT = "Service A",
+  RXV = "Service B"
+)
+
+selected_services <- names(selected_service_labels)
+
+# Facet panel order for figures: follows selected_measures order
+top_levels_order <- df_activity_performance_selected |>
+  filter(measure_id %in% selected_measures) |>
+  distinct(measure_id, measure_name) |>
   mutate(
     measure_name_id = paste0(
       measure_name_to_sentence(measure_name),
@@ -134,143 +142,98 @@ fig_selected_activity_performance <- selected_activity_performance |>
       ")"
     )
   ) |>
-  select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
-
-levels_order <- fig_selected_activity_performance %>%
-  distinct(measure_id, measure_name_id) %>%
-  arrange(measure_id) %>%
+  arrange(factor(measure_id, levels = selected_measures)) |>
   pull(measure_name_id)
-
-fig_ref_ended_by_service <- fig_selected_activity_performance |>
-  mutate(measure_name_id = factor(measure_name_id, levels = levels_order)) |>
-  ggplot(
-    aes(
-      y = value,
-      x = end_date,
-      colour = measure_name_id,
-      group = org_code2
-    )
-  ) +
-  geom_line(alpha = 0.2) +
-  geom_point(size = .2) +
-  labs(
-    title = "Count of referrals that ended in the reporting period with a code of:",
-    x = NULL,
-    y = NULL,
-    colour = NULL,
-    shape = NULL
-  ) +
-  scale_x_date(
-    # breaks = fig_date_breaks,
-    labels = label_date("%b\n%Y")
-  ) +
-  scale_y_continuous(
-    labels = label_number(accuracy = 1),
-    limits = c(0, NA)
-  ) +
-  theme(
-    legend.position = "bottom",
-    text = element_text(size = 13)
-  ) +
-  facet_wrap(
-    vars(measure_name_id),
-    scales = "free_y",
-    ncol = 3
-  ) +
-  guides(colour = guide_legend(nrow = 5, byrow = TRUE))
-
-fig_ref_ended_by_service
 ```
 
-### Example 2: Explore wait times from referrral to first treatment
+## Treatment end codes
 
-#### Define measures
+When a referral ends in the reporting period, NHS TT services record a reason using a standardised treatment end code.
+These codes group referral outcomes into three categories: (1) referred but not seen, (2) seen but not taken on for a course of treatment, and (3) seen and taken on for a course of treatment.
+This post focuses on the last category, which covers patients who received two or more sessions, and captures the recorded reason their treatment ended.
 
-Here we will explore changes in the following measures related to wait times from referrral to first treatment. Note that there are other measures related to wait times available in the dataset.
+The monthly dataset includes counts for each end code, available from `r format(START_DATE_NHSTT, "%B %Y")` to `r format(END_DATE_NHSTT, "%B %Y")`.
+The table below shows the five end codes in this group, with total recorded events and the number of services contributing data.
+The four most commonly recorded end codes are used in the charts below.
+The Deceased end code (M069) is recorded in too few referrals to visualise.
+All [descriptions of monthly measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html) implemented in the *nhstt* R package can be explored online.
 
 ```{r}
-# Define measure ids for analysis
-first_tx_waited_measures <- c(
-  "M039",
-  "M040",
-  "M041",
-  "M042",
-  "M043",
-  "M044",
-  "M045"
-)
-```
+#| label: tbl-monthly-end-code-measures
+#| message: false
+#| warning: false
+# Table: summarise total events and number of contributing services for each treatment end code.
 
-```{r tab-measures2, echo=FALSE}
-monthly_metadata |>
-  filter(
-    measure_id %in%
-      c(
-        first_tx_waited_measures
-      )
-  ) |>
+df_measure_summary <- df_activity_performance_selected |>
+  group_by(measure_id) |>
+  summarise(
+    total_events = sum(value, na.rm = TRUE),
+    n_services = n_distinct(org_code2[!is.na(value)])
+  )
+
+df_monthly_metadata |>
+  filter(measure_id %in% referral_ended_measures) |>
   select(measure_id, description) |>
+  left_join(df_measure_summary, by = "measure_id") |>
+  arrange(desc(total_events)) |>
   gt() |>
   tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
-    ),
+    style = list(cell_text(align = "left", v_align = "top", weight = "bold")),
     locations = cells_body(columns = measure_id)
   ) |>
   tab_style(
-    style = list(
-      cell_text(align = "left", v_align = "top")
-    ),
+    style = list(cell_text(align = "left", v_align = "top")),
     locations = cells_body(columns = description)
   ) |>
+  fmt_number(columns = total_events, decimals = 0) |>
   cols_label(
     measure_id = "ID",
-    description = "Description"
+    description = "Description",
+    total_events = "Total events",
+    n_services = "NHS TT services"
+  ) |>
+  tab_caption(
+    paste0(
+      "End codes for referrals seen and taken on for a course of treatment in the monthly NHS TT dataset (",
+      format(START_DATE_NHSTT, "%B %Y"),
+      " to ",
+      format(END_DATE_NHSTT, "%B %Y"),
+      "), with total recorded events and number of services contributing data."
+    )
   )
 ```
 
-#### Analysis
+## Monthly trends and variation in treatment end codes
 
-Here we filter the data to include all measures defined above in `first_tx_waited_measures` and select all service providers:
+Across `r length(unique(df_activity_performance$reporting_period))` reporting periods, these monthly counts make it possible to look beyond annual totals and examine whether patterns in treatment end codes are stable or change over time.
+We first show service-level trends across all services, then use decile bands to place two example services in context.
 
-```{r select-data-waited}
-# Select data for analysis
-selected_activity_performance <- activity_performance |>
-  filter(measure_id %in% first_tx_waited_measures) |>
-  filter(group_type == "Provider")
-```
+### Trends across all services
 
-Now we can visualise the trends over time broken down by different waiting time periods from referral to first treatment, with one line for each service provider.
+The figure below shows the raw monthly counts for the four most commonly recorded end codes across all NHS TT services.
+Each line represents one service, showing both the scale of between-service variation and whether it is stable over time.
+Because these are counts rather than rates, differences between services will partly reflect differences in service size.
 
-```{r fig-example2, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 8, fig.width = 10, fig.cap = "Trends for counts of different waiting time periods from referral to first treatment for each service."}
+```{r}
+#| label: fig-monthly-end-code-measures
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: 9
+#| fig-cap: "End codes for referrals seen and taken on for a course of treatment in the monthly NHS TT dataset: monthly counts across all NHS TT services for the four most commonly recorded end codes."
+# Figure: monthly counts for the four most commonly recorded end codes across all NHS TT services.
 
-end_dates <- unique(selected_activity_performance$end_date)
-fig_date_breaks <- end_dates[seq(4, length(end_dates), by = 4)]
-
-tidy_wait_measure <- function(x) {
-  x |>
-    str_remove("^waiting_for_treatment") |>
-    str_replace_all("_", " ")
-}
-
-fig_selected_activity_performance <- selected_activity_performance |>
+fig_selected_activity_performance <- df_activity_performance_selected |>
+  filter(measure_id %in% selected_measures) |>
   mutate(
-    measure_name_id = paste0(
-      tidy_wait_measure(measure_name),
-      " (",
-      measure_id,
-      ")"
+    measure_name_id = factor(
+      paste0(measure_name_to_sentence(measure_name), " (", measure_id, ")"),
+      levels = top_levels_order
     )
   ) |>
   select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
 
-levels_order <- fig_selected_activity_performance %>%
-  distinct(measure_id, measure_name_id) %>%
-  arrange(measure_id) %>%
-  pull(measure_name_id)
-
-fig_ref_ended_by_service <- fig_selected_activity_performance |>
-  mutate(measure_name_id = factor(measure_name_id, levels = levels_order)) |>
+fig_selected_activity_performance |>
   ggplot(
     aes(
       y = value,
@@ -280,140 +243,177 @@ fig_ref_ended_by_service <- fig_selected_activity_performance |>
     )
   ) +
   geom_line(alpha = 0.2) +
-  geom_point(size = .2) +
-  labs(
-    title = "Referrals yet to have a first treatment who have been waiting:",
-    x = NULL,
-    y = NULL,
-    colour = NULL,
-    shape = NULL
-  ) +
-  scale_x_date(
-    # breaks = fig_date_breaks,
-    labels = label_date("%b\n%Y")
-  ) +
-  scale_y_continuous(
-    labels = label_number(accuracy = 1),
-    limits = c(0, NA)
-  ) +
-  theme(
-    legend.position = "bottom",
-    text = element_text(size = 13)
-  ) +
-  facet_wrap(
-    vars(measure_name_id),
-    # scales = "free_y",
-    ncol = 3
+  geom_point(size = 0.2) +
+  scale_colour_brewer(palette = "Dark2") +
+  nhstt_scales() +
+  theme(legend.position = "none") +
+  guides(colour = guide_legend(nrow = 5, byrow = TRUE))
+```
+
+Across all four end codes, most services record counts within a similar range and follow broadly consistent trends over the reporting period.
+A small number of services stand out as consistent outliers, particularly for referrals that ended with *Completed* (M066) and *Before care professional planned* (M344).
+
+### Comparing services with decile bands
+
+The figure below uses decile bands to place the two example services in the context of the full distribution across all NHS TT services.
+The shaded bands show the distribution from the 10th to the 90th percentile in decile steps, with darker shading closer to the median.
+A service outside the bands falls in the top or bottom 10% for that month.
+The width of the bands reflects how much variation there is between services, with wider bands indicating greater spread.
+These charts summarise activity patterns and are not intended as rankings of service quality.
+
+```{r}
+#| label: fig-monthly-end-code-measures-deciles
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: 10
+#| fig-cap: "End codes for referrals seen and taken on for a course of treatment in the monthly NHS TT dataset: decile charts across all NHS TT services for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median. Two example services are shown as coloured lines."
+# Figure: decile chart showing the distribution across all services, with two example services highlighted.
+# Calculate percentiles across all services for each reporting period
+
+df_deciles <- df_activity_performance_selected |>
+  filter(measure_id %in% selected_measures) |>
+  summarise_percentiles(
+    period_col = end_date,
+    value_col = value,
+    group_by = measure_id
+  ) |>
+  left_join(
+    df_activity_performance_selected |>
+      distinct(measure_id, measure_name) |>
+      mutate(
+        measure_name_id = factor(
+          paste0(measure_name_to_sentence(measure_name), " (", measure_id, ")"),
+          levels = top_levels_order
+        )
+      ),
+    by = "measure_id"
+  ) |>
+  pivot_wider(names_from = percentile, values_from = value, names_prefix = "p")
+
+# Prepare data for the two highlighted services
+df_top <- df_activity_performance_selected |>
+  filter(measure_id %in% selected_measures) |>
+  filter(org_code2 %in% selected_services) |>
+  select(-org_name2) |>
+  mutate(
+    service_label = recode(org_code2, !!!selected_service_labels),
+    service_label = factor(
+      service_label,
+      levels = unname(selected_service_labels)
+    ),
+    measure_name_id = factor(
+      paste0(measure_name_to_sentence(measure_name), " (", measure_id, ")"),
+      levels = top_levels_order
+    )
   )
 
-fig_ref_ended_by_service
-```
+# Visual style for decile ribbons, median line, and service lines
+ribbon_palette <- setNames(
+  gray(seq(0.7, 0.5, length.out = 4)),
+  c("10th-90th", "20th-80th", "30th-70th", "40th-60th")
+)
 
-### Example 3: Compare a measure across different providers
+ribbon_alpha <- 0.2
 
-We can also focus on a single measure and compare counts across different services. In this example we look at measure `M344` (_Count of referrals that ended in the reporting period with an end code of 'Termination of treatment earlier than Care Professional planned'_) and visualise trends over time for the four providers with the highest overall counts.
+median_colour <- paletteer_d("RColorBrewer::RdGy")[10]
 
-Here we identify the 4 providers with the most recorded activity in `M344` across the whole time period:
+service_colours <- setNames(
+  c(
+    paletteer_d("RColorBrewer::Dark2")[1],
+    paletteer_d("RColorBrewer::Dark2")[4]
+  ),
+  unname(selected_service_labels)
+)
 
-```{r get-top4-m344}
-top4_m344_providers <- activity_performance |>
-  filter(measure_id == "M344") |>
-  filter(group_type == "Provider") |>
-  select(org_name2, value) |>
-  group_by(org_name2) |>
-  summarise(total = sum(value, na.rm = TRUE)) |>
-  slice_max(total, n = 4) |>
-  pull(org_name2)
-```
-
-We can use this list (`top4_m344_providers`) to filter the data and plot trends for these four providers:
-
-```{r fig-example3, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 7, fig.width = 10, fig.cap = "Counts of referrals with measure M344 for the four providers with the highest totals."}
-
-activity_performance |>
-  mutate(
-    measure_name_id = paste0(
-      measure_name_to_sentence(measure_name),
-      " (",
-      measure_id,
-      ")"
-    )
-  ) |>
-  filter(measure_id == "M344") |>
-  filter(group_type == "Provider") |>
-  filter(org_name2 %in% top4_m344_providers) |>
-  mutate(
-    org_name2 = str_to_title(org_name2),
-    org_name2 = str_replace_all(org_name2, "Nhs", "NHS")
-  ) |>
-  ggplot(
+# Build plot
+ggplot() +
+  geom_ribbon(
+    data = df_deciles,
+    aes(x = end_date, ymin = p10, ymax = p90, fill = "10th-90th"),
+    alpha = ribbon_alpha
+  ) +
+  geom_ribbon(
+    data = df_deciles,
+    aes(x = end_date, ymin = p20, ymax = p80, fill = "20th-80th"),
+    alpha = ribbon_alpha
+  ) +
+  geom_ribbon(
+    data = df_deciles,
+    aes(x = end_date, ymin = p30, ymax = p70, fill = "30th-70th"),
+    alpha = ribbon_alpha
+  ) +
+  geom_ribbon(
+    data = df_deciles,
+    aes(x = end_date, ymin = p40, ymax = p60, fill = "40th-60th"),
+    alpha = ribbon_alpha
+  ) +
+  geom_line(
+    data = df_deciles,
+    aes(x = end_date, y = p50),
+    colour = median_colour,
+    linewidth = 0.6,
+    show.legend = FALSE
+  ) +
+  geom_line(
+    data = df_top,
+    aes(x = end_date, y = value, colour = service_label, group = service_label),
+    alpha = 0.5
+  ) +
+  geom_point(
+    data = df_top,
     aes(
-      y = value,
       x = end_date,
-      colour = org_name2,
-      shape = org_name2,
-      group = org_name2
-    )
+      y = value,
+      shape = service_label,
+      colour = service_label,
+      group = service_label
+    ),
   ) +
-  geom_line(alpha = 0.2) +
-  geom_point(size = 1.5) +
+  scale_colour_manual(name = "NHS TT service:", values = service_colours) +
+  scale_shape_manual(
+    name = "NHS TT service:",
+    values = c("Service A" = 16, "Service B" = 17)
+  ) +
+  scale_fill_manual(
+    values = ribbon_palette,
+    breaks = c("10th-90th", "20th-80th", "30th-70th", "40th-60th")
+  ) +
+  nhstt_scales() +
   labs(
-    title = "Count of referrals that ended in the reporting period with a code of:",
-    x = NULL,
-    y = NULL,
-    colour = NULL,
-    shape = NULL
+    colour = "NHS TT service:",
+    shape = "NHS TT service:",
+    fill = "Decile range:"
   ) +
-  scale_x_date(labels = label_date("%b\n%Y")) +
-  scale_y_continuous(
-    labels = label_number(accuracy = 1),
-    limits = c(0, NA)
+  guides(
+    colour = guide_legend(order = 1, nrow = 1),
+    shape = guide_legend(order = 1, nrow = 1),
+    fill = guide_legend(order = 2, nrow = 1)
   ) +
   theme(
     legend.position = "bottom",
-    text = element_text(size = 13)
+    legend.box = "vertical"
   ) +
   facet_wrap(
     vars(measure_name_id),
     scales = "free_y",
-    ncol = 3
-  ) +
-  guides(colour = guide_legend(nrow = 5, byrow = TRUE))
+    ncol = 2,
+    axes = "all"
+  )
 ```
 
+*Service A* sits above the median for completed referrals (M066) and tracks closer to the median for the remaining end codes.
+*Service B* records consistently high counts of completed referrals, sitting in the top 10% of services throughout the reporting period, and also starts above the median for end codes before the patient requested (M341) and care professional planned (M344), trending closer towards the median over the reporting period.
 
-```{r review-spike-R1L-M344-2024-12, eval=FALSE, echo=FALSE}
-# Code to investigate the spike in R1L for M344 in Dec 2024
-# Need to do this properly to understand whats going on
-raw_activity_performance <- nhstt:::read_raw(
-  dataset = "activity_performance",
-  period = "2024-12",
-  frequency = "monthly",
-)
+## Try it yourself
 
-unique(raw_activity_performance$GROUP_TYPE)
+The *nhstt* package makes it easier to access publicly available NHS TT data, is free to use, and is updated regularly as NHS England publishes new reports.
+It provides access to each dataset in a tidy, analysis-ready format, with no need to locate or parse the underlying files.
+Whether you are interested in trends in referral activity, variation in waiting times across services, or changes in clinical outcomes over time, the data are there to be explored.
+Worked examples and detailed usage guides are available on the [*nhstt* R package website](https://bennettoxford.github.io/nhstt/).
+We recommend checking the NHS England [data quality notes](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx) before using these data, as they describe known issues affecting specific reporting periods or measures.
 
-unique(raw_activity_performance$ORG_NAME1)
-unique(raw_activity_performance$ORG_CODE1)
+If you use the package for a new analysis or have ideas for how it could be extended, we would love to hear about it.
+For questions or to report an issue, please [open an issue on GitHub](https://github.com/bennettoxford/nhstt/issues) or get in touch with [Milan Wiedemann](https://www.phc.ox.ac.uk/team/milan-wiedemann).
 
-length(unique(raw_activity_performance$ORG_NAME1))
-# 119
-length(unique(raw_activity_performance$ORG_CODE1))
-# 120
-
-unique(raw_activity_performance$ORG_NAME2)
-unique(raw_activity_performance$ORG_CODE2)
-
-length(unique(raw_activity_performance$ORG_NAME2))
-# 141
-length(unique(raw_activity_performance$ORG_CODE2))
-# 141
-
-raw_activity_performance |>
-  filter(GROUP_TYPE == "Provider") |>
-  filter(ORG_NAME2 == "ESSEX PARTNERSHIP UNIVERSITY NHS FOUNDATION TRUST") |>
-  filter(MEASURE_ID == "M344") |>
-  pull(MEASURE_VALUE_SUPPRESSED) |>
-  as.numeric() |>
-  sum(na.rm = TRUE)
-```
+## References
