@@ -18,6 +18,8 @@ pak::pak("bennettoxford/nhstt")
 
 ## Usage
 
+### R
+
 ``` r
 
 library(nhstt)
@@ -28,6 +30,12 @@ km_annual <- get_key_measures_annual(periods = "2024-25")
 # Load all monthly activity performance datasets
 ap_monthly <- get_activity_performance_monthly()
 ```
+
+### Python, Julia, and other languages
+
+Pre-built parquets are available directly from the [GitHub Releases
+page](https://github.com/bennettoxford/nhstt/releases) without needing
+R.
 
 ## Available NHS Talking Therapies data
 
@@ -53,6 +61,16 @@ ap_monthly <- get_activity_performance_monthly()
 | [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | 2025-07 | 2025-07 | 1 | 0.1.0 |
 | [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | current | current | 1 | 0.1.0 |
+
+## Data access and caching
+
+Each dataset is downloaded on first use from a GitHub Release and cached
+locally at `~/.cache/R/nhstt/`. Subsequent calls return the cached file
+instantly. Use
+[`cache_info()`](https://bennettoxford.github.io/nhstt/reference/cache_info.md)
+to inspect the cache and
+[`cache_clear()`](https://bennettoxford.github.io/nhstt/reference/cache_clear.md)
+to remove it.
 
 ## For developers
 
