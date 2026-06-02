@@ -142,6 +142,21 @@ test_that("tidy_source_cache_is_current returns TRUE when version matches", {
   expect_true(result)
 })
 
+test_that("tidy_source_cache_is_current returns FALSE for corrupt sidecar", {
+  dataset <- "key_measures_annual"
+  parquet_path <- get_tidy_source_cache_path(dataset)
+  sidecar_path <- get_tidy_source_sidecar_path(dataset)
+
+  file.create(parquet_path)
+  writeLines("not valid json {{{", sidecar_path)
+  on.exit({
+    unlink(parquet_path)
+    unlink(sidecar_path)
+  })
+
+  expect_false(tidy_source_cache_is_current(dataset, "0.2.0"))
+})
+
 test_that("tidy_source_cache_is_current returns FALSE when version differs", {
   dataset <- "key_measures_annual"
   parquet_path <- get_tidy_source_cache_path(dataset)
