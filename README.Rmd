@@ -22,9 +22,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/bennettoxford/nhstt/graph/badge.svg)](https://app.codecov.io/gh/bennettoxford/nhstt)
 <!-- badges: end -->
 
-> **This package is under active development. Breaking changes are likely.**
-
-`nhstt` provides access to publicly available NHS Talking Therapies reports in a tidy data format.
+`nhstt` provides access to publicly available NHS Talking Therapies reports in a tidy, analysis-ready format.
 
 ## Installation
 
@@ -37,8 +35,6 @@ pak::pak("bennettoxford/nhstt")
 
 ## Usage
 
-### R
-
 ```{r example, eval = FALSE}
 library(nhstt)
 
@@ -49,23 +45,36 @@ km_annual <- get_key_measures_annual(periods = "2024-25")
 ap_monthly <- get_activity_performance_monthly()
 ```
 
-### Python, Julia, and other languages
-
-Pre-built parquets are available directly from the [GitHub Releases page](https://github.com/bennettoxford/nhstt/releases) without needing R.
-
 ## Available NHS Talking Therapies data
+
+Data can be accessed from R using the `get_*()` functions or downloaded directly using the links in the tables below.
+Annual and monthly datasets are also available as [Parquet](https://parquet.apache.org/) files from the GitHub Releases page. 
+Metadata datasets link to the raw Excel files published by NHS England.
+The _Periods_ column shows the number of reporting periods covered by each dataset.
 
 ### Annual data
 
 ```{r datasets-annual, echo = FALSE, message = FALSE}
+tidy_sources <- yaml::read_yaml(
+  system.file("config/tidy_data_sources.yml", package = "nhstt")
+)$datasets
+
+tidy_url_lookup <- dplyr::tibble(
+  dataset = names(tidy_sources),
+  tidy_data = purrr::map_chr(tidy_sources, "url")
+) |>
+  dplyr::mutate(tidy_data = paste0("[Download](", tidy_data, ")"))
+
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::filter(frequency == "annual") |>
+  dplyr::left_join(tidy_url_lookup, by = "dataset") |>
   dplyr::select(
     get_function,
     first_period,
     last_period,
     n_periods,
+    tidy_data,
     version
   ) |>
   dplyr::mutate(get_function = paste0("`", get_function, "()`"))
@@ -77,10 +86,11 @@ knitr::kable(
     "Function",
     "First period",
     "Last period",
-    "Count periods",
+    "Periods",
+    "Tidy data",
     "Version"
   ),
-  align = c("l", "l", "l", "r", "r")
+  align = c("l", "l", "l", "r", "l", "r")
 )
 ```
 
@@ -90,11 +100,13 @@ knitr::kable(
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::filter(frequency == "monthly") |>
+  dplyr::left_join(tidy_url_lookup, by = "dataset") |>
   dplyr::select(
     get_function,
     first_period,
     last_period,
     n_periods,
+    tidy_data,
     version
   ) |>
   dplyr::mutate(get_function = paste0("`", get_function, "()`"))
@@ -106,23 +118,44 @@ knitr::kable(
     "Function",
     "First period",
     "Last period",
-    "Count periods",
+    "Periods",
+    "Tidy data",
     "Version"
   ),
-  align = c("l", "l", "l", "r", "r")
+  align = c("l", "l", "l", "r", "l", "r")
 )
 ```
 
 ### Metadata
 
 ```{r datasets-metadata, echo = FALSE, message = FALSE}
+raw_meta_config <- yaml::read_yaml(
+  system.file("config/raw_metadata_config.yml", package = "nhstt")
+)
+
+raw_url_lookup <- names(raw_meta_config$datasets) |>
+  purrr::map(\(ds_name) {
+    ds <- raw_meta_config$datasets[[ds_name]]
+    if (!is.null(ds$archive)) {
+      url <- raw_meta_config$archives[[ds$archive]][[1]]$url
+    } else {
+      url <- ds$sources[[1]]$url
+    }
+    dplyr::tibble(get_function = ds$get_function, raw_data = url)
+  }) |>
+  dplyr::bind_rows() |>
+  dplyr::distinct() |>
+  dplyr::mutate(raw_data = paste0("[Download](", raw_data, ")"))
+
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(stringr::str_detect(title, "metadata")) |>
+  dplyr::left_join(raw_url_lookup, by = "get_function") |>
   dplyr::select(
     get_function,
     first_period,
     last_period,
     n_periods,
+    raw_data,
     version
   ) |>
   dplyr::mutate(get_function = paste0("`", get_function, "()`")) |>
@@ -135,18 +168,13 @@ knitr::kable(
     "Function",
     "First period",
     "Last period",
-    "Count periods",
+    "Periods",
+    "Raw data",
     "Version"
   ),
-  align = c("l", "l", "l", "r", "r")
+  align = c("l", "l", "l", "r", "l", "r")
 )
 ```
-
-## Data access and caching
-
-Each dataset is downloaded on first use from a GitHub Release and cached locally at `~/.cache/R/nhstt/`.
-Subsequent calls return the cached file instantly.
-Use `cache_info()` to inspect the cache and `cache_clear()` to remove it.
 
 ## For developers
 
