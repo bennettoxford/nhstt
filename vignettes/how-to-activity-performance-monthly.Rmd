@@ -1,6 +1,7 @@
 ---
-title: "Exploring monthly changes in treatment end codes with the *nhstt* R package"
+title: "Exploring monthly changes in treatment end codes"
 bibliography: references.bib
+link-citations: true
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{how-to-activity-performance-monthly}
@@ -8,11 +9,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-In this post we introduce the [*nhstt* R package](https://bennettoxford.github.io/nhstt/), which provides a consistent interface for accessing publicly available NHS Talking Therapies (NHS TT) data in a tidy, analysis-ready format.
-We use treatment end codes from the monthly activity and performance data as a worked example, but the same approach applies to any of the measures in the dataset.
+> This vignette provides the complete R code used to produce the analysis in our blog post published at [talkingtherapies.opensafely.org](https://talkingtherapies.opensafely.org/).
+
+The [*nhstt* R package](https://bennettoxford.github.io/nhstt/) provides a consistent interface for accessing publicly available NHS Talking Therapies (NHS TT) data in a tidy, analysis-ready format.
+In this vignette we use treatment end codes from the monthly activity and performance data as a worked example, but the same approach applies to any of the measures in the dataset.
 The examples are descriptive and intended to illustrate what can be done with the data, not to draw conclusions about individual services.
 
-In our [previous post](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/) we introduced NHS TT and the detailed aggregate data that NHS England publishes openly.
+In a blog post published at [talkingtherapies.opensafely.org](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/) we introduced NHS TT and the detailed aggregate data that NHS England publishes openly.
 These datasets cover various measures, including referral activity, waiting times, clinical outcomes, and patient-reported outcome measures at monthly, quarterly, and annual reporting periods.
 The value of these public data has been demonstrated by @Clark2018a, who used publicly available NHS TT reports to study between-service variation in clinical outcomes.
 They found that organisational factors including waiting times, missed appointments, and the proportion of patients receiving a course of treatment were associated with rates of reliable recovery and improvement.
