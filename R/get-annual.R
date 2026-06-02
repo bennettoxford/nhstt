@@ -9,14 +9,11 @@
 #'
 #' @return Tibble with key measures data in long format
 #'
-#' @details
-#' Raw data is automatically stored in parquet format for efficient compression.
-#'
 #' @references
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
-#' @importFrom purrr map list_rbind
+#' @importFrom dplyr filter arrange desc
 #'
 #' @export
 #' @examples
@@ -27,31 +24,32 @@
 #' # Get specific annual periods
 #' key_measures_df <- get_key_measures_annual(periods = c("2023-24", "2024-25"))
 #'
-#' # Bypass cache to use latest tidying logic
-#' key_measures_df <- get_key_measures_annual(periods = "2023-24", use_cache = FALSE)
+#' # Re-download to get the latest data version
+#' key_measures_df <- get_key_measures_annual(use_cache = FALSE)
 #' }
 get_key_measures_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  frequency <- "annual"
   dataset <- "key_measures_annual"
 
-  periods <- resolve_periods(periods, dataset, frequency)
-  periods <- rev(periods)
+  if (!is.null(periods)) {
+    periods <- resolve_periods(periods, dataset, "annual")
+  }
 
-  data_list <- map(
-    periods,
-    \(period) {
-      if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
-        load_tidy_cache(dataset, period, frequency)
-      } else {
-        download_and_tidy(dataset, period, frequency)
-      }
-    }
-  )
+  cfg <- get_tidy_source_config(dataset)
 
-  list_rbind(data_list)
+  if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
+    download_tidy_source(dataset, cfg$url, cfg$version)
+  }
+
+  data <- load_tidy_source(dataset)
+
+  if (!is.null(periods)) {
+    data <- filter(data, reporting_period %in% periods)
+  }
+
+  arrange(data, desc(reporting_period))
 }
 
 #' Get annual Patient Reported Outcome measures (PROMs)
@@ -65,14 +63,11 @@ get_key_measures_annual <- function(
 #'
 #' @return Tibble with key measures data in long format
 #'
-#' @details
-#' Raw data is automatically stored in parquet format for efficient compression.
-#'
 #' @references
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
-#' @importFrom purrr map list_rbind
+#' @importFrom dplyr filter arrange desc
 #'
 #' @export
 #' @examples
@@ -83,31 +78,32 @@ get_key_measures_annual <- function(
 #' # Get specific annual periods
 #' proms_df <- get_proms_annual(periods = c("2023-24", "2024-25"))
 #'
-#' # Bypass cache to use latest tidying logic
-#' proms_df <- get_proms_annual(periods = "2023-24", use_cache = FALSE)
+#' # Re-download to get the latest data version
+#' proms_df <- get_proms_annual(use_cache = FALSE)
 #' }
 get_proms_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  frequency <- "annual"
   dataset <- "proms_annual"
 
-  periods <- resolve_periods(periods, dataset, frequency)
-  periods <- rev(periods)
+  if (!is.null(periods)) {
+    periods <- resolve_periods(periods, dataset, "annual")
+  }
 
-  data_list <- map(
-    periods,
-    \(period) {
-      if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
-        load_tidy_cache(dataset, period, frequency)
-      } else {
-        download_and_tidy(dataset, period, frequency)
-      }
-    }
-  )
+  cfg <- get_tidy_source_config(dataset)
 
-  list_rbind(data_list)
+  if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
+    download_tidy_source(dataset, cfg$url, cfg$version)
+  }
+
+  data <- load_tidy_source(dataset)
+
+  if (!is.null(periods)) {
+    data <- filter(data, reporting_period %in% periods)
+  }
+
+  arrange(data, desc(reporting_period))
 }
 
 #' Get position of therapy types within the referral pathways
@@ -123,14 +119,11 @@ get_proms_annual <- function(
 #'
 #' @return Tibble with key measures data in long format
 #'
-#' @details
-#' Raw data is automatically stored in parquet format for efficient compression.
-#'
 #' @references
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
-#' @importFrom purrr map list_rbind
+#' @importFrom dplyr filter arrange desc
 #'
 #' @export
 #' @examples
@@ -141,29 +134,30 @@ get_proms_annual <- function(
 #' # Get specific annual periods
 #' therapy_position_df <- get_therapy_position_annual(periods = c("2023-24", "2024-25"))
 #'
-#' # Bypass cache to use latest tidying logic
-#' therapy_position_df <- get_therapy_position_annual(periods = "2023-24", use_cache = FALSE)
+#' # Re-download to get the latest data version
+#' therapy_position_df <- get_therapy_position_annual(use_cache = FALSE)
 #' }
 get_therapy_position_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  frequency <- "annual"
   dataset <- "therapy_position_annual"
 
-  periods <- resolve_periods(periods, dataset, frequency)
-  periods <- rev(periods)
+  if (!is.null(periods)) {
+    periods <- resolve_periods(periods, dataset, "annual")
+  }
 
-  data_list <- map(
-    periods,
-    \(period) {
-      if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
-        load_tidy_cache(dataset, period, frequency)
-      } else {
-        download_and_tidy(dataset, period, frequency)
-      }
-    }
-  )
+  cfg <- get_tidy_source_config(dataset)
 
-  list_rbind(data_list)
+  if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
+    download_tidy_source(dataset, cfg$url, cfg$version)
+  }
+
+  data <- load_tidy_source(dataset)
+
+  if (!is.null(periods)) {
+    data <- filter(data, reporting_period %in% periods)
+  }
+
+  arrange(data, desc(reporting_period))
 }

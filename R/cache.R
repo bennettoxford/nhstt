@@ -449,35 +449,25 @@ cache_info <- function(max_size_mb = 1000) {
     )
   }
 
-  tidy_annual_dir <- file.path(cache_dir, "tidy", "annual")
-  tidy_annual_size <- 0
-  if (dir.exists(tidy_annual_dir)) {
-    tidy_annual_files <- list.files(
-      tidy_annual_dir,
-      recursive = TRUE,
+  # Pre-built tidy parquets (flat files in tidy/)
+  tidy_dir <- file.path(cache_dir, "tidy")
+  tidy_size <- 0
+  tidy_count <- 0
+  if (dir.exists(tidy_dir)) {
+    tidy_files <- list.files(
+      tidy_dir,
       full.names = TRUE,
+      recursive = TRUE,
       pattern = "\\.parquet$"
     )
-    tidy_annual_size <- sum(file.info(tidy_annual_files)$size, na.rm = TRUE)
+    tidy_size <- sum(file.info(tidy_files)$size, na.rm = TRUE)
+    tidy_count <- length(tidy_files)
   }
 
-  tidy_monthly_dir <- file.path(cache_dir, "tidy", "monthly")
-  tidy_monthly_size <- 0
-  if (dir.exists(tidy_monthly_dir)) {
-    tidy_monthly_files <- list.files(
-      tidy_monthly_dir,
-      recursive = TRUE,
-      full.names = TRUE,
-      pattern = "\\.parquet$"
-    )
-    tidy_monthly_size <- sum(file.info(tidy_monthly_files)$size, na.rm = TRUE)
-  }
-
-  # Get raw downloads metadata
+  # Get raw downloads metadata (developer pipeline)
   raw_annual_meta <- read_raw_downloads_json("annual")
   raw_monthly_meta <- read_raw_downloads_json("monthly")
 
-  # Count raw downloads
   raw_annual_count <- if (length(raw_annual_meta) > 0) {
     sum(sapply(raw_annual_meta, length))
   } else {
@@ -491,7 +481,15 @@ cache_info <- function(max_size_mb = 1000) {
 
   cli_dl(c(
     "Cache directory" = "{.path {cache_dir}}",
-    "Raw annual data" = paste0(
+    "Tidy data" = paste0(
+      format(structure(tidy_size, class = "object_size"), units = "auto"),
+      " (",
+      tidy_count,
+      " dataset",
+      if (tidy_count != 1) "s" else "",
+      ")"
+    ),
+    "Raw annual data (developer)" = paste0(
       format(structure(raw_annual_size, class = "object_size"), units = "auto"),
       " (",
       raw_annual_count,
@@ -499,7 +497,7 @@ cache_info <- function(max_size_mb = 1000) {
       if (raw_annual_count != 1) "s" else "",
       ")"
     ),
-    "Raw monthly data" = paste0(
+    "Raw monthly data (developer)" = paste0(
       format(
         structure(raw_monthly_size, class = "object_size"),
         units = "auto"
@@ -509,14 +507,6 @@ cache_info <- function(max_size_mb = 1000) {
       " download",
       if (raw_monthly_count != 1) "s" else "",
       ")"
-    ),
-    "Tidy annual data" = format(
-      structure(tidy_annual_size, class = "object_size"),
-      units = "auto"
-    ),
-    "Tidy monthly data" = format(
-      structure(tidy_monthly_size, class = "object_size"),
-      units = "auto"
     ),
     "Total size" = format(
       structure(total_size, class = "object_size"),
@@ -535,12 +525,12 @@ cache_info <- function(max_size_mb = 1000) {
 
   invisible(list(
     cache_dir = cache_dir,
+    tidy_size = tidy_size,
+    tidy_count = tidy_count,
     raw_annual_size = raw_annual_size,
     raw_annual_count = raw_annual_count,
     raw_monthly_size = raw_monthly_size,
     raw_monthly_count = raw_monthly_count,
-    tidy_annual_size = tidy_annual_size,
-    tidy_monthly_size = tidy_monthly_size,
     total_size = total_size,
     raw_downloads = list(
       annual = raw_annual_meta,

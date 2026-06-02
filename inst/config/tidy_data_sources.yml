@@ -1,0 +1,19 @@
+# Each dataset has its own release tag and version.
+# To publish updated data for a dataset:
+#   1. Run `just build-data` to write parquets to data-raw/
+#   2. Create a GitHub Release with a dataset-specific tag and upload that parquet as an asset
+#      e.g. gh release create activity-performance-monthly-v0.4.0 data-raw/activity_performance_monthly.parquet
+#   3. Update version and url below for that dataset only
+datasets:
+  activity_performance_monthly:
+    version: "0.3.0"
+    url: "https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.3.0/activity_performance_monthly.parquet"
+  key_measures_annual:
+    version: "0.2.0"
+    url: "https://github.com/bennettoxford/nhstt/releases/download/key-measures-annual-v0.2.0/key_measures_annual.parquet"
+  proms_annual:
+    version: "0.1.0"
+    url: "https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.1.0/proms_annual.parquet"
+  therapy_position_annual:
+    version: "0.1.0"
+    url: "https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet"
