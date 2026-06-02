@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Exploring monthly changes in treatment end codes with the *nhstt* R package • nhstt</title>
+<title>Exploring monthly changes in treatment end codes • nhstt</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Exploring monthly changes in treatment end codes with the *nhstt* R package">
+<meta property="og:title" content="Exploring monthly changes in treatment end codes">
 <!-- Privacy-friendly analytics by Plausible --><script async src="https://plausible.io/js/pa-eGtUj6yMT9xZ_NpjGZ0PD.js"></script><script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
@@ -80,7 +80,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Exploring monthly changes in treatment end codes with the *nhstt* R package</h1>
+      <h1>Exploring monthly changes in treatment end codes</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/how-to-activity-performance-monthly.Rmd" class="external-link"><code>vignettes/how-to-activity-performance-monthly.Rmd</code></a></small>
@@ -89,32 +89,35 @@
 
     
     
-<p>In this post we introduce the <a href="https://bennettoxford.github.io/nhstt/"><em>nhstt</em> R
-package</a>, which provides a consistent interface for accessing
-publicly available NHS Talking Therapies (NHS TT) data in a tidy,
-analysis-ready format. We use treatment end codes from the monthly
+<blockquote>
+<p>This vignette provides the complete R code used to produce the
+analysis in our blog post published at <a href="https://talkingtherapies.opensafely.org/" class="external-link">talkingtherapies.opensafely.org</a>.</p>
+</blockquote>
+<p>The <a href="https://bennettoxford.github.io/nhstt/"><em>nhstt</em> R
+package</a> provides a consistent interface for accessing publicly
+available NHS Talking Therapies (NHS TT) data in a tidy, analysis-ready
+format. In this vignette we use treatment end codes from the monthly
 activity and performance data as a worked example, but the same approach
 applies to any of the measures in the dataset. The examples are
 descriptive and intended to illustrate what can be done with the data,
 not to draw conclusions about individual services.</p>
-<p>In our <a href="https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/" class="external-link">previous
-post</a> we introduced NHS TT and the detailed aggregate data that NHS
-England publishes openly. These datasets cover various measures,
-including referral activity, waiting times, clinical outcomes, and
+<p>In a blog post published at <a href="https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/" class="external-link">talkingtherapies.opensafely.org</a>
+we introduced NHS TT and the detailed aggregate data that NHS England
+publishes openly. These datasets cover various measures, including
+referral activity, waiting times, clinical outcomes, and
 patient-reported outcome measures at monthly, quarterly, and annual
 reporting periods. The value of these public data has been demonstrated
-by <span class="citation">Clark et al. (2018)</span>, who used publicly
-available NHS TT reports to study between-service variation in clinical
-outcomes. They found that organisational factors including waiting
-times, missed appointments, and the proportion of patients receiving a
-course of treatment were associated with rates of reliable recovery and
+by <span class="citation">Clark et al. (<a href="#ref-Clark2018a">2018</a>)</span>, who used publicly available NHS
+TT reports to study between-service variation in clinical outcomes. They
+found that organisational factors including waiting times, missed
+appointments, and the proportion of patients receiving a course of
+treatment were associated with rates of reliable recovery and
 improvement. This illustrates the broader role of public reporting in
 supporting transparency, benchmarking, and research on variation in
-routine psychological therapy services <span class="citation">(Clark et
-al. 2018; Clark 2018)</span>. The monthly data complement the annual
-publications by providing more timely signals for monitoring service
-activity and identifying measures or periods that warrant closer
-investigation.</p>
+routine psychological therapy services <span class="citation">(<a href="#ref-Clark2018a">Clark et al. 2018</a>; <a href="#ref-Clark2018b">Clark 2018</a>)</span>. The monthly data
+complement the annual publications by providing more timely signals for
+monitoring service activity and identifying measures or periods that
+warrant closer investigation.</p>
 <div class="section level2">
 <h2 id="treatment-end-codes">Treatment end codes<a class="anchor" aria-label="anchor" href="#treatment-end-codes"></a>
 </h2>

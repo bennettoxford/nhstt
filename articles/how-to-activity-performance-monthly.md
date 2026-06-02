@@ -1,33 +1,37 @@
-# Exploring monthly changes in treatment end codes with the \*nhstt\* R package
+# Exploring monthly changes in treatment end codes
 
-In this post we introduce the [*nhstt* R
-package](https://bennettoxford.github.io/nhstt/), which provides a
-consistent interface for accessing publicly available NHS Talking
-Therapies (NHS TT) data in a tidy, analysis-ready format. We use
-treatment end codes from the monthly activity and performance data as a
-worked example, but the same approach applies to any of the measures in
-the dataset. The examples are descriptive and intended to illustrate
-what can be done with the data, not to draw conclusions about individual
-services.
+> This vignette provides the complete R code used to produce the
+> analysis in our blog post published at
+> [talkingtherapies.opensafely.org](https://talkingtherapies.opensafely.org/).
 
-In our [previous
-post](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/)
+The [*nhstt* R package](https://bennettoxford.github.io/nhstt/) provides
+a consistent interface for accessing publicly available NHS Talking
+Therapies (NHS TT) data in a tidy, analysis-ready format. In this
+vignette we use treatment end codes from the monthly activity and
+performance data as a worked example, but the same approach applies to
+any of the measures in the dataset. The examples are descriptive and
+intended to illustrate what can be done with the data, not to draw
+conclusions about individual services.
+
+In a blog post published at
+[talkingtherapies.opensafely.org](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/)
 we introduced NHS TT and the detailed aggregate data that NHS England
 publishes openly. These datasets cover various measures, including
 referral activity, waiting times, clinical outcomes, and
 patient-reported outcome measures at monthly, quarterly, and annual
 reporting periods. The value of these public data has been demonstrated
-by Clark et al. (2018), who used publicly available NHS TT reports to
-study between-service variation in clinical outcomes. They found that
-organisational factors including waiting times, missed appointments, and
-the proportion of patients receiving a course of treatment were
-associated with rates of reliable recovery and improvement. This
-illustrates the broader role of public reporting in supporting
-transparency, benchmarking, and research on variation in routine
-psychological therapy services (Clark et al. 2018; Clark 2018). The
-monthly data complement the annual publications by providing more timely
-signals for monitoring service activity and identifying measures or
-periods that warrant closer investigation.
+by Clark et al. ([2018](#ref-Clark2018a)), who used publicly available
+NHS TT reports to study between-service variation in clinical outcomes.
+They found that organisational factors including waiting times, missed
+appointments, and the proportion of patients receiving a course of
+treatment were associated with rates of reliable recovery and
+improvement. This illustrates the broader role of public reporting in
+supporting transparency, benchmarking, and research on variation in
+routine psychological therapy services ([Clark et al.
+2018](#ref-Clark2018a); [Clark 2018](#ref-Clark2018b)). The monthly data
+complement the annual publications by providing more timely signals for
+monitoring service activity and identifying measures or periods that
+warrant closer investigation.
 
 ## Treatment end codes
 

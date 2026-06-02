@@ -4,8 +4,8 @@
 
 Step-by-step guides for analysing NHS TT data
 
-- [Exploring monthly changes in treatment end codes with the \*nhstt\* R
-  package](https://bennettoxford.github.io/nhstt/articles/how-to-activity-performance-monthly.md):
+- [Exploring monthly changes in treatment end
+  codes](https://bennettoxford.github.io/nhstt/articles/how-to-activity-performance-monthly.md):
 - [How to use the annual key measures
   data](https://bennettoxford.github.io/nhstt/articles/how-to-key-measures-annual.md):
 - [How to use the annual PROMs
