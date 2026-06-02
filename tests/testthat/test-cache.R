@@ -102,6 +102,32 @@ test_that("cache_info shows cache directory", {
   expect_true(dir.exists(result$cache_dir))
 })
 
+test_that("cache_info returns tidy_size and tidy_count fields", {
+  result <- cache_info()
+
+  expect_true("tidy_size" %in% names(result))
+  expect_true("tidy_count" %in% names(result))
+})
+
+test_that("cache_info counts pre-built tidy parquets", {
+  cache_dir <- get_cache_dir()
+  tidy_dir <- file.path(cache_dir, "tidy")
+  dir.create(tidy_dir, recursive = TRUE, showWarnings = FALSE)
+
+  tmp1 <- file.path(tidy_dir, "key_measures_annual.parquet")
+  tmp2 <- file.path(tidy_dir, "proms_annual.parquet")
+  file.create(tmp1)
+  file.create(tmp2)
+  on.exit({
+    unlink(tmp1)
+    unlink(tmp2)
+  })
+
+  result <- cache_info()
+
+  expect_true(result$tidy_count >= 2)
+})
+
 # cache_clear tests ------------------------------------------------------------
 
 test_that("cache_clear validates type parameter", {

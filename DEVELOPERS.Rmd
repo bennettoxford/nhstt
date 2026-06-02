@@ -1,0 +1,134 @@
+---
+output:
+  github_document:
+    html_preview: false
+---
+
+<!-- DEVELOPERS.md is generated from DEVELOPERS.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Notes for developers
+
+## Requirements
+
+- R (>= 4.0), [just](https://github.com/casey/just), [air](https://github.com/posit-dev/air/), [Quarto CLI](https://quarto.org/docs/get-started/)
+
+Run `just list` to see all available recipes.
+
+## Data pipeline
+
+Users call `get_*()`, which reads `tidy_data_sources.yml` for the current version and URL, downloads the pre-built parquet if not already cached, and caches it to `~/.cache/R/nhstt/tidy/{dataset}.parquet`. Subsequent calls return the cached file instantly.
+
+Developers run `build_tidy_data(dataset)` (`just build-data` for all), which downloads raw source files, applies the tidy pipeline for every period, and writes a combined parquet to `data-raw/`. Parquets are published as GitHub Release assets and are directly usable from Python, Julia, or any language that reads parquet.
+
+### Available datasets
+
+```{r datasets, echo = FALSE, message = FALSE}
+df <- nhstt:::available_nhstt_reports() |>
+  dplyr::select(
+    get_function,
+    frequency,
+    first_period,
+    last_period,
+    n_periods,
+    version
+  ) |>
+  dplyr::mutate(get_function = paste0("`", get_function, "()`")) |>
+  dplyr::distinct()
+
+knitr::kable(
+  df,
+  row.names = FALSE,
+  col.names = c(
+    "Function",
+    "Frequency",
+    "First period",
+    "Last period",
+    "Periods",
+    "Version"
+  ),
+  align = c("l", "l", "l", "l", "r", "r")
+)
+```
+
+### Approximate build times
+
+One period timed per dataset; extrapolated to full build. Re-run with `just render-developers`.
+
+```{r build-times, echo = FALSE, message = FALSE}
+reports <- nhstt:::available_nhstt_reports() |>
+  dplyr::filter(!stringr::str_detect(title, "metadata")) |>
+  dplyr::distinct(dataset, frequency, last_period, n_periods)
+
+timings <- lapply(seq_len(nrow(reports)), function(i) {
+  d <- reports[i, ]
+  elapsed <- system.time(
+    nhstt:::download_and_tidy(d$dataset, d$last_period, d$frequency)
+  )[["elapsed"]]
+  data.frame(
+    dataset = paste0("`", d$dataset, "`"),
+    timed_period = d$last_period,
+    n_periods = d$n_periods,
+    time_one_s = round(elapsed, 1),
+    est_total_min = round(elapsed * d$n_periods / 60, 1)
+  )
+})
+
+knitr::kable(
+  do.call(rbind, timings),
+  row.names = FALSE,
+  col.names = c(
+    "Dataset",
+    "Timed period",
+    "Periods",
+    "Time for one (s)",
+    "Est. full build (min)"
+  ),
+  align = c("l", "l", "r", "r", "r")
+)
+```
+
+## Publishing new data
+
+Each dataset is released independently — updating monthly data does not affect annual dataset versions or caches.
+
+1. Update raw config (e.g. `raw_monthly_data_config.yml`) with new sources
+2. `just build-data` — rebuilds all parquets and writes to `data-raw/`
+3. Create a GitHub Release with a dataset-specific tag and upload that parquet:
+   ```bash
+   gh release create activity-performance-monthly-v0.4.0 \
+     data-raw/activity_performance_monthly.parquet \
+     --title "activity-performance-monthly v0.4.0"
+   ```
+4. Update `version` and `url` for that dataset only in `inst/config/tidy_data_sources.yml`
+
+## Configuration files
+
+All in `inst/config/`:
+
+- `tidy_data_sources.yml` — version + GitHub Release URL per dataset (user-facing)
+- `raw_*_config.yml` — raw source archives, URLs, and periods
+- `tidy_*_config.yml` — tidy transformations (filters, derivations, columns)
+
+After changing raw config column structure, run `just update-schemas` to update `inst/schemas/`.
+
+## Dev utilities
+
+Internal functions in `R/dev-utils.R` (load with `devtools::load_all()`):
+
+- `list_archives_periods()` — all archives and available periods
+- `list_archive_files("annual_main", "2024-25")` — CSV files inside an archive
+- `read_archive_file("annual_main", "2024-25", "main")` — read a specific file
+- `compare_schemas("main")` — column changes across periods
+- `build_tidy_data("dataset_name")` — build combined parquet for one dataset
+
+## Resources
+
+- [R Packages (2e)](https://r-pkgs.org/)
+- [Advanced R](https://adv-r.hadley.nz/)

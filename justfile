@@ -18,6 +18,15 @@ document:
 build:
     Rscript --quiet --vanilla -e 'pak::local_install()'
 
+# Build all pre-built tidy parquets and write to data-raw/ (slow — downloads raw data)
+build-data:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(); \
+        build_tidy_data("activity_performance_monthly"); \
+        build_tidy_data("key_measures_annual"); \
+        build_tidy_data("proms_annual"); \
+        build_tidy_data("therapy_position_annual")'
+
 # Run all tests
 test-unit:
     Rscript --quiet --vanilla -e 'devtools::test()'
@@ -31,6 +40,14 @@ test: test-unit test-integration
 # Run R CMD check
 check:
     Rscript --quiet --vanilla -e 'devtools::check()'
+
+# Render README.Rmd to README.md
+render-readme:
+    Rscript --quiet --vanilla -e 'rmarkdown::render("README.Rmd")'
+
+# Render DEVELOPERS.Rmd to DEVELOPERS.md
+render-developers:
+    Rscript --quiet --vanilla -e 'rmarkdown::render("DEVELOPERS.Rmd")'
 
 # Build pkgdown site
 docs-build:

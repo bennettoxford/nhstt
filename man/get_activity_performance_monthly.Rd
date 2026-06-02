@@ -18,9 +18,6 @@ Tibble with activity and performance data in long format
 \description{
 Get monthly activity and performance indicators by organisation.
 }
-\details{
-Raw data is automatically stored in parquet format for efficient compression.
-}
 \examples{
 \dontrun{
 # Get all monthly periods
@@ -29,8 +26,8 @@ activity_df <- get_activity_performance_monthly()
 # Get specific monthly periods
 activity_df <- get_activity_performance_monthly(periods = c("2025-09", "2025-08"))
 
-# Bypass cache to use latest tidying logic
-activity_df <- get_activity_performance_monthly(periods = "2025-09", use_cache = FALSE)
+# Re-download to get the latest data version
+activity_df <- get_activity_performance_monthly(use_cache = FALSE)
 }
 }
 \references{

@@ -8,9 +8,6 @@
 #'
 #' @return Tibble with activity and performance data in long format
 #'
-#' @details
-#' Raw data is automatically stored in parquet format for efficient compression.
-#'
 #' @references
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors}{NHS Talking Therapies Monthly Statistics Including Employment Advisors}
@@ -18,7 +15,7 @@
 #' NHS England.
 #' \href{https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx}{NHS Talking Therapies Data Quality Note (monthly, quarterly)}
 #'
-#' @importFrom purrr map list_rbind
+#' @importFrom dplyr filter arrange desc
 #'
 #' @export
 #' @examples
@@ -29,31 +26,32 @@
 #' # Get specific monthly periods
 #' activity_df <- get_activity_performance_monthly(periods = c("2025-09", "2025-08"))
 #'
-#' # Bypass cache to use latest tidying logic
-#' activity_df <- get_activity_performance_monthly(periods = "2025-09", use_cache = FALSE)
+#' # Re-download to get the latest data version
+#' activity_df <- get_activity_performance_monthly(use_cache = FALSE)
 #' }
 get_activity_performance_monthly <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  frequency <- "monthly"
   dataset <- "activity_performance_monthly"
 
-  periods <- resolve_periods(periods, dataset, frequency)
-  periods <- rev(periods)
+  if (!is.null(periods)) {
+    periods <- resolve_periods(periods, dataset, "monthly")
+  }
 
-  data_list <- map(
-    periods,
-    \(period) {
-      if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
-        load_tidy_cache(dataset, period, frequency)
-      } else {
-        download_and_tidy(dataset, period, frequency)
-      }
-    }
-  )
+  cfg <- get_tidy_source_config(dataset)
 
-  list_rbind(data_list)
+  if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
+    download_tidy_source(dataset, cfg$url, cfg$version)
+  }
+
+  data <- load_tidy_source(dataset)
+
+  if (!is.null(periods)) {
+    data <- filter(data, reporting_period %in% periods)
+  }
+
+  arrange(data, desc(reporting_period))
 }
 
 #' Get monthly metadata for NHS Talking Therapies measures
