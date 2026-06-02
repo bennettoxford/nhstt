@@ -1,33 +1,38 @@
 # Exploring monthly changes in treatment end codes
 
 > This vignette provides the complete R code used to produce the
-> analysis in our blog post published at
-> [talkingtherapies.opensafely.org](https://talkingtherapies.opensafely.org/).
+> analysis in our blog post [From public NHS Talking Therapies reports
+> to research insights: Introducing the *nhstt* R
+> package](https://talkingtherapies.opensafely.org/from-public-nhs-talking-therapies-reports-to-research-insights-introducing-the-nhstt-r-package/).
 
-The [*nhstt* R package](https://bennettoxford.github.io/nhstt/) provides
-a consistent interface for accessing publicly available NHS Talking
-Therapies (NHS TT) data in a tidy, analysis-ready format. In this
+NHS England publishes detailed NHS TT data openly and provides
+interactive dashboards that allow key measures to be explored directly
+in a browser. The [*nhstt* R
+package](https://bennettoxford.github.io/nhstt/) is built on top of
+these publicly available resources and designed to complement them. It
+provides an additional point of access to the same data in a tidy,
+analysis-ready format across all available reporting periods. In this
 vignette we use treatment end codes from the monthly activity and
 performance data as a worked example, but the same approach applies to
 any of the measures in the dataset. The examples are descriptive and
 intended to illustrate what can be done with the data, not to draw
 conclusions about individual services.
 
-In a blog post published at
-[talkingtherapies.opensafely.org](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/)
-we introduced NHS TT and the detailed aggregate data that NHS England
-publishes openly. These datasets cover various measures, including
-referral activity, waiting times, clinical outcomes, and
-patient-reported outcome measures at monthly, quarterly, and annual
-reporting periods. The value of these public data has been demonstrated
-by Clark et al. ([2018](#ref-Clark2018a)), who used publicly available
-NHS TT reports to study between-service variation in clinical outcomes.
-They found that organisational factors including waiting times, missed
-appointments, and the proportion of patients receiving a course of
-treatment were associated with rates of reliable recovery and
-improvement. This illustrates the broader role of public reporting in
-supporting transparency, benchmarking, and research on variation in
-routine psychological therapy services ([Clark et al.
+In a previous blog post we introduced NHS TT and the [detailed aggregate
+data that NHS England publishes
+openly](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/),
+with dashboards available alongside each publication. These datasets
+cover various measures, including referral activity, waiting times,
+clinical outcomes, and patient-reported outcome measures at monthly,
+quarterly, and annual reporting periods. The value of these public data
+has been demonstrated by Clark et al. ([2018](#ref-Clark2018a)), who
+used publicly available NHS TT reports to study between-service
+variation in clinical outcomes. They found that organisational factors
+including waiting times, missed appointments, and the proportion of
+patients receiving a course of treatment were associated with rates of
+reliable recovery and improvement. This illustrates the broader role of
+public reporting in supporting transparency, benchmarking, and research
+on variation in routine psychological therapy services ([Clark et al.
 2018](#ref-Clark2018a); [Clark 2018](#ref-Clark2018b)). The monthly data
 complement the annual publications by providing more timely signals for
 monitoring service activity and identifying measures or periods that
@@ -94,20 +99,22 @@ for the four most commonly recorded end codes.
 Across all four end codes, most services record counts within a similar
 range and follow broadly consistent trends over the reporting period. A
 small number of services stand out as consistent outliers, particularly
-for referrals that ended with *Completed* (M066) and *Before care
-professional planned* (M344).
+for referrals that ended with *Completed* (M066), *Before care
+professional planned* (M344), and *Unknown treated* (M070).
 
 ### Comparing services with decile bands
 
 The figure below uses decile bands to place the two example services in
-the context of the full distribution across all NHS TT services. The
-shaded bands show the distribution from the 10th to the 90th percentile
-in decile steps, with darker shading closer to the median. A service
-outside the bands falls in the top or bottom 10% for that month. The
-width of the bands reflects how much variation there is between
-services, with wider bands indicating greater spread. These charts
-summarise activity patterns and are not intended as rankings of service
-quality.
+the context of the full distribution across all NHS TT services. Read
+more on why we think [deciles charts are a useful tool to communicate
+variation](https://www.bennett.ox.ac.uk/blog/2019/04/communicating-variation-in-prescribing-why-we-use-deciles/)
+in a previous blog we wrote. The shaded bands show the distribution from
+the 10th to the 90th percentile in decile steps, with darker shading
+closer to the median. A service outside the bands falls in the top or
+bottom 10% for that month. The width of the bands reflects how much
+variation there is between services, with wider bands indicating greater
+spread. These charts summarise activity patterns and are not intended as
+rankings of service quality.
 
 ![End codes for referrals seen and taken on for a course of treatment in
 the monthly NHS TT dataset: decile charts across all NHS TT services for
@@ -138,10 +145,8 @@ new reports. It provides access to each dataset in a tidy,
 analysis-ready format, with no need to locate or parse the underlying
 files. Whether you are interested in trends in referral activity,
 variation in waiting times across services, or changes in clinical
-outcomes over time, the data are there to be explored. Worked examples
-and detailed usage guides are available on the [*nhstt* R package
-website](https://bennettoxford.github.io/nhstt/). We recommend checking
-the NHS England [data quality
+outcomes over time, the data are there to be explored. We recommend
+checking the NHS England [data quality
 notes](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx)
 before using these data, as they describe known issues affecting
 specific reporting periods or measures.

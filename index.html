@@ -81,10 +81,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<blockquote>
-<p><strong>This package is under active development. Breaking changes are likely.</strong></p>
-</blockquote>
-<p><code>nhstt</code> provides access to publicly available NHS Talking Therapies reports in a tidy data format.</p>
+<p><code>nhstt</code> provides access to publicly available NHS Talking Therapies reports in a tidy, analysis-ready format.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -96,9 +93,6 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<div class="section level3">
-<h3 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
-</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bennettoxford/nhstt" class="external-link">nhstt</a></span><span class="op">)</span></span>
 <span></span>
@@ -108,24 +102,28 @@
 <span><span class="co"># Load all monthly activity performance datasets</span></span>
 <span><span class="va">ap_monthly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="python-julia-and-other-languages">Python, Julia, and other languages<a class="anchor" aria-label="anchor" href="#python-julia-and-other-languages"></a>
-</h3>
-<p>Pre-built parquets are available directly from the <a href="https://github.com/bennettoxford/nhstt/releases" class="external-link">GitHub Releases page</a> without needing R.</p>
-</div>
-</div>
 <div class="section level2">
 <h2 id="available-nhs-talking-therapies-data">Available NHS Talking Therapies data<a class="anchor" aria-label="anchor" href="#available-nhs-talking-therapies-data"></a>
 </h2>
+<p>Data can be accessed from R using the <code>get_*()</code> functions or downloaded directly using the links in the tables below. Annual and monthly datasets are also available as <a href="https://parquet.apache.org/" class="external-link">Parquet</a> files from the GitHub Releases page. Metadata datasets link to the raw Excel files published by NHS England. The <em>Periods</em> column shows the number of reporting periods covered by each dataset.</p>
 <div class="section level3">
 <h3 id="annual-data">Annual data<a class="anchor" aria-label="anchor" href="#annual-data"></a>
 </h3>
-<table class="table">
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+</colgroup>
 <thead><tr>
 <th align="left">Function</th>
 <th align="left">First period</th>
 <th align="left">Last period</th>
-<th align="right">Count periods</th>
+<th align="right">Periods</th>
+<th align="left">Tidy data</th>
 <th align="right">Version</th>
 </tr></thead>
 <tbody>
@@ -134,6 +132,7 @@
 <td align="left">2017-18</td>
 <td align="left">2024-25</td>
 <td align="right">8</td>
+<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/key-measures-annual-v0.2.0/key_measures_annual.parquet" class="external-link">Download</a></td>
 <td align="right">0.2.0</td>
 </tr>
 <tr>
@@ -141,6 +140,7 @@
 <td align="left">2019-20</td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
+<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.1.0/proms_annual.parquet" class="external-link">Download</a></td>
 <td align="right">0.1.0</td>
 </tr>
 <tr>
@@ -148,6 +148,7 @@
 <td align="left">2019-20</td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
+<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet" class="external-link">Download</a></td>
 <td align="right">0.1.0</td>
 </tr>
 </tbody>
@@ -156,19 +157,21 @@
 <div class="section level3">
 <h3 id="monthly-data">Monthly data<a class="anchor" aria-label="anchor" href="#monthly-data"></a>
 </h3>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
-<col width="20%">
-<col width="20%">
-<col width="20%">
-<col width="20%">
-<col width="20%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
 </colgroup>
 <thead><tr>
 <th align="left">Function</th>
 <th align="left">First period</th>
 <th align="left">Last period</th>
-<th align="right">Count periods</th>
+<th align="right">Periods</th>
+<th align="left">Tidy data</th>
 <th align="right">Version</th>
 </tr></thead>
 <tbody><tr>
@@ -176,6 +179,7 @@
 <td align="left">2023-05</td>
 <td align="left">2026-03</td>
 <td align="right">35</td>
+<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.3.0/activity_performance_monthly.parquet" class="external-link">Download</a></td>
 <td align="right">0.3.0</td>
 </tr></tbody>
 </table>
@@ -183,12 +187,21 @@
 <div class="section level3">
 <h3 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
 </h3>
-<table class="table">
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+</colgroup>
 <thead><tr>
 <th align="left">Function</th>
 <th align="left">First period</th>
 <th align="left">Last period</th>
-<th align="right">Count periods</th>
+<th align="right">Periods</th>
+<th align="left">Raw data</th>
 <th align="right">Version</th>
 </tr></thead>
 <tbody>
@@ -197,6 +210,7 @@
 <td align="left">2024-25</td>
 <td align="left">2024-25</td>
 <td align="right">1</td>
+<td align="left"><a href="https://files.digital.nhs.uk/BE/AAF6D0/psych-ther-ann-2024-25-meta.xlsx" class="external-link">Download</a></td>
 <td align="right">0.1.0</td>
 </tr>
 <tr>
@@ -204,6 +218,7 @@
 <td align="left">2024-25</td>
 <td align="left">2024-25</td>
 <td align="right">1</td>
+<td align="left"><a href="https://files.digital.nhs.uk/BE/AAF6D0/psych-ther-ann-2024-25-meta.xlsx" class="external-link">Download</a></td>
 <td align="right">0.1.0</td>
 </tr>
 <tr>
@@ -211,6 +226,7 @@
 <td align="left">2025-07</td>
 <td align="left">2025-07</td>
 <td align="right">1</td>
+<td align="left"><a href="https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/reports/nhstalkingtherapies-monthly-metadata-20250710.xlsx" class="external-link">Download</a></td>
 <td align="right">0.1.0</td>
 </tr>
 <tr>
@@ -218,16 +234,12 @@
 <td align="left">current</td>
 <td align="left">current</td>
 <td align="right">1</td>
+<td align="left"><a href="https://directory.spineservices.nhs.uk/ORD/2-0-0/organisations" class="external-link">Download</a></td>
 <td align="right">0.1.0</td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
-<div class="section level2">
-<h2 id="data-access-and-caching">Data access and caching<a class="anchor" aria-label="anchor" href="#data-access-and-caching"></a>
-</h2>
-<p>Each dataset is downloaded on first use from a GitHub Release and cached locally at <code>~/.cache/R/nhstt/</code>. Subsequent calls return the cached file instantly. Use <code><a href="reference/cache_info.html">cache_info()</a></code> to inspect the cache and <code><a href="reference/cache_clear.html">cache_clear()</a></code> to remove it.</p>
 </div>
 <div class="section level2">
 <h2 id="for-developers">For developers<a class="anchor" aria-label="anchor" href="#for-developers"></a>

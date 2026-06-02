@@ -91,21 +91,26 @@
     
 <blockquote>
 <p>This vignette provides the complete R code used to produce the
-analysis in our blog post published at <a href="https://talkingtherapies.opensafely.org/" class="external-link">talkingtherapies.opensafely.org</a>.</p>
+analysis in our blog post <a href="https://talkingtherapies.opensafely.org/from-public-nhs-talking-therapies-reports-to-research-insights-introducing-the-nhstt-r-package/" class="external-link">From
+public NHS Talking Therapies reports to research insights: Introducing
+the <em>nhstt</em> R package</a>.</p>
 </blockquote>
-<p>The <a href="https://bennettoxford.github.io/nhstt/"><em>nhstt</em> R
-package</a> provides a consistent interface for accessing publicly
-available NHS Talking Therapies (NHS TT) data in a tidy, analysis-ready
-format. In this vignette we use treatment end codes from the monthly
-activity and performance data as a worked example, but the same approach
-applies to any of the measures in the dataset. The examples are
+<p>NHS England publishes detailed NHS TT data openly and provides
+interactive dashboards that allow key measures to be explored directly
+in a browser. The <a href="https://bennettoxford.github.io/nhstt/"><em>nhstt</em> R
+package</a> is built on top of these publicly available resources and
+designed to complement them. It provides an additional point of access
+to the same data in a tidy, analysis-ready format across all available
+reporting periods. In this vignette we use treatment end codes from the
+monthly activity and performance data as a worked example, but the same
+approach applies to any of the measures in the dataset. The examples are
 descriptive and intended to illustrate what can be done with the data,
 not to draw conclusions about individual services.</p>
-<p>In a blog post published at <a href="https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/" class="external-link">talkingtherapies.opensafely.org</a>
-we introduced NHS TT and the detailed aggregate data that NHS England
-publishes openly. These datasets cover various measures, including
-referral activity, waiting times, clinical outcomes, and
-patient-reported outcome measures at monthly, quarterly, and annual
+<p>In a previous blog post we introduced NHS TT and the <a href="https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/" class="external-link">detailed
+aggregate data that NHS England publishes openly</a>, with dashboards
+available alongside each publication. These datasets cover various
+measures, including referral activity, waiting times, clinical outcomes,
+and patient-reported outcome measures at monthly, quarterly, and annual
 reporting periods. The value of these public data has been demonstrated
 by <span class="citation">Clark et al. (<a href="#ref-Clark2018a">2018</a>)</span>, who used publicly available NHS
 TT reports to study between-service variation in clinical outcomes. They
@@ -655,21 +660,24 @@ for the four most commonly recorded end codes.
 <p>Across all four end codes, most services record counts within a
 similar range and follow broadly consistent trends over the reporting
 period. A small number of services stand out as consistent outliers,
-particularly for referrals that ended with <em>Completed</em> (M066) and
-<em>Before care professional planned</em> (M344).</p>
+particularly for referrals that ended with <em>Completed</em> (M066),
+<em>Before care professional planned</em> (M344), and <em>Unknown
+treated</em> (M070).</p>
 </div>
 <div class="section level3">
 <h3 id="comparing-services-with-decile-bands">Comparing services with decile bands<a class="anchor" aria-label="anchor" href="#comparing-services-with-decile-bands"></a>
 </h3>
 <p>The figure below uses decile bands to place the two example services
-in the context of the full distribution across all NHS TT services. The
-shaded bands show the distribution from the 10th to the 90th percentile
-in decile steps, with darker shading closer to the median. A service
-outside the bands falls in the top or bottom 10% for that month. The
-width of the bands reflects how much variation there is between
-services, with wider bands indicating greater spread. These charts
-summarise activity patterns and are not intended as rankings of service
-quality.</p>
+in the context of the full distribution across all NHS TT services. Read
+more on why we think <a href="https://www.bennett.ox.ac.uk/blog/2019/04/communicating-variation-in-prescribing-why-we-use-deciles/" class="external-link">deciles
+charts are a useful tool to communicate variation</a> in a previous blog
+we wrote. The shaded bands show the distribution from the 10th to the
+90th percentile in decile steps, with darker shading closer to the
+median. A service outside the bands falls in the top or bottom 10% for
+that month. The width of the bands reflects how much variation there is
+between services, with wider bands indicating greater spread. These
+charts summarise activity patterns and are not intended as rankings of
+service quality.</p>
 <div class="figure">
 <img src="how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-deciles-1.png" class="r-plt" alt="End codes for referrals seen and taken on for a course of treatment in the monthly NHS TT dataset: decile charts across all NHS TT services for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median. Two example services are shown as coloured lines." width="960"><p class="caption">
 End codes for referrals seen and taken on for a course of treatment in
@@ -697,9 +705,8 @@ England publishes new reports. It provides access to each dataset in a
 tidy, analysis-ready format, with no need to locate or parse the
 underlying files. Whether you are interested in trends in referral
 activity, variation in waiting times across services, or changes in
-clinical outcomes over time, the data are there to be explored. Worked
-examples and detailed usage guides are available on the <a href="https://bennettoxford.github.io/nhstt/"><em>nhstt</em> R package
-website</a>. We recommend checking the NHS England <a href="https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx" class="external-link">data
+clinical outcomes over time, the data are there to be explored. We
+recommend checking the NHS England <a href="https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx" class="external-link">data
 quality notes</a> before using these data, as they describe known issues
 affecting specific reporting periods or measures.</p>
 <p>If you use the package for a new analysis or have ideas for how it
