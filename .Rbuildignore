@@ -12,6 +12,8 @@
 AGENTS.md
 ^codecov\.yml$
 DEVELOPERS.md
+^DEVELOPERS\.Rmd$
+^data-raw$
 justfile
 vignettes/.quarto
 vignettes/_*

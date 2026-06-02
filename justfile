@@ -18,6 +18,23 @@ document:
 build:
     Rscript --quiet --vanilla -e 'pak::local_install()'
 
+# Create a GitHub Release for a dataset — run after merging to main
+# Usage: just release <dataset> <version> [notes]
+# Example: just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
+release dataset version notes='':
+    #!/usr/bin/env bash
+    tag=$(echo "{{dataset}}" | tr '_' '-')-v{{version}}
+    gh release create "$tag" data-raw/{{dataset}}.parquet --notes "{{notes}}"
+
+# Build all pre-built tidy parquets and write to data-raw/ (slow — downloads raw data)
+build-data:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(); \
+        build_tidy_data("activity_performance_monthly"); \
+        build_tidy_data("key_measures_annual"); \
+        build_tidy_data("proms_annual"); \
+        build_tidy_data("therapy_position_annual")'
+
 # Run all tests
 test-unit:
     Rscript --quiet --vanilla -e 'devtools::test()'
@@ -31,6 +48,14 @@ test: test-unit test-integration
 # Run R CMD check
 check:
     Rscript --quiet --vanilla -e 'devtools::check()'
+
+# Render README.Rmd to README.md
+render-readme:
+    Rscript --quiet --vanilla -e 'rmarkdown::render("README.Rmd")'
+
+# Render DEVELOPERS.Rmd to DEVELOPERS.md
+render-developers:
+    Rscript --quiet --vanilla -e 'rmarkdown::render("DEVELOPERS.Rmd")'
 
 # Build pkgdown site
 docs-build:

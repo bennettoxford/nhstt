@@ -1,72 +1,103 @@
+
+<!-- DEVELOPERS.md is generated from DEVELOPERS.Rmd. Please edit that file -->
+
 # Notes for developers
 
-## System requirements
+## Requirements
 
-- [just](https://github.com/casey/just)
-- R (version 4.0 or higher)
-- [air](https://github.com/posit-dev/air/) for code formatting
-- [Quarto CLI](https://quarto.org/docs/get-started/) and the [quarto R package](https://github.com/quarto-dev/quarto-r)
+- R (\>= 4.0), [just](https://github.com/casey/just),
+  [air](https://github.com/posit-dev/air/), [Quarto
+  CLI](https://quarto.org/docs/get-started/),
+  [gh](https://cli.github.com/)
 
-## Local development environment
+Run `just list` to see all available recipes.
 
-The `just` command provides a list of available recipes, most of them are also available as shortcuts in Positron or RStudio:
+## Data pipeline
 
-```bash
-just list
-```
+Users call `get_*()`, which reads `tidy_data_sources.yml` for the
+current version and URL, downloads the pre-built parquet if not already
+cached, and caches it to `~/.cache/R/nhstt/tidy/{dataset}.parquet`.
+Subsequent calls return the cached file instantly.
 
-## R package development
+Developers run `build_tidy_data(dataset)` (`just build-data` for all),
+which downloads raw source files, applies the tidy pipeline for every
+period, and writes a combined parquet to `data-raw/`. Parquets are
+published as GitHub Release assets and are directly usable from Python,
+Julia, or any language that reads parquet.
 
-- [R Packages (2e) by Hadley Wickham and Jennifer Bryan](https://r-pkgs.org/)
-- [Advanced R by Hadley Wickham](https://adv-r.hadley.nz/)
-- [Creating R packages Kurt Hornik and the R Core Team](https://cran.r-project.org/doc/FAQ/R-exts.html#Creating-R-packages)
+### Available datasets
 
-## Testing
+| Function | Frequency | First period | Last period | Periods | Version |
+|:---|:---|:---|:---|---:|---:|
+| `get_key_measures_annual()` | annual | 2017-18 | 2024-25 | 8 | 0.2.0 |
+| `get_proms_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.1.0 |
+| `get_therapy_position_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.1.0 |
+| `get_activity_performance_monthly()` | monthly | 2023-05 | 2026-03 | 35 | 0.3.0 |
+| `get_metadata_measures_annual()` | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
+| `get_metadata_variables_annual()` | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
+| `get_metadata_monthly()` | monthly | 2025-07 | 2025-07 | 1 | 0.1.0 |
+| `get_metadata_providers()` | live | current | current | 1 | 0.1.0 |
 
-Unit tests are implemented with _teststhat_ in `tests/testthat` (run `just test-unit`).
-To keep unit tests fast but still test the full pipeline (download and tidy) integration tests are in `tests/integration.R` (run `just test-integration`).
-There may be a way to also add integration tests to testthat without running them every time (possible using environment variables), but I haven't explored that yet.
-The just recipe `just test` runs both tests.
+### Approximate build times
 
-## Documentation
+One period timed per dataset; extrapolated to full build. Re-run with
+`just render-developers`.
 
-Documentation is built with [pkgdown](https://pkgdown.r-lib.org/).
+| Dataset | Timed period | Periods | Time for one (s) | Est. full build (min) |
+|:---|:---|---:|---:|---:|
+| `key_measures_annual` | 2024-25 | 8 | 58.8 | 7.8 |
+| `proms_annual` | 2024-25 | 6 | 112.1 | 11.2 |
+| `therapy_position_annual` | 2024-25 | 6 | 0.1 | 0.0 |
+| `activity_performance_monthly` | 2026-03 | 35 | 0.5 | 0.3 |
 
-## Development workflow
+## Publishing new data
 
-1. Install package locally: `just build` (or `pak::local_install()`)
-2. Make changes to code
-3. Run `just fix` to format
-4. Run `just document` if you changed roxygen2 docs
-5. Run `just test` to verify tests pass
-6. For schema updates: `just update-schemas`
-7. Run `just check` before submitting a PR
-8. Update docs with `just docs` if needed
+Each dataset is released independently — updating monthly data does not
+affect annual dataset versions or caches.
+
+1.  Update raw config (e.g. `raw_monthly_data_config.yml`) with new
+    sources
+
+2.  `just build-data` — rebuilds all parquets and writes to `data-raw/`
+
+3.  Create a GitHub Release using `just release` (run after merging to
+    main):
+
+    ``` bash
+    just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
+    ```
+
+4.  Update `version` and `url` for that dataset only in
+    `inst/config/tidy_data_sources.yml`
 
 ## Configuration files
 
-Data sources and transformations are defined in `inst/config/` as YAML files:
+All in `inst/config/`:
 
-**Raw data sources** (archives, URLs, periods):
-- `raw_annual_data_config.yml`: Annual datasets
-- `raw_monthly_data_config.yml`: Monthly datasets
-- `raw_metadata_config.yml`: Metadata
+- `tidy_data_sources.yml` — version + GitHub Release URL per dataset
+  (user-facing)
+- `raw_*_config.yml` — raw source archives, URLs, and periods
+- `tidy_*_config.yml` — tidy transformations (filters, derivations,
+  columns)
 
-**Tidy transformations** (filters, derivations, output columns):
-- `tidy_annual_data_config.yml`
-- `tidy_monthly_data_config.yml`
-- `tidy_metadata_config.yml`
-
-**Schemas** (auto-generated column tracking):
-- Run `just update-schemas` after modifying `raw_annual_data_config.yml`
-- Schemas saved to `inst/schemas/annual_main_schemas.csv`
+After changing raw config column structure, run `just update-schemas` to
+update `inst/schemas/`.
 
 ## Dev utilities
 
-Internal functions in `R/dev-utils.R` help explore archive contents before exposing new data through the package:
-- `list_available_archives()`: See all archives and periods
-- `list_archive_files("annual_main", "2024-25")`: List CSV files in an archive
-- `read_archive_file("annual_main", "2024-25", "main")`: Read specific files
-- `compare_schemas("main")`: Compare column changes across periods
+Internal functions in `R/dev-utils.R` (load with
+`devtools::load_all()`):
 
-Access via `devtools::load_all()` or `nhstt:::function_name()`.
+- `list_archives_periods()` — all archives and available periods
+- `list_archive_files("annual_main", "2024-25")` — CSV files inside an
+  archive
+- `read_archive_file("annual_main", "2024-25", "main")` — read a
+  specific file
+- `compare_schemas("main")` — column changes across periods
+- `build_tidy_data("dataset_name")` — build combined parquet for one
+  dataset
+
+## Resources
+
+- [R Packages (2e)](https://r-pkgs.org/)
+- [Advanced R](https://adv-r.hadley.nz/)

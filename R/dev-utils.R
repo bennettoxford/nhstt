@@ -531,3 +531,55 @@ create_raw_fixture <- function(
 
   invisible(fixture_path)
 }
+
+#' Build combined tidy parquet for a dataset
+#'
+#' Developer tool. Runs the full raw-to-tidy pipeline for all available periods,
+#' combines them into a single parquet file, and writes it to `data-raw/`.
+#'
+#' After running this function, upload the resulting parquet to a GitHub Release
+#' and update `inst/config/tidy_data_sources.yml` with the new version and URL.
+#'
+#' @param dataset Character, dataset name (e.g., "activity_performance_monthly")
+#' @param frequency Character, "annual" or "monthly". Inferred from dataset name if NULL.
+#'
+#' @return Invisibly returns the path to the written parquet file
+#'
+#' @importFrom purrr map list_rbind
+#' @importFrom arrow write_parquet
+#' @importFrom cli cli_process_start cli_process_done cli_alert_success cli_alert_info
+#'
+#' @keywords internal
+build_tidy_data <- function(dataset, frequency = NULL) {
+  if (is.null(frequency)) {
+    frequency <- if (grepl("monthly", dataset)) "monthly" else "annual"
+  }
+
+  periods <- list_available_periods(dataset, frequency)
+
+  cli_process_start(
+    "Building tidy data for {.val {dataset}} ({length(periods)} period{?s})"
+  )
+
+  data_list <- map(periods, \(period) {
+    download_and_tidy(dataset, period, frequency)
+  })
+
+  combined <- list_rbind(data_list)
+
+  out_dir <- "data-raw"
+  if (!dir.exists(out_dir)) {
+    dir.create(out_dir, recursive = TRUE)
+  }
+  out_path <- file.path(out_dir, paste0(dataset, ".parquet"))
+
+  write_parquet(combined, out_path, compression = "zstd")
+
+  cli_process_done()
+  cli_alert_success("Written to {.file {out_path}}")
+  cli_alert_info(
+    "Upload {.file {out_path}} to a GitHub Release and update {.file inst/config/tidy_data_sources.yml}"
+  )
+
+  invisible(out_path)
+}
