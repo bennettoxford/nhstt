@@ -31,8 +31,7 @@ ap_monthly <- get_activity_performance_monthly()
 Data can be accessed from R using the `get_*()` functions or downloaded
 directly using the links in the tables below. Annual and monthly
 datasets are also available as [Parquet](https://parquet.apache.org/)
-files from the GitHub Releases page. Metadata datasets link to the raw
-Excel files published by NHS England. The *Periods* column shows the
+files from the GitHub Releases page. The *Periods* column shows the
 number of reporting periods covered by each dataset.
 
 ### Annual data
@@ -51,12 +50,12 @@ number of reporting periods covered by each dataset.
 
 ### Metadata
 
-| Function | First period | Last period | Periods | Raw data | Version |
-|:---|:---|:---|---:|:---|---:|
-| [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md) | 2024-25 | 2024-25 | 1 | [Download](https://files.digital.nhs.uk/BE/AAF6D0/psych-ther-ann-2024-25-meta.xlsx) | 0.1.0 |
-| [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | 2024-25 | 2024-25 | 1 | [Download](https://files.digital.nhs.uk/BE/AAF6D0/psych-ther-ann-2024-25-meta.xlsx) | 0.1.0 |
-| [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | 2025-07 | 2025-07 | 1 | [Download](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/reports/nhstalkingtherapies-monthly-metadata-20250710.xlsx) | 0.1.0 |
-| [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | current | current | 1 | [Download](https://directory.spineservices.nhs.uk/ORD/2-0-0/organisations) | 0.1.0 |
+| Function | First period | Last period | Periods | Version |
+|:---|:---|:---|---:|---:|
+| [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md) | 2024-25 | 2024-25 | 1 | 0.1.0 |
+| [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | 2024-25 | 2024-25 | 1 | 0.1.0 |
+| [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | 2025-07 | 2025-07 | 1 | 0.1.0 |
+| [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | current | current | 1 | 0.1.0 |
 
 ## For developers
 
