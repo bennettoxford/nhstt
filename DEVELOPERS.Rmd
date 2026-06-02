@@ -6,7 +6,7 @@ output:
 
 <!-- DEVELOPERS.md is generated from DEVELOPERS.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r knit-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 ## Requirements
 
-- R (>= 4.0), [just](https://github.com/casey/just), [air](https://github.com/posit-dev/air/), [Quarto CLI](https://quarto.org/docs/get-started/)
+- R (>= 4.0), [just](https://github.com/casey/just), [air](https://github.com/posit-dev/air/), [Quarto CLI](https://quarto.org/docs/get-started/), [gh](https://cli.github.com/)
 
 Run `just list` to see all available recipes.
 
@@ -100,11 +100,9 @@ Each dataset is released independently — updating monthly data does not affect
 
 1. Update raw config (e.g. `raw_monthly_data_config.yml`) with new sources
 2. `just build-data` — rebuilds all parquets and writes to `data-raw/`
-3. Create a GitHub Release with a dataset-specific tag and upload that parquet:
+3. Create a GitHub Release using `just release` (run after merging to main):
    ```bash
-   gh release create activity-performance-monthly-v0.4.0 \
-     data-raw/activity_performance_monthly.parquet \
-     --title "activity-performance-monthly v0.4.0"
+   just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
    ```
 4. Update `version` and `url` for that dataset only in `inst/config/tidy_data_sources.yml`
 

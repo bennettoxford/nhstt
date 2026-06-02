@@ -18,6 +18,14 @@ document:
 build:
     Rscript --quiet --vanilla -e 'pak::local_install()'
 
+# Create a GitHub Release for a dataset — run after merging to main
+# Usage: just release <dataset> <version> [notes]
+# Example: just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
+release dataset version notes='':
+    #!/usr/bin/env bash
+    tag=$(echo "{{dataset}}" | tr '_' '-')-v{{version}}
+    gh release create "$tag" data-raw/{{dataset}}.parquet --notes "{{notes}}"
+
 # Build all pre-built tidy parquets and write to data-raw/ (slow — downloads raw data)
 build-data:
     Rscript --quiet --vanilla -e '\

@@ -7,7 +7,8 @@
 
 - R (\>= 4.0), [just](https://github.com/casey/just),
   [air](https://github.com/posit-dev/air/), [Quarto
-  CLI](https://quarto.org/docs/get-started/)
+  CLI](https://quarto.org/docs/get-started/),
+  [gh](https://cli.github.com/)
 
 Run `just list` to see all available recipes.
 
@@ -44,8 +45,8 @@ One period timed per dataset; extrapolated to full build. Re-run with
 
 | Dataset | Timed period | Periods | Time for one (s) | Est. full build (min) |
 |:---|:---|---:|---:|---:|
-| `key_measures_annual` | 2024-25 | 8 | 58.6 | 7.8 |
-| `proms_annual` | 2024-25 | 6 | 110.5 | 11.0 |
+| `key_measures_annual` | 2024-25 | 8 | 58.8 | 7.8 |
+| `proms_annual` | 2024-25 | 6 | 112.1 | 11.2 |
 | `therapy_position_annual` | 2024-25 | 6 | 0.1 | 0.0 |
 | `activity_performance_monthly` | 2026-03 | 35 | 0.5 | 0.3 |
 
@@ -59,13 +60,11 @@ affect annual dataset versions or caches.
 
 2.  `just build-data` — rebuilds all parquets and writes to `data-raw/`
 
-3.  Create a GitHub Release with a dataset-specific tag and upload that
-    parquet:
+3.  Create a GitHub Release using `just release` (run after merging to
+    main):
 
     ``` bash
-    gh release create activity-performance-monthly-v0.4.0 \
-      data-raw/activity_performance_monthly.parquet \
-      --title "activity-performance-monthly v0.4.0"
+    just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
     ```
 
 4.  Update `version` and `url` for that dataset only in
