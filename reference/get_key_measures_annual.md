@@ -25,11 +25,6 @@ get_key_measures_annual(periods = NULL, use_cache = TRUE)
 
 Tibble with key measures data in long format
 
-## Details
-
-Raw data is automatically stored in parquet format for efficient
-compression.
-
 ## References
 
 NHS England. [NHS Talking Therapies for Anxiety and Depression Annual
@@ -45,7 +40,7 @@ key_measures_df <- get_key_measures_annual()
 # Get specific annual periods
 key_measures_df <- get_key_measures_annual(periods = c("2023-24", "2024-25"))
 
-# Bypass cache to use latest tidying logic
-key_measures_df <- get_key_measures_annual(periods = "2023-24", use_cache = FALSE)
+# Re-download to get the latest data version
+key_measures_df <- get_key_measures_annual(use_cache = FALSE)
 } # }
 ```

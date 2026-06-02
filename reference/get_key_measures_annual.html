@@ -87,10 +87,6 @@ If NULL (default), returns all available annual periods</p></dd>
     <p>Tibble with key measures data in long format</p>
     </div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Raw data is automatically stored in parquet format for efficient compression.</p>
-    </div>
-    <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>NHS England.
 <a href="https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports" class="external-link">NHS Talking Therapies for Anxiety and Depression Annual Reports</a></p>
@@ -105,8 +101,8 @@ If NULL (default), returns all available annual periods</p></dd>
 <span class="r-in"><span><span class="co"># Get specific annual periods</span></span></span>
 <span class="r-in"><span><span class="va">key_measures_df</span> <span class="op">&lt;-</span> <span class="fu">get_key_measures_annual</span><span class="op">(</span>periods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2023-24"</span>, <span class="st">"2024-25"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Bypass cache to use latest tidying logic</span></span></span>
-<span class="r-in"><span><span class="va">key_measures_df</span> <span class="op">&lt;-</span> <span class="fu">get_key_measures_annual</span><span class="op">(</span>periods <span class="op">=</span> <span class="st">"2023-24"</span>, use_cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Re-download to get the latest data version</span></span></span>
+<span class="r-in"><span><span class="va">key_measures_df</span> <span class="op">&lt;-</span> <span class="fu">get_key_measures_annual</span><span class="op">(</span>use_cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

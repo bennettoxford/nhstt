@@ -26,7 +26,6 @@ library(nhstt)
 km_annual <- get_key_measures_annual(periods = "2024-25")
 
 # Load all monthly activity performance datasets
-# Note, this will take a few minutes
 ap_monthly <- get_activity_performance_monthly()
 ```
 
@@ -54,19 +53,6 @@ ap_monthly <- get_activity_performance_monthly()
 | [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | 2025-07 | 2025-07 | 1 | 0.1.0 |
 | [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | current | current | 1 | 0.1.0 |
-
-## Time to download and tidy the data
-
-Approximate download and processing times per period. Your times might
-be a bit faster or slower depending on your internet speed and computer
-setup.
-
-| Function | Download per period | Tidy per period | Total (all periods) |
-|:---|---:|---:|---:|
-| [`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md) | 1.6 sec | 58.6 sec | 8 min |
-| [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md) | 0.52 sec | 1.9 min | 11.3 min |
-| [`get_therapy_position_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_position_annual.md) | 0.24 sec | 0.09 sec | 2 sec |
-| [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) | 4.6 sec | 0.5 sec | 3 min |
 
 ## For developers
 

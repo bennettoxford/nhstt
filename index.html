@@ -103,7 +103,6 @@
 <span><span class="va">km_annual</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_key_measures_annual.html">get_key_measures_annual</a></span><span class="op">(</span>periods <span class="op">=</span> <span class="st">"2024-25"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load all monthly activity performance datasets</span></span>
-<span><span class="co"># Note, this will take a few minutes</span></span>
 <span><span class="va">ap_monthly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -215,51 +214,6 @@
 </tbody>
 </table>
 </div>
-</div>
-<div class="section level2">
-<h2 id="time-to-download-and-tidy-the-data">Time to download and tidy the data<a class="anchor" aria-label="anchor" href="#time-to-download-and-tidy-the-data"></a>
-</h2>
-<p>Approximate download and processing times per period. Your times might be a bit faster or slower depending on your internet speed and computer setup.</p>
-<table class="table">
-<colgroup>
-<col width="25%">
-<col width="25%">
-<col width="25%">
-<col width="25%">
-</colgroup>
-<thead><tr>
-<th align="left">Function</th>
-<th align="right">Download per period</th>
-<th align="right">Tidy per period</th>
-<th align="right">Total (all periods)</th>
-</tr></thead>
-<tbody>
-<tr>
-<td align="left"><code><a href="reference/get_key_measures_annual.html">get_key_measures_annual()</a></code></td>
-<td align="right">1.6 sec</td>
-<td align="right">58.6 sec</td>
-<td align="right">8 min</td>
-</tr>
-<tr>
-<td align="left"><code><a href="reference/get_proms_annual.html">get_proms_annual()</a></code></td>
-<td align="right">0.52 sec</td>
-<td align="right">1.9 min</td>
-<td align="right">11.3 min</td>
-</tr>
-<tr>
-<td align="left"><code><a href="reference/get_therapy_position_annual.html">get_therapy_position_annual()</a></code></td>
-<td align="right">0.24 sec</td>
-<td align="right">0.09 sec</td>
-<td align="right">2 sec</td>
-</tr>
-<tr>
-<td align="left"><code><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code></td>
-<td align="right">4.6 sec</td>
-<td align="right">0.5 sec</td>
-<td align="right">3 min</td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="section level2">
 <h2 id="for-developers">For developers<a class="anchor" aria-label="anchor" href="#for-developers"></a>

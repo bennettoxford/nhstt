@@ -59,58 +59,143 @@
 <div id="notes-for-developers" class="section level1">
 
 <div class="section level2">
-<h2 id="system-requirements">System requirements<a class="anchor" aria-label="anchor" href="#system-requirements"></a></h2>
-<ul><li><a href="https://github.com/casey/just" class="external-link">just</a></li>
-<li>R (version 4.0 or higher)</li>
-<li>
-<a href="https://github.com/posit-dev/air/" class="external-link">air</a> for code formatting</li>
-<li>
-<a href="https://quarto.org/docs/get-started/" class="external-link">Quarto CLI</a> and the <a href="https://github.com/quarto-dev/quarto-r" class="external-link">quarto R package</a>
+<h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a></h2>
+<ul><li>R (&gt;= 4.0), <a href="https://github.com/casey/just" class="external-link">just</a>, <a href="https://github.com/posit-dev/air/" class="external-link">air</a>, <a href="https://quarto.org/docs/get-started/" class="external-link">Quarto CLI</a>, <a href="https://cli.github.com/" class="external-link">gh</a>
 </li>
-</ul></div>
-<div class="section level2">
-<h2 id="local-development-environment">Local development environment<a class="anchor" aria-label="anchor" href="#local-development-environment"></a></h2>
-<p>The <code>just</code> command provides a list of available recipes, most of them are also available as shortcuts in Positron or RStudio:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">just</span> list</span></code></pre></div>
+</ul><p>Run <code>just list</code> to see all available recipes.</p>
 </div>
 <div class="section level2">
-<h2 id="r-package-development">R package development<a class="anchor" aria-label="anchor" href="#r-package-development"></a></h2>
-<ul><li><a href="https://r-pkgs.org/" class="external-link">R Packages (2e) by Hadley Wickham and Jennifer Bryan</a></li>
-<li><a href="https://adv-r.hadley.nz/" class="external-link">Advanced R by Hadley Wickham</a></li>
-<li><a href="https://cran.r-project.org/doc/FAQ/R-exts.html#Creating-R-packages" class="external-link">Creating R packages Kurt Hornik and the R Core Team</a></li>
-</ul></div>
-<div class="section level2">
-<h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
-<p>Unit tests are implemented with <em>teststhat</em> in <code>tests/testthat</code> (run <code>just test-unit</code>). To keep unit tests fast but still test the full pipeline (download and tidy) integration tests are in <code>tests/integration.R</code> (run <code>just test-integration</code>). There may be a way to also add integration tests to testthat without running them every time (possible using environment variables), but I haven’t explored that yet. The just recipe <code>just test</code> runs both tests.</p>
+<h2 id="data-pipeline">Data pipeline<a class="anchor" aria-label="anchor" href="#data-pipeline"></a></h2>
+<p>Users call <code>get_*()</code>, which reads <code>tidy_data_sources.yml</code> for the current version and URL, downloads the pre-built parquet if not already cached, and caches it to <code>~/.cache/R/nhstt/tidy/{dataset}.parquet</code>. Subsequent calls return the cached file instantly.</p>
+<p>Developers run <code>build_tidy_data(dataset)</code> (<code>just build-data</code> for all), which downloads raw source files, applies the tidy pipeline for every period, and writes a combined parquet to <code>data-raw/</code>. Parquets are published as GitHub Release assets and are directly usable from Python, Julia, or any language that reads parquet.</p>
+<div class="section level3">
+<h3 id="available-datasets">Available datasets<a class="anchor" aria-label="anchor" href="#available-datasets"></a></h3>
+<table style="width:100%;" class="table"><colgroup><col width="16%"><col width="16%"><col width="16%"><col width="16%"><col width="16%"><col width="16%"></colgroup><thead><tr><th align="left">Function</th>
+<th align="left">Frequency</th>
+<th align="left">First period</th>
+<th align="left">Last period</th>
+<th align="right">Periods</th>
+<th align="right">Version</th>
+</tr></thead><tbody><tr><td align="left"><code><a href="reference/get_key_measures_annual.html">get_key_measures_annual()</a></code></td>
+<td align="left">annual</td>
+<td align="left">2017-18</td>
+<td align="left">2024-25</td>
+<td align="right">8</td>
+<td align="right">0.2.0</td>
+</tr><tr><td align="left"><code><a href="reference/get_proms_annual.html">get_proms_annual()</a></code></td>
+<td align="left">annual</td>
+<td align="left">2019-20</td>
+<td align="left">2024-25</td>
+<td align="right">6</td>
+<td align="right">0.1.0</td>
+</tr><tr><td align="left"><code><a href="reference/get_therapy_position_annual.html">get_therapy_position_annual()</a></code></td>
+<td align="left">annual</td>
+<td align="left">2019-20</td>
+<td align="left">2024-25</td>
+<td align="right">6</td>
+<td align="right">0.1.0</td>
+</tr><tr><td align="left"><code><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code></td>
+<td align="left">monthly</td>
+<td align="left">2023-05</td>
+<td align="left">2026-03</td>
+<td align="right">35</td>
+<td align="right">0.3.0</td>
+</tr><tr><td align="left"><code><a href="reference/get_metadata_measures_annual.html">get_metadata_measures_annual()</a></code></td>
+<td align="left">annual</td>
+<td align="left">2024-25</td>
+<td align="left">2024-25</td>
+<td align="right">1</td>
+<td align="right">0.1.0</td>
+</tr><tr><td align="left"><code><a href="reference/get_metadata_variables_annual.html">get_metadata_variables_annual()</a></code></td>
+<td align="left">annual</td>
+<td align="left">2024-25</td>
+<td align="left">2024-25</td>
+<td align="right">1</td>
+<td align="right">0.1.0</td>
+</tr><tr><td align="left"><code><a href="reference/get_metadata_monthly.html">get_metadata_monthly()</a></code></td>
+<td align="left">monthly</td>
+<td align="left">2025-07</td>
+<td align="left">2025-07</td>
+<td align="right">1</td>
+<td align="right">0.1.0</td>
+</tr><tr><td align="left"><code><a href="reference/get_metadata_providers.html">get_metadata_providers()</a></code></td>
+<td align="left">live</td>
+<td align="left">current</td>
+<td align="left">current</td>
+<td align="right">1</td>
+<td align="right">0.1.0</td>
+</tr></tbody></table></div>
+<div class="section level3">
+<h3 id="approximate-build-times">Approximate build times<a class="anchor" aria-label="anchor" href="#approximate-build-times"></a></h3>
+<p>One period timed per dataset; extrapolated to full build. Re-run with <code>just render-developers</code>.</p>
+<table class="table"><colgroup><col width="20%"><col width="20%"><col width="20%"><col width="20%"><col width="20%"></colgroup><thead><tr><th align="left">Dataset</th>
+<th align="left">Timed period</th>
+<th align="right">Periods</th>
+<th align="right">Time for one (s)</th>
+<th align="right">Est. full build (min)</th>
+</tr></thead><tbody><tr><td align="left"><code>key_measures_annual</code></td>
+<td align="left">2024-25</td>
+<td align="right">8</td>
+<td align="right">58.8</td>
+<td align="right">7.8</td>
+</tr><tr><td align="left"><code>proms_annual</code></td>
+<td align="left">2024-25</td>
+<td align="right">6</td>
+<td align="right">112.1</td>
+<td align="right">11.2</td>
+</tr><tr><td align="left"><code>therapy_position_annual</code></td>
+<td align="left">2024-25</td>
+<td align="right">6</td>
+<td align="right">0.1</td>
+<td align="right">0.0</td>
+</tr><tr><td align="left"><code>activity_performance_monthly</code></td>
+<td align="left">2026-03</td>
+<td align="right">35</td>
+<td align="right">0.5</td>
+<td align="right">0.3</td>
+</tr></tbody></table></div>
 </div>
 <div class="section level2">
-<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a></h2>
-<p>Documentation is built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>.</p>
-</div>
-<div class="section level2">
-<h2 id="development-workflow">Development workflow<a class="anchor" aria-label="anchor" href="#development-workflow"></a></h2>
-<ol style="list-style-type: decimal"><li>Install package locally: <code>just build</code> (or <code><a href="https://pak.r-lib.org/reference/local_install.html" class="external-link">pak::local_install()</a></code>)</li>
-<li>Make changes to code</li>
-<li>Run <code>just fix</code> to format</li>
-<li>Run <code>just document</code> if you changed roxygen2 docs</li>
-<li>Run <code>just test</code> to verify tests pass</li>
-<li>For schema updates: <code>just update-schemas</code>
+<h2 id="publishing-new-data">Publishing new data<a class="anchor" aria-label="anchor" href="#publishing-new-data"></a></h2>
+<p>Each dataset is released independently — updating monthly data does not affect annual dataset versions or caches.</p>
+<ol style="list-style-type: decimal"><li><p>Update raw config (e.g. <code>raw_monthly_data_config.yml</code>) with new sources</p></li>
+<li><p><code>just build-data</code> — rebuilds all parquets and writes to <code>data-raw/</code></p></li>
+<li>
+<p>Create a GitHub Release using <code>just release</code> (run after merging to main):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">just</span> release activity_performance_monthly 0.4.0 <span class="st">"Monthly activity and performance data YYYY-MM to YYYY-MM"</span></span></code></pre></div>
 </li>
-<li>Run <code>just check</code> before submitting a PR</li>
-<li>Update docs with <code>just docs</code> if needed</li>
+<li><p>Update <code>version</code> and <code>url</code> for that dataset only in <code>inst/config/tidy_data_sources.yml</code></p></li>
 </ol></div>
 <div class="section level2">
 <h2 id="configuration-files">Configuration files<a class="anchor" aria-label="anchor" href="#configuration-files"></a></h2>
-<p>Data sources and transformations are defined in <code>inst/config/</code> as YAML files:</p>
-<p><strong>Raw data sources</strong> (archives, URLs, periods): - <code>raw_annual_data_config.yml</code>: Annual datasets - <code>raw_monthly_data_config.yml</code>: Monthly datasets - <code>raw_metadata_config.yml</code>: Metadata</p>
-<p><strong>Tidy transformations</strong> (filters, derivations, output columns): - <code>tidy_annual_data_config.yml</code> - <code>tidy_monthly_data_config.yml</code> - <code>tidy_metadata_config.yml</code></p>
-<p><strong>Schemas</strong> (auto-generated column tracking): - Run <code>just update-schemas</code> after modifying <code>raw_annual_data_config.yml</code> - Schemas saved to <code>inst/schemas/annual_main_schemas.csv</code></p>
+<p>All in <code>inst/config/</code>:</p>
+<ul><li>
+<code>tidy_data_sources.yml</code> — version + GitHub Release URL per dataset (user-facing)</li>
+<li>
+<code>raw_*_config.yml</code> — raw source archives, URLs, and periods</li>
+<li>
+<code>tidy_*_config.yml</code> — tidy transformations (filters, derivations, columns)</li>
+</ul><p>After changing raw config column structure, run <code>just update-schemas</code> to update <code>inst/schemas/</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="dev-utilities">Dev utilities<a class="anchor" aria-label="anchor" href="#dev-utilities"></a></h2>
-<p>Internal functions in <code>R/dev-utils.R</code> help explore archive contents before exposing new data through the package: - <code>list_available_archives()</code>: See all archives and periods - <code>list_archive_files("annual_main", "2024-25")</code>: List CSV files in an archive - <code>read_archive_file("annual_main", "2024-25", "main")</code>: Read specific files - <code>compare_schemas("main")</code>: Compare column changes across periods</p>
-<p>Access via <code>devtools::load_all()</code> or <code>nhstt:::function_name()</code>.</p>
-</div>
+<p>Internal functions in <code>R/dev-utils.R</code> (load with <code>devtools::load_all()</code>):</p>
+<ul><li>
+<code><a href="reference/list_archives_periods.html">list_archives_periods()</a></code> — all archives and available periods</li>
+<li>
+<code>list_archive_files("annual_main", "2024-25")</code> — CSV files inside an archive</li>
+<li>
+<code>read_archive_file("annual_main", "2024-25", "main")</code> — read a specific file</li>
+<li>
+<code>compare_schemas("main")</code> — column changes across periods</li>
+<li>
+<code>build_tidy_data("dataset_name")</code> — build combined parquet for one dataset</li>
+</ul></div>
+<div class="section level2">
+<h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
+<ul><li><a href="https://r-pkgs.org/" class="external-link">R Packages (2e)</a></li>
+<li><a href="https://adv-r.hadley.nz/" class="external-link">Advanced R</a></li>
+</ul></div>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -30,11 +30,6 @@ get_therapy_position_annual(periods = NULL, use_cache = TRUE)
 
 Tibble with key measures data in long format
 
-## Details
-
-Raw data is automatically stored in parquet format for efficient
-compression.
-
 ## References
 
 NHS England. [NHS Talking Therapies for Anxiety and Depression Annual
@@ -50,7 +45,7 @@ therapy_position_df <- get_therapy_position_annual()
 # Get specific annual periods
 therapy_position_df <- get_therapy_position_annual(periods = c("2023-24", "2024-25"))
 
-# Bypass cache to use latest tidying logic
-therapy_position_df <- get_therapy_position_annual(periods = "2023-24", use_cache = FALSE)
+# Re-download to get the latest data version
+therapy_position_df <- get_therapy_position_annual(use_cache = FALSE)
 } # }
 ```
