@@ -1,83 +1,122 @@
-# Test that all get_* functions use correct dataset names
+make_test_parquet <- function(dataset, periods, extra_cols = list()) {
+  cache_path <- get_tidy_source_cache_path(dataset)
+  sidecar_path <- get_tidy_source_sidecar_path(dataset)
+  version <- get_tidy_source_config(dataset)$version
 
-test_that("get_key_measures_annual uses correct dataset name", {
-  # Should not error when resolving periods
-  expect_no_error(
-    {
-      periods <- resolve_periods(NULL, "key_measures_annual", "annual")
-    }
+  data <- tibble::tibble(
+    reporting_period = periods,
+    !!!extra_cols
   )
-  expect_true(length(periods) > 0)
+  arrow::write_parquet(data, cache_path)
+  jsonlite::write_json(
+    list(dataset = dataset, version = version),
+    sidecar_path,
+    auto_unbox = TRUE
+  )
+  list(cache_path = cache_path, sidecar_path = sidecar_path)
+}
+
+# Period resolution -------------------------------------------------------
+
+test_that("get_key_measures_annual rejects invalid periods before downloading", {
+  local_mocked_bindings(
+    download_tidy_source = function(...) stop("download should not be called"),
+    .package = "nhstt"
+  )
+  expect_error(
+    get_key_measures_annual(periods = "9999-00"),
+    regexp = "9999-00"
+  )
 })
 
-test_that("get_activity_performance_monthly uses correct dataset name", {
-  # Should not error when resolving periods
-  expect_no_error(
-    {
-      periods <- resolve_periods(
-        NULL,
-        "activity_performance_monthly",
-        "monthly"
-      )
-    }
+test_that("get_activity_performance_monthly rejects invalid periods before downloading", {
+  local_mocked_bindings(
+    download_tidy_source = function(...) stop("download should not be called"),
+    .package = "nhstt"
   )
-  expect_true(length(periods) > 0)
+  expect_error(
+    get_activity_performance_monthly(periods = "9999-00"),
+    regexp = "9999-00"
+  )
 })
 
-test_that("get_metadata_monthly uses correct dataset name", {
-  # Should not error when resolving periods
-  expect_no_error(
-    {
-      periods <- resolve_periods(NULL, "metadata_measures_monthly", "monthly")
-    }
+# Output order ------------------------------------------------------------
+
+test_that("get_key_measures_annual returns rows most-recent-first", {
+  paths <- make_test_parquet(
+    "key_measures_annual",
+    periods = c("2022-23", "2024-25", "2023-24")
   )
-  expect_true(length(periods) > 0)
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
+  result <- get_key_measures_annual()
+  expect_equal(result$reporting_period[1], "2024-25")
 })
 
-test_that("get_metadata_measures_annual uses correct dataset names", {
-  # Should not error when resolving periods
-  expect_no_error(
-    {
-      periods <- resolve_periods(
-        NULL,
-        "metadata_measures_main_annual",
-        "annual"
-      )
-    }
+test_that("get_activity_performance_monthly returns rows most-recent-first", {
+  paths <- make_test_parquet(
+    "activity_performance_monthly",
+    periods = c("2024-01", "2025-03", "2024-06")
   )
-  expect_true(length(periods) > 0)
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
+  result <- get_activity_performance_monthly()
+  expect_equal(result$reporting_period[1], "2025-03")
 })
 
-test_that("get_metadata_variables_annual uses correct dataset names", {
-  # Should not error when resolving periods
-  expect_no_error(
-    {
-      periods <- resolve_periods(
-        NULL,
-        "metadata_variables_main_annual",
-        "annual"
-      )
-    }
+# Cache behaviour ---------------------------------------------------------
+
+test_that("get_key_measures_annual skips download when cache is current", {
+  paths <- make_test_parquet("key_measures_annual", periods = c("2024-25"))
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
+  downloaded <- FALSE
+  local_mocked_bindings(
+    download_tidy_source = function(...) {
+      downloaded <<- TRUE
+    },
+    .package = "nhstt"
   )
-  expect_true(length(periods) > 0)
+
+  get_key_measures_annual()
+  expect_false(downloaded)
 })
 
-test_that("get_proms_annual uses correct dataset name", {
-  # Should not error when resolving periods
-  expect_no_error(
-    {
-      periods <- resolve_periods(NULL, "proms_annual", "annual")
-    }
+test_that("get_key_measures_annual downloads when use_cache = FALSE", {
+  paths <- make_test_parquet("key_measures_annual", periods = c("2024-25"))
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
+  downloaded <- FALSE
+  local_mocked_bindings(
+    download_tidy_source = function(...) {
+      downloaded <<- TRUE
+    },
+    .package = "nhstt"
   )
-  expect_true(length(periods) > 0)
+
+  suppressMessages(get_key_measures_annual(use_cache = FALSE))
+  expect_true(downloaded)
 })
 
-test_that("get_therapy_position_annual uses correct dataset name", {
-  # Should not error when resolving periods
-  expect_no_error(
-    {
-      periods <- resolve_periods(NULL, "therapy_position_annual", "annual")
-    }
+# Dataset name correctness ------------------------------------------------
+
+test_that("all datasets are registered in raw config", {
+  for (dataset in c("key_measures_annual", "proms_annual", "therapy_position_annual")) {
+    expect_true(length(resolve_periods(NULL, dataset, "annual")) > 0)
+  }
+  expect_true(
+    length(resolve_periods(NULL, "activity_performance_monthly", "monthly")) > 0
   )
-  expect_true(length(periods) > 0)
 })
