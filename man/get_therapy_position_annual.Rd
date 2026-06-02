@@ -21,9 +21,6 @@ A course of therapy is a set of 2 or more attended treatment appointments where 
 Counts are based on referrals finishing a course of treatment in the year.
 Other low/high internsity and low/high employment support therapy types have been excluded from theses analyses.
 }
-\details{
-Raw data is automatically stored in parquet format for efficient compression.
-}
 \examples{
 \dontrun{
 # Get all annual periods
@@ -32,8 +29,8 @@ therapy_position_df <- get_therapy_position_annual()
 # Get specific annual periods
 therapy_position_df <- get_therapy_position_annual(periods = c("2023-24", "2024-25"))
 
-# Bypass cache to use latest tidying logic
-therapy_position_df <- get_therapy_position_annual(periods = "2023-24", use_cache = FALSE)
+# Re-download to get the latest data version
+therapy_position_df <- get_therapy_position_annual(use_cache = FALSE)
 }
 }
 \references{
