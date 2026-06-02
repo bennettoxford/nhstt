@@ -48,8 +48,7 @@ ap_monthly <- get_activity_performance_monthly()
 ## Available NHS Talking Therapies data
 
 Data can be accessed from R using the `get_*()` functions or downloaded directly using the links in the tables below.
-Annual and monthly datasets are also available as [Parquet](https://parquet.apache.org/) files from the GitHub Releases page. 
-Metadata datasets link to the raw Excel files published by NHS England.
+Annual and monthly datasets are also available as [Parquet](https://parquet.apache.org/) files from the GitHub Releases page.
 The _Periods_ column shows the number of reporting periods covered by each dataset.
 
 ### Annual data
@@ -129,35 +128,9 @@ knitr::kable(
 ### Metadata
 
 ```{r datasets-metadata, echo = FALSE, message = FALSE}
-raw_meta_config <- yaml::read_yaml(
-  system.file("config/raw_metadata_config.yml", package = "nhstt")
-)
-
-raw_url_lookup <- names(raw_meta_config$datasets) |>
-  purrr::map(\(ds_name) {
-    ds <- raw_meta_config$datasets[[ds_name]]
-    if (!is.null(ds$archive)) {
-      url <- raw_meta_config$archives[[ds$archive]][[1]]$url
-    } else {
-      url <- ds$sources[[1]]$url
-    }
-    dplyr::tibble(get_function = ds$get_function, raw_data = url)
-  }) |>
-  dplyr::bind_rows() |>
-  dplyr::distinct() |>
-  dplyr::mutate(raw_data = paste0("[Download](", raw_data, ")"))
-
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(stringr::str_detect(title, "metadata")) |>
-  dplyr::left_join(raw_url_lookup, by = "get_function") |>
-  dplyr::select(
-    get_function,
-    first_period,
-    last_period,
-    n_periods,
-    raw_data,
-    version
-  ) |>
+  dplyr::select(get_function, first_period, last_period, n_periods, version) |>
   dplyr::mutate(get_function = paste0("`", get_function, "()`")) |>
   dplyr::distinct()
 
@@ -169,10 +142,9 @@ knitr::kable(
     "First period",
     "Last period",
     "Periods",
-    "Raw data",
     "Version"
   ),
-  align = c("l", "l", "l", "r", "l", "r")
+  align = c("l", "l", "l", "r", "r")
 )
 ```
 
