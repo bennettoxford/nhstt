@@ -13,10 +13,9 @@ vignette: >
 
 In a [previous blog post](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/) we introduced the NHS TT data reports that NHS England publishes openly alongside interactive dashboards for exploring key measures directly in a browser.
 These datasets cover various measures, including referral activity, waiting times, clinical outcomes, and patient-reported outcome measures.
-The value of these public data has been demonstrated by @Clark2018a, who used publicly available NHS TT reports to study between-service variation in clinical outcomes.
+The value of these datasets has been demonstrated by @Clark2018a, who used publicly available NHS TT reports to study between-service variation in clinical outcomes.
 They found that organisational factors including waiting times, missed appointments, and the proportion of patients receiving a course of treatment were associated with rates of reliable recovery and improvement.
 This illustrates the broader role of public reporting in supporting transparency, benchmarking, and research on variation in routine psychological therapy services [@Clark2018a; @Clark2018b].
-The monthly data complement the annual publications by providing more timely signals for monitoring service activity and identifying measures or periods that warrant closer investigation.
 
 The [*nhstt* R package](https://bennettoxford.github.io/nhstt/) is built on top of these publicly available resources and designed to complement them.
 It provides an additional point of access to the same data in a tidy, analysis-ready format across all available reporting periods.
@@ -157,9 +156,8 @@ These codes group referral outcomes into three categories: (1) referred but not 
 This post focuses on the last category, which covers patients who received two or more sessions, and captures the recorded reason their treatment ended.
 
 The monthly dataset includes counts for each end code, available from `r format(START_DATE_NHSTT, "%B %Y")` to `r format(END_DATE_NHSTT, "%B %Y")`.
-The table below shows the five end codes in this group, with total recorded events and the number of services contributing data.
-The four most commonly recorded end codes are used in the charts below.
-The Deceased end code (M069) is recorded in too few referrals to visualise.
+The table below shows the five end codes in this category, with total recorded events and the number of services contributing data.
+The four most commonly recorded end codes are presented in the figures below.
 All [descriptions of monthly measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html) implemented in the *nhstt* R package can be explored online.
 
 ```{r}
@@ -209,7 +207,7 @@ df_monthly_metadata |>
 
 ## Monthly trends and variation in treatment end codes
 
-Across `r length(unique(df_activity_performance$reporting_period))` reporting periods, these monthly counts make it possible to look beyond annual totals and examine whether patterns in treatment end codes are stable or change over time.
+Across `r length(unique(df_activity_performance$reporting_period))` reporting periods, these monthly counts make it possible to look beyond annual totals and examine trends and variation in treatment end codes over time.
 We first show service-level trends across all services, then use decile bands to place two example services in context.
 
 ### Trends across all services
@@ -224,7 +222,7 @@ Because these are counts rather than rates, differences between services will pa
 #| message: false
 #| fig-width: 10
 #| fig-height: 9
-#| fig-cap: "End codes for referrals seen and taken on for a course of treatment in the monthly NHS TT dataset: monthly counts across all NHS TT services for the four most commonly recorded end codes."
+#| fig-cap: "Monthly trends across all NHS TT services (one line per service) for the four most commonly recorded end codes."
 # Figure: monthly counts for the four most commonly recorded end codes across all NHS TT services.
 
 fig_selected_activity_performance <- df_activity_performance_selected |>
@@ -272,7 +270,7 @@ These charts summarise activity patterns and are not intended as rankings of ser
 #| message: false
 #| fig-width: 10
 #| fig-height: 10
-#| fig-cap: "End codes for referrals seen and taken on for a course of treatment in the monthly NHS TT dataset: decile charts across all NHS TT services for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median. Two example services are shown as coloured lines."
+#| fig-cap: "Decile charts across all NHS TT services for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median. Two example services are shown as coloured lines."
 # Figure: decile chart showing the distribution across all services, with two example services highlighted.
 # Calculate percentiles across all services for each reporting period
 
@@ -412,8 +410,8 @@ ggplot() +
 
 ## Try it yourself
 
-The *nhstt* package makes it easier to access publicly available NHS TT data, is free to use, and is updated regularly as NHS England publishes new reports.
-It provides access to each dataset in a tidy, analysis-ready format, with no need to locate or parse the underlying files.
+The *nhstt* package makes it easy to access publicly available NHS TT data for research, is free to use, and is updated regularly as NHS England publishes new reports.
+It provides access to each dataset in a tidy, analysis-ready format, with no need to find the underlying files.
 Whether you are interested in trends in referral activity, variation in waiting times across services, or changes in clinical outcomes over time, the data are there to be explored.
 We recommend checking the NHS England [data quality notes](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx) before using these data, as they describe known issues affecting specific reporting periods or measures.
 
