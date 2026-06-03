@@ -11,8 +11,8 @@ we introduced the NHS TT data reports that NHS England publishes openly
 alongside interactive dashboards for exploring key measures directly in
 a browser. These datasets cover various measures, including referral
 activity, waiting times, clinical outcomes, and patient-reported outcome
-measures. The value of these public data has been demonstrated by Clark
-et al. ([2018](#ref-Clark2018a)), who used publicly available NHS TT
+measures. The value of these datasets has been demonstrated by Clark et
+al. ([2018](#ref-Clark2018a)), who used publicly available NHS TT
 reports to study between-service variation in clinical outcomes. They
 found that organisational factors including waiting times, missed
 appointments, and the proportion of patients receiving a course of
@@ -20,10 +20,7 @@ treatment were associated with rates of reliable recovery and
 improvement. This illustrates the broader role of public reporting in
 supporting transparency, benchmarking, and research on variation in
 routine psychological therapy services ([Clark et al.
-2018](#ref-Clark2018a); [Clark 2018](#ref-Clark2018b)). The monthly data
-complement the annual publications by providing more timely signals for
-monitoring service activity and identifying measures or periods that
-warrant closer investigation.
+2018](#ref-Clark2018a); [Clark 2018](#ref-Clark2018b)).
 
 The [*nhstt* R package](https://bennettoxford.github.io/nhstt/) is built
 on top of these publicly available resources and designed to complement
@@ -47,10 +44,9 @@ the recorded reason their treatment ended.
 
 The monthly dataset includes counts for each end code, available from
 May 2023 to March 2026. The table below shows the five end codes in this
-group, with total recorded events and the number of services
-contributing data. The four most commonly recorded end codes are used in
-the charts below. The Deceased end code (M069) is recorded in too few
-referrals to visualise. All [descriptions of monthly
+category, with total recorded events and the number of services
+contributing data. The four most commonly recorded end codes are
+presented in the figures below. All [descriptions of monthly
 measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html)
 implemented in the *nhstt* R package can be explored online.
 
@@ -70,10 +66,10 @@ quarto-disable-processing="false" quarto-bootstrap="false"}
 ## Monthly trends and variation in treatment end codes
 
 Across 35 reporting periods, these monthly counts make it possible to
-look beyond annual totals and examine whether patterns in treatment end
-codes are stable or change over time. We first show service-level trends
-across all services, then use decile bands to place two example services
-in context.
+look beyond annual totals and examine trends and variation in treatment
+end codes over time. We first show service-level trends across all
+services, then use decile bands to place two example services in
+context.
 
 ### Trends across all services
 
@@ -84,14 +80,12 @@ it is stable over time. Because these are counts rather than rates,
 differences between services will partly reflect differences in service
 size.
 
-![End codes for referrals seen and taken on for a course of treatment in
-the monthly NHS TT dataset: monthly counts across all NHS TT services
-for the four most commonly recorded end
+![Monthly trends across all NHS TT services (one line per service) for
+the four most commonly recorded end
 codes.](how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-1.png)
 
-End codes for referrals seen and taken on for a course of treatment in
-the monthly NHS TT dataset: monthly counts across all NHS TT services
-for the four most commonly recorded end codes.
+Monthly trends across all NHS TT services (one line per service) for the
+four most commonly recorded end codes.
 
 Across all four end codes, most services record counts within a similar
 range and follow broadly consistent trends over the reporting period. A
@@ -113,18 +107,16 @@ variation there is between services, with wider bands indicating greater
 spread. These charts summarise activity patterns and are not intended as
 rankings of service quality.
 
-![End codes for referrals seen and taken on for a course of treatment in
-the monthly NHS TT dataset: decile charts across all NHS TT services for
-the four most commonly recorded end codes. Shaded bands show the 10th to
-90th percentile range in decile steps. The dark line shows the median.
-Two example services are shown as coloured
+![Decile charts across all NHS TT services for the four most commonly
+recorded end codes. Shaded bands show the 10th to 90th percentile range
+in decile steps. The dark line shows the median. Two example services
+are shown as coloured
 lines.](how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-deciles-1.png)
 
-End codes for referrals seen and taken on for a course of treatment in
-the monthly NHS TT dataset: decile charts across all NHS TT services for
-the four most commonly recorded end codes. Shaded bands show the 10th to
-90th percentile range in decile steps. The dark line shows the median.
-Two example services are shown as coloured lines.
+Decile charts across all NHS TT services for the four most commonly
+recorded end codes. Shaded bands show the 10th to 90th percentile range
+in decile steps. The dark line shows the median. Two example services
+are shown as coloured lines.
 
 *Service A* sits above the median for completed referrals (M066) and
 tracks closer to the median for the remaining end codes. *Service B*
@@ -136,14 +128,14 @@ over the reporting period.
 
 ## Try it yourself
 
-The *nhstt* package makes it easier to access publicly available NHS TT
-data, is free to use, and is updated regularly as NHS England publishes
-new reports. It provides access to each dataset in a tidy,
-analysis-ready format, with no need to locate or parse the underlying
-files. Whether you are interested in trends in referral activity,
-variation in waiting times across services, or changes in clinical
-outcomes over time, the data are there to be explored. We recommend
-checking the NHS England [data quality
+The *nhstt* package makes it easy to access publicly available NHS TT
+data for research, is free to use, and is updated regularly as NHS
+England publishes new reports. It provides access to each dataset in a
+tidy, analysis-ready format, with no need to find the underlying files.
+Whether you are interested in trends in referral activity, variation in
+waiting times across services, or changes in clinical outcomes over
+time, the data are there to be explored. We recommend checking the NHS
+England [data quality
 notes](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx)
 before using these data, as they describe known issues affecting
 specific reporting periods or measures.
