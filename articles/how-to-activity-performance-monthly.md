@@ -1,42 +1,39 @@
 # Exploring monthly changes in treatment end codes
 
-> This vignette provides the complete R code used to produce the
-> analysis in our blog post [From public NHS Talking Therapies reports
+> This vignette provides the complete R code used to reproduce the
+> analyses in our blog post: [From public NHS Talking Therapies reports
 > to research insights: Introducing the *nhstt* R
 > package](https://talkingtherapies.opensafely.org/from-public-nhs-talking-therapies-reports-to-research-insights-introducing-the-nhstt-r-package/).
 
-NHS England publishes detailed NHS TT data openly and provides
-interactive dashboards that allow key measures to be explored directly
-in a browser. The [*nhstt* R
-package](https://bennettoxford.github.io/nhstt/) is built on top of
-these publicly available resources and designed to complement them. It
-provides an additional point of access to the same data in a tidy,
-analysis-ready format across all available reporting periods. In this
-vignette we use treatment end codes from the monthly activity and
-performance data as a worked example, but the same approach applies to
-any of the measures in the dataset. The examples are descriptive and
-intended to illustrate what can be done with the data, not to draw
-conclusions about individual services.
-
-In a previous blog post we introduced NHS TT and the [detailed aggregate
-data that NHS England publishes
-openly](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/),
-with dashboards available alongside each publication. These datasets
-cover various measures, including referral activity, waiting times,
-clinical outcomes, and patient-reported outcome measures at monthly,
-quarterly, and annual reporting periods. The value of these public data
-has been demonstrated by Clark et al. ([2018](#ref-Clark2018a)), who
-used publicly available NHS TT reports to study between-service
-variation in clinical outcomes. They found that organisational factors
-including waiting times, missed appointments, and the proportion of
-patients receiving a course of treatment were associated with rates of
-reliable recovery and improvement. This illustrates the broader role of
-public reporting in supporting transparency, benchmarking, and research
-on variation in routine psychological therapy services ([Clark et al.
+In a [previous blog
+post](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/)
+we introduced the NHS TT data reports that NHS England publishes openly
+alongside interactive dashboards for exploring key measures directly in
+a browser. These datasets cover various measures, including referral
+activity, waiting times, clinical outcomes, and patient-reported outcome
+measures. The value of these public data has been demonstrated by Clark
+et al. ([2018](#ref-Clark2018a)), who used publicly available NHS TT
+reports to study between-service variation in clinical outcomes. They
+found that organisational factors including waiting times, missed
+appointments, and the proportion of patients receiving a course of
+treatment were associated with rates of reliable recovery and
+improvement. This illustrates the broader role of public reporting in
+supporting transparency, benchmarking, and research on variation in
+routine psychological therapy services ([Clark et al.
 2018](#ref-Clark2018a); [Clark 2018](#ref-Clark2018b)). The monthly data
 complement the annual publications by providing more timely signals for
 monitoring service activity and identifying measures or periods that
 warrant closer investigation.
+
+The [*nhstt* R package](https://bennettoxford.github.io/nhstt/) is built
+on top of these publicly available resources and designed to complement
+them. It provides an additional point of access to the same data in a
+tidy, analysis-ready format across all available reporting periods. In
+this vignette we use treatment end codes from the monthly activity and
+performance data as a worked example, but the same approach applies to
+any of the measures in the dataset. The examples are descriptive and
+intended to illustrate what can be done with the data, not to draw
+conclusions about individual services.
 
 ## Treatment end codes
 
