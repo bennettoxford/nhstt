@@ -67,15 +67,23 @@ affect annual dataset versions or caches.
     just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
     ```
 
-4.  Update `version` and `url` for that dataset only in
+4.  Update `version` for that dataset only in
     `inst/config/tidy_data_sources.yml`
+
+Provider metadata is published the same way, but its parquet is built
+from the live ODS API snapshot:
+
+``` bash
+just build-data
+just release metadata_providers 0.1.0 "Provider organisation metadata from ODS"
+```
 
 ## Configuration files
 
 All in `inst/config/`:
 
-- `tidy_data_sources.yml` — version + GitHub Release URL per dataset
-  (user-facing)
+- `tidy_data_sources.yml` — version per released dataset; GitHub
+  Release URLs are derived from the dataset name and version
 - `raw_*_config.yml` — raw source archives, URLs, and periods
 - `tidy_*_config.yml` — tidy transformations (filters, derivations,
   columns)

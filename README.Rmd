@@ -54,9 +54,7 @@ The _Periods_ column shows the number of reporting periods covered by each datas
 ### Annual data
 
 ```{r datasets-annual, echo = FALSE, message = FALSE}
-tidy_sources <- yaml::read_yaml(
-  system.file("config/tidy_data_sources.yml", package = "nhstt")
-)$datasets
+tidy_sources <- nhstt:::load_tidy_sources_config()
 
 tidy_url_lookup <- dplyr::tibble(
   dataset = names(tidy_sources),
@@ -131,8 +129,27 @@ knitr::kable(
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(stringr::str_detect(title, "metadata")) |>
   dplyr::select(get_function, first_period, last_period, n_periods, version) |>
+  dplyr::distinct() |>
+  dplyr::left_join(
+    dplyr::tibble(
+      get_function = c(
+        "get_metadata_measures_annual",
+        "get_metadata_variables_annual",
+        "get_metadata_monthly",
+        "get_metadata_providers"
+      ),
+      dataset = c(
+        "metadata_measures_annual",
+        "metadata_variables_annual",
+        "metadata_measures_monthly",
+        "metadata_providers"
+      )
+    ),
+    by = "get_function"
+  ) |>
+  dplyr::left_join(tidy_url_lookup, by = "dataset") |>
   dplyr::mutate(get_function = paste0("`", get_function, "()`")) |>
-  dplyr::distinct()
+  dplyr::select(get_function, first_period, last_period, n_periods, tidy_data, version)
 
 knitr::kable(
   df_nhstt_reports,
@@ -142,9 +159,10 @@ knitr::kable(
     "First period",
     "Last period",
     "Periods",
+    "Tidy data",
     "Version"
   ),
-  align = c("l", "l", "l", "r", "r")
+  align = c("l", "l", "l", "r", "l", "r")
 )
 ```
 

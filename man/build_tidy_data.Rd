@@ -4,12 +4,15 @@
 \alias{build_tidy_data}
 \title{Build combined tidy parquet for a dataset}
 \usage{
-build_tidy_data(dataset, frequency = NULL)
+build_tidy_data(dataset, raw_datasets = dataset)
 }
 \arguments{
-\item{dataset}{Character, dataset name (e.g., "activity_performance_monthly")}
+\item{dataset}{Character, name of the published dataset as listed in
+tidy_data_sources.yml (e.g., "activity_performance_monthly")}
 
-\item{frequency}{Character, "annual" or "monthly". Inferred from dataset name if NULL.}
+\item{raw_datasets}{Character vector, raw config dataset(s) to combine into
+the published parquet. Defaults to \code{dataset}; pass several names to combine
+multiple raw datasets (e.g. the main and additional metadata sheets).}
 }
 \value{
 Invisibly returns the path to the written parquet file
@@ -20,6 +23,6 @@ combines them into a single parquet file, and writes it to \verb{data-raw/}.
 }
 \details{
 After running this function, upload the resulting parquet to a GitHub Release
-and update \code{inst/config/tidy_data_sources.yml} with the new version and URL.
+and update \code{inst/config/tidy_data_sources.yml} with the new version.
 }
 \keyword{internal}

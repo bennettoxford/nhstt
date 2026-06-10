@@ -15,8 +15,6 @@
 #' NHS England.
 #' \href{https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx}{NHS Talking Therapies Data Quality Note (monthly, quarterly)}
 #'
-#' @importFrom dplyr filter arrange desc
-#'
 #' @export
 #' @examples
 #' \dontrun{
@@ -33,25 +31,7 @@ get_activity_performance_monthly <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  dataset <- "activity_performance_monthly"
-
-  if (!is.null(periods)) {
-    periods <- resolve_periods(periods, dataset, "monthly")
-  }
-
-  cfg <- get_tidy_source_config(dataset)
-
-  if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
-    download_tidy_source(dataset, cfg$url, cfg$version)
-  }
-
-  data <- load_tidy_source(dataset)
-
-  if (!is.null(periods)) {
-    data <- filter(data, reporting_period %in% periods)
-  }
-
-  arrange(data, desc(reporting_period))
+  get_tidy_dataset("activity_performance_monthly", periods, use_cache)
 }
 
 #' Get monthly metadata for NHS Talking Therapies measures
@@ -63,13 +43,6 @@ get_activity_performance_monthly <- function(
 #'
 #' @return Tibble with metadata for each measure
 #'
-#' @details
-#' Raw data is stored in parquet format for efficient compression.
-#'
-#' If network download fails (e.g., in GitHub Actions), falls back to bundled
-#' metadata shipped with the package. This is a temporary workaround for
-#' `digital.nhs.uk` blocking CI environments.
-#'
 #' @references
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors}{NHS Talking Therapies Monthly Statistics Including Employment Advisors}
@@ -80,10 +53,6 @@ get_activity_performance_monthly <- function(
 #' NHS England.
 #' \href{https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx}{NHS Talking Therapies Data Quality Note}
 #'
-#' @importFrom purrr map list_rbind
-#' @importFrom arrow read_parquet
-#' @importFrom cli cli_alert_warning
-#'
 #' @export
 #' @examples
 #' \dontrun{
@@ -93,37 +62,5 @@ get_metadata_monthly <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  frequency <- "monthly"
-  dataset <- "metadata_measures_monthly"
-
-  periods <- resolve_periods(periods, dataset, frequency)
-  periods <- rev(periods)
-
-  data_list <- map(
-    periods,
-    \(period) {
-      if (use_cache && tidy_cache_exists(dataset, period, frequency)) {
-        load_tidy_cache(dataset, period, frequency)
-      } else {
-        tryCatch(
-          {
-            download_and_tidy(dataset, period, frequency)
-          },
-          error = function(e) {
-            package_path <- get_package_data_path(dataset, period, frequency)
-            if (!is.null(package_path)) {
-              cli_alert_warning(
-                "Download failed, using package metadata for {period}"
-              )
-              read_parquet(package_path)
-            } else {
-              stop(e)
-            }
-          }
-        )
-      }
-    }
-  )
-
-  list_rbind(data_list)
+  get_tidy_dataset("metadata_measures_monthly", periods, use_cache)
 }

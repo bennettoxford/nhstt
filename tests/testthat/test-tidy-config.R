@@ -598,14 +598,14 @@ test_that("tidy_dataset applies group_type filter from config (activity_performa
 
 
 test_that("tidy_dataset returns a tibble (metadata)", {
-  raw_data <- load_raw_data("metadata_measures_monthly", "2025-07", "monthly")
+  raw_data <- load_raw_data("metadata_measures_monthly", "2026-05", "monthly")
   result <- tidy_dataset(raw_data, "metadata_measures_monthly", "monthly")
 
   expect_s3_class(result, "tbl_df")
 })
 
 test_that("tidy_dataset has expected columns (metadata)", {
-  raw_data <- load_raw_data("metadata_measures_monthly", "2025-07", "monthly")
+  raw_data <- load_raw_data("metadata_measures_monthly", "2026-05", "monthly")
   result <- tidy_dataset(raw_data, "metadata_measures_monthly", "monthly")
 
   expected_cols <- expected_tidy_columns("metadata_measures_monthly", "monthly")
@@ -613,14 +613,14 @@ test_that("tidy_dataset has expected columns (metadata)", {
 })
 
 test_that("tidy_dataset sets reporting period for metadata", {
-  raw_data <- load_raw_data("metadata_measures_monthly", "2025-07", "monthly")
+  raw_data <- load_raw_data("metadata_measures_monthly", "2026-05", "monthly")
   result <- tidy_dataset(raw_data, "metadata_measures_monthly", "monthly")
 
-  expect_setequal(unique(result$reporting_period), "2025-07")
+  expect_setequal(unique(result$reporting_period), "2026-05")
 })
 
 test_that("tidy_dataset keeps descriptive fields for metadata", {
-  raw_data <- load_raw_data("metadata_measures_monthly", "2025-07", "monthly")
+  raw_data <- load_raw_data("metadata_measures_monthly", "2026-05", "monthly")
   result <- tidy_dataset(raw_data, "metadata_measures_monthly", "monthly")
 
   expect_true(all(nchar(result$description) > 0))
