@@ -54,7 +54,7 @@ number of reporting periods covered by each dataset.
 
 | Function | First period | Last period | Periods | Tidy data | Version |
 |:---|:---|:---|---:|:---|---:|
-| `get_activity_performance_monthly()` | 2023-05 | 2026-03 | 35 | [Download](https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.3.0/activity_performance_monthly.parquet) | 0.3.0 |
+| `get_activity_performance_monthly()` | 2021-01 | 2026-03 | 63 | [Download](https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.4.0/activity_performance_monthly.parquet) | 0.4.0 |
 
 ### Metadata
 
