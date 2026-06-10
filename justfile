@@ -18,13 +18,15 @@ document:
 build:
     Rscript --quiet --vanilla -e 'pak::local_install()'
 
-# Create a GitHub Release for a dataset — run after merging to main
+# Create a GitHub Release for a dataset, tagging the current branch (push first).
+# Can be run from a PR branch before merging, e.g. so the pkgdown CI check can
+# download the new data — the package only resolves the asset URL, not the tag.
 # Usage: just release <dataset> <version> [notes]
 # Example: just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
 release dataset version notes='':
     #!/usr/bin/env bash
     tag=$(echo "{{dataset}}" | tr '_' '-')-v{{version}}
-    gh release create "$tag" data-raw/{{dataset}}.parquet --notes "{{notes}}"
+    gh release create "$tag" data-raw/{{dataset}}.parquet --notes "{{notes}}" --target "$(git branch --show-current)"
 
 # Build all pre-built tidy parquets and write to data-raw/ (slow — downloads raw data)
 build-data:
@@ -72,7 +74,7 @@ docs-serve:
 # Build and preview pkgdown site
 docs: docs-build docs-serve
 
-# Update archive schemas (extracts column names from raw data)
+# Update schemas (extracts column names from raw data)
 update-schemas:
     Rscript --quiet --vanilla -e '\
         devtools::load_all(); \
@@ -82,4 +84,7 @@ update-schemas:
         message("Updated inst/schemas/annual_main_schemas.csv"); \
         schemas_tbo <- extract_archive_schemas("annual_tbo"); \
         write.csv(schemas_tbo, "inst/schemas/annual_tbo_schemas.csv", row.names = FALSE); \
-        message("Updated inst/schemas/annual_tbo_schemas.csv")'
+        message("Updated inst/schemas/annual_tbo_schemas.csv"); \
+        schemas_monthly <- extract_source_schemas("activity_performance_monthly"); \
+        write.csv(schemas_monthly, "inst/schemas/activity_performance_monthly_schemas.csv", row.names = FALSE); \
+        message("Updated inst/schemas/activity_performance_monthly_schemas.csv")'
