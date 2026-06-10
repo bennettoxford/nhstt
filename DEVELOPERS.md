@@ -32,7 +32,7 @@ Julia, or any language that reads parquet.
 | [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) | monthly | 2023-05 | 2026-03 | 35 | 0.3.0 |
 | [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md) | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
-| [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | monthly | 2025-07 | 2025-07 | 1 | 0.1.0 |
+| [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | monthly | 2026-05 | 2026-05 | 1 | 0.1.0 |
 | [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | live | current | current | 1 | 0.1.0 |
 
 ### Approximate build times
@@ -42,10 +42,10 @@ One period timed per dataset; extrapolated to full build. Re-run with
 
 | Dataset | Timed period | Periods | Time for one (s) | Est. full build (min) |
 |:---|:---|---:|---:|---:|
-| `key_measures_annual` | 2024-25 | 8 | 58.8 | 7.8 |
-| `proms_annual` | 2024-25 | 6 | 112.1 | 11.2 |
-| `therapy_position_annual` | 2024-25 | 6 | 0.1 | 0.0 |
-| `activity_performance_monthly` | 2026-03 | 35 | 0.5 | 0.3 |
+| `key_measures_annual` | 2024-25 | 8 | 61.4 | 8.2 |
+| `proms_annual` | 2024-25 | 6 | 116.5 | 11.6 |
+| `therapy_position_annual` | 2024-25 | 6 | 0.3 | 0.0 |
+| `activity_performance_monthly` | 2026-03 | 35 | 5.4 | 3.2 |
 
 ## Publishing new data
 
