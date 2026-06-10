@@ -55,11 +55,11 @@ check:
 
 # Render README.Rmd to README.md
 render-readme:
-    Rscript --quiet --vanilla -e 'devtools::load_all(quiet = TRUE); rmarkdown::render("README.Rmd")'
+    Rscript --quiet --vanilla -e 'devtools::load_all(quiet = TRUE); rmarkdown::render("README.Rmd", output_format = rmarkdown::github_document(html_preview = FALSE), output_file = "README.md", clean = TRUE)'
 
 # Render DEVELOPERS.Rmd to DEVELOPERS.md
 render-developers:
-    Rscript --quiet --vanilla -e 'devtools::load_all(quiet = TRUE); rmarkdown::render("DEVELOPERS.Rmd")'
+    Rscript --quiet --vanilla -e 'devtools::load_all(quiet = TRUE); rmarkdown::render("DEVELOPERS.Rmd", output_format = rmarkdown::github_document(html_preview = FALSE), output_file = "DEVELOPERS.md", clean = TRUE)'
 
 # Build pkgdown site
 docs-build:
