@@ -25,14 +25,6 @@ get_metadata_monthly(periods = NULL, use_cache = TRUE)
 
 Tibble with metadata for each measure
 
-## Details
-
-Raw data is stored in parquet format for efficient compression.
-
-If network download fails (e.g., in GitHub Actions), falls back to
-bundled metadata shipped with the package. This is a temporary
-workaround for `digital.nhs.uk` blocking CI environments.
-
 ## References
 
 NHS England. [NHS Talking Therapies Monthly Statistics Including

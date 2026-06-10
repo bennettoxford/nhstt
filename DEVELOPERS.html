@@ -10,7 +10,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -164,13 +164,16 @@
 <p>Create a GitHub Release using <code>just release</code> (run after merging to main):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">just</span> release activity_performance_monthly 0.4.0 <span class="st">"Monthly activity and performance data YYYY-MM to YYYY-MM"</span></span></code></pre></div>
 </li>
-<li><p>Update <code>version</code> and <code>url</code> for that dataset only in <code>inst/config/tidy_data_sources.yml</code></p></li>
-</ol></div>
+<li><p>Update <code>version</code> for that dataset only in <code>inst/config/tidy_data_sources.yml</code></p></li>
+</ol><p>Provider metadata is published the same way, but its parquet is built from the live ODS API snapshot:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">just</span> build-data</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">just</span> release metadata_providers 0.1.0 <span class="st">"Provider organisation metadata from ODS"</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="configuration-files">Configuration files<a class="anchor" aria-label="anchor" href="#configuration-files"></a></h2>
 <p>All in <code>inst/config/</code>:</p>
 <ul><li>
-<code>tidy_data_sources.yml</code> — version + GitHub Release URL per dataset (user-facing)</li>
+<code>tidy_data_sources.yml</code> — version per released dataset; GitHub Release URLs are derived from the dataset name and version</li>
 <li>
 <code>raw_*_config.yml</code> — raw source archives, URLs, and periods</li>
 <li>

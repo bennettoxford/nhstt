@@ -50,12 +50,12 @@ number of reporting periods covered by each dataset.
 
 ### Metadata
 
-| Function | First period | Last period | Periods | Version |
-|:---|:---|:---|---:|---:|
-| [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md) | 2024-25 | 2024-25 | 1 | 0.1.0 |
-| [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | 2024-25 | 2024-25 | 1 | 0.1.0 |
-| [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | 2025-07 | 2025-07 | 1 | 0.1.0 |
-| [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | current | current | 1 | 0.1.0 |
+| Function | First period | Last period | Periods | Tidy data | Version |
+|:---|:---|:---|---:|:---|---:|
+| [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md) | 2024-25 | 2024-25 | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-annual-v0.1.0/metadata_measures_annual.parquet) | 0.1.0 |
+| [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | 2024-25 | 2024-25 | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-variables-annual-v0.1.0/metadata_variables_annual.parquet) | 0.1.0 |
+| [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | 2026-05 | 2026-05 | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.1.0/metadata_measures_monthly.parquet) | 0.1.0 |
+| [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | current | current | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.1.0/metadata_providers.parquet) | 0.1.0 |
 
 ## For developers
 

@@ -25,12 +25,6 @@ get_metadata_measures_annual(periods = NULL, use_cache = TRUE)
 
 Tibble containing metadata rows for each annual measure field
 
-## Details
-
-If network download fails (e.g., in GitHub Actions), falls back to
-bundled metadata shipped with the package. This is a temporary
-workaround for `digital.nhs.uk` blocking CI environments.
-
 ## References
 
 NHS England. [NHS Talking Therapies for Anxiety and Depression Annual

@@ -37,7 +37,7 @@ available_nhstt_reports()
 #>  6 metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1
 #>  7 metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1
 #>  8 metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1
-#>  9 metadata_mea… monthly   Mont… get_metadat… 2025-07      2025-07             1
+#>  9 metadata_mea… monthly   Mont… get_metadat… 2026-05      2026-05             1
 #> 10 metadata_pro… live      Prov… get_metadat… current      current             1
 #> # ℹ 1 more variable: version <chr>
 ```

@@ -4,4 +4,4 @@
 > recent monthly reporting period. Older monthly periods might have
 > less, or different measures.
 
-In total there are **205** monthly *core* measures:
+In total there are **209** monthly *core* measures:
