@@ -1,19 +1,27 @@
 # Each dataset has its own release tag and version.
+# The download URL is derived from the dataset name and version:
+#   https://github.com/bennettoxford/nhstt/releases/download/{dataset-with-dashes}-v{version}/{dataset}.parquet
+# which matches the tag `just release <dataset> <version>` creates.
+# An explicit `url` field can be set per dataset to override the derived URL.
+#
 # To publish updated data for a dataset:
-#   1. Run `just build-data` to write parquets to data-raw/
-#   2. Create a GitHub Release with a dataset-specific tag and upload that parquet as an asset
-#      e.g. gh release create activity-performance-monthly-v0.4.0 data-raw/activity_performance_monthly.parquet
-#   3. Update version and url below for that dataset only
+#   1. Bump the dataset version in the raw config and here (a test checks they match)
+#   2. Run `just build-data` to write parquets to data-raw/
+#   3. Run `just release <dataset> <version>` after merging to main
 datasets:
   activity_performance_monthly:
     version: "0.3.0"
-    url: "https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.3.0/activity_performance_monthly.parquet"
   key_measures_annual:
     version: "0.2.0"
-    url: "https://github.com/bennettoxford/nhstt/releases/download/key-measures-annual-v0.2.0/key_measures_annual.parquet"
   proms_annual:
     version: "0.1.0"
-    url: "https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.1.0/proms_annual.parquet"
   therapy_position_annual:
     version: "0.1.0"
-    url: "https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet"
+  metadata_measures_annual:
+    version: "0.1.0"
+  metadata_variables_annual:
+    version: "0.1.0"
+  metadata_measures_monthly:
+    version: "0.1.0"
+  metadata_providers:
+    version: "0.1.0"

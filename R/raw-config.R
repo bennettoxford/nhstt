@@ -381,11 +381,15 @@ validate_dataset <- function(dataset, frequency) {
         \(k) raw_config$datasets[[k]]$frequency == frequency,
         available_keys
       )
+      cli_abort(c(
+        "Invalid dataset: {.val {dataset}}",
+        "i" = "Available datasets for {frequency}: {.val {available_keys}}"
+      ))
     }
 
     cli_abort(c(
       "Invalid dataset: {.val {dataset}}",
-      "i" = "Available datasets for {frequency}: {.val {available_keys}}"
+      "i" = "Available datasets: {.val {available_keys}}"
     ))
   }
 
@@ -581,50 +585,6 @@ list_available_periods <- function(
   }
 
   map_chr(sources, "period")
-}
-
-#' Resolve periods argument
-#'
-#' @param periods Character vector or NULL, specifying periods (e.g., c("2023-24", "2024-25") for annual, c("2025-08", "2025-09") for monthly). Default NULL returns all periods
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#'
-#' @return Character vector of validated periods
-#'
-#' @importFrom cli cli_abort
-#'
-#' @keywords internal
-resolve_periods <- function(periods, dataset, frequency) {
-  if (is.null(periods)) {
-    return(list_available_periods(dataset, frequency))
-  }
-
-  available <- list_available_periods(dataset, frequency)
-  all_periods <- list_available_periods(
-    dataset,
-    frequency,
-    include_development = TRUE
-  )
-
-  invalid <- periods[!periods %in% all_periods]
-  development <- periods[periods %in% all_periods & !periods %in% available]
-
-  if (length(invalid) > 0) {
-    cli_abort(c(
-      "Invalid period{?s}: {.val {invalid}}",
-      "i" = "Available periods for {dataset} ({frequency}): {.val {available}}"
-    ))
-  }
-
-  if (length(development) > 0) {
-    cli_abort(c(
-      "Period{?s} marked as development: {.val {development}}",
-      "i" = "These periods are not yet available for use",
-      "i" = "Use {.code read_raw()} via {.code devtools::load_all()} to explore development data"
-    ))
-  }
-
-  periods
 }
 
 #' Get dataset version
