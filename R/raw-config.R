@@ -151,18 +151,12 @@ validate_source_format_fields <- function(
     )
   }
 
-  # xlsx files need sheet and range
-  if (source_format == "xlsx") {
-    if (!"sheet" %in% names(source)) {
-      cli_abort(
-        "Dataset {.val {dataset_name}} source {source_index} must specify sheet"
-      )
-    }
-    if (!"range" %in% names(source)) {
-      cli_abort(
-        "Dataset {.val {dataset_name}} source {source_index} must specify range"
-      )
-    }
+  # xlsx files need a sheet; range is optional (the whole sheet is read when
+  # absent, and readxl cannot parse ranges beyond row 99,999 anyway)
+  if (source_format == "xlsx" && !"sheet" %in% names(source)) {
+    cli_abort(
+      "Dataset {.val {dataset_name}} source {source_index} must specify sheet"
+    )
   }
 
   invisible(TRUE)

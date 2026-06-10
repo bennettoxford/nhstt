@@ -185,3 +185,27 @@ datasets:
       - period: "2021-06"
         url: "https://files.digital.nhs.uk/D1/4FCCE7/iapt-month-jun-2021-final-data.csv"
         format: "csv"
+      # Periods before June 2021 are published as Excel workbooks. Each file
+      # is a single clean sheet, read in full: readxl cannot parse a range
+      # beyond row 99,999 and these sheets have 200k+ rows.
+      # (the 2021-05 sheet name has a trailing space in the source file)
+      - period: "2021-05"
+        url: "https://files.digital.nhs.uk/FF/53FAFC/iapt-month-may-2021-final-data.xlsx"
+        format: "xlsx"
+        sheet: "iapt-month-may-2021-final-data "
+      - period: "2021-04"
+        url: "https://files.digital.nhs.uk/BD/267BC4/iapt-month-Apr-21-final-data.xlsx"
+        format: "xlsx"
+        sheet: "iapt-month-Apr-21-final-data"
+      - period: "2021-03"
+        url: "https://files.digital.nhs.uk/7B/DC96A2/iapt-month-Mar-2021-final-data.xlsx"
+        format: "xlsx"
+        sheet: "iapt-month-Mar-2021-final-data"
+      - period: "2021-02"
+        url: "https://files.digital.nhs.uk/B7/D6B635/iapt-month-feb-2021-final-data.xlsx"
+        format: "xlsx"
+        sheet: "iapt-month-feb-2021-final-data"
+      - period: "2021-01"
+        url: "https://files.digital.nhs.uk/A7/3EA648/iapt-month-Jan-2021-final-data.xlsx"
+        format: "xlsx"
+        sheet: "iapt-month-Jan-21-final-data"
