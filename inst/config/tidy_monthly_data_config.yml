@@ -9,6 +9,9 @@ datasets:
       start_date: reporting_period_start
       end_date: reporting_period_end
       value: measure_value_suppressed
+      # 2021-03 is the only period with MEASURE_VALUE instead of MEASURE_VALUE_SUPPRESSED
+      "2021-03":
+        value: measure_value
 
     filter:
       group_type:
