@@ -2,6 +2,35 @@ test_cache_dir <- tempfile("nhstt_test_cache_")
 dir.create(test_cache_dir, recursive = TRUE)
 Sys.setenv(NHSTT_TEST_CACHE_DIR = test_cache_dir)
 
+#' Write a fake pre-built tidy parquet and version sidecar into the test cache
+#'
+#' Simulates a downloaded tidy dataset so get_*() functions can run offline.
+#' The sidecar version matches tidy_data_sources.yml, so the cache is current.
+#'
+#' @param dataset Character, dataset name as listed in tidy_data_sources.yml
+#' @param periods Character vector of reporting periods to include
+#' @param extra_cols Named list of additional columns
+#'
+#' @return List with cache_path and sidecar_path
+#' @keywords internal
+make_test_parquet <- function(dataset, periods, extra_cols = list()) {
+  cache_path <- get_tidy_source_cache_path(dataset)
+  sidecar_path <- get_tidy_source_sidecar_path(dataset)
+  version <- get_tidy_source_config(dataset)$version
+
+  data <- tibble::tibble(
+    reporting_period = periods,
+    !!!extra_cols
+  )
+  arrow::write_parquet(data, cache_path)
+  jsonlite::write_json(
+    list(dataset = dataset, version = version),
+    sidecar_path,
+    auto_unbox = TRUE
+  )
+  list(cache_path = cache_path, sidecar_path = sidecar_path)
+}
+
 #' Load raw fixture for testing
 #'
 #' @param dataset Character, dataset name

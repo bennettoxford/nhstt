@@ -19,13 +19,6 @@ Tibble with metadata for each measure
 Gets the definitions, derivations, and construction notes for each
 reported measure.
 }
-\details{
-Raw data is stored in parquet format for efficient compression.
-
-If network download fails (e.g., in GitHub Actions), falls back to bundled
-metadata shipped with the package. This is a temporary workaround for
-\code{digital.nhs.uk} blocking CI environments.
-}
 \examples{
 \dontrun{
 metadata <- get_metadata_monthly()

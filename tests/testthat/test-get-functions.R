@@ -1,24 +1,15 @@
-make_test_parquet <- function(dataset, periods, extra_cols = list()) {
-  cache_path <- get_tidy_source_cache_path(dataset)
-  sidecar_path <- get_tidy_source_sidecar_path(dataset)
-  version <- get_tidy_source_config(dataset)$version
+# Period validation -------------------------------------------------------
 
-  data <- tibble::tibble(
-    reporting_period = periods,
-    !!!extra_cols
+test_that("get_key_measures_annual errors for periods missing from the data", {
+  paths <- make_test_parquet(
+    "key_measures_annual",
+    periods = c("2023-24", "2024-25")
   )
-  arrow::write_parquet(data, cache_path)
-  jsonlite::write_json(
-    list(dataset = dataset, version = version),
-    sidecar_path,
-    auto_unbox = TRUE
-  )
-  list(cache_path = cache_path, sidecar_path = sidecar_path)
-}
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
 
-# Period resolution -------------------------------------------------------
-
-test_that("get_key_measures_annual rejects invalid periods before downloading", {
   local_mocked_bindings(
     download_tidy_source = function(...) stop("download should not be called"),
     .package = "nhstt"
@@ -29,7 +20,16 @@ test_that("get_key_measures_annual rejects invalid periods before downloading", 
   )
 })
 
-test_that("get_activity_performance_monthly rejects invalid periods before downloading", {
+test_that("get_activity_performance_monthly errors for periods missing from the data", {
+  paths <- make_test_parquet(
+    "activity_performance_monthly",
+    periods = c("2025-08", "2025-09")
+  )
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
   local_mocked_bindings(
     download_tidy_source = function(...) stop("download should not be called"),
     .package = "nhstt"
@@ -38,6 +38,38 @@ test_that("get_activity_performance_monthly rejects invalid periods before downl
     get_activity_performance_monthly(periods = "9999-00"),
     regexp = "9999-00"
   )
+})
+
+test_that("period errors list the periods available in the data", {
+  paths <- make_test_parquet(
+    "key_measures_annual",
+    periods = c("2023-24", "2024-25")
+  )
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
+  expect_error(
+    get_key_measures_annual(periods = c("2024-25", "2025-26")),
+    regexp = "2023-24"
+  )
+})
+
+# Period filtering ---------------------------------------------------------
+
+test_that("get_key_measures_annual filters to requested periods", {
+  paths <- make_test_parquet(
+    "key_measures_annual",
+    periods = c("2022-23", "2023-24", "2024-25")
+  )
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
+  result <- get_key_measures_annual(periods = c("2023-24", "2024-25"))
+  expect_setequal(result$reporting_period, c("2023-24", "2024-25"))
 })
 
 # Output order ------------------------------------------------------------
@@ -110,13 +142,19 @@ test_that("get_key_measures_annual downloads when use_cache = FALSE", {
   expect_true(downloaded)
 })
 
-# Dataset name correctness ------------------------------------------------
+# Dataset registration ------------------------------------------------------
 
-test_that("all datasets are registered in raw config", {
-  for (dataset in c("key_measures_annual", "proms_annual", "therapy_position_annual")) {
-    expect_true(length(resolve_periods(NULL, dataset, "annual")) > 0)
-  }
-  expect_true(
-    length(resolve_periods(NULL, "activity_performance_monthly", "monthly")) > 0
+test_that("every exported getter has a dataset in tidy_data_sources.yml", {
+  sources <- load_tidy_sources_config()
+  expected <- c(
+    "key_measures_annual",
+    "proms_annual",
+    "therapy_position_annual",
+    "activity_performance_monthly",
+    "metadata_measures_annual",
+    "metadata_variables_annual",
+    "metadata_measures_monthly",
+    "metadata_providers"
   )
+  expect_contains(names(sources), expected)
 })
