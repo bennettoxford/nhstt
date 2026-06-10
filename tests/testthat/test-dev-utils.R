@@ -141,3 +141,54 @@ test_that("compare_schemas with custom schema_file doesn't suggest update-schema
     "nonexistent.csv"
   )
 })
+
+# Extract source schemas --------------------------------------------------
+
+test_that("extract_source_schemas returns one row per period and column", {
+  local_mocked_bindings(
+    read_raw = function(dataset, period, frequency, use_cache) {
+      tibble::tibble(COLUMN_A = "x", COLUMN_B = "y")
+    },
+    .package = "nhstt"
+  )
+
+  result <- suppressMessages(extract_source_schemas(
+    "activity_performance_monthly",
+    periods = c("2025-08", "2025-09")
+  ))
+
+  expect_equal(names(result), c("period", "dataset", "column"))
+  expect_equal(nrow(result), 4)
+  expect_setequal(result$column, c("COLUMN_A", "COLUMN_B"))
+  # Sorted most-recent period first
+  expect_equal(result$period[1], "2025-09")
+})
+
+test_that("extract_source_schemas warns and skips unreadable periods", {
+  local_mocked_bindings(
+    read_raw = function(dataset, period, frequency, use_cache) {
+      if (period == "2025-08") {
+        stop("download failed")
+      }
+      tibble::tibble(COLUMN_A = "x")
+    },
+    .package = "nhstt"
+  )
+
+  messages <- capture_messages(
+    result <- extract_source_schemas(
+      "activity_performance_monthly",
+      periods = c("2025-08", "2025-09")
+    )
+  )
+
+  expect_match(paste(messages, collapse = ""), "2025-08", fixed = TRUE)
+  expect_equal(result$period, "2025-09")
+})
+
+test_that("extract_source_schemas errors for invalid dataset", {
+  expect_error(
+    extract_source_schemas("invalid_dataset"),
+    "Invalid dataset"
+  )
+})

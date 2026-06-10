@@ -72,7 +72,7 @@ docs-serve:
 # Build and preview pkgdown site
 docs: docs-build docs-serve
 
-# Update archive schemas (extracts column names from raw data)
+# Update schemas (extracts column names from raw data)
 update-schemas:
     Rscript --quiet --vanilla -e '\
         devtools::load_all(); \
@@ -82,4 +82,7 @@ update-schemas:
         message("Updated inst/schemas/annual_main_schemas.csv"); \
         schemas_tbo <- extract_archive_schemas("annual_tbo"); \
         write.csv(schemas_tbo, "inst/schemas/annual_tbo_schemas.csv", row.names = FALSE); \
-        message("Updated inst/schemas/annual_tbo_schemas.csv")'
+        message("Updated inst/schemas/annual_tbo_schemas.csv"); \
+        schemas_monthly <- extract_source_schemas("activity_performance_monthly"); \
+        write.csv(schemas_monthly, "inst/schemas/activity_performance_monthly_schemas.csv", row.names = FALSE); \
+        message("Updated inst/schemas/activity_performance_monthly_schemas.csv")'
