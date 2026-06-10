@@ -290,6 +290,84 @@ extract_archive_schemas <- function(archive_name, periods = NULL) {
     arrange(desc(period), csv_file, column)
 }
 
+#' Extract schemas from direct source files
+#'
+#' Extracts column names from a dataset's raw source files across specified
+#' periods. Companion to \code{extract_archive_schemas()} for datasets whose
+#' sources are standalone files (e.g. the monthly CSVs) rather than archives.
+#' Returns a data frame useful for tracking schema changes over time and
+#' spotting column name variations across periods.
+#'
+#' Sources are read via \code{read_raw()}, so all configured formats are
+#' supported and the raw cache is used when available.
+#'
+#' @param dataset Character, dataset name (e.g., "activity_performance_monthly")
+#' @param periods Character vector, periods to extract schemas for (e.g., c("2025-09", "2025-08")).
+#'   If NULL (default), extracts schemas for all available periods
+#'
+#' @return Data frame with columns:
+#'   \describe{
+#'     \item{period}{Character, reporting period (e.g., "2025-09")}
+#'     \item{dataset}{Character, dataset name}
+#'     \item{column}{Character, column name from the raw data}
+#'   }
+#'   Sorted by period (descending) and column name.
+#'
+#' @importFrom cli cli_process_start cli_process_done cli_alert_warning
+#' @importFrom purrr map compact
+#' @importFrom dplyr bind_rows arrange desc
+#'
+#' @keywords internal
+extract_source_schemas <- function(dataset, periods = NULL) {
+  validate_dataset(dataset)
+
+  raw_config <- load_raw_config()
+  frequency <- raw_config$datasets[[dataset]]$frequency
+
+  if (is.null(periods)) {
+    periods <- list_available_periods(dataset, frequency)
+  }
+
+  cli_process_start("Extracting schemas from {.val {dataset}}")
+
+  schema_rows <- map(periods, function(period) {
+    tryCatch(
+      {
+        raw_data <- read_raw(dataset, period, frequency, use_cache = TRUE)
+
+        data.frame(
+          period = period,
+          dataset = dataset,
+          column = names(raw_data),
+          stringsAsFactors = FALSE
+        )
+      },
+      error = function(e) {
+        # Skip periods that can't be read
+        cli_alert_warning(
+          "Could not read {.val {dataset}} for {period}: {e$message}"
+        )
+        NULL
+      }
+    )
+  }) |>
+    compact()
+
+  cli_process_done()
+
+  if (length(schema_rows) == 0) {
+    return(data.frame(
+      period = character(),
+      dataset = character(),
+      column = character(),
+      stringsAsFactors = FALSE
+    ))
+  }
+
+  bind_rows(schema_rows) |>
+    arrange(desc(period), column)
+}
+
 #' Compare schemas across periods
 #'
 #' Reads the schema file and creates a comparison table showing which columns
