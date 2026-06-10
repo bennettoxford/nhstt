@@ -79,11 +79,11 @@ datasets:
     copyright: "Copyright NHS England"
     license: "OGL-UK-3.0"
     sources:
-      - period: "2025-07"
-        url: "https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/reports/nhstalkingtherapies-monthly-metadata-20250710.xlsx"
+      - period: "2026-05"
+        url: "https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/reports/nhstalkingtherapies-monthly-metadata-20260511.xlsx"
         format: "xlsx"
         sheet: "Measures"
-        range: "A5:H427"
+        range: "A5:H471"
 
   metadata_providers:
     title: "Provider organisation metadata"

@@ -28,7 +28,7 @@ get_ods_data <- function(org_codes, add_names = TRUE) {
         end_date <- NA_character_
         if (!is.null(o$Date)) {
           for (d in o$Date) {
-            if (d$Type == "Operational") {
+            if (isTRUE(d$Type == "Operational")) {
               start_date <- d$Start %||% NA_character_
               end_date <- d$End %||% NA_character_
               break
@@ -52,9 +52,8 @@ get_ods_data <- function(org_codes, add_names = TRUE) {
         if (!is.null(o$Rels$Rel)) {
           for (rel in o$Rels$Rel) {
             if (
-              rel$Status == "Active" &&
-                !is.null(rel$Target$PrimaryRoleId$id) &&
-                rel$Target$PrimaryRoleId$id == "RO261"
+              isTRUE(rel$Status == "Active") &&
+                isTRUE(rel$Target$PrimaryRoleId$id == "RO261")
             ) {
               icb_code <- rel$Target$OrgId$extension %||% NA_character_
               break
@@ -75,12 +74,20 @@ get_ods_data <- function(org_codes, add_names = TRUE) {
           primary_role = primary_role
         )
       },
-      error = function(e) NULL
+      error = function(e) {
+        cli::cli_warn(
+          "Failed to fetch ODS data for {.val {code}}: {conditionMessage(e)}"
+        )
+        NULL
+      }
     )
   }
 
   if (length(result_list) == 0) {
-    return(tibble::tibble())
+    cli::cli_abort(c(
+      "Could not retrieve data from the ODS API for any organisation",
+      "i" = "Check your network connection and try again"
+    ))
   }
 
   result <- dplyr::bind_rows(result_list)
@@ -102,7 +109,7 @@ get_ods_data <- function(org_codes, add_names = TRUE) {
         parent_code <- NA_character_
         if (!is.null(cached_data$Organisation$Rels$Rel)) {
           for (rel in cached_data$Organisation$Rels$Rel) {
-            if (rel$id == "RE6" && rel$Status == "Active") {
+            if (isTRUE(rel$id == "RE6") && isTRUE(rel$Status == "Active")) {
               parent_code <- rel$Target$OrgId$extension %||% NA_character_
               break
             }
@@ -211,51 +218,4 @@ get_ods_data <- function(org_codes, add_names = TRUE) {
   }
 
   result
-}
-
-#' Get organisation roles
-#' @keywords internal
-get_org_types <- function(org_codes) {
-  if (is.data.frame(org_codes)) {
-    org_codes <- org_codes$org_code
-  }
-
-  base_url <- "https://directory.spineservices.nhs.uk/ORD/2-0-0/organisations"
-  result_list <- list()
-
-  for (code in org_codes) {
-    tryCatch(
-      {
-        resp <- httr2::request(base_url) |>
-          httr2::req_url_path_append(code) |>
-          httr2::req_retry(max_tries = 3) |>
-          httr2::req_perform()
-
-        if (httr2::resp_status(resp) != 200) {
-          next
-        }
-
-        org_data <- httr2::resp_body_json(resp)
-        org_code <- org_data$Organisation$OrgId$extension %||% NA_character_
-
-        if (!is.null(org_data$Organisation$Roles$Role)) {
-          for (r in org_data$Organisation$Roles$Role) {
-            result_list[[length(result_list) + 1]] <- tibble::tibble(
-              org_code = org_code,
-              role_id = r$id %||% NA_character_,
-              is_primary = isTRUE(r$primaryRole),
-              status = r$Status %||% NA_character_
-            )
-          }
-        }
-      },
-      error = function(e) NULL
-    )
-  }
-
-  if (length(result_list) == 0) {
-    return(tibble::tibble())
-  }
-
-  dplyr::bind_rows(result_list)
 }

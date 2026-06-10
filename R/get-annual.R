@@ -13,8 +13,6 @@
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
-#' @importFrom dplyr filter arrange desc
-#'
 #' @export
 #' @examples
 #' \dontrun{
@@ -31,25 +29,7 @@ get_key_measures_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  dataset <- "key_measures_annual"
-
-  if (!is.null(periods)) {
-    periods <- resolve_periods(periods, dataset, "annual")
-  }
-
-  cfg <- get_tidy_source_config(dataset)
-
-  if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
-    download_tidy_source(dataset, cfg$url, cfg$version)
-  }
-
-  data <- load_tidy_source(dataset)
-
-  if (!is.null(periods)) {
-    data <- filter(data, reporting_period %in% periods)
-  }
-
-  arrange(data, desc(reporting_period))
+  get_tidy_dataset("key_measures_annual", periods, use_cache)
 }
 
 #' Get annual Patient Reported Outcome measures (PROMs)
@@ -67,8 +47,6 @@ get_key_measures_annual <- function(
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
-#' @importFrom dplyr filter arrange desc
-#'
 #' @export
 #' @examples
 #' \dontrun{
@@ -85,25 +63,7 @@ get_proms_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  dataset <- "proms_annual"
-
-  if (!is.null(periods)) {
-    periods <- resolve_periods(periods, dataset, "annual")
-  }
-
-  cfg <- get_tidy_source_config(dataset)
-
-  if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
-    download_tidy_source(dataset, cfg$url, cfg$version)
-  }
-
-  data <- load_tidy_source(dataset)
-
-  if (!is.null(periods)) {
-    data <- filter(data, reporting_period %in% periods)
-  }
-
-  arrange(data, desc(reporting_period))
+  get_tidy_dataset("proms_annual", periods, use_cache)
 }
 
 #' Get position of therapy types within the referral pathways
@@ -123,8 +83,6 @@ get_proms_annual <- function(
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
-#' @importFrom dplyr filter arrange desc
-#'
 #' @export
 #' @examples
 #' \dontrun{
@@ -141,23 +99,5 @@ get_therapy_position_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  dataset <- "therapy_position_annual"
-
-  if (!is.null(periods)) {
-    periods <- resolve_periods(periods, dataset, "annual")
-  }
-
-  cfg <- get_tidy_source_config(dataset)
-
-  if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
-    download_tidy_source(dataset, cfg$url, cfg$version)
-  }
-
-  data <- load_tidy_source(dataset)
-
-  if (!is.null(periods)) {
-    data <- filter(data, reporting_period %in% periods)
-  }
-
-  arrange(data, desc(reporting_period))
+  get_tidy_dataset("therapy_position_annual", periods, use_cache)
 }

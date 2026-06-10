@@ -302,3 +302,44 @@ test_that("load_tidy_source reads a valid parquet file", {
   expect_equal(nrow(result), 3)
   expect_equal(names(result), c("x", "y"))
 })
+
+# Release consistency ------------------------------------------------------
+
+test_that("every tidy data source URL embeds its own version and dataset name", {
+  sources <- load_tidy_sources_config()
+
+  for (dataset in names(sources)) {
+    cfg <- sources[[dataset]]
+    expect_true(nzchar(cfg$version), label = paste(dataset, "has a version"))
+
+    expected_tag <- paste0(gsub("_", "-", dataset), "-v", cfg$version)
+    expected_file <- paste0(dataset, ".parquet")
+    expect_equal(
+      cfg$url,
+      paste0(
+        "https://github.com/bennettoxford/nhstt/releases/download/",
+        expected_tag,
+        "/",
+        expected_file
+      ),
+      label = paste("URL for", dataset)
+    )
+  }
+})
+
+test_that("tidy data source versions match the raw config versions", {
+  # Catches forgetting to bump tidy_data_sources.yml (or the raw config)
+  # when publishing new data: a mismatch means users would silently be
+  # served stale data.
+  sources <- load_tidy_sources_config()
+  raw_config <- load_raw_config()
+
+  for (dataset in intersect(names(sources), names(raw_config$datasets))) {
+    expect_equal(
+      sources[[dataset]]$version,
+      raw_config$datasets[[dataset]]$version,
+      label = paste("tidy_data_sources.yml version for", dataset),
+      expected.label = "raw config version"
+    )
+  }
+})

@@ -1,82 +1,7 @@
-#' Helper to load and combine main and additional metadata sheets
-#'
-#' @param dataset_base Base name ("metadata_measures" or "metadata_variables")
-#' @param period Reporting period
-#' @param frequency Frequency ("annual")
-#' @param use_cache Whether to use cache
-#'
-#' @return Combined tibble
-#'
-#' @importFrom cli cli_alert_warning
-#' @importFrom arrow read_parquet
-#'
-#' @keywords internal
-load_combined_metadata <- function(dataset_base, period, frequency, use_cache) {
-  dataset_main <- paste0(dataset_base, "_main_", frequency)
-  dataset_additional <- paste0(dataset_base, "_additional_", frequency)
-
-  main_df <- if (
-    use_cache && tidy_cache_exists(dataset_main, period, frequency)
-  ) {
-    load_tidy_cache(dataset_main, period, frequency)
-  } else {
-    tryCatch(
-      {
-        download_and_tidy(dataset_main, period, frequency)
-      },
-      error = function(e) {
-        package_path <- get_package_data_path(dataset_main, period, frequency)
-        if (!is.null(package_path)) {
-          cli_alert_warning(
-            "Download failed, using package metadata for {dataset_main} {period}"
-          )
-          read_parquet(package_path)
-        } else {
-          stop(e)
-        }
-      }
-    )
-  }
-
-  additional_df <- if (
-    use_cache && tidy_cache_exists(dataset_additional, period, frequency)
-  ) {
-    load_tidy_cache(dataset_additional, period, frequency)
-  } else {
-    tryCatch(
-      {
-        download_and_tidy(dataset_additional, period, frequency)
-      },
-      error = function(e) {
-        package_path <- get_package_data_path(
-          dataset_additional,
-          period,
-          frequency
-        )
-        if (!is.null(package_path)) {
-          cli_alert_warning(
-            "Download failed, using package metadata for {dataset_additional} {period}"
-          )
-          read_parquet(package_path)
-        } else {
-          stop(e)
-        }
-      }
-    )
-  }
-
-  list_rbind(list(main_df, additional_df))
-}
-
 #' Get annual metadata for data measures
 #'
 #' Combines the "Data measures (main)" and "Data measures (additional)"
 #' sheets released alongside the annual NHS Talking Therapies reports.
-#'
-#' @details
-#' If network download fails (e.g., in GitHub Actions), falls back to bundled
-#' metadata shipped with the package. This is a temporary workaround for
-#' `digital.nhs.uk` blocking CI environments.
 #'
 #' @references
 #' NHS England.
@@ -94,33 +19,13 @@ get_metadata_measures_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  frequency <- "annual"
-  dataset_base <- "metadata_measures"
-
-  periods <- resolve_periods(
-    periods,
-    paste0(dataset_base, "_main_", frequency),
-    frequency
-  )
-  periods <- rev(periods)
-
-  data_list <- map(
-    periods,
-    \(period) load_combined_metadata(dataset_base, period, frequency, use_cache)
-  )
-
-  list_rbind(data_list)
+  get_tidy_dataset("metadata_measures_annual", periods, use_cache)
 }
 
 #' Get annual metadata for variable derivations
 #'
 #' Combines the "Variables (main)" and "Variables (additional)" sheets
 #' released alongside the annual NHS Talking Therapies reports.
-#'
-#' @details
-#' If network download fails (e.g., in GitHub Actions), falls back to bundled
-#' metadata shipped with the package. This is a temporary workaround for
-#' `digital.nhs.uk` not allowing me to download from GitHub actions.
 #'
 #' @references
 #' NHS England.
@@ -138,20 +43,5 @@ get_metadata_variables_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
-  frequency <- "annual"
-  dataset_base <- "metadata_variables"
-
-  periods <- resolve_periods(
-    periods,
-    paste0(dataset_base, "_main_", frequency),
-    frequency
-  )
-  periods <- rev(periods)
-
-  data_list <- map(
-    periods,
-    \(period) load_combined_metadata(dataset_base, period, frequency, use_cache)
-  )
-
-  list_rbind(data_list)
+  get_tidy_dataset("metadata_variables_annual", periods, use_cache)
 }

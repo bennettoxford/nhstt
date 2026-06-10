@@ -52,7 +52,7 @@ test_that("validate_period accepts valid period", {
 
 test_that("validate_period accepts metadata period", {
   expect_invisible(validate_period(
-    "2025-07",
+    "2026-05",
     "metadata_measures_monthly",
     "monthly"
   ))
@@ -138,7 +138,7 @@ test_that("list_available_periods returns character vector", {
 test_that("list_available_periods includes metadata period", {
   periods <- list_available_periods("metadata_measures_monthly", "monthly")
 
-  expect_true("2025-07" %in% periods)
+  expect_true("2026-05" %in% periods)
 })
 
 test_that("list_available_periods includes metadata annual periods", {
@@ -239,7 +239,7 @@ test_that("get_source_config returns correct format for rar", {
 })
 
 test_that("get_source_config returns correct format for xlsx", {
-  source <- get_source_config("metadata_measures_monthly", "2025-07", "monthly")
+  source <- get_source_config("metadata_measures_monthly", "2026-05", "monthly")
 
   expect_equal(source$format, "xlsx")
 })
@@ -259,11 +259,11 @@ test_that("get_source_config has csv_file field", {
 })
 
 test_that("metadata source includes sheet and range details", {
-  source <- get_source_config("metadata_measures_monthly", "2025-07", "monthly")
+  source <- get_source_config("metadata_measures_monthly", "2026-05", "monthly")
 
   expect_true("sheet" %in% names(source))
   expect_equal(source$sheet, "Measures")
-  expect_equal(source$range, "A5:H427")
+  expect_equal(source$range, "A5:H471")
 })
 
 test_that("annual metadata measures main source reports sheet", {
@@ -326,44 +326,6 @@ test_that("get_dataset_version errors for invalid frequency", {
   expect_error(
     get_dataset_version("key_measures_annual", "invalid"),
     "Invalid frequency"
-  )
-})
-
-# Resolve periods tests --------------------------------------------------------
-
-test_that("resolve_periods handles NULL by returning all periods", {
-  periods <- resolve_periods(NULL, "key_measures_annual", "annual")
-
-  expect_type(periods, "character")
-  expect_true(length(periods) > 0)
-  expect_true(all(grepl("^\\d{4}-\\d{2}$", periods)))
-})
-
-test_that("resolve_periods returns valid periods unchanged", {
-  input <- c("2023-24", "2024-25")
-  periods <- resolve_periods(input, "key_measures_annual", "annual")
-
-  expect_equal(periods, input)
-})
-
-test_that("resolve_periods errors for invalid period", {
-  expect_error(
-    resolve_periods("fy9999", "key_measures_annual", "annual"),
-    "Invalid period"
-  )
-})
-
-test_that("resolve_periods errors for multiple invalid periods", {
-  expect_error(
-    resolve_periods(c("fy9999", "fy8888"), "key_measures_annual", "annual"),
-    "Invalid period"
-  )
-})
-
-test_that("resolve_periods errors for mix of valid and invalid", {
-  expect_error(
-    resolve_periods(c("2023-24", "fy9999"), "key_measures_annual", "annual"),
-    "Invalid period"
   )
 })
 
@@ -567,20 +529,6 @@ test_that("list_available_periods excludes development periods by default", {
   expect_equal(periods, periods_with_dev)
 })
 
-test_that("resolve_periods errors for development periods", {
-  # Create a mock scenario by testing the error message structure
-  # We can't easily test with actual development periods without modifying raw_config.yml
-  # So we test that resolve_periods handles the filtering correctly
-
-  # Normal case should work
-  periods <- resolve_periods(
-    c("2023-24", "2024-25"),
-    "key_measures_annual",
-    "annual"
-  )
-  expect_equal(periods, c("2023-24", "2024-25"))
-})
-
 test_that("validate_period accepts periods in raw_config including development", {
   # validate_period should work for all periods (including development)
   # since it's used internally by read_raw()
@@ -600,7 +548,7 @@ test_that("get_source_config returns csv_file for archive datasets", {
 })
 
 test_that("get_source_config returns sheet and range for xlsx datasets", {
-  source <- get_source_config("metadata_measures_monthly", "2025-07", "monthly")
+  source <- get_source_config("metadata_measures_monthly", "2026-05", "monthly")
 
   # For xlsx sources, sheet and range should be present
   expect_true("sheet" %in% names(source))

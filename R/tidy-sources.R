@@ -23,10 +23,44 @@ load_tidy_sources_config <- function() {
     cli_abort("tidy_data_sources.yml must have a 'datasets' section")
   }
 
-  config$datasets
+  sources <- config$datasets
+  for (dataset in names(sources)) {
+    if (is.null(sources[[dataset]]$url)) {
+      sources[[dataset]]$url <- derive_tidy_source_url(
+        dataset,
+        sources[[dataset]]$version
+      )
+    }
+  }
+
+  sources
+}
+
+#' Derive the GitHub Release URL for a tidy source
+#'
+#' @param dataset Character, dataset name
+#' @param version Character, dataset version
+#'
+#' @return Character URL
+#'
+#' @keywords internal
+derive_tidy_source_url <- function(dataset, version) {
+  release_tag <- paste0(gsub("_", "-", dataset), "-v", version)
+  paste0(
+    "https://github.com/bennettoxford/nhstt/releases/download/",
+    release_tag,
+    "/",
+    dataset,
+    ".parquet"
+  )
 }
 
 #' Get tidy source configuration for a dataset
+#'
+#' The download URL is derived from the dataset name and version using the
+#' GitHub Release tag convention (`{dataset-with-dashes}-v{version}`), which
+#' is what `just release` creates. An explicit `url` field in
+#' tidy_data_sources.yml overrides the derived URL.
 #'
 #' @param dataset Character, dataset name (e.g., "activity_performance_monthly")
 #'
@@ -46,7 +80,15 @@ get_tidy_source_config <- function(dataset) {
     ))
   }
 
-  sources[[dataset]]
+  cfg <- sources[[dataset]]
+
+  if (is.null(cfg$version) || !nzchar(cfg$version)) {
+    cli_abort(
+      "Dataset {.val {dataset}} in tidy_data_sources.yml has no version"
+    )
+  }
+
+  cfg
 }
 
 #' Get path to pre-built tidy parquet in cache
@@ -156,7 +198,15 @@ download_tidy_source <- function(dataset, url, version) {
   tryCatch(
     {
       download_with_retry(url, temp_path)
-      file.rename(temp_path, cache_path)
+      # file.rename() cannot replace an existing file on Windows and
+      # signals failure by returning FALSE rather than erroring
+      if (!suppressWarnings(file.rename(temp_path, cache_path))) {
+        copied <- file.copy(temp_path, cache_path, overwrite = TRUE)
+        unlink(temp_path)
+        if (!copied) {
+          stop("could not move downloaded file into the cache")
+        }
+      }
     },
     error = function(e) {
       if (file.exists(temp_path)) {
