@@ -20,11 +20,14 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/cache_clear.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/cache_info.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/calculate_data_hash.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/check_required_columns.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/clean_column_values.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/clean_org_names.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/clean_ratios.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/clean_str.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/compare_schemas.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/convert_to_numeric.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/create_measures.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/create_raw_fixture.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/derive_tidy_source_url.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/dot-onAttach.html</loc></url>
@@ -33,6 +36,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/download_raw.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/download_tidy_source.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/download_with_retry.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/explore_services.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/extract_archive_schemas.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/extract_csv_from_archive.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/extract_source_schemas.html</loc></url>
@@ -64,6 +68,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/index.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/invalidate_tidy_source_cache.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/is_financial_year_period.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/latest_org_names.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/list_archive_files.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/list_archives_periods.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/list_available_periods.html</loc></url>
@@ -72,11 +77,17 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/load_tidy_config.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/load_tidy_source.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/load_tidy_sources_config.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/measure_name_to_sentence.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/measure_panel_labels.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/mutate_columns.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/nhstt-package.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/nhstt_year_breaks.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/parse_annual_period_bounds.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/parse_monthly_period_bounds.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/parse_reporting_date.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/pivot_longer_measures.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/plot_measures.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/plot_measures_deciles.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/raw_cache_exists.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/read_archive_file.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/read_raw.html</loc></url>
@@ -87,7 +98,9 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/separate_columns.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/str_extract_icd10.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/str_extract_snomed.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/summarise_measures.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/summarise_percentiles.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/theme_nhstt.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/tidy_cache_exists.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/tidy_dataset.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/tidy_source_cache_is_current.html</loc></url>
@@ -99,6 +112,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_dataset_metadata.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_dataset_sources.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_frequency.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/validate_measures.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_period.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_period_exists.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_raw_config.html</loc></url>

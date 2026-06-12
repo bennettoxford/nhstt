@@ -111,6 +111,24 @@ Licence v3.0.
 - [`cache_clear()`](https://bennettoxford.github.io/nhstt/reference/cache_clear.md)
   : Clear cache
 
+## Measures analysis
+
+Experimental helpers for creating, exploring, and visualising measures
+
+- [`create_measures()`](https://bennettoxford.github.io/nhstt/reference/create_measures.md)
+  **\[experimental\]** : Create a measures table from a tidy monthly
+  dataset
+- [`summarise_measures()`](https://bennettoxford.github.io/nhstt/reference/summarise_measures.md)
+  **\[experimental\]** : Summarise a measures table by service
+- [`explore_services()`](https://bennettoxford.github.io/nhstt/reference/explore_services.md)
+  **\[experimental\]** : Explore services that cross chosen thresholds
+- [`plot_measures()`](https://bennettoxford.github.io/nhstt/reference/plot_measures.md)
+  **\[experimental\]** : Plot monthly trends for each measure across all
+  services
+- [`plot_measures_deciles()`](https://bennettoxford.github.io/nhstt/reference/plot_measures_deciles.md)
+  **\[experimental\]** : Plot decile charts for each measure, optionally
+  highlighting services
+
 ## Helper functions
 
 - [`available_nhstt_reports()`](https://bennettoxford.github.io/nhstt/reference/available_nhstt_reports.md)

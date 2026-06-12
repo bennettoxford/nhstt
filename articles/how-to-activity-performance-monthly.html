@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,24 +100,29 @@ blog post</a> we introduced the NHS TT data reports that NHS England
 publishes openly alongside interactive dashboards for exploring key
 measures directly in a browser. These datasets cover various measures,
 including referral activity, waiting times, clinical outcomes, and
-patient-reported outcome measures. The value of these datasets has been
-demonstrated by <span class="citation">Clark et al. (<a href="#ref-Clark2018a">2018</a>)</span>, who used publicly available NHS
-TT reports to study between-service variation in clinical outcomes. They
-found that organisational factors including waiting times, missed
-appointments, and the proportion of patients receiving a course of
-treatment were associated with rates of reliable recovery and
+patient-reported outcome measures. The value of this publicly available
+data has been demonstrated by <span class="citation">Clark et al. (<a href="#ref-Clark2018a">2018</a>)</span>, who used the annual publicly
+available NHS TT reports to study between-service variation in clinical
+outcomes. They found that organisational factors including waiting
+times, missed appointments, and the proportion of patients receiving a
+course of treatment were associated with rates of reliable recovery and
 improvement. This illustrates the broader role of public reporting in
 supporting transparency, benchmarking, and research on variation in
-routine psychological therapy services <span class="citation">(<a href="#ref-Clark2018a">Clark et al. 2018</a>; <a href="#ref-Clark2018b">Clark 2018</a>)</span>.</p>
+routine psychological therapy services <span class="citation">(<a href="#ref-Clark2018a">Clark et al. 2018</a>; <a href="#ref-Clark2018b">Clark 2018</a>)</span>. The monthly data, which
+is less commonly used for research than the annual reports, complements
+the annual publications by providing more timely signals for monitoring
+service activity and identifying measures or periods that warrant closer
+investigation.</p>
 <p>The <a href="https://bennettoxford.github.io/nhstt/"><em>nhstt</em> R
-package</a> is built on top of these publicly available resources and
-designed to complement them. It provides an additional point of access
-to the same data in a tidy, analysis-ready format across all available
-reporting periods. In this vignette we use treatment end codes from the
-monthly activity and performance data as a worked example, but the same
-approach applies to any of the measures in the dataset. The examples are
-descriptive and intended to illustrate what can be done with the data,
-not to draw conclusions about individual services.</p>
+package</a> is built on top of these publicly available datasets and
+designed to complement the existing tools and dashboards. It provides an
+additional point of access to the same data in a tidy, analysis-ready
+format across all available reporting periods. In this vignette we use
+treatment end codes from the monthly activity and performance data as a
+worked example, but the same approach applies to any of the <a href="https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html">monthly
+measures</a> in the datasets. The examples are descriptive and intended
+to illustrate what can be done with the data, not to draw conclusions
+about individual services.</p>
 <div class="section level2">
 <h2 id="treatment-end-codes">Treatment end codes<a class="anchor" aria-label="anchor" href="#treatment-end-codes"></a>
 </h2>
@@ -125,16 +130,25 @@ not to draw conclusions about individual services.</p>
 a reason using a standardised treatment end code. These codes group
 referral outcomes into three categories: (1) referred but not seen, (2)
 seen but not taken on for a course of treatment, and (3) seen and taken
-on for a course of treatment. This post focuses on the last category,
-which covers patients who received two or more sessions, and captures
-the recorded reason their treatment ended.</p>
+on for a course of treatment. In line with national reporting, a patient
+is deemed to have had a course of treatment in NHS Talking Therapies if
+they have had at least two clinical sessions (coded as ‘assessment and
+treatment’ and/or ‘treatment’) before discharge <span class="citation">(<a href="#ref-NationalCollaboratingCentreForMentalHealth2024">National
+Collaborating Centre for Mental Health 2024</a>)</span>. This vignette
+focuses on the end codes for referrals where patients were seen and
+taken on for a course of treatment, and captures the recorded reason
+their treatment ended.</p>
 <p>The monthly dataset includes counts for each end code, available from
-January 2021 to March 2026. The table below shows the five end codes in
-this category, with total recorded events and the number of services
-contributing data. The four most commonly recorded end codes are
-presented in the figures below. All <a href="https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html">descriptions
-of monthly measures</a> implemented in the <em>nhstt</em> R package can
-be explored online.</p>
+January 2021 to March 2026. The table below shows the five end codes for
+referrals seen and taken on for a course of treatment, together with
+M076, which counts the total number of referrals that finished a course
+of treatment and serves as the denominator when calculating proportions.
+Total recorded events and the number of services contributing data are
+shown for each measure. The four most commonly recorded end codes are
+used in the figures below; the Deceased end code (M069) is recorded in
+too few referrals to visualise. All <a href="https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html">monthly
+measures</a> implemented in the <em>nhstt</em> R package can be explored
+online.</p>
 <div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mwlefoodfi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -585,7 +599,7 @@ be explored online.</p>
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<caption>End codes for referrals seen and taken on for a course of treatment in the monthly NHS TT dataset (January 2021 to March 2026), with total recorded events and number of services contributing data.</caption>
+<caption>End codes for referrals seen and taken on for a course of treatment in the monthly NHS TT dataset (January 2021 to March 2026), with total recorded events and number of services contributing data. M076 is the denominator measure used to calculate proportions.</caption>
   <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="measure_id">ID</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="description">Description</th>
@@ -593,35 +607,47 @@ be explored online.</p>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="n_services">NHS TT services</th>
     </tr></thead>
 <tbody class="gt_table_body">
-<tr>
-<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M066</td>
-<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’</td>
-<td headers="total_events" class="gt_row gt_right">2,375,625</td>
-<td headers="n_services" class="gt_row gt_right">175</td>
+<tr class="gt_group_heading_row">
+<th colspan="4" class="gt_group_heading" scope="colgroup" id="Numerator: Treatment end codes (seen and taken on for a course of treatment)">Numerator: Treatment end codes (seen and taken on for a course of treatment)</th>
+    </tr>
+<tr class="gt_row_group_first">
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M066</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  total_events" class="gt_row gt_right">1,887,595</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  n_services" class="gt_row gt_right">115</td>
 </tr>
 <tr>
-<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M344</td>
-<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’</td>
-<td headers="total_events" class="gt_row gt_right">1,414,705</td>
-<td headers="n_services" class="gt_row gt_right">164</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M069</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen and taken on for a course of treatment)’</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  total_events" class="gt_row gt_right">340</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  n_services" class="gt_row gt_right">10</td>
 </tr>
 <tr>
-<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M070</td>
-<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’</td>
-<td headers="total_events" class="gt_row gt_right">121,495</td>
-<td headers="n_services" class="gt_row gt_right">77</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M070</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  total_events" class="gt_row gt_right">64,760</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  n_services" class="gt_row gt_right">59</td>
 </tr>
 <tr>
-<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M341</td>
-<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’</td>
-<td headers="total_events" class="gt_row gt_right">89,715</td>
-<td headers="n_services" class="gt_row gt_right">84</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M341</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  total_events" class="gt_row gt_right">81,755</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  n_services" class="gt_row gt_right">69</td>
 </tr>
 <tr>
-<td headers="measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M069</td>
-<td headers="description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen and taken on for a course of treatment)’</td>
-<td headers="total_events" class="gt_row gt_right">365</td>
-<td headers="n_services" class="gt_row gt_right">13</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M344</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  total_events" class="gt_row gt_right">1,084,070</td>
+<td headers="Numerator: Treatment end codes (seen and taken on for a course of treatment)  n_services" class="gt_row gt_right">110</td>
+</tr>
+<tr class="gt_group_heading_row">
+<th colspan="4" class="gt_group_heading" scope="colgroup" id="Denominator: Referrals that finished a course of treatment">Denominator: Referrals that finished a course of treatment</th>
+    </tr>
+<tr class="gt_row_group_first">
+<td headers="Denominator: Referrals that finished a course of treatment  measure_id" class="gt_row gt_left" style="text-align: left; vertical-align: top; font-weight: bold;">M076</td>
+<td headers="Denominator: Referrals that finished a course of treatment  description" class="gt_row gt_left" style="text-align: left; vertical-align: top;">Count of referrals with a discharge date in the period that had at least two treatment sessions (excluding follow up)</td>
+<td headers="Denominator: Referrals that finished a course of treatment  total_events" class="gt_row gt_right">3,504,945</td>
+<td headers="Denominator: Referrals that finished a course of treatment  n_services" class="gt_row gt_right">179</td>
 </tr>
 </tbody>
 </table>
@@ -630,39 +656,71 @@ be explored online.</p>
 <div class="section level2">
 <h2 id="monthly-trends-and-variation-in-treatment-end-codes">Monthly trends and variation in treatment end codes<a class="anchor" aria-label="anchor" href="#monthly-trends-and-variation-in-treatment-end-codes"></a>
 </h2>
-<p>Across 63 reporting periods, these monthly counts make it possible to
-look beyond annual totals and examine trends and variation in treatment
-end codes over time. We first show service-level trends across all
+<p>Across 63 reporting periods, these monthly data make it possible to
+look beyond annual totals and examine whether patterns in treatment end
+codes are stable or change over time.</p>
+<p>Because services differ considerably in size, we present both raw
+counts and proportions relative to M076 (total referrals finishing a
+course of treatment). We first show service-level trends across all
 services, then use decile bands to place two example services in
 context.</p>
+<p>Before presenting the results, we made two pragmatic data quality
+decisions for this vignette. First, we excluded 382 individual data
+points where the calculated proportion exceeded 100%, as these are not
+plausible and likely reflect recording or data quality issues. Second,
+we excluded 64 services with a median monthly M076 count below 20, or
+where any end code proportion was at or above 99% in at least one
+reporting period, as these patterns may be difficult to interpret
+reliably and require closer examination. These decisions were made to
+demonstrate how one might decide to work with this data and are not
+intended as a recommended analytical approach. In a research context,
+decisions about which services and data points to include or exclude
+should be guided by the specific research question. Where patterns in
+the monthly data appear unusual, cross-checking summed monthly values
+against the corresponding published annual report for the same period
+can help identify whether discrepancies reflect genuine recording
+differences or administrative timing effects such as delayed data
+entry.</p>
 <div class="section level3">
 <h3 id="trends-across-all-services">Trends across all services<a class="anchor" aria-label="anchor" href="#trends-across-all-services"></a>
 </h3>
-<p>The figure below shows the raw monthly counts for the four most
-commonly recorded end codes across all NHS TT services. Each line
-represents one service, showing both the scale of between-service
-variation and whether it is stable over time. Because these are counts
-rather than rates, differences between services will partly reflect
-differences in service size.</p>
+<p>The figure below shows the monthly count of referrals recorded
+against each of the four end codes for referrals seen and taken on for a
+course of treatment, across all NHS TT services. Each line represents
+one service. The counts show variation in the absolute volume of
+referrals recorded against each end code across services and over
+time.</p>
 <div class="figure">
-<img src="how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-1.png" class="r-plt" alt="Monthly trends across all NHS TT services (one line per service) for the four most commonly recorded end codes." width="960"><p class="caption">
-Monthly trends across all NHS TT services (one line per service) for the
+<img src="how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-counts-1.png" class="r-plt" alt="Monthly trends of individual NHS TT services in counts of treatment end codes for referrals seen and taken on for a course of treatment, for the four most commonly recorded end codes." width="960"><p class="caption">
+Monthly trends of individual NHS TT services in counts of treatment end
+codes for referrals seen and taken on for a course of treatment, for the
 four most commonly recorded end codes.
 </p>
 </div>
-<p>Across all four end codes, most services record counts within a
-similar range and follow broadly consistent trends over the reporting
-period. A small number of services stand out as consistent outliers,
-particularly for referrals that ended with <em>Completed</em> (M066),
-<em>Before care professional planned</em> (M344), and <em>Unknown
-treated</em> (M070).</p>
+<p>The figure below shows the same four end codes expressed as
+proportions of finished-course referrals (M076). Once service size is
+accounted for, most services fall within a broadly similar range for
+each end code and follow consistent trends across the reporting period.
+A small number of services stand out as consistent outliers in their
+proportions, particularly for <em>Completed</em> (M066; mutually agreed
+completion of treatment), <em>Before care professional planned</em>
+(M344), and <em>Unknown treated</em> (M070).</p>
+<div class="figure">
+<img src="how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-proportions-1.png" class="r-plt" alt="Monthly trends of individual NHS TT services in the proportion of finished-course referrals (M076) assigned each treatment end code for referrals seen and taken on for a course of treatment, for the four most commonly recorded end codes." width="960"><p class="caption">
+Monthly trends of individual NHS TT services in the proportion of
+finished-course referrals (M076) assigned each treatment end code for
+referrals seen and taken on for a course of treatment, for the four most
+commonly recorded end codes.
+</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="comparing-services-with-decile-bands">Comparing services with decile bands<a class="anchor" aria-label="anchor" href="#comparing-services-with-decile-bands"></a>
 </h3>
 <p>The figure below uses decile bands to place the two example services
-in the context of the full distribution across all NHS TT services. Read
-more on why we think <a href="https://www.bennett.ox.ac.uk/blog/2019/04/communicating-variation-in-prescribing-why-we-use-deciles/" class="external-link">deciles
+in the context of the full distribution across all NHS TT services,
+expressed as proportions of finished-course referrals. Read more on why
+we think <a href="https://www.bennett.ox.ac.uk/blog/2019/04/communicating-variation-in-prescribing-why-we-use-deciles/" class="external-link">decile
 charts are a useful tool to communicate variation</a> in a previous blog
 we wrote. The shaded bands show the distribution from the 10th to the
 90th percentile in decile steps, with darker shading closer to the
@@ -672,34 +730,48 @@ between services, with wider bands indicating greater spread. These
 charts summarise activity patterns and are not intended as rankings of
 service quality.</p>
 <div class="figure">
-<img src="how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-deciles-1.png" class="r-plt" alt="Decile charts across all NHS TT services for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median. Two example services are shown as coloured lines." width="960"><p class="caption">
-Decile charts across all NHS TT services for the four most commonly
-recorded end codes. Shaded bands show the 10th to 90th percentile range
-in decile steps. The dark line shows the median. Two example services
-are shown as coloured lines.
+<img src="how-to-activity-performance-monthly_files/figure-html/fig-monthly-end-code-measures-deciles-1.png" class="r-plt" alt="Decile charts showing overall variation and two example services for treatment end codes among referrals seen and taken on for a course of treatment, expressed as proportions of finished-course referrals (M076), for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median." width="960"><p class="caption">
+Decile charts showing overall variation and two example services for
+treatment end codes among referrals seen and taken on for a course of
+treatment, expressed as proportions of finished-course referrals (M076),
+for the four most commonly recorded end codes. Shaded bands show the
+10th to 90th percentile range in decile steps. The dark line shows the
+median.
 </p>
 </div>
-<p><em>Service A</em> sits above the median for completed referrals
-(M066) and tracks closer to the median for the remaining end codes.
-<em>Service B</em> records consistently high counts of completed
-referrals, sitting in the top 10% of services throughout the reporting
-period, and also starts above the median for end codes before the
-patient requested (M341) and care professional planned (M344), trending
-closer towards the median over the reporting period.</p>
+<p>Each panel shows the proportion of finished-course referrals assigned
+one of the four treatment end codes. For the <em>Completed</em> end code
+(panel A), which records mutually agreed completion of treatment rather
+than all referrals finishing a course of treatment, <em>Service A</em>
+tracks below the median throughout, while <em>Service B</em> sits well
+above the median from 2021 onwards, at times in the top 10% of services,
+before falling to around the median from mid-2025. For the <em>Unknown
+treated</em> end code (panel B), <em>Service A</em> sits close to the
+median throughout. <em>Service B</em> only contributes data until early
+2023, sitting slightly below the median while reporting. For the
+<em>Before patient requested</em> end code (panel C), <em>Service A</em>
+remains just below the median throughout. <em>Service B</em> only
+contributes data from mid-2025, sitting slightly above the median. For
+the <em>Before care professional planned</em> end code (panel D),
+<em>Service A</em> tracks close to the median throughout. <em>Service
+B</em> sits well below the median for most of the period, often in the
+bottom 10% of services, before a sharp rise peaking around 30 percentage
+points above the median between July and September 2025, after which it
+returns to around the median by the end of 2025.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="try-it-yourself">Try it yourself<a class="anchor" aria-label="anchor" href="#try-it-yourself"></a>
 </h2>
-<p>The <em>nhstt</em> package makes it easy to access publicly available
-NHS TT data for research, is free to use, and is updated regularly as
-NHS England publishes new reports. It provides access to each dataset in
-a tidy, analysis-ready format, with no need to find the underlying
-files. Whether you are interested in trends in referral activity,
-variation in waiting times across services, or changes in clinical
-outcomes over time, the data are there to be explored. We recommend
-checking the NHS England <a href="https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx" class="external-link">data
-quality notes</a> before using these data, as they describe known issues
+<p>The <em>nhstt</em> package makes it easier to access publicly
+available NHS TT data, is free to use, and is updated regularly as NHS
+England publishes new reports. It provides access to each dataset in a
+tidy, analysis-ready format, with no need to find or clean the
+underlying files. Whether you are interested in trends in referral
+activity, variation in waiting times across services, or changes in
+clinical outcomes over time, the data is there to be explored. We
+recommend checking the NHS England <a href="https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx" class="external-link">data
+quality notes</a> before using this data, as they describe known issues
 affecting specific reporting periods or measures.</p>
 <p>If you use the package for a new analysis or have ideas for how it
 could be extended, we would love to hear about it. For questions or to
@@ -723,6 +795,11 @@ Pilling, and Magdalena Janecka. 2018. <span>“Transparency about the
 Outcomes of Mental Health Services (<span>IAPT</span> Approach): An
 Analysis of Public Data.”</span> <em>The Lancet</em> 391 (10121):
 679–86. <a href="https://doi.org/10.1016/S0140-6736(17)32133-5" class="external-link">https://doi.org/10.1016/S0140-6736(17)32133-5</a>.
+</div>
+<div id="ref-NationalCollaboratingCentreForMentalHealth2024" class="csl-entry">
+National Collaborating Centre for Mental Health. 2024. <em><span>NHS
+Talking Therapies</span> for Anxiety and Depression
+<span>Manual</span></em>. <a href="https://www.england.nhs.uk/publication/the-improving-access-to-psychological-therapies-manual/" class="external-link">https://www.england.nhs.uk/publication/the-improving-access-to-psychological-therapies-manual/</a>.
 </div>
 </div>
 </div>
