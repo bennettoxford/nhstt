@@ -36,5 +36,27 @@ utils::globalVariables(c(
   "region_code",
   "csv_file",
   "column",
-  "percentile"
+  "percentile",
+  # Variables for measures analysis functions
+  "interval_start",
+  "interval_end",
+  "numerator",
+  "denominator",
+  "ratio",
+  "measure_name_id",
+  "tag",
+  "median_denominator",
+  "min_denominator",
+  "n_periods",
+  "group",
+  "service_label",
+  "p10",
+  "p20",
+  "p30",
+  "p40",
+  "p50",
+  "p60",
+  "p70",
+  "p80",
+  "p90"
 ))

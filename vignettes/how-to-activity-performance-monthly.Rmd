@@ -4,7 +4,7 @@ bibliography: references.bib
 link-citations: true
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{how-to-activity-performance-monthly}
+  %\VignetteIndexEntry{Exploring monthly changes in treatment end codes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,13 +13,14 @@ vignette: >
 
 In a [previous blog post](https://talkingtherapies.opensafely.org/introducing-our-series-on-publicly-available-mental-health-data-nhs-talking-therapies-for-anxiety-and-depression/) we introduced the NHS TT data reports that NHS England publishes openly alongside interactive dashboards for exploring key measures directly in a browser.
 These datasets cover various measures, including referral activity, waiting times, clinical outcomes, and patient-reported outcome measures.
-The value of these datasets has been demonstrated by @Clark2018a, who used publicly available NHS TT reports to study between-service variation in clinical outcomes.
+The value of this publicly available data has been demonstrated by @Clark2018a, who used the annual publicly available NHS TT reports to study between-service variation in clinical outcomes.
 They found that organisational factors including waiting times, missed appointments, and the proportion of patients receiving a course of treatment were associated with rates of reliable recovery and improvement.
 This illustrates the broader role of public reporting in supporting transparency, benchmarking, and research on variation in routine psychological therapy services [@Clark2018a; @Clark2018b].
+The monthly data, which is less commonly used for research than the annual reports, complements the annual publications by providing more timely signals for monitoring service activity and identifying measures or periods that warrant closer investigation.
 
-The [*nhstt* R package](https://bennettoxford.github.io/nhstt/) is built on top of these publicly available resources and designed to complement them.
+The [*nhstt* R package](https://bennettoxford.github.io/nhstt/) is built on top of these publicly available datasets and designed to complement the existing tools and dashboards.
 It provides an additional point of access to the same data in a tidy, analysis-ready format across all available reporting periods.
-In this vignette we use treatment end codes from the monthly activity and performance data as a worked example, but the same approach applies to any of the measures in the dataset.
+In this vignette we use treatment end codes from the monthly activity and performance data as a worked example, but the same approach applies to any of the [monthly measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html) in the datasets.
 The examples are descriptive and intended to illustrate what can be done with the data, not to draw conclusions about individual services.
 
 ```{r}
@@ -28,64 +29,18 @@ The examples are descriptive and intended to illustrate what can be done with th
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(nhstt)
 library(ggplot2)
-library(lubridate)
 library(dplyr)
-library(tidyr)
-library(scales)
-library(stringr)
-library(paletteer)
 library(gt)
-```
-
-```{r}
-#| label: plot-theme
-#| message: false
-#| warning: false
-# Plot theme: define a custom ggplot2 theme and shared axis scales applied across all figures.
-# Custom ggplot theme applied to all figures
-
-theme_nhstt <- function(base_size = 13) {
-  theme_classic(base_size = base_size) +
-    theme(
-      panel.grid.major = element_line(colour = "gray90", linetype = "dotted"),
-      strip.text = element_text(face = "bold"),
-      strip.background = element_rect(linewidth = 0),
-      strip.text.x = element_text(size = base_size, face = "bold"),
-      legend.title = element_text(size = base_size),
-      legend.text = element_text(size = base_size * 0.95)
-    )
-}
-
-# Shared axis scales and facet layout used across figures
-nhstt_scales <- function(ncol = 2) {
-  list(
-    scale_x_date(labels = label_date("%b\n%Y")),
-    scale_y_continuous(labels = label_number(accuracy = 1), limits = c(0, NA)),
-    labs(x = NULL, y = NULL),
-    facet_wrap(
-      vars(measure_name_id),
-      scales = "fixed",
-      ncol = ncol,
-      axes = "all"
-    )
-  )
-}
-
-theme_set(theme_nhstt())
 ```
 
 ```{r}
 #| label: load-data
 #| message: false
 #| warning: false
-# Load data: download monthly activity and performance data and measure metadata.
-# Load monthly activity and performance data
-
 df_activity_performance <- get_activity_performance_monthly()
 START_DATE_NHSTT <- min(df_activity_performance$start_date)
 END_DATE_NHSTT <- max(df_activity_performance$end_date)
 
-# Load measure metadata
 df_monthly_metadata <- get_metadata_monthly()
 ```
 
@@ -93,9 +48,7 @@ df_monthly_metadata <- get_metadata_monthly()
 #| label: define-measures
 #| message: false
 #| warning: false
-# Define measures: select treatment end codes, filter to provider level, and prepare figure labels.
-# All five end codes from the seen and taken on for a course of treatment group
-
+# Five end codes for referrals seen and taken on for a course of treatment
 referral_ended_measures <- c(
   "M066",
   "M344",
@@ -104,12 +57,16 @@ referral_ended_measures <- c(
   "M069"
 )
 
-# Filter to provider-level data for selected measures
-df_activity_performance_selected <- df_activity_performance |>
-  filter(measure_id %in% referral_ended_measures) |>
-  filter(group_type == "Provider")
+# Measures table pairing each end code with the denominator M076, which
+# counts referrals that finished a course of treatment (at least two
+# clinical sessions before discharge)
+df_measures <- df_activity_performance |>
+  create_measures(
+    numerators = referral_ended_measures,
+    denominator = "M076"
+  )
 
-# Four most commonly recorded end codes used in the charts (M069 table only)
+# Four most commonly recorded end codes used in figures (M069 excluded: too few events to visualise)
 selected_measures <- c(
   "M066",
   "M070",
@@ -117,68 +74,111 @@ selected_measures <- c(
   "M344"
 )
 
-# Helper to convert measure names to sentence case for figure labels
-measure_name_to_sentence <- function(x) {
-  x |>
-    str_remove("^ended_") |>
-    str_replace_all("_", " ") |>
-    str_to_sentence()
-}
+# Two example services highlighted in the deciles figure, shown with generic
+# Service A and Service B
+selected_services <- c("RNUDT", "RTQ")
+```
 
-# Two example services highlighted in the deciles chart
-selected_service_labels <- c(
-  RNUDT = "Service A",
-  RXV = "Service B"
+```{r}
+#| label: exclude-nhstt-providers
+#| message: false
+#| warning: false
+# Keep unfiltered data available for exploration
+df_measures_all <- df_measures
+
+# Overview of all services (one row per service with reporting periods,
+# denominator counts, and median ratios), useful for getting a feel for the
+# data before choosing thresholds; explore_services() builds on this summary
+df_services_summary <- summarise_measures(df_measures_all)
+
+# Thresholds used for service exclusions
+MEDIAN_THRESHOLD <- 20
+RATIO_THRESHOLD <- .99
+
+# Explore services crossing the chosen thresholds
+df_explored_services <- explore_services(
+  df_measures_all,
+  median_threshold = MEDIAN_THRESHOLD,
+  ratio_threshold = RATIO_THRESHOLD
 )
 
-selected_services <- names(selected_service_labels)
+# After reviewing the explored services, exclude them and treat
+# proportions above 100% as missing
+df_measures <- df_measures_all |>
+  filter(!org_code2 %in% df_explored_services$org_code2) |>
+  mutate(ratio = if_else(ratio > 1, NA_real_, ratio))
 
-# Facet panel order for figures: follows selected_measures order
-top_levels_order <- df_activity_performance_selected |>
-  filter(measure_id %in% selected_measures) |>
-  distinct(measure_id, measure_name) |>
-  mutate(
-    measure_name_id = paste0(
-      measure_name_to_sentence(measure_name),
-      " (",
-      measure_id,
-      ")"
-    )
-  ) |>
-  arrange(factor(measure_id, levels = selected_measures)) |>
-  pull(measure_name_id)
+# Counts reported in the text
+N_SERVICES_EXCLUDED <- n_distinct(df_explored_services$org_code2)
+N_DATA_POINTS_EXCLUDED <- df_measures_all |>
+  filter(!org_code2 %in% df_explored_services$org_code2, ratio > 1) |>
+  nrow()
 ```
 
 ## Treatment end codes
 
 When a referral ends in the reporting period, NHS TT services record a reason using a standardised treatment end code.
 These codes group referral outcomes into three categories: (1) referred but not seen, (2) seen but not taken on for a course of treatment, and (3) seen and taken on for a course of treatment.
-This post focuses on the last category, which covers patients who received two or more sessions, and captures the recorded reason their treatment ended.
+In line with national reporting, a patient is deemed to have had a course of treatment in NHS Talking Therapies if they have had at least two clinical sessions (coded as 'assessment and treatment' and/or 'treatment') before discharge [@NationalCollaboratingCentreForMentalHealth2024].
+This vignette focuses on the end codes for referrals where patients were seen and taken on for a course of treatment, and captures the recorded reason their treatment ended.
 
 The monthly dataset includes counts for each end code, available from `r format(START_DATE_NHSTT, "%B %Y")` to `r format(END_DATE_NHSTT, "%B %Y")`.
-The table below shows the five end codes in this category, with total recorded events and the number of services contributing data.
-The four most commonly recorded end codes are presented in the figures below.
-All [descriptions of monthly measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html) implemented in the *nhstt* R package can be explored online.
+The table below shows the five end codes for referrals seen and taken on for a course of treatment, together with M076, which counts the total number of referrals that finished a course of treatment and serves as the denominator when calculating proportions.
+Total recorded events and the number of services contributing data are shown for each measure.
+The four most commonly recorded end codes are used in the figures below; the Deceased end code (M069) is recorded in too few referrals to visualise.
+All [monthly measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html) implemented in the *nhstt* R package can be explored online.
 
 ```{r}
 #| label: tbl-monthly-end-code-measures
 #| message: false
 #| warning: false
-# Table: summarise total events and number of contributing services for each treatment end code.
+# Summary counts for numerator end codes
+df_numerator_summary <- df_measures |>
+  group_by(measure_id) |>
+  summarise(
+    total_events = sum(numerator, na.rm = TRUE),
+    n_services = n_distinct(org_code2[!is.na(numerator)])
+  )
 
-df_measure_summary <- df_activity_performance_selected |>
+# Summary counts for denominator (M076)
+df_denominator_summary <- df_activity_performance |>
+  filter(measure_id == "M076", group_type == "Provider") |>
   group_by(measure_id) |>
   summarise(
     total_events = sum(value, na.rm = TRUE),
     n_services = n_distinct(org_code2[!is.na(value)])
   )
 
+df_measure_summary <- bind_rows(df_numerator_summary, df_denominator_summary) |>
+  mutate(
+    group_label = if_else(
+      measure_id == "M076",
+      "Denominator: Referrals that finished a course of treatment",
+      "Numerator: Treatment end codes (seen and taken on for a course of treatment)"
+    )
+  ) |>
+  arrange(
+    factor(
+      group_label,
+      levels = c(
+        "Numerator: Treatment end codes (seen and taken on for a course of treatment)",
+        "Denominator: Referrals that finished a course of treatment"
+      )
+    ),
+    desc(total_events)
+  )
+
 df_monthly_metadata |>
-  filter(measure_id %in% referral_ended_measures) |>
+  filter(measure_id %in% c(referral_ended_measures, "M076")) |>
   select(measure_id, description) |>
   left_join(df_measure_summary, by = "measure_id") |>
-  arrange(desc(total_events)) |>
-  gt() |>
+  gt(groupname_col = "group_label") |>
+  row_group_order(
+    groups = c(
+      "Numerator: Treatment end codes (seen and taken on for a course of treatment)",
+      "Denominator: Referrals that finished a course of treatment"
+    )
+  ) |>
   tab_style(
     style = list(cell_text(align = "left", v_align = "top", weight = "bold")),
     locations = cells_body(columns = measure_id)
@@ -200,65 +200,65 @@ df_monthly_metadata |>
       format(START_DATE_NHSTT, "%B %Y"),
       " to ",
       format(END_DATE_NHSTT, "%B %Y"),
-      "), with total recorded events and number of services contributing data."
+      "), with total recorded events and number of services contributing data. M076 is the denominator measure used to calculate proportions."
     )
   )
 ```
 
 ## Monthly trends and variation in treatment end codes
 
-Across `r length(unique(df_activity_performance$reporting_period))` reporting periods, these monthly counts make it possible to look beyond annual totals and examine trends and variation in treatment end codes over time.
+Across `r length(unique(df_activity_performance$reporting_period))` reporting periods, these monthly data make it possible to look beyond annual totals and examine whether patterns in treatment end codes are stable or change over time.
+
+Because services differ considerably in size, we present both raw counts and proportions relative to M076 (total referrals finishing a course of treatment).
 We first show service-level trends across all services, then use decile bands to place two example services in context.
+
+Before presenting the results, we made two pragmatic data quality decisions for this vignette.
+First, we excluded `r N_DATA_POINTS_EXCLUDED` individual data points where the calculated proportion exceeded 100%, as these are not plausible and likely reflect recording or data quality issues.
+Second, we excluded `r N_SERVICES_EXCLUDED` services with a median monthly M076 count below `r MEDIAN_THRESHOLD`, or where any end code proportion was at or above `r scales::percent(RATIO_THRESHOLD, accuracy = 1)` in at least one reporting period, as these patterns may be difficult to interpret reliably and require closer examination.
+These decisions were made to demonstrate how one might decide to work with this data and are not intended as a recommended analytical approach.
+In a research context, decisions about which services and data points to include or exclude should be guided by the specific research question.
+Where patterns in the monthly data appear unusual, cross-checking summed monthly values against the corresponding published annual report for the same period can help identify whether discrepancies reflect genuine recording differences or administrative timing effects such as delayed data entry.
 
 ### Trends across all services
 
-The figure below shows the raw monthly counts for the four most commonly recorded end codes across all NHS TT services.
-Each line represents one service, showing both the scale of between-service variation and whether it is stable over time.
-Because these are counts rather than rates, differences between services will partly reflect differences in service size.
+The figure below shows the monthly count of referrals recorded against each of the four end codes for referrals seen and taken on for a course of treatment, across all NHS TT services.
+Each line represents one service.
+The counts show variation in the absolute volume of referrals recorded against each end code across services and over time.
 
 ```{r}
-#| label: fig-monthly-end-code-measures
+#| label: fig-monthly-end-code-measures-counts
 #| warning: false
 #| message: false
 #| fig-width: 10
-#| fig-height: 9
-#| fig-cap: "Monthly trends across all NHS TT services (one line per service) for the four most commonly recorded end codes."
-# Figure: monthly counts for the four most commonly recorded end codes across all NHS TT services.
-
-fig_selected_activity_performance <- df_activity_performance_selected |>
+#| fig-height: 8.5
+#| fig-cap: "Monthly trends of individual NHS TT services in counts of treatment end codes for referrals seen and taken on for a course of treatment, for the four most commonly recorded end codes."
+df_measures |>
   filter(measure_id %in% selected_measures) |>
-  mutate(
-    measure_name_id = factor(
-      paste0(measure_name_to_sentence(measure_name), " (", measure_id, ")"),
-      levels = top_levels_order
-    )
-  ) |>
-  select(end_date, org_name2, org_code2, measure_id, measure_name_id, value)
-
-fig_selected_activity_performance |>
-  ggplot(
-    aes(
-      y = value,
-      x = end_date,
-      colour = measure_name_id,
-      group = org_code2
-    )
-  ) +
-  geom_line(alpha = 0.2) +
-  geom_point(size = 0.2) +
-  scale_colour_brewer(palette = "Dark2") +
-  nhstt_scales() +
-  theme(legend.position = "none") +
-  guides(colour = guide_legend(nrow = 5, byrow = TRUE))
+  plot_measures(y = "numerator", panel_tags = TRUE) +
+  labs(y = "Count of treatment end codes")
 ```
 
-Across all four end codes, most services record counts within a similar range and follow broadly consistent trends over the reporting period.
-A small number of services stand out as consistent outliers, particularly for referrals that ended with *Completed* (M066), *Before care professional planned* (M344), and *Unknown treated* (M070).
+The figure below shows the same four end codes expressed as proportions of finished-course referrals (M076).
+Once service size is accounted for, most services fall within a broadly similar range for each end code and follow consistent trends across the reporting period.
+A small number of services stand out as consistent outliers in their proportions, particularly for *Completed* (M066; mutually agreed completion of treatment), *Before care professional planned* (M344), and *Unknown treated* (M070).
+
+```{r}
+#| label: fig-monthly-end-code-measures-proportions
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: 8.5
+#| fig-cap: "Monthly trends of individual NHS TT services in the proportion of finished-course referrals (M076) assigned each treatment end code for referrals seen and taken on for a course of treatment, for the four most commonly recorded end codes."
+df_measures |>
+  filter(measure_id %in% selected_measures) |>
+  plot_measures(y = "ratio", panel_tags = TRUE) +
+  labs(y = "Proportion of referrals finishing a course of treatment")
+```
 
 ### Comparing services with decile bands
 
-The figure below uses decile bands to place the two example services in the context of the full distribution across all NHS TT services.
-Read more on why we think [deciles charts are a useful tool to communicate variation](https://www.bennett.ox.ac.uk/blog/2019/04/communicating-variation-in-prescribing-why-we-use-deciles/) in a previous blog we wrote.
+The figure below uses decile bands to place the two example services in the context of the full distribution across all NHS TT services, expressed as proportions of finished-course referrals.
+Read more on why we think [decile charts are a useful tool to communicate variation](https://www.bennett.ox.ac.uk/blog/2019/04/communicating-variation-in-prescribing-why-we-use-deciles/) in a previous blog we wrote.
 The shaded bands show the distribution from the 10th to the 90th percentile in decile steps, with darker shading closer to the median.
 A service outside the bands falls in the top or bottom 10% for that month.
 The width of the bands reflects how much variation there is between services, with wider bands indicating greater spread.
@@ -270,150 +270,30 @@ These charts summarise activity patterns and are not intended as rankings of ser
 #| message: false
 #| fig-width: 10
 #| fig-height: 10
-#| fig-cap: "Decile charts across all NHS TT services for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median. Two example services are shown as coloured lines."
-# Figure: decile chart showing the distribution across all services, with two example services highlighted.
-# Calculate percentiles across all services for each reporting period
-
-df_deciles <- df_activity_performance_selected |>
+#| fig-cap: "Decile charts showing overall variation and two example services for treatment end codes among referrals seen and taken on for a course of treatment, expressed as proportions of finished-course referrals (M076), for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median."
+df_measures |>
   filter(measure_id %in% selected_measures) |>
-  summarise_percentiles(
-    period_col = end_date,
-    value_col = value,
-    group_by = measure_id
-  ) |>
-  left_join(
-    df_activity_performance_selected |>
-      distinct(measure_id, measure_name) |>
-      mutate(
-        measure_name_id = factor(
-          paste0(measure_name_to_sentence(measure_name), " (", measure_id, ")"),
-          levels = top_levels_order
-        )
-      ),
-    by = "measure_id"
-  ) |>
-  pivot_wider(names_from = percentile, values_from = value, names_prefix = "p")
-
-# Prepare data for the two highlighted services
-df_top <- df_activity_performance_selected |>
-  filter(measure_id %in% selected_measures) |>
-  filter(org_code2 %in% selected_services) |>
-  select(-org_name2) |>
-  mutate(
-    service_label = recode(org_code2, !!!selected_service_labels),
-    service_label = factor(
-      service_label,
-      levels = unname(selected_service_labels)
-    ),
-    measure_name_id = factor(
-      paste0(measure_name_to_sentence(measure_name), " (", measure_id, ")"),
-      levels = top_levels_order
-    )
-  )
-
-# Visual style for decile ribbons, median line, and service lines
-ribbon_palette <- setNames(
-  gray(seq(0.7, 0.5, length.out = 4)),
-  c("10th-90th", "20th-80th", "30th-70th", "40th-60th")
-)
-
-ribbon_alpha <- 0.2
-
-median_colour <- paletteer_d("RColorBrewer::RdGy")[10]
-
-service_colours <- setNames(
-  c(
-    paletteer_d("RColorBrewer::Dark2")[1],
-    paletteer_d("RColorBrewer::Dark2")[4]
-  ),
-  unname(selected_service_labels)
-)
-
-# Build plot
-ggplot() +
-  geom_ribbon(
-    data = df_deciles,
-    aes(x = end_date, ymin = p10, ymax = p90, fill = "10th-90th"),
-    alpha = ribbon_alpha
+  plot_measures_deciles(
+    highlight_services = selected_services,
+    hide_service_names = TRUE,
+    panel_tags = TRUE
   ) +
-  geom_ribbon(
-    data = df_deciles,
-    aes(x = end_date, ymin = p20, ymax = p80, fill = "20th-80th"),
-    alpha = ribbon_alpha
-  ) +
-  geom_ribbon(
-    data = df_deciles,
-    aes(x = end_date, ymin = p30, ymax = p70, fill = "30th-70th"),
-    alpha = ribbon_alpha
-  ) +
-  geom_ribbon(
-    data = df_deciles,
-    aes(x = end_date, ymin = p40, ymax = p60, fill = "40th-60th"),
-    alpha = ribbon_alpha
-  ) +
-  geom_line(
-    data = df_deciles,
-    aes(x = end_date, y = p50),
-    colour = median_colour,
-    linewidth = 0.6,
-    show.legend = FALSE
-  ) +
-  geom_line(
-    data = df_top,
-    aes(x = end_date, y = value, colour = service_label, group = service_label),
-    alpha = 0.5
-  ) +
-  geom_point(
-    data = df_top,
-    aes(
-      x = end_date,
-      y = value,
-      shape = service_label,
-      colour = service_label,
-      group = service_label
-    ),
-  ) +
-  scale_colour_manual(name = "NHS TT service:", values = service_colours) +
-  scale_shape_manual(
-    name = "NHS TT service:",
-    values = c("Service A" = 16, "Service B" = 17)
-  ) +
-  scale_fill_manual(
-    values = ribbon_palette,
-    breaks = c("10th-90th", "20th-80th", "30th-70th", "40th-60th")
-  ) +
-  nhstt_scales() +
-  labs(
-    colour = "NHS TT service:",
-    shape = "NHS TT service:",
-    fill = "Decile range:"
-  ) +
-  guides(
-    colour = guide_legend(order = 1, nrow = 1),
-    shape = guide_legend(order = 1, nrow = 1),
-    fill = guide_legend(order = 2, nrow = 1)
-  ) +
-  theme(
-    legend.position = "bottom",
-    legend.box = "vertical"
-  ) +
-  facet_wrap(
-    vars(measure_name_id),
-    scales = "free_y",
-    ncol = 2,
-    axes = "all"
-  )
+  labs(y = "Proportion of referrals finishing a course of treatment")
 ```
 
-*Service A* sits above the median for completed referrals (M066) and tracks closer to the median for the remaining end codes.
-*Service B* records consistently high counts of completed referrals, sitting in the top 10% of services throughout the reporting period, and also starts above the median for end codes before the patient requested (M341) and care professional planned (M344), trending closer towards the median over the reporting period.
+Each panel shows the proportion of finished-course referrals assigned one of the four treatment end codes.
+For the *Completed* end code (panel A), which records mutually agreed completion of treatment rather than all referrals finishing a course of treatment, *Service A* tracks below the median throughout, while *Service B* sits well above the median from 2021 onwards, at times in the top 10% of services, before falling to around the median from mid-2025.
+For the *Unknown treated* end code (panel B), *Service A* sits close to the median throughout. *Service B* only contributes data until early 2023, sitting slightly below the median while reporting.
+For the *Before patient requested* end code (panel C), *Service A* remains just below the median throughout. *Service B* only contributes data from mid-2025, sitting slightly above the median.
+For the *Before care professional planned* end code (panel D), *Service A* tracks close to the median throughout.
+*Service B* sits well below the median for most of the period, often in the bottom 10% of services, before a sharp rise peaking around 30 percentage points above the median between July and September 2025, after which it returns to around the median by the end of 2025.
 
 ## Try it yourself
 
-The *nhstt* package makes it easy to access publicly available NHS TT data for research, is free to use, and is updated regularly as NHS England publishes new reports.
-It provides access to each dataset in a tidy, analysis-ready format, with no need to find the underlying files.
-Whether you are interested in trends in referral activity, variation in waiting times across services, or changes in clinical outcomes over time, the data are there to be explored.
-We recommend checking the NHS England [data quality notes](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx) before using these data, as they describe known issues affecting specific reporting periods or measures.
+The *nhstt* package makes it easier to access publicly available NHS TT data, is free to use, and is updated regularly as NHS England publishes new reports.
+It provides access to each dataset in a tidy, analysis-ready format, with no need to find or clean the underlying files.
+Whether you are interested in trends in referral activity, variation in waiting times across services, or changes in clinical outcomes over time, the data is there to be explored.
+We recommend checking the NHS England [data quality notes](https://digital.nhs.uk/binaries/content/assets/website-assets/data-and-information/datasets/nhs-talking-therapies/nhs_talking_therapies_dq_note-260327.xlsx) before using this data, as they describe known issues affecting specific reporting periods or measures.
 
 If you use the package for a new analysis or have ideas for how it could be extended, we would love to hear about it.
 For questions or to report an issue, please [open an issue on GitHub](https://github.com/bennettoxford/nhstt/issues) or get in touch with [Milan Wiedemann](https://www.phc.ox.ac.uk/team/milan-wiedemann).
