@@ -79,6 +79,14 @@ reference:
     contents:
       - cache_info
       - cache_clear
+  - title: "Measures analysis"
+    desc: "Experimental helpers for creating, exploring, and visualising measures"
+    contents:
+      - create_measures
+      - summarise_measures
+      - explore_services
+      - plot_measures
+      - plot_measures_deciles
   - title: "Helper functions"
     contents:
       - available_nhstt_reports

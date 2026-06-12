@@ -29,179 +29,8 @@ The examples are descriptive and intended to illustrate what can be done with th
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(nhstt)
 library(ggplot2)
-library(lubridate)
 library(dplyr)
-library(tidyr)
-library(purrr)
-library(scales)
-library(stringr)
-library(paletteer)
 library(gt)
-```
-
-```{r}
-#| label: helper-functions
-#| message: false
-#| warning: false
-# Helper functions used throughout this vignette
-
-# ggplot2 theme used across all nhstt figures.
-theme_nhstt <- function(base_size = 13) {
-  theme_classic(base_size = base_size) +
-    theme(
-      panel.grid.major = element_line(colour = "gray90", linetype = "dotted"),
-      strip.text = element_text(face = "bold"),
-      strip.background = element_rect(linewidth = 0),
-      strip.text.x = element_text(size = base_size, face = "bold"),
-      legend.title = element_text(size = base_size),
-      legend.text = element_text(size = base_size * 0.95)
-    )
-}
-
-theme_set(theme_nhstt())
-
-# Converts raw measure names (e.g. "ended_completed_treatment") to sentence case for labels.
-measure_name_to_sentence <- function(x) {
-  x |>
-    str_remove("^ended_") |>
-    str_replace_all("_", " ") |>
-    str_to_sentence()
-}
-
-# Summarises denominator counts per service: total periods, median monthly, and minimum monthly.
-summarise_denominator_by_service <- function(
-  data,
-  period_col = interval_end,
-  org_col = org_code2,
-  org_name_col = org_name2,
-  denominator_col = denominator
-) {
-  data |>
-    select(
-      interval_end = {{ period_col }},
-      org_code2 = {{ org_col }},
-      org_name2 = {{ org_name_col }},
-      denominator = {{ denominator_col }}
-    ) |>
-    distinct(interval_end, org_code2, org_name2, denominator) |>
-    group_by(org_code2, org_name2) |>
-    summarise(
-      n_periods = n_distinct(interval_end),
-      median_monthly = if (all(is.na(denominator))) {
-        NA_real_
-      } else {
-        median(denominator, na.rm = TRUE)
-      },
-      min_monthly = if (all(is.na(denominator))) {
-        NA_real_
-      } else {
-        min(denominator, na.rm = TRUE)
-      },
-      .groups = "drop"
-    ) |>
-    arrange(min_monthly)
-}
-
-# Returns one row per service x period with numerator counts and ratios for each measure in wide format.
-explore_measures_by_service_period <- function(
-  data,
-  period_col = interval_end,
-  org_col = org_code2,
-  org_name_col = org_name2,
-  measure_col = measure_id,
-  numerator_col = numerator,
-  denominator_col = denominator
-) {
-  data |>
-    select(
-      interval_end = {{ period_col }},
-      org_code2 = {{ org_col }},
-      org_name2 = {{ org_name_col }},
-      measure_id = {{ measure_col }},
-      numerator = {{ numerator_col }},
-      denominator = {{ denominator_col }}
-    ) |>
-    mutate(measure_id = tolower(measure_id)) |>
-    pivot_wider(
-      names_from = measure_id,
-      values_from = numerator,
-      names_glue = "numerator_{measure_id}"
-    ) |>
-    mutate(across(
-      starts_with("numerator_"),
-      \(n) if_else(n / denominator > 1, NA_real_, n / denominator),
-      .names = "ratio_{.col}"
-    )) |>
-    rename_with(
-      \(x) str_remove(x, "numerator_"),
-      starts_with("ratio_numerator_")
-    ) |>
-    arrange(org_code2, interval_end)
-}
-
-# Categorises services by denominator size and extreme ratio flag, with median ratios per measure.
-categorise_orgs_by_ratio <- function(
-  data,
-  median_threshold = 20,
-  ratio_threshold = 0.9,
-  period_col = interval_end,
-  org_col = org_code2,
-  org_name_col = org_name2,
-  measure_col = measure_id,
-  numerator_col = numerator,
-  denominator_col = denominator
-) {
-  df_denom_summary <- summarise_denominator_by_service(
-    data,
-    period_col = {{ period_col }},
-    org_col = {{ org_col }},
-    org_name_col = {{ org_name_col }},
-    denominator_col = {{ denominator_col }}
-  )
-  df_wide <- explore_measures_by_service_period(
-    data,
-    period_col = {{ period_col }},
-    org_col = {{ org_col }},
-    org_name_col = {{ org_name_col }},
-    measure_col = {{ measure_col }},
-    numerator_col = {{ numerator_col }},
-    denominator_col = {{ denominator_col }}
-  )
-
-  low <- df_denom_summary |>
-    filter(median_monthly < median_threshold) |>
-    pull(org_code2)
-  high <- df_wide |>
-    filter(if_any(starts_with("ratio_"), \(x) x >= ratio_threshold)) |>
-    pull(org_code2)
-
-  df_median_ratios <- df_wide |>
-    group_by(org_code2) |>
-    summarise(
-      across(starts_with("ratio_"), \(x) median(x, na.rm = TRUE)),
-      .groups = "drop"
-    )
-
-  list(
-    low_median_only = setdiff(low, high),
-    high_ratio_only = setdiff(high, low),
-    both = intersect(low, high)
-  ) |>
-    imap(\(orgs, grp) tibble(org_code2 = orgs, group = grp)) |>
-    bind_rows() |>
-    left_join(df_denom_summary, by = "org_code2") |>
-    left_join(df_median_ratios, by = "org_code2") |>
-    select(
-      group,
-      org_code2,
-      org_name2,
-      n_periods,
-      median_monthly,
-      min_monthly,
-      starts_with("ratio_")
-    ) |>
-    arrange(group, median_monthly)
-}
 ```
 
 ```{r}
@@ -211,13 +40,6 @@ categorise_orgs_by_ratio <- function(
 df_activity_performance <- get_activity_performance_monthly()
 START_DATE_NHSTT <- min(df_activity_performance$start_date)
 END_DATE_NHSTT <- max(df_activity_performance$end_date)
-
-# x-axis breaks at January of each year in the data
-X_AXIS_BREAKS <- seq(
-  floor_date(START_DATE_NHSTT, "year"),
-  END_DATE_NHSTT,
-  by = "1 year"
-)
 
 df_monthly_metadata <- get_metadata_monthly()
 ```
@@ -235,30 +57,13 @@ referral_ended_measures <- c(
   "M069"
 )
 
-# Denominator: M076 counts referrals that finished a course of treatment
-# (at least two clinical sessions before discharge)
-df_denominator <- df_activity_performance |>
-  filter(measure_id == "M076", group_type == "Provider") |>
-  select(interval_end = end_date, org_code2, denominator = value)
-
-# Measures data with OpenSafely-style column structure:
-# measure_id, measure_name, interval_start, interval_end,
-# numerator, denominator, denominator_measure_id, ratio, org_code2, org_name2
+# Measures table pairing each end code with the denominator M076, which
+# counts referrals that finished a course of treatment (at least two
+# clinical sessions before discharge)
 df_measures <- df_activity_performance |>
-  filter(measure_id %in% referral_ended_measures, group_type == "Provider") |>
-  select(
-    measure_id,
-    measure_name,
-    interval_start = start_date,
-    interval_end = end_date,
-    numerator = value,
-    org_code2,
-    org_name2
-  ) |>
-  left_join(df_denominator, by = c("interval_end", "org_code2")) |>
-  mutate(
-    denominator_measure_id = "M076",
-    ratio = numerator / denominator
+  create_measures(
+    numerators = referral_ended_measures,
+    denominator = "M076"
   )
 
 # Four most commonly recorded end codes used in figures (M069 excluded: too few events to visualise)
@@ -269,33 +74,9 @@ selected_measures <- c(
   "M344"
 )
 
-# Two example services highlighted in the deciles figure
-selected_service_labels <- c(
-  RNUDT = "Service A",
-  RTQ = "Service B"
-)
-
-selected_services <- names(selected_service_labels)
-
-# Panel tags A-D mapped to selected_measures order
-measure_tags <- setNames(c("A", "B", "C", "D"), selected_measures)
-
-# Facet panel order: follows selected_measures ordering with A-D tags
-top_levels_order <- df_measures |>
-  filter(measure_id %in% selected_measures) |>
-  distinct(measure_id, measure_name) |>
-  mutate(
-    measure_name_id = paste0(
-      measure_tags[measure_id],
-      ": ",
-      measure_name_to_sentence(measure_name),
-      " (",
-      measure_id,
-      ")"
-    )
-  ) |>
-  arrange(factor(measure_id, levels = selected_measures)) |>
-  pull(measure_name_id)
+# Two example services highlighted in the deciles figure, shown with generic
+# Service A and Service B
+selected_services <- c("RNUDT", "RTQ")
 ```
 
 ```{r}
@@ -305,57 +86,33 @@ top_levels_order <- df_measures |>
 # Keep unfiltered data available for exploration
 df_measures_all <- df_measures
 
-# Set to FALSE to keep all data without any exclusions
-APPLY_EXCLUSIONS <- TRUE
+# Overview of all services (one row per service with reporting periods,
+# denominator counts, and median ratios), useful for getting a feel for the
+# data before choosing thresholds; explore_services() builds on this summary
+df_services_summary <- summarise_measures(df_measures_all)
 
 # Thresholds used for service exclusions
 MEDIAN_THRESHOLD <- 20
 RATIO_THRESHOLD <- .99
 
-# Identify services to exclude based on chosen thresholds
-df_orgs_thresholds <- categorise_orgs_by_ratio(
+# Explore services crossing the chosen thresholds
+df_explored_services <- explore_services(
   df_measures_all,
   median_threshold = MEDIAN_THRESHOLD,
   ratio_threshold = RATIO_THRESHOLD
 )
 
-orgs_to_exclude <- df_orgs_thresholds |>
-  pull(org_code2)
+# After reviewing the explored services, exclude them and treat
+# proportions above 100% as missing
+df_measures <- df_measures_all |>
+  filter(!org_code2 %in% df_explored_services$org_code2) |>
+  mutate(ratio = if_else(ratio > 1, NA_real_, ratio))
 
-N_DATA_POINTS_EXCLUDED <- if (APPLY_EXCLUSIONS) {
-  df_measures_all |>
-    filter(!org_code2 %in% orgs_to_exclude, ratio > 1, !is.na(ratio)) |>
-    nrow()
-} else {
-  0L
-}
-
-N_SERVICES_EXCLUDED <- if (APPLY_EXCLUSIONS) length(orgs_to_exclude) else 0L
-
-df_measures <- if (APPLY_EXCLUSIONS) {
-  df_measures_all |>
-    filter(!org_code2 %in% orgs_to_exclude) |>
-    mutate(ratio = if_else(ratio > 1, NA_real_, ratio))
-} else {
-  df_measures_all
-}
-
-# Annotate every observation with its exclusion status and reason
-df_exclusions <- df_measures_all |>
-  left_join(
-    df_orgs_thresholds |> select(org_code2, exclusion_group = group),
-    by = "org_code2"
-  ) |>
-  mutate(
-    service_excluded = org_code2 %in% orgs_to_exclude,
-    point_excluded = !service_excluded & ratio > 1 & !is.na(ratio),
-    excluded = service_excluded | point_excluded,
-    exclusion_reason = case_when(
-      service_excluded ~ exclusion_group,
-      point_excluded ~ "ratio_gt_1",
-      .default = NA_character_
-    )
-  )
+# Counts reported in the text
+N_SERVICES_EXCLUDED <- n_distinct(df_explored_services$org_code2)
+N_DATA_POINTS_EXCLUDED <- df_measures_all |>
+  filter(!org_code2 %in% df_explored_services$org_code2, ratio > 1) |>
+  nrow()
 ```
 
 ## Treatment end codes
@@ -475,44 +232,10 @@ The counts show variation in the absolute volume of referrals recorded against e
 #| fig-width: 10
 #| fig-height: 8.5
 #| fig-cap: "Monthly trends of individual NHS TT services in counts of treatment end codes for referrals seen and taken on for a course of treatment, for the four most commonly recorded end codes."
-fig1_data <- df_measures |>
+df_measures |>
   filter(measure_id %in% selected_measures) |>
-  mutate(
-    measure_name_id = factor(
-      paste0(
-        measure_tags[measure_id],
-        ": ",
-        measure_name_to_sentence(measure_name),
-        " (",
-        measure_id,
-        ")"
-      ),
-      levels = top_levels_order
-    )
-  )
-
-fig1_data |>
-  ggplot(
-    aes(
-      y = numerator,
-      x = interval_end,
-      colour = measure_name_id,
-      group = org_code2
-    )
-  ) +
-  geom_line(alpha = 0.2) +
-  geom_point(size = 0.2) +
-  scale_colour_brewer(palette = "Dark2") +
-  scale_x_date(breaks = X_AXIS_BREAKS, labels = label_date("%b\n%Y")) +
-  scale_y_continuous(labels = label_comma()) +
-  labs(x = NULL, y = "Count of treatment end codes") +
-  facet_wrap(
-    vars(measure_name_id),
-    scales = "fixed",
-    ncol = 2,
-    axes = "all"
-  ) +
-  theme(legend.position = "none")
+  plot_measures(y = "numerator", panel_tags = TRUE) +
+  labs(y = "Count of treatment end codes")
 ```
 
 The figure below shows the same four end codes expressed as proportions of finished-course referrals (M076).
@@ -526,31 +249,10 @@ A small number of services stand out as consistent outliers in their proportions
 #| fig-width: 10
 #| fig-height: 8.5
 #| fig-cap: "Monthly trends of individual NHS TT services in the proportion of finished-course referrals (M076) assigned each treatment end code for referrals seen and taken on for a course of treatment, for the four most commonly recorded end codes."
-fig1_data |>
-  ggplot(
-    aes(
-      y = ratio,
-      x = interval_end,
-      colour = measure_name_id,
-      group = org_code2
-    )
-  ) +
-  geom_line(alpha = 0.2) +
-  geom_point(size = 0.2) +
-  scale_colour_brewer(palette = "Dark2") +
-  scale_x_date(breaks = X_AXIS_BREAKS, labels = label_date("%b\n%Y")) +
-  scale_y_continuous(labels = label_percent(accuracy = 1), limits = c(0, 1)) +
-  labs(
-    x = NULL,
-    y = "Proportion of referrals finishing a course of treatment"
-  ) +
-  facet_wrap(
-    vars(measure_name_id),
-    scales = "fixed",
-    ncol = 2,
-    axes = "all"
-  ) +
-  theme(legend.position = "none")
+df_measures |>
+  filter(measure_id %in% selected_measures) |>
+  plot_measures(y = "ratio", panel_tags = TRUE) +
+  labs(y = "Proportion of referrals finishing a course of treatment")
 ```
 
 ### Comparing services with decile bands
@@ -569,154 +271,14 @@ These charts summarise activity patterns and are not intended as rankings of ser
 #| fig-width: 10
 #| fig-height: 10
 #| fig-cap: "Decile charts showing overall variation and two example services for treatment end codes among referrals seen and taken on for a course of treatment, expressed as proportions of finished-course referrals (M076), for the four most commonly recorded end codes. Shaded bands show the 10th to 90th percentile range in decile steps. The dark line shows the median."
-df_deciles <- df_measures |>
+df_measures |>
   filter(measure_id %in% selected_measures) |>
-  summarise_percentiles(
-    period_col = interval_end,
-    value_col = ratio,
-    group_by = measure_id
-  ) |>
-  left_join(
-    df_measures |>
-      distinct(measure_id, measure_name) |>
-      mutate(
-        measure_name_id = factor(
-          paste0(
-            measure_tags[measure_id],
-            ": ",
-            measure_name_to_sentence(measure_name),
-            " (",
-            measure_id,
-            ")"
-          ),
-          levels = top_levels_order
-        )
-      ),
-    by = "measure_id"
-  ) |>
-  pivot_wider(names_from = percentile, values_from = value, names_prefix = "p")
-
-df_top <- df_measures |>
-  filter(measure_id %in% selected_measures) |>
-  filter(org_code2 %in% selected_services) |>
-  select(-org_name2) |>
-  mutate(
-    service_label = recode(org_code2, !!!selected_service_labels),
-    service_label = factor(
-      service_label,
-      levels = unname(selected_service_labels)
-    ),
-    measure_name_id = factor(
-      paste0(
-        measure_tags[measure_id],
-        ": ",
-        measure_name_to_sentence(measure_name),
-        " (",
-        measure_id,
-        ")"
-      ),
-      levels = top_levels_order
-    )
-  )
-
-ribbon_palette <- setNames(
-  gray(seq(0.7, 0.5, length.out = 4)),
-  c("10th-90th", "20th-80th", "30th-70th", "40th-60th")
-)
-
-ribbon_alpha <- 0.2
-
-median_colour <- paletteer_d("RColorBrewer::RdGy")[10]
-
-service_colours <- setNames(
-  c(
-    paletteer_d("RColorBrewer::Dark2")[1],
-    paletteer_d("RColorBrewer::Dark2")[4]
-  ),
-  unname(selected_service_labels)
-)
-
-ggplot() +
-  geom_ribbon(
-    data = df_deciles,
-    aes(x = interval_end, ymin = p10, ymax = p90, fill = "10th-90th"),
-    alpha = ribbon_alpha
+  plot_measures_deciles(
+    highlight_services = selected_services,
+    hide_service_names = TRUE,
+    panel_tags = TRUE
   ) +
-  geom_ribbon(
-    data = df_deciles,
-    aes(x = interval_end, ymin = p20, ymax = p80, fill = "20th-80th"),
-    alpha = ribbon_alpha
-  ) +
-  geom_ribbon(
-    data = df_deciles,
-    aes(x = interval_end, ymin = p30, ymax = p70, fill = "30th-70th"),
-    alpha = ribbon_alpha
-  ) +
-  geom_ribbon(
-    data = df_deciles,
-    aes(x = interval_end, ymin = p40, ymax = p60, fill = "40th-60th"),
-    alpha = ribbon_alpha
-  ) +
-  geom_line(
-    data = df_deciles,
-    aes(x = interval_end, y = p50),
-    colour = median_colour,
-    linewidth = 0.6,
-    show.legend = FALSE
-  ) +
-  geom_line(
-    data = df_top,
-    aes(
-      x = interval_end,
-      y = ratio,
-      colour = service_label,
-      group = service_label
-    ),
-    alpha = 0.5
-  ) +
-  geom_point(
-    data = df_top,
-    aes(
-      x = interval_end,
-      y = ratio,
-      shape = service_label,
-      colour = service_label,
-      group = service_label
-    ),
-  ) +
-  scale_colour_manual(name = "NHS TT service:", values = service_colours) +
-  scale_shape_manual(
-    name = "NHS TT service:",
-    values = c("Service A" = 16, "Service B" = 17)
-  ) +
-  scale_fill_manual(
-    values = ribbon_palette,
-    breaks = c("10th-90th", "20th-80th", "30th-70th", "40th-60th")
-  ) +
-  scale_x_date(breaks = X_AXIS_BREAKS, labels = label_date("%b\n%Y")) +
-  scale_y_continuous(labels = label_percent(accuracy = 1), limits = c(0, 1)) +
-  labs(
-    x = NULL,
-    y = "Proportion of referrals finishing a course of treatment",
-    colour = "NHS TT service:",
-    shape = "NHS TT service:",
-    fill = "Decile range:"
-  ) +
-  guides(
-    colour = guide_legend(order = 1, nrow = 1),
-    shape = guide_legend(order = 1, nrow = 1),
-    fill = guide_legend(order = 2, nrow = 1)
-  ) +
-  theme(
-    legend.position = "bottom",
-    legend.box = "vertical"
-  ) +
-  facet_wrap(
-    vars(measure_name_id),
-    scales = "free_y",
-    ncol = 2,
-    axes = "all"
-  )
+  labs(y = "Proportion of referrals finishing a course of treatment")
 ```
 
 Each panel shows the proportion of finished-course referrals assigned one of the four treatment end codes.
