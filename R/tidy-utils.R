@@ -173,6 +173,9 @@ filter_rows <- function(df, filter_config) {
 #'   - measure_cols: Character vector, measure columns to pivot
 #'   - sep: Character, regex pattern to separate measure names
 #'   - names_to: Character vector, output column names for separated parts
+#'   - measure_time_sep: Optional character, regex with two capture groups
+#'     (time qualifier and remaining measure name) used to split a leading
+#'     "start"/"end" qualifier off `measure_name` into `measure_time`
 #'
 #' @return Tibble in long format
 #'
@@ -186,8 +189,9 @@ pivot_longer_measures <- function(data_list, pivot_config) {
   measure_cols <- pivot_config$measure_cols
   sep_pattern <- pivot_config$sep
   names_to <- pivot_config$names_to
+  measure_time_sep <- pivot_config$measure_time_sep
 
-  data_list |>
+  result <- data_list |>
     imap(\(df, reporting_period) {
       mutate(df, reporting_period = reporting_period)
     }) |>
@@ -203,6 +207,42 @@ pivot_longer_measures <- function(data_list, pivot_config) {
       regex = sep_pattern,
       remove = TRUE
     )
+
+  if (!is.null(measure_time_sep) && "measure_name" %in% names_to) {
+    result <- extract_measure_time(result, measure_time_sep)
+  }
+
+  result
+}
+
+#' Extract a start/end time qualifier from measure names
+#'
+#' Splits a leading "start"/"end" qualifier off `measure_name` into a new
+#' `measure_time` column (e.g., `"start_phq"` becomes `measure_name = "phq"`,
+#' `measure_time = "start"`). Measure names without this qualifier are left
+#' unchanged and get `NA` for `measure_time`.
+#'
+#' @param df Tibble, specifying data with a `measure_name` column
+#' @param regex Character, specifying a regex with two capture groups: the
+#'   time qualifier and the remaining measure name
+#'
+#' @return Tibble with `measure_time` column added
+#'
+#' @importFrom stringr str_match
+#' @importFrom dplyr if_else
+#'
+#' @keywords internal
+extract_measure_time <- function(df, regex) {
+  matches <- str_match(df$measure_name, regex)
+
+  df$measure_time <- matches[, 2]
+  df$measure_name <- if_else(
+    is.na(matches[, 2]),
+    df$measure_name,
+    matches[, 3]
+  )
+
+  df
 }
 
 #' Add period date columns

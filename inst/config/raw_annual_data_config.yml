@@ -78,7 +78,7 @@ datasets:
   proms_annual:
     title: "Patient Reported Outcome Measures (Annual)"
     description: "Patient Reported Outcome Measures (PROMs) mean and SD broken down by providers"
-    version: "0.1.0"
+    version: "0.2.0"
     get_function: "get_proms_annual"
     frequency: "annual"
     copyright: "Copyright NHS England"

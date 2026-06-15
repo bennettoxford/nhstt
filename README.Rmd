@@ -149,7 +149,14 @@ df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   ) |>
   dplyr::left_join(tidy_url_lookup, by = "dataset") |>
   dplyr::mutate(get_function = paste0("`", get_function, "()`")) |>
-  dplyr::select(get_function, first_period, last_period, n_periods, tidy_data, version)
+  dplyr::select(
+    get_function,
+    first_period,
+    last_period,
+    n_periods,
+    tidy_data,
+    version
+  )
 
 knitr::kable(
   df_nhstt_reports,
