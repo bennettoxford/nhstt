@@ -10,7 +10,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,6 +79,9 @@
 <li><p>measure_cols: Character vector, measure columns to pivot</p></li>
 <li><p>sep: Character, regex pattern to separate measure names</p></li>
 <li><p>names_to: Character vector, output column names for separated parts</p></li>
+<li><p>measure_time_sep: Optional character, regex with two capture groups
+(time qualifier and remaining measure name) used to split a leading
+"start"/"end" qualifier off <code>measure_name</code> into <code>measure_time</code></p></li>
 </ul></dd>
 
 </dl></div>

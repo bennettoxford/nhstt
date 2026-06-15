@@ -27,6 +27,10 @@ pivot_longer_measures(data_list, pivot_config)
 
   - names_to: Character vector, output column names for separated parts
 
+  - measure_time_sep: Optional character, regex with two capture groups
+    (time qualifier and remaining measure name) used to split a leading
+    "start"/"end" qualifier off `measure_name` into `measure_time`
+
 ## Value
 
 Tibble in long format
