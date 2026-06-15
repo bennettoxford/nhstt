@@ -26,7 +26,8 @@
        [1] "reporting_period"  "start_date"        "end_date"         
        [4] "org_type"          "org_code"          "org_name"         
        [7] "variable_type"     "variable_a"        "variable_b"       
-      [10] "measure_name"      "measure_statistic" "value"            
+      [10] "measure_name"      "measure_statistic" "measure_time"     
+      [13] "value"            
 
 # tidy_dataset snapshot test for column names (therapy_position_annual)
 

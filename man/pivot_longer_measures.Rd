@@ -15,6 +15,9 @@ pivot_longer_measures(data_list, pivot_config)
 \item measure_cols: Character vector, measure columns to pivot
 \item sep: Character, regex pattern to separate measure names
 \item names_to: Character vector, output column names for separated parts
+\item measure_time_sep: Optional character, regex with two capture groups
+(time qualifier and remaining measure name) used to split a leading
+"start"/"end" qualifier off \code{measure_name} into \code{measure_time}
 }}
 }
 \value{

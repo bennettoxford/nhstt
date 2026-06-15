@@ -14,7 +14,7 @@ datasets:
   key_measures_annual:
     version: "0.2.0"
   proms_annual:
-    version: "0.1.0"
+    version: "0.2.0"
   therapy_position_annual:
     version: "0.1.0"
   metadata_measures_annual:
