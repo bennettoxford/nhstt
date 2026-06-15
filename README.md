@@ -47,7 +47,7 @@ number of reporting periods covered by each dataset.
 | Function | First period | Last period | Periods | Tidy data | Version |
 |:---|:---|:---|---:|:---|---:|
 | `get_key_measures_annual()` | 2017-18 | 2024-25 | 8 | [Download](https://github.com/bennettoxford/nhstt/releases/download/key-measures-annual-v0.2.0/key_measures_annual.parquet) | 0.2.0 |
-| `get_proms_annual()` | 2019-20 | 2024-25 | 6 | [Download](https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.1.0/proms_annual.parquet) | 0.1.0 |
+| `get_proms_annual()` | 2019-20 | 2024-25 | 6 | [Download](https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.2.0/proms_annual.parquet) | 0.1.0 |
 | `get_therapy_position_annual()` | 2019-20 | 2024-25 | 6 | [Download](https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet) | 0.1.0 |
 
 ### Monthly data

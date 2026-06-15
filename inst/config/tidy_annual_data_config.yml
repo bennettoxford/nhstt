@@ -87,17 +87,17 @@ datasets:
       org_name: organisation_name
       variable_a: diagnosis
       variable_b: therapy_type
-      mean_phq_start: start_phq_mean
-      sd_phq_start: start_phq_std_dev
-      mean_gad_start: start_gad_mean
-      sd_gad_start: start_gad_std_dev
-      mean_wsas_start: start_wsas_mean
-      sd_wsas_start: start_wsas_std_dev
-      mean_phq_end: end_phq_mean
-      sd_phq_end: end_phq_std_dev
-      mean_gad_end: end_gad_mean
-      sd_gad_end: end_gad_std_dev
-      mean_wsas_end: end_wsas_mean
+      mean_start_phq: start_phq_mean
+      sd_start_phq: start_phq_std_dev
+      mean_start_gad: start_gad_mean
+      sd_start_gad: start_gad_std_dev
+      mean_start_wsas: start_wsas_mean
+      sd_start_wsas: start_wsas_std_dev
+      mean_end_phq: end_phq_mean
+      sd_end_phq: end_phq_std_dev
+      mean_end_gad: end_gad_mean
+      sd_end_gad: end_gad_std_dev
+      mean_end_wsas: end_wsas_mean
       sd_end_wsas: end_wsas_std_dev
       effect_size_phq: effect_phq
       effect_size_gad: effect_gad
@@ -120,11 +120,11 @@ datasets:
         - "count_courses_of_therapy"
         - "count_not_caseness"
         - "count_ther_recovery"
-        - "percentage_ther_recovery"              
+        - "percentage_ther_recovery"
         - "count_ther_rel_recovery"
         - "percentage_ther_rel_recovery"
         - "count_ther_improvement"
-        - "percentage_ther_improvement"           
+        - "percentage_ther_improvement"
         - "count_ther_deterioration"
         - "percentage_ther_deterioration"
         - "count_ther_no_change"
@@ -140,7 +140,7 @@ datasets:
         - "mean_end_gad"
         - "sd_end_gad"
         - "mean_end_wsas"
-        - "sd_end_wsas_std"
+        - "sd_end_wsas"
         - "effect_size_phq"
         - "effect_size_gad"
         - "effect_size_wsas"           
@@ -149,7 +149,8 @@ datasets:
       names_to:
         - measure_statistic
         - measure_name
-    
+      measure_time_sep: "^(start|end)_(.+)$"
+
     as_numeric:
       - value
 
@@ -169,6 +170,7 @@ datasets:
       - variable_b
       - measure_name
       - measure_statistic
+      - measure_time
       - value
   
   therapy_position_annual:

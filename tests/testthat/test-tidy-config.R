@@ -799,6 +799,28 @@ test_that("tidy_dataset extracts correct measure statistics (proms_annual)", {
   expect_true(all(result$measure_statistic %in% expected_stats))
 })
 
+test_that("tidy_dataset extracts measure_time for PHQ/GAD/WSAS measures (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  proms_measures <- result |>
+    dplyr::filter(measure_name %in% c("phq", "gad", "wsas"))
+
+  # mean/sd have a start or end measure_time, effect_size does not
+  mean_sd <- proms_measures |>
+    dplyr::filter(measure_statistic %in% c("mean", "sd"))
+  expect_true(all(mean_sd$measure_time %in% c("start", "end")))
+
+  effect_size <- proms_measures |>
+    dplyr::filter(measure_statistic == "effect_size")
+  expect_true(all(is.na(effect_size$measure_time)))
+
+  # measures without a start/end qualifier have NA measure_time
+  other_measures <- result |>
+    dplyr::filter(!measure_name %in% c("phq", "gad", "wsas"))
+  expect_true(all(is.na(other_measures$measure_time)))
+})
+
 test_that("tidy_dataset has no missing required columns (proms_annual)", {
   raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "proms_annual", "annual")
@@ -1034,4 +1056,62 @@ test_that("tidy_dataset handles all periods (therapy_position_annual)", {
     result,
     expected_tidy_columns("therapy_position_annual", "annual")
   )
+})
+
+test_that("pivot_longer measure_cols exist in renamed raw data for some period", {
+  # Catches measure_cols entries that can never be pivoted because they don't
+  # match any column produced by clean_column_names + rename for any period
+  # (e.g., a rename typo or a stale measure_cols entry).
+  config_files <- c(
+    annual = "tidy_annual_data_config.yml",
+    monthly = "tidy_monthly_data_config.yml"
+  )
+
+  for (frequency in names(config_files)) {
+    config_path <- system.file(
+      "config",
+      config_files[[frequency]],
+      package = "nhstt"
+    )
+    raw_config <- yaml::read_yaml(config_path)
+
+    for (dataset in names(raw_config$datasets)) {
+      dataset_config <- raw_config$datasets[[dataset]]
+      pivot_config <- dataset_config$pivot_longer
+
+      if (is.null(pivot_config) || length(pivot_config) == 0) {
+        next
+      }
+
+      raw_dir <- test_path("fixtures", "schemas", frequency, dataset, "raw")
+      periods <- tools::file_path_sans_ext(
+        list.files(raw_dir, pattern = "\\.csv$")
+      )
+
+      available_cols <- character()
+      for (period in periods) {
+        df <- load_raw_fixture(dataset, period, frequency)
+
+        if (isTRUE(dataset_config$clean_column_names)) {
+          names(df) <- clean_str(names(df))
+        }
+
+        df <- rename_columns(df, dataset_config$rename, period = period)
+
+        available_cols <- union(available_cols, names(df))
+      }
+
+      missing <- setdiff(pivot_config$measure_cols, available_cols)
+      expect_equal(
+        missing,
+        character(0),
+        info = paste0(
+          "Dataset '",
+          dataset,
+          "' has measure_cols not found in any period's renamed columns: ",
+          paste(missing, collapse = ", ")
+        )
+      )
+    }
+  }
 })
