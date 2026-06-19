@@ -153,7 +153,7 @@ test_that("extract_source_schemas returns one row per period and column", {
   )
 
   result <- suppressMessages(extract_source_schemas(
-    "activity_performance_monthly",
+    "measures_monthly",
     periods = c("2025-08", "2025-09")
   ))
 
@@ -177,7 +177,7 @@ test_that("extract_source_schemas warns and skips unreadable periods", {
 
   messages <- capture_messages(
     result <- extract_source_schemas(
-      "activity_performance_monthly",
+      "measures_monthly",
       periods = c("2025-08", "2025-09")
     )
   )

@@ -27,8 +27,11 @@ pak::pak("bennettoxford/nhstt")
 ``` r
 library(nhstt)
 
-# Load all monthly activity performance datasets
+# Load the latest release of monthly measures
 df_monthly <- get_measures_monthly()
+
+# Load specific version of monthly measures
+df_monthly <- get_measures_monthly(version = "0.3.0")
 ```
 
 ## Available NHS Talking Therapies data

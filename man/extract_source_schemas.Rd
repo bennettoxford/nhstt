@@ -7,7 +7,7 @@
 extract_source_schemas(dataset, periods = NULL)
 }
 \arguments{
-\item{dataset}{Character, dataset name (e.g., "activity_performance_monthly")}
+\item{dataset}{Character, dataset name (e.g., "measures_monthly")}
 
 \item{periods}{Character vector, periods to extract schemas for (e.g., c("2025-09", "2025-08")).
 If NULL (default), extracts schemas for all available periods}

@@ -2,18 +2,19 @@
 % Please edit documentation in R/tidy-sources.R
 \name{invalidate_tidy_source_cache}
 \alias{invalidate_tidy_source_cache}
-\title{Remove stale tidy source cache files}
+\title{Remove a versioned tidy source cache file}
 \usage{
-invalidate_tidy_source_cache(dataset)
+invalidate_tidy_source_cache(dataset, version)
 }
 \arguments{
 \item{dataset}{Character, dataset name}
+
+\item{version}{Character, dataset version}
 }
 \value{
 Invisible TRUE
 }
 \description{
-Deletes the parquet and sidecar JSON for a dataset so they are re-downloaded
-on the next call.
+Remove a versioned tidy source cache file
 }
 \keyword{internal}

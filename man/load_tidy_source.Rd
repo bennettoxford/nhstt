@@ -4,10 +4,12 @@
 \alias{load_tidy_source}
 \title{Load pre-built tidy parquet from cache}
 \usage{
-load_tidy_source(dataset)
+load_tidy_source(dataset, version)
 }
 \arguments{
 \item{dataset}{Character, dataset name}
+
+\item{version}{Character, dataset version}
 }
 \value{
 Tibble

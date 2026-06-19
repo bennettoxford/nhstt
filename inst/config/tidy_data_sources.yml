@@ -1,27 +1,47 @@
-# Each dataset has its own release tag and version.
-# The download URL is derived from the dataset name and version:
-#   https://github.com/bennettoxford/nhstt/releases/download/{dataset-with-dashes}-v{version}/{dataset}.parquet
-# which matches the tag `just release <dataset> <version>` creates.
-# An explicit `url` field can be set per dataset to override the derived URL.
+# Each dataset has one entry per published release, newest first.
+# The first entry is the default returned by get_*(). Older entries can be
+# pinned with version = "x.y.z" for reproducibility.
+#
+# Every version must have an explicit url — this avoids breakage when a
+# dataset is renamed, since the URL encodes the historical release name.
 #
 # To publish updated data for a dataset:
-#   1. Bump the dataset version in the raw config and here (a test checks they match)
-#   2. Run `just build-data` to write parquets to data-raw/
-#   3. Run `just release <dataset> <version>` after merging to main
+#   1. Prepend a new version + url entry here (keep older entries below)
+#   2. Bump the dataset version in the raw config to the same version number
+#   3. Run `just build-data` to write parquets to data-raw/
+#   4. Run `just release <dataset> <version>` after merging to main
 datasets:
-  activity_performance_monthly:
-    version: "0.4.0"
-  key_measures_annual:
-    version: "0.2.0"
+  measures_annual:
+    versions:
+      - version: "0.2.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/key-measures-annual-v0.2.0/key_measures_annual.parquet"
   proms_annual:
-    version: "0.2.0"
-  therapy_position_annual:
-    version: "0.1.0"
+    versions:
+      - version: "0.2.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.2.0/proms_annual.parquet"
+  therapy_annual:
+    versions:
+      - version: "0.1.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet"
+  measures_monthly:
+    versions:
+      - version: "0.4.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.4.0/activity_performance_monthly.parquet"
+      - version: "0.3.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.3.0/activity_performance_monthly.parquet"
   metadata_measures_annual:
-    version: "0.1.0"
+    versions:
+      - version: "0.1.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-annual-v0.1.0/metadata_measures_annual.parquet"
   metadata_variables_annual:
-    version: "0.1.0"
+    versions:
+      - version: "0.1.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/metadata-variables-annual-v0.1.0/metadata_variables_annual.parquet"
   metadata_measures_monthly:
-    version: "0.1.0"
+    versions:
+      - version: "0.1.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.1.0/metadata_measures_monthly.parquet"
   metadata_providers:
-    version: "0.1.0"
+    versions:
+      - version: "0.1.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.1.0/metadata_providers.parquet"

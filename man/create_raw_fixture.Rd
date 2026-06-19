@@ -7,7 +7,7 @@
 create_raw_fixture(dataset, period, frequency, n_rows = 5, overwrite = FALSE)
 }
 \arguments{
-\item{dataset}{Character, dataset name (e.g., "therapy_position_annual")}
+\item{dataset}{Character, dataset name (e.g., "therapy_annual")}
 
 \item{period}{Character, period (e.g., "2021-22")}
 

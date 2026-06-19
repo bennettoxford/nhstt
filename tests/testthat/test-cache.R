@@ -24,34 +24,34 @@ test_that("raw data directory is created", {
 })
 
 test_that("tidy cache directory is created", {
-  tidy_dir <- get_tidy_cache_dir("key_measures_annual", "annual")
+  tidy_dir <- get_tidy_cache_dir("measures_annual", "annual")
 
   expect_type(tidy_dir, "character")
   expect_true(dir.exists(tidy_dir))
-  expect_match(tidy_dir, "tidy/annual/key_measures")
+  expect_match(tidy_dir, "tidy/annual/measures_annual")
 })
 
 test_that("raw_path is constructed correctly", {
   # Archives are extracted and stored as parquet
-  zip_path <- get_raw_cache_path("key_measures_annual", "2023-24", "annual")
-  rar_path <- get_raw_cache_path("key_measures_annual", "2018-19", "annual")
+  zip_path <- get_raw_cache_path("measures_annual", "2023-24", "annual")
+  rar_path <- get_raw_cache_path("measures_annual", "2018-19", "annual")
   csv_path <- get_raw_cache_path(
-    "activity_performance_monthly",
+    "measures_monthly",
     "2025-09",
     "monthly"
   )
 
   # All should be stored using the current default (parquet)
-  expect_match(zip_path, "2023-24_key_measures_annual\\.parquet$")
-  expect_match(rar_path, "2018-19_key_measures_annual\\.parquet$")
-  expect_match(csv_path, "2025-09_activity_performance_monthly\\.parquet$")
+  expect_match(zip_path, "2023-24_measures_annual\\.parquet$")
+  expect_match(rar_path, "2018-19_measures_annual\\.parquet$")
+  expect_match(csv_path, "2025-09_measures_monthly\\.parquet$")
 })
 
 test_that("tidy_cache_path includes period and version", {
-  cache_path <- get_tidy_cache_path("key_measures_annual", "2023-24", "annual")
+  cache_path <- get_tidy_cache_path("measures_annual", "2023-24", "annual")
 
   expect_match(cache_path, "2023-24_v.*\\.parquet$")
-  expect_match(cache_path, "key_measures_annual")
+  expect_match(cache_path, "measures_annual")
 })
 
 test_that("get_raw_cache_path validates dataset", {
@@ -63,7 +63,7 @@ test_that("get_raw_cache_path validates dataset", {
 
 test_that("get_raw_cache_path validates frequency", {
   expect_error(
-    get_raw_cache_path("key_measures_annual", "2023-24", "invalid"),
+    get_raw_cache_path("measures_annual", "2023-24", "invalid"),
     "Invalid frequency"
   )
 })
@@ -73,7 +73,7 @@ test_that("get_raw_cache_path validates frequency", {
 test_that("raw_cache_exists returns FALSE for non-existent file", {
   # Use valid period that hasn't been downloaded
   # Test cache is empty by default, so file won't exist
-  exists <- raw_cache_exists("key_measures_annual", "2017-18", "annual")
+  exists <- raw_cache_exists("measures_annual", "2017-18", "annual")
 
   expect_false(exists)
 })
@@ -81,7 +81,7 @@ test_that("raw_cache_exists returns FALSE for non-existent file", {
 test_that("tidy_cache_exists returns FALSE for non-existent file", {
   # Use valid period that hasn't been tidied
   # Test cache is empty by default, so file won't exist
-  exists <- tidy_cache_exists("key_measures_annual", "2017-18", "annual")
+  exists <- tidy_cache_exists("measures_annual", "2017-18", "annual")
 
   expect_false(exists)
 })
@@ -114,7 +114,7 @@ test_that("cache_info counts pre-built tidy parquets", {
   tidy_dir <- file.path(cache_dir, "tidy")
   dir.create(tidy_dir, recursive = TRUE, showWarnings = FALSE)
 
-  tmp1 <- file.path(tidy_dir, "key_measures_annual.parquet")
+  tmp1 <- file.path(tidy_dir, "measures_annual.parquet")
   tmp2 <- file.path(tidy_dir, "proms_annual.parquet")
   file.create(tmp1)
   file.create(tmp2)
@@ -195,7 +195,7 @@ test_that("write_raw_downloads_json creates metadata file", {
 
   # Write metadata (archives are extracted and stored as parquet)
   write_raw_downloads_json(
-    dataset = "key_measures_annual",
+    dataset = "measures_annual",
     period = "2023-24",
     frequency = frequency,
     url = "https://example.com/data.zip",
@@ -213,7 +213,7 @@ test_that("read_raw_downloads_json reads metadata correctly", {
 
   # Write metadata first (archives are extracted and stored as parquet)
   write_raw_downloads_json(
-    dataset = "key_measures_annual",
+    dataset = "measures_annual",
     period = "2023-24",
     frequency = frequency,
     url = "https://example.com/data.zip",
@@ -228,21 +228,21 @@ test_that("read_raw_downloads_json reads metadata correctly", {
 
   expect_type(metadata, "list")
   expect_true(length(metadata) > 0)
-  expect_true("key_measures_annual" %in% names(metadata))
-  expect_true("2023-24" %in% names(metadata$key_measures))
-  expect_equal(metadata$key_measures$`2023-24`$source_format, "zip")
-  expect_equal(metadata$key_measures$`2023-24`$storage_format, "parquet")
+  expect_true("measures_annual" %in% names(metadata))
+  expect_true("2023-24" %in% names(metadata$measures_annual))
+  expect_equal(metadata$measures_annual$`2023-24`$source_format, "zip")
+  expect_equal(metadata$measures_annual$`2023-24`$storage_format, "parquet")
   expect_equal(
-    metadata$key_measures$`2023-24`$url,
+    metadata$measures_annual$`2023-24`$url,
     "https://example.com/data.zip"
   )
-  expect_equal(metadata$key_measures$`2023-24`$data_hash, "abc123")
+  expect_equal(metadata$measures_annual$`2023-24`$data_hash, "abc123")
 })
 
 test_that("cache_info shows storage format", {
   # Write some metadata (archives are extracted and stored as parquet)
   write_raw_downloads_json(
-    dataset = "key_measures_annual",
+    dataset = "measures_annual",
     period = "2023-24",
     frequency = "annual",
     url = "https://example.com/data.zip",
@@ -261,7 +261,7 @@ test_that("cache_info shows storage format", {
 test_that("cache_info counts raw downloads", {
   # Write multiple metadata entries (archives are extracted and stored as parquet)
   write_raw_downloads_json(
-    dataset = "key_measures_annual",
+    dataset = "measures_annual",
     period = "2023-24",
     frequency = "annual",
     url = "https://example.com/data1.zip",
@@ -272,7 +272,7 @@ test_that("cache_info counts raw downloads", {
   )
 
   write_raw_downloads_json(
-    dataset = "key_measures_annual",
+    dataset = "measures_annual",
     period = "2022-23",
     frequency = "annual",
     url = "https://example.com/data2.zip",
@@ -290,9 +290,9 @@ test_that("cache_info counts raw downloads", {
   # Check we have at least one dataset
   expect_true(length(annual_downloads) >= 1)
   # Check key_measures has 2 periods
-  expect_true(length(annual_downloads$key_measures) == 2)
-  expect_true("2023-24" %in% names(annual_downloads$key_measures))
-  expect_true("2022-23" %in% names(annual_downloads$key_measures))
+  expect_true(length(annual_downloads$measures_annual) == 2)
+  expect_true("2023-24" %in% names(annual_downloads$measures_annual))
+  expect_true("2022-23" %in% names(annual_downloads$measures_annual))
 })
 
 test_that("cache_info warns when cache exceeds size limit", {
