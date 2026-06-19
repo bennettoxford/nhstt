@@ -37,7 +37,7 @@ library(gt)
 #| label: load-data
 #| message: false
 #| warning: false
-df_activity_performance <- get_activity_performance_monthly()
+df_activity_performance <- get_measures_monthly()
 START_DATE_NHSTT <- min(df_activity_performance$start_date)
 END_DATE_NHSTT <- max(df_activity_performance$end_date)
 

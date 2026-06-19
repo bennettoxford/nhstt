@@ -5,6 +5,8 @@
 #' @param periods Character vector, specifying periods (e.g., "2025-09", "2025-08").
 #' If NULL (default), returns all available monthly periods
 #' @param use_cache Logical, specifying whether to use cached data if available. Default TRUE.
+#' @param version Character, specifying a pinned data version (e.g., "0.3.0").
+#' If NULL (default), the latest version is used. See [available_versions()].
 #'
 #' @return Tibble with activity and performance data in long format
 #'
@@ -19,19 +21,23 @@
 #' @examples
 #' \dontrun{
 #' # Get all monthly periods
-#' activity_df <- get_activity_performance_monthly()
+#' measures_df <- get_measures_monthly()
 #'
 #' # Get specific monthly periods
-#' activity_df <- get_activity_performance_monthly(periods = c("2025-09", "2025-08"))
+#' measures_df <- get_measures_monthly(periods = c("2025-09", "2025-08"))
 #'
 #' # Re-download to get the latest data version
-#' activity_df <- get_activity_performance_monthly(use_cache = FALSE)
+#' measures_df <- get_measures_monthly(use_cache = FALSE)
+#'
+#' # Pin to a specific data version for reproducibility
+#' measures_df <- get_measures_monthly(version = "0.3.0")
 #' }
-get_activity_performance_monthly <- function(
+get_measures_monthly <- function(
   periods = NULL,
-  use_cache = TRUE
+  use_cache = TRUE,
+  version = NULL
 ) {
-  get_tidy_dataset("activity_performance_monthly", periods, use_cache)
+  get_tidy_dataset("measures_monthly", periods, use_cache, version)
 }
 
 #' Get monthly metadata for NHS Talking Therapies measures
@@ -39,7 +45,7 @@ get_activity_performance_monthly <- function(
 #' Gets the definitions, derivations, and construction notes for each
 #' reported measure.
 #'
-#' @inheritParams get_activity_performance_monthly
+#' @inheritParams get_measures_monthly
 #'
 #' @return Tibble with metadata for each measure
 #'
@@ -60,7 +66,8 @@ get_activity_performance_monthly <- function(
 #' }
 get_metadata_monthly <- function(
   periods = NULL,
-  use_cache = TRUE
+  use_cache = TRUE,
+  version = NULL
 ) {
-  get_tidy_dataset("metadata_measures_monthly", periods, use_cache)
+  get_tidy_dataset("metadata_measures_monthly", periods, use_cache, version)
 }

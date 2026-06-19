@@ -64,7 +64,7 @@ clean_ratios <- function(ratio, max_ratio = 1) {
 #' interval, with a `ratio` column giving numerator / denominator.
 #'
 #' @param data Tibble, a tidy dataset as returned by
-#'   [get_activity_performance_monthly()]
+#'   [get_measures_monthly()]
 #' @param numerators Character vector of measure IDs to use as numerators
 #'   (e.g., `c("M066", "M344")`)
 #' @param denominator Character, single measure ID to use as the denominator
@@ -82,7 +82,7 @@ clean_ratios <- function(ratio, max_ratio = 1) {
 #'
 #' @examples
 #' \dontrun{
-#' df <- get_activity_performance_monthly()
+#' df <- get_measures_monthly()
 #' df_measures <- create_measures(
 #'   df,
 #'   numerators = c("M066", "M344", "M341", "M070", "M069"),

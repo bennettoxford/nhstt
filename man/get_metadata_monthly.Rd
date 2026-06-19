@@ -4,13 +4,16 @@
 \alias{get_metadata_monthly}
 \title{Get monthly metadata for NHS Talking Therapies measures}
 \usage{
-get_metadata_monthly(periods = NULL, use_cache = TRUE)
+get_metadata_monthly(periods = NULL, use_cache = TRUE, version = NULL)
 }
 \arguments{
 \item{periods}{Character vector, specifying periods (e.g., "2025-09", "2025-08").
 If NULL (default), returns all available monthly periods}
 
 \item{use_cache}{Logical, specifying whether to use cached data if available. Default TRUE.}
+
+\item{version}{Character, specifying a pinned data version (e.g., "0.3.0").
+If NULL (default), the latest version is used. See \code{\link[=available_versions]{available_versions()}}.}
 }
 \value{
 Tibble with metadata for each measure

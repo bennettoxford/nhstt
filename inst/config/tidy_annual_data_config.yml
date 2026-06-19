@@ -2,7 +2,7 @@
 # Tidy options: clean_column_names, rename, filter, as_numeric, separate, mutate, pivot_longer, clean_column_values, select
 # Rename format: new_name: old_name (use "YYYY-YY"/"YYYY-MM" keys for period-specific renames)
 datasets:
-  key_measures_annual:
+  measures_annual:
     clean_column_names: true
 
     filter:
@@ -173,7 +173,7 @@ datasets:
       - measure_time
       - value
   
-  therapy_position_annual:
+  therapy_annual:
     clean_column_names: true
 
     rename:

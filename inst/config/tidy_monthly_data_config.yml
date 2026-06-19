@@ -2,7 +2,7 @@
 # Tidy options: clean_column_names, rename, filter, as_numeric, separate, mutate, pivot_longer, clean_column_values, select
 # Rename format: new_name: old_name (use "YYYY-YY"/"YYYY-MM" keys for period-specific renames)
 datasets:
-  activity_performance_monthly:
+  measures_monthly:
     clean_column_names: true
 
     rename:

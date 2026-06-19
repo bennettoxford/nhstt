@@ -6,10 +6,10 @@ cli::cli_h1("Integration Tests")
 
 tryCatch(
   {
-    df_km <- get_key_measures_annual(periods = c("2024-25", "2022-23"))
+    df_km <- get_measures_annual(periods = c("2024-25", "2022-23"))
     df_proms <- get_proms_annual(periods = c("2024-25", "2022-23"))
-    df_therapy <- get_therapy_position_annual(periods = c("2024-25", "2022-23"))
-    df_ap <- get_activity_performance_monthly(periods = c("2025-09", "2024-06"))
+    df_therapy <- get_therapy_annual(periods = c("2024-25", "2022-23"))
+    df_ap <- get_measures_monthly(periods = c("2025-09", "2024-06"))
     df_meta_monthly <- get_metadata_measures_annual()
     df_meta_annual <- get_metadata_variables_annual()
     cli::cli_alert_success("All tests passed")

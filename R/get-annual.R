@@ -6,6 +6,8 @@
 #' @param periods Character vector, specifying periods (e.g., "2023-24", "2024-25").
 #' If NULL (default), returns all available annual periods
 #' @param use_cache Logical, specifying whether to use cached data if available. Default TRUE.
+#' @param version Character, specifying a pinned data version (e.g., "0.1.0").
+#' If NULL (default), the latest version is used. See [available_versions()].
 #'
 #' @return Tibble with key measures data in long format
 #'
@@ -17,19 +19,23 @@
 #' @examples
 #' \dontrun{
 #' # Get all annual periods
-#' key_measures_df <- get_key_measures_annual()
+#' measures_df <- get_measures_annual()
 #'
 #' # Get specific annual periods
-#' key_measures_df <- get_key_measures_annual(periods = c("2023-24", "2024-25"))
+#' measures_df <- get_measures_annual(periods = c("2023-24", "2024-25"))
 #'
 #' # Re-download to get the latest data version
-#' key_measures_df <- get_key_measures_annual(use_cache = FALSE)
+#' measures_df <- get_measures_annual(use_cache = FALSE)
+#'
+#' # Pin to a specific data version for reproducibility
+#' measures_df <- get_measures_annual(version = "0.1.0")
 #' }
-get_key_measures_annual <- function(
+get_measures_annual <- function(
   periods = NULL,
-  use_cache = TRUE
+  use_cache = TRUE,
+  version = NULL
 ) {
-  get_tidy_dataset("key_measures_annual", periods, use_cache)
+  get_tidy_dataset("measures_annual", periods, use_cache, version)
 }
 
 #' Get annual Patient Reported Outcome measures (PROMs)
@@ -40,6 +46,8 @@ get_key_measures_annual <- function(
 #' @param periods Character vector, specifying periods (e.g., "2023-24", "2024-25").
 #' If NULL (default), returns all available annual periods
 #' @param use_cache Logical, specifying whether to use cached data if available. Default TRUE.
+#' @param version Character, specifying a pinned data version (e.g., "0.1.0").
+#' If NULL (default), the latest version is used. See [available_versions()].
 #'
 #' @return Tibble with key measures data in long format
 #'
@@ -58,12 +66,16 @@ get_key_measures_annual <- function(
 #'
 #' # Re-download to get the latest data version
 #' proms_df <- get_proms_annual(use_cache = FALSE)
+#'
+#' # Pin to a specific data version for reproducibility
+#' proms_df <- get_proms_annual(version = "0.1.0")
 #' }
 get_proms_annual <- function(
   periods = NULL,
-  use_cache = TRUE
+  use_cache = TRUE,
+  version = NULL
 ) {
-  get_tidy_dataset("proms_annual", periods, use_cache)
+  get_tidy_dataset("proms_annual", periods, use_cache, version)
 }
 
 #' Get position of therapy types within the referral pathways
@@ -76,6 +88,8 @@ get_proms_annual <- function(
 #' @param periods Character vector, specifying periods (e.g., "2023-24", "2024-25").
 #' If NULL (default), returns all available annual periods
 #' @param use_cache Logical, specifying whether to use cached data if available. Default TRUE.
+#' @param version Character, specifying a pinned data version (e.g., "0.1.0").
+#' If NULL (default), the latest version is used. See [available_versions()].
 #'
 #' @return Tibble with key measures data in long format
 #'
@@ -87,17 +101,21 @@ get_proms_annual <- function(
 #' @examples
 #' \dontrun{
 #' # Get all annual periods
-#' therapy_position_df <- get_therapy_position_annual()
+#' therapy_df <- get_therapy_annual()
 #'
 #' # Get specific annual periods
-#' therapy_position_df <- get_therapy_position_annual(periods = c("2023-24", "2024-25"))
+#' therapy_df <- get_therapy_annual(periods = c("2023-24", "2024-25"))
 #'
 #' # Re-download to get the latest data version
-#' therapy_position_df <- get_therapy_position_annual(use_cache = FALSE)
+#' therapy_df <- get_therapy_annual(use_cache = FALSE)
+#'
+#' # Pin to a specific data version for reproducibility
+#' therapy_df <- get_therapy_annual(version = "0.1.0")
 #' }
-get_therapy_position_annual <- function(
+get_therapy_annual <- function(
   periods = NULL,
-  use_cache = TRUE
+  use_cache = TRUE,
+  version = NULL
 ) {
-  get_tidy_dataset("therapy_position_annual", periods, use_cache)
+  get_tidy_dataset("therapy_annual", periods, use_cache, version)
 }

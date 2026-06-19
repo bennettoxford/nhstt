@@ -11,7 +11,7 @@ download_tidy_source(dataset, url, version)
 
 \item{url}{Character, download URL}
 
-\item{version}{Character, dataset version (stored in sidecar)}
+\item{version}{Character, dataset version (included in cached filename)}
 }
 \value{
 Invisible path to cached parquet

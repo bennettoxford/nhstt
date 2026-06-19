@@ -10,13 +10,19 @@ Sys.setenv(NHSTT_TEST_CACHE_DIR = test_cache_dir)
 #' @param dataset Character, dataset name as listed in tidy_data_sources.yml
 #' @param periods Character vector of reporting periods to include
 #' @param extra_cols Named list of additional columns
+#' @param version Character, version to use. Defaults to the latest version.
 #'
 #' @return List with cache_path and sidecar_path
 #' @keywords internal
-make_test_parquet <- function(dataset, periods, extra_cols = list()) {
-  cache_path <- get_tidy_source_cache_path(dataset)
-  sidecar_path <- get_tidy_source_sidecar_path(dataset)
-  version <- get_tidy_source_config(dataset)$version
+make_test_parquet <- function(
+  dataset,
+  periods,
+  extra_cols = list(),
+  version = NULL
+) {
+  version <- version %||% get_tidy_source_config(dataset)$version
+  cache_path <- get_tidy_source_cache_path(dataset, version)
+  sidecar_path <- get_tidy_source_sidecar_path(dataset, version)
 
   data <- tibble::tibble(
     reporting_period = periods,
@@ -119,10 +125,10 @@ expected_tidy_columns <- function(dataset, frequency) {
 #' @examples
 #' \dontrun{
 #' # Single period
-#' raw_data <- load_raw_data("key_measures_annual", "2023-24", "annual")
+#' raw_data <- load_raw_data("measures_annual", "2023-24", "annual")
 #'
 #' # Multiple periods
-#' raw_data <- load_raw_data("key_measures_annual", c("2023-24", "2024-25"), "annual")
+#' raw_data <- load_raw_data("measures_annual", c("2023-24", "2024-25"), "annual")
 #' }
 load_raw_data <- function(dataset, periods, frequency) {
   raw_data <- purrr::map(

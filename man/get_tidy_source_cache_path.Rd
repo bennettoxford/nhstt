@@ -4,10 +4,12 @@
 \alias{get_tidy_source_cache_path}
 \title{Get path to pre-built tidy parquet in cache}
 \usage{
-get_tidy_source_cache_path(dataset)
+get_tidy_source_cache_path(dataset, version)
 }
 \arguments{
 \item{dataset}{Character, dataset name}
+
+\item{version}{Character, dataset version}
 }
 \value{
 Character path

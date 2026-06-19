@@ -1,10 +1,10 @@
 # NHS Talking Therapies raw monthly data configuration
 datasets:
-  activity_performance_monthly:
+  measures_monthly:
     title: "Activity and Performance Measures (Monthly)"
     description: "Monthly activity and performance indicators by organisation"
     version: "0.4.0"
-    get_function: "get_activity_performance_monthly"
+    get_function: "get_measures_monthly"
     frequency: "monthly"
     copyright: "Copyright NHS England"
     license: "OGL-UK-3.0"
