@@ -4,13 +4,16 @@
 \alias{get_measures_monthly}
 \title{Get monthly activity and performance measures}
 \usage{
-get_measures_monthly(periods = NULL, use_cache = TRUE)
+get_measures_monthly(periods = NULL, use_cache = TRUE, version = NULL)
 }
 \arguments{
 \item{periods}{Character vector, specifying periods (e.g., "2025-09", "2025-08").
 If NULL (default), returns all available monthly periods}
 
 \item{use_cache}{Logical, specifying whether to use cached data if available. Default TRUE.}
+
+\item{version}{Character, specifying a pinned data version (e.g., "0.3.0").
+If NULL (default), the latest version is used. See \code{\link[=available_versions]{available_versions()}}.}
 }
 \value{
 Tibble with activity and performance data in long format
@@ -28,6 +31,9 @@ measures_df <- get_measures_monthly(periods = c("2025-09", "2025-08"))
 
 # Re-download to get the latest data version
 measures_df <- get_measures_monthly(use_cache = FALSE)
+
+# Pin to a specific data version for reproducibility
+measures_df <- get_measures_monthly(version = "0.3.0")
 }
 }
 \references{

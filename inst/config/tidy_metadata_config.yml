@@ -31,7 +31,7 @@ datasets:
 
     mutate:
       dataset_name:
-        value: "key_measures_annual"
+        value: "measures_annual"
 
     select:
       - reporting_period
@@ -67,7 +67,7 @@ datasets:
 
     mutate:
       dataset_name:
-        value: "key_measures_annual"
+        value: "measures_annual"
 
     select:
       - reporting_period

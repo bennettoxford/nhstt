@@ -79,6 +79,7 @@ reference:
     contents:
       - cache_info
       - cache_clear
+      - available_versions
   - title: "Measures analysis"
     desc: "Experimental helpers for creating, exploring, and visualising measures"
     contents:

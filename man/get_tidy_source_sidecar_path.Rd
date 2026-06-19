@@ -4,10 +4,12 @@
 \alias{get_tidy_source_sidecar_path}
 \title{Get path to tidy source version sidecar JSON}
 \usage{
-get_tidy_source_sidecar_path(dataset)
+get_tidy_source_sidecar_path(dataset, version)
 }
 \arguments{
 \item{dataset}{Character, dataset name}
+
+\item{version}{Character, dataset version}
 }
 \value{
 Character path

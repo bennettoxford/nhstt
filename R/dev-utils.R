@@ -301,7 +301,7 @@ extract_archive_schemas <- function(archive_name, periods = NULL) {
 #' Sources are read via \code{read_raw()}, so all configured formats are
 #' supported and the raw cache is used when available.
 #'
-#' @param dataset Character, dataset name (e.g., "activity_performance_monthly")
+#' @param dataset Character, dataset name (e.g., "measures_monthly")
 #' @param periods Character vector, periods to extract schemas for (e.g., c("2025-09", "2025-08")).
 #'   If NULL (default), extracts schemas for all available periods
 #'
@@ -555,7 +555,7 @@ compare_schemas <- function(
 #' Downloads raw data for a dataset/period and saves the first n rows as a
 #' fixture CSV file for offline testing.
 #'
-#' @param dataset Character, dataset name (e.g., "therapy_position_annual")
+#' @param dataset Character, dataset name (e.g., "therapy_annual")
 #' @param period Character, period (e.g., "2021-22")
 #' @param frequency Character, "annual" or "monthly"
 #' @param n_rows Integer, number of rows to save (default 5)
@@ -619,7 +619,7 @@ create_raw_fixture <- function(
 #' and update `inst/config/tidy_data_sources.yml` with the new version.
 #'
 #' @param dataset Character, name of the published dataset as listed in
-#'   tidy_data_sources.yml (e.g., "activity_performance_monthly")
+#'   tidy_data_sources.yml (e.g., "measures_monthly")
 #' @param raw_datasets Character vector, raw config dataset(s) to combine into
 #'   the published parquet. Defaults to `dataset`; pass several names to combine
 #'   multiple raw datasets (e.g. the main and additional metadata sheets).

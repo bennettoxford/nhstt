@@ -13,6 +13,7 @@
 #' @param dataset Character, dataset name as listed in tidy_data_sources.yml
 #' @param periods Character vector of periods, or NULL for all periods
 #' @param use_cache Logical, whether to use cached data if available
+#' @param version Character, specific data version to use, or NULL for latest
 #'
 #' @return Tibble, ordered most-recent period first
 #'
@@ -20,14 +21,19 @@
 #' @importFrom cli cli_abort
 #'
 #' @keywords internal
-get_tidy_dataset <- function(dataset, periods = NULL, use_cache = TRUE) {
-  cfg <- get_tidy_source_config(dataset)
+get_tidy_dataset <- function(
+  dataset,
+  periods = NULL,
+  use_cache = TRUE,
+  version = NULL
+) {
+  cfg <- get_tidy_source_config(dataset, version)
 
   if (!use_cache || !tidy_source_cache_is_current(dataset, cfg$version)) {
     download_tidy_source(dataset, cfg$url, cfg$version)
   }
 
-  data <- load_tidy_source(dataset)
+  data <- load_tidy_source(dataset, cfg$version)
 
   if (!is.null(periods)) {
     available <- sort(unique(data$reporting_period), decreasing = TRUE)

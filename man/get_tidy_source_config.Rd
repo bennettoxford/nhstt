@@ -4,13 +4,15 @@
 \alias{get_tidy_source_config}
 \title{Get tidy source configuration for a dataset}
 \usage{
-get_tidy_source_config(dataset)
+get_tidy_source_config(dataset, version = NULL)
 }
 \arguments{
-\item{dataset}{Character, dataset name (e.g., "activity_performance_monthly")}
+\item{dataset}{Character, dataset name (e.g., "measures_monthly")}
+
+\item{version}{Character, specific version to use, or NULL for the latest}
 }
 \value{
-List with fields: version, url
+List with fields: version, versions, url
 }
 \description{
 The download URL is derived from the dataset name and version using the

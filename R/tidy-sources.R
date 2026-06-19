@@ -1,6 +1,7 @@
 #' Load tidy data sources configuration
 #'
-#' @return List of dataset configurations keyed by dataset name
+#' @return List of dataset configurations keyed by dataset name. Each entry
+#'   has `version` (latest), `versions` (all known), and `url` (latest).
 #'
 #' @importFrom yaml read_yaml
 #' @importFrom cli cli_abort
@@ -25,12 +26,38 @@ load_tidy_sources_config <- function() {
 
   sources <- config$datasets
   for (dataset in names(sources)) {
-    if (is.null(sources[[dataset]]$url)) {
-      sources[[dataset]]$url <- derive_tidy_source_url(
-        dataset,
-        sources[[dataset]]$version
+    cfg <- sources[[dataset]]
+
+    if (is.null(cfg$versions) || length(cfg$versions) == 0) {
+      cli_abort(
+        "Dataset {.val {dataset}} in tidy_data_sources.yml has no versions"
       )
     }
+
+    # Each entry must be a list with at least a version field
+    for (i in seq_along(cfg$versions)) {
+      entry <- cfg$versions[[i]]
+      if (!is.list(entry) || is.null(entry$version)) {
+        cli_abort(
+          "Dataset {.val {dataset}} version entry {i} must have a 'version' field"
+        )
+      }
+      if (is.null(entry$url)) {
+        cli_abort(
+          "Dataset {.val {dataset}} version {.val {entry$version}} has no url"
+        )
+      }
+    }
+
+    latest <- cfg$versions[[1]]
+    sources[[dataset]]$version <- latest$version
+    sources[[dataset]]$url <- latest$url
+    sources[[dataset]]$versions <- sapply(cfg$versions, `[[`, "version")
+    version_urls <- setNames(
+      sapply(cfg$versions, `[[`, "url"),
+      sapply(cfg$versions, `[[`, "version")
+    )
+    sources[[dataset]]$version_urls <- version_urls
   }
 
   sources
@@ -62,14 +89,15 @@ derive_tidy_source_url <- function(dataset, version) {
 #' is what `just release` creates. An explicit `url` field in
 #' tidy_data_sources.yml overrides the derived URL.
 #'
-#' @param dataset Character, dataset name (e.g., "activity_performance_monthly")
+#' @param dataset Character, dataset name (e.g., "measures_monthly")
+#' @param version Character, specific version to use, or NULL for the latest
 #'
-#' @return List with fields: version, url
+#' @return List with fields: version, versions, url
 #'
 #' @importFrom cli cli_abort
 #'
 #' @keywords internal
-get_tidy_source_config <- function(dataset) {
+get_tidy_source_config <- function(dataset, version = NULL) {
   sources <- load_tidy_sources_config()
 
   if (!dataset %in% names(sources)) {
@@ -82,88 +110,110 @@ get_tidy_source_config <- function(dataset) {
 
   cfg <- sources[[dataset]]
 
-  if (is.null(cfg$version) || !nzchar(cfg$version)) {
-    cli_abort(
-      "Dataset {.val {dataset}} in tidy_data_sources.yml has no version"
-    )
+  if (!is.null(version)) {
+    known <- cfg$versions
+    if (!version %in% known) {
+      cli_abort(c(
+        "Version {.val {version}} is not available for {.val {dataset}}",
+        "i" = "Available versions: {.val {known}}"
+      ))
+    }
+    cfg$version <- version
+    cfg$url <- cfg$version_urls[[version]]
   }
 
   cfg
 }
 
+#' List available versions for a dataset
+#'
+#' Returns all data versions that can be pinned with the `version` argument of
+#' the corresponding `get_*()` function. Versions are listed newest first.
+#'
+#' @param dataset Character, dataset name as listed in `tidy_data_sources.yml`
+#'   (e.g., `"measures_annual"`, `"measures_monthly"`)
+#'
+#' @return Character vector of available versions, newest first
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' available_versions("measures_annual")
+#' available_versions("measures_monthly")
+#' }
+available_versions <- function(dataset) {
+  sources <- load_tidy_sources_config()
+
+  if (!dataset %in% names(sources)) {
+    available <- names(sources)
+    cli_abort(c(
+      "Dataset {.val {dataset}} not found in tidy_data_sources.yml",
+      "i" = "Available datasets: {.val {available}}"
+    ))
+  }
+
+  unlist(sources[[dataset]]$versions)
+}
+
 #' Get path to pre-built tidy parquet in cache
 #'
 #' @param dataset Character, dataset name
+#' @param version Character, dataset version
 #'
 #' @return Character path
 #'
 #' @keywords internal
-get_tidy_source_cache_path <- function(dataset) {
+get_tidy_source_cache_path <- function(dataset, version) {
   tidy_dir <- file.path(get_cache_dir(), "tidy")
   if (!dir.exists(tidy_dir)) {
     dir.create(tidy_dir, recursive = TRUE)
   }
-  file.path(tidy_dir, paste0(dataset, ".parquet"))
+  file.path(tidy_dir, paste0(dataset, "_", version, ".parquet"))
 }
 
 #' Get path to tidy source version sidecar JSON
 #'
 #' @param dataset Character, dataset name
+#' @param version Character, dataset version
 #'
 #' @return Character path
 #'
 #' @keywords internal
-get_tidy_source_sidecar_path <- function(dataset) {
+get_tidy_source_sidecar_path <- function(dataset, version) {
   tidy_dir <- file.path(get_cache_dir(), "tidy")
   if (!dir.exists(tidy_dir)) {
     dir.create(tidy_dir, recursive = TRUE)
   }
-  file.path(tidy_dir, paste0(dataset, ".json"))
+  file.path(tidy_dir, paste0(dataset, "_", version, ".json"))
 }
 
-#' Check whether cached tidy source matches the expected version
+#' Check whether a versioned tidy source is cached
 #'
-#' Returns FALSE if the parquet or sidecar is missing, or if the cached version
-#' does not match.
+#' Returns TRUE if the parquet for this exact dataset+version exists on disk.
+#' Because the version is part of the filename, no sidecar comparison is needed.
 #'
 #' @param dataset Character, dataset name
-#' @param version Character, expected version from tidy_data_sources.yml
+#' @param version Character, expected version
 #'
 #' @return Logical
 #'
-#' @importFrom jsonlite read_json
-#'
 #' @keywords internal
 tidy_source_cache_is_current <- function(dataset, version) {
-  parquet_path <- get_tidy_source_cache_path(dataset)
-  sidecar_path <- get_tidy_source_sidecar_path(dataset)
-
-  if (!file.exists(parquet_path) || !file.exists(sidecar_path)) {
-    return(FALSE)
-  }
-
-  tryCatch(
-    {
-      sidecar <- read_json(sidecar_path)
-      identical(sidecar$version, version)
-    },
-    error = function(e) FALSE
-  )
+  file.exists(get_tidy_source_cache_path(dataset, version))
 }
 
-#' Remove stale tidy source cache files
-#'
-#' Deletes the parquet and sidecar JSON for a dataset so they are re-downloaded
-#' on the next call.
+#' Remove a versioned tidy source cache file
 #'
 #' @param dataset Character, dataset name
+#' @param version Character, dataset version
 #'
 #' @return Invisible TRUE
 #'
 #' @keywords internal
-invalidate_tidy_source_cache <- function(dataset) {
-  parquet_path <- get_tidy_source_cache_path(dataset)
-  sidecar_path <- get_tidy_source_sidecar_path(dataset)
+invalidate_tidy_source_cache <- function(dataset, version) {
+  parquet_path <- get_tidy_source_cache_path(dataset, version)
+  sidecar_path <- get_tidy_source_sidecar_path(dataset, version)
 
   if (file.exists(parquet_path)) {
     unlink(parquet_path)
@@ -179,7 +229,7 @@ invalidate_tidy_source_cache <- function(dataset) {
 #'
 #' @param dataset Character, dataset name
 #' @param url Character, download URL
-#' @param version Character, dataset version (stored in sidecar)
+#' @param version Character, dataset version (included in cached filename)
 #'
 #' @return Invisible path to cached parquet
 #'
@@ -188,8 +238,8 @@ invalidate_tidy_source_cache <- function(dataset) {
 #'
 #' @keywords internal
 download_tidy_source <- function(dataset, url, version) {
-  cache_path <- get_tidy_source_cache_path(dataset)
-  sidecar_path <- get_tidy_source_sidecar_path(dataset)
+  cache_path <- get_tidy_source_cache_path(dataset, version)
+  sidecar_path <- get_tidy_source_sidecar_path(dataset, version)
 
   cli_process_start("Downloading {dataset} (v{version})")
 
@@ -198,8 +248,6 @@ download_tidy_source <- function(dataset, url, version) {
   tryCatch(
     {
       download_with_retry(url, temp_path)
-      # file.rename() cannot replace an existing file on Windows and
-      # signals failure by returning FALSE rather than erroring
       if (!suppressWarnings(file.rename(temp_path, cache_path))) {
         copied <- file.copy(temp_path, cache_path, overwrite = TRUE)
         unlink(temp_path)
@@ -242,6 +290,7 @@ download_tidy_source <- function(dataset, url, version) {
 #' Load pre-built tidy parquet from cache
 #'
 #' @param dataset Character, dataset name
+#' @param version Character, dataset version
 #'
 #' @return Tibble
 #'
@@ -249,11 +298,11 @@ download_tidy_source <- function(dataset, url, version) {
 #' @importFrom cli cli_abort
 #'
 #' @keywords internal
-load_tidy_source <- function(dataset) {
-  cache_path <- get_tidy_source_cache_path(dataset)
+load_tidy_source <- function(dataset, version) {
+  cache_path <- get_tidy_source_cache_path(dataset, version)
 
   if (!file.exists(cache_path)) {
-    cli_abort("Tidy source cache not found for {.val {dataset}}")
+    cli_abort("Tidy source cache not found for {.val {dataset}} (v{version})")
   }
 
   read_parquet(cache_path)

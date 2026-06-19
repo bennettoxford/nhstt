@@ -29,7 +29,7 @@
       [10] "measure_name"      "measure_statistic" "measure_time"     
       [13] "value"            
 
-# tidy_dataset snapshot test for column names (therapy_position_annual)
+# tidy_dataset snapshot test for column names (therapy_annual)
 
     Code
       names(result)

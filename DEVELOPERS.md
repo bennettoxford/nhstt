@@ -45,10 +45,10 @@ One period timed per dataset; extrapolated to full build. Re-run with
 
 | Dataset | Timed period | Periods | Time for one (s) | Est. full build (min) |
 |:---|:---|---:|---:|---:|
-| `key_measures_annual` | 2024-25 | 8 | 61.4 | 8.2 |
+| `measures_annual` | 2024-25 | 8 | 61.4 | 8.2 |
 | `proms_annual` | 2024-25 | 6 | 116.5 | 11.6 |
-| `therapy_position_annual` | 2024-25 | 6 | 0.3 | 0.0 |
-| `activity_performance_monthly` | 2026-03 | 35 | 5.4 | 3.2 |
+| `therapy_annual` | 2024-25 | 6 | 0.3 | 0.0 |
+| `measures_monthly` | 2026-03 | 35 | 5.4 | 3.2 |
 
 ## Publishing new data
 
@@ -64,7 +64,7 @@ affect annual dataset versions or caches.
     main):
 
     ``` bash
-    just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
+    just release measures_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
     ```
 
 4.  Update `version` for that dataset only in

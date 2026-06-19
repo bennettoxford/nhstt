@@ -4,7 +4,7 @@
 \alias{get_tidy_dataset}
 \title{Get a pre-built tidy dataset}
 \usage{
-get_tidy_dataset(dataset, periods = NULL, use_cache = TRUE)
+get_tidy_dataset(dataset, periods = NULL, use_cache = TRUE, version = NULL)
 }
 \arguments{
 \item{dataset}{Character, dataset name as listed in tidy_data_sources.yml}
@@ -12,6 +12,8 @@ get_tidy_dataset(dataset, periods = NULL, use_cache = TRUE)
 \item{periods}{Character vector of periods, or NULL for all periods}
 
 \item{use_cache}{Logical, whether to use cached data if available}
+
+\item{version}{Character, specific data version to use, or NULL for latest}
 }
 \value{
 Tibble, ordered most-recent period first

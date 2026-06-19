@@ -2,20 +2,20 @@
 % Please edit documentation in R/tidy-sources.R
 \name{tidy_source_cache_is_current}
 \alias{tidy_source_cache_is_current}
-\title{Check whether cached tidy source matches the expected version}
+\title{Check whether a versioned tidy source is cached}
 \usage{
 tidy_source_cache_is_current(dataset, version)
 }
 \arguments{
 \item{dataset}{Character, dataset name}
 
-\item{version}{Character, expected version from tidy_data_sources.yml}
+\item{version}{Character, expected version}
 }
 \value{
 Logical
 }
 \description{
-Returns FALSE if the parquet or sidecar is missing, or if the cached version
-does not match.
+Returns TRUE if the parquet for this exact dataset+version exists on disk.
+Because the version is part of the filename, no sidecar comparison is needed.
 }
 \keyword{internal}

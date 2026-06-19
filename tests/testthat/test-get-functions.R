@@ -2,7 +2,7 @@
 
 test_that("get_measures_annual errors for periods missing from the data", {
   paths <- make_test_parquet(
-    "key_measures_annual",
+    "measures_annual",
     periods = c("2023-24", "2024-25")
   )
   on.exit({
@@ -22,7 +22,7 @@ test_that("get_measures_annual errors for periods missing from the data", {
 
 test_that("get_measures_monthly errors for periods missing from the data", {
   paths <- make_test_parquet(
-    "activity_performance_monthly",
+    "measures_monthly",
     periods = c("2025-08", "2025-09")
   )
   on.exit({
@@ -42,7 +42,7 @@ test_that("get_measures_monthly errors for periods missing from the data", {
 
 test_that("period errors list the periods available in the data", {
   paths <- make_test_parquet(
-    "key_measures_annual",
+    "measures_annual",
     periods = c("2023-24", "2024-25")
   )
   on.exit({
@@ -60,7 +60,7 @@ test_that("period errors list the periods available in the data", {
 
 test_that("get_measures_annual filters to requested periods", {
   paths <- make_test_parquet(
-    "key_measures_annual",
+    "measures_annual",
     periods = c("2022-23", "2023-24", "2024-25")
   )
   on.exit({
@@ -76,7 +76,7 @@ test_that("get_measures_annual filters to requested periods", {
 
 test_that("get_measures_annual returns rows most-recent-first", {
   paths <- make_test_parquet(
-    "key_measures_annual",
+    "measures_annual",
     periods = c("2022-23", "2024-25", "2023-24")
   )
   on.exit({
@@ -90,7 +90,7 @@ test_that("get_measures_annual returns rows most-recent-first", {
 
 test_that("get_measures_monthly returns rows most-recent-first", {
   paths <- make_test_parquet(
-    "activity_performance_monthly",
+    "measures_monthly",
     periods = c("2024-01", "2025-03", "2024-06")
   )
   on.exit({
@@ -105,7 +105,7 @@ test_that("get_measures_monthly returns rows most-recent-first", {
 # Cache behaviour ---------------------------------------------------------
 
 test_that("get_measures_annual skips download when cache is current", {
-  paths <- make_test_parquet("key_measures_annual", periods = c("2024-25"))
+  paths <- make_test_parquet("measures_annual", periods = c("2024-25"))
   on.exit({
     unlink(paths$cache_path)
     unlink(paths$sidecar_path)
@@ -124,7 +124,7 @@ test_that("get_measures_annual skips download when cache is current", {
 })
 
 test_that("get_measures_annual downloads when use_cache = FALSE", {
-  paths <- make_test_parquet("key_measures_annual", periods = c("2024-25"))
+  paths <- make_test_parquet("measures_annual", periods = c("2024-25"))
   on.exit({
     unlink(paths$cache_path)
     unlink(paths$sidecar_path)
@@ -142,15 +142,55 @@ test_that("get_measures_annual downloads when use_cache = FALSE", {
   expect_true(downloaded)
 })
 
+# Version pinning ----------------------------------------------------------
+
+test_that("get_measures_annual errors for unknown version", {
+  expect_error(
+    get_measures_annual(version = "9.9.9"),
+    "not available"
+  )
+})
+
+test_that("get_measures_monthly errors for unknown version", {
+  expect_error(
+    get_measures_monthly(version = "9.9.9"),
+    "not available"
+  )
+})
+
+test_that("get_measures_annual uses pinned version cache", {
+  version <- get_tidy_source_config("measures_annual")$version
+  paths <- make_test_parquet(
+    "measures_annual",
+    periods = c("2024-25"),
+    version = version
+  )
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
+  downloaded <- FALSE
+  local_mocked_bindings(
+    download_tidy_source = function(...) {
+      downloaded <<- TRUE
+    },
+    .package = "nhstt"
+  )
+
+  get_measures_annual(version = version)
+  expect_false(downloaded)
+})
+
 # Dataset registration ------------------------------------------------------
 
 test_that("every exported getter has a dataset in tidy_data_sources.yml", {
   sources <- load_tidy_sources_config()
   expected <- c(
-    "key_measures_annual",
+    "measures_annual",
     "proms_annual",
-    "therapy_position_annual",
-    "activity_performance_monthly",
+    "therapy_annual",
+    "measures_monthly",
     "metadata_measures_annual",
     "metadata_variables_annual",
     "metadata_measures_monthly",
