@@ -5,7 +5,7 @@ Get path to tidy source version sidecar JSON
 ## Usage
 
 ``` r
-get_tidy_source_sidecar_path(dataset)
+get_tidy_source_sidecar_path(dataset, version)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ get_tidy_source_sidecar_path(dataset)
 - dataset:
 
   Character, dataset name
+
+- version:
+
+  Character, dataset version
 
 ## Value
 

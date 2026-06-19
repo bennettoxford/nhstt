@@ -1,7 +1,8 @@
-# Check whether cached tidy source matches the expected version
+# Check whether a versioned tidy source is cached
 
-Returns FALSE if the parquet or sidecar is missing, or if the cached
-version does not match.
+Returns TRUE if the parquet for this exact dataset+version exists on
+disk. Because the version is part of the filename, no sidecar comparison
+is needed.
 
 ## Usage
 
@@ -17,7 +18,7 @@ tidy_source_cache_is_current(dataset, version)
 
 - version:
 
-  Character, expected version from tidy_data_sources.yml
+  Character, expected version
 
 ## Value
 

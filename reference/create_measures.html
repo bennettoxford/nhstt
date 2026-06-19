@@ -18,7 +18,7 @@ interval, with a ratio column giving numerator / denominator."><!-- Privacy-frie
 
     <a class="navbar-brand me-2" href="../index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@ interval, with a <code>ratio</code> column giving numerator / denominator.</p>
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>Tibble, a tidy dataset as returned by
-<code><a href="get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code></p></dd>
+<code><a href="get_measures_monthly.html">get_measures_monthly()</a></code></p></dd>
 
 
 <dt id="arg-numerators">numerators<a class="anchor" aria-label="anchor" href="#arg-numerators"></a></dt>
@@ -111,7 +111,7 @@ denominator_measure_id, ratio</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_activity_performance_monthly.html">get_activity_performance_monthly</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_measures_monthly.html">get_measures_monthly</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df_measures</span> <span class="op">&lt;-</span> <span class="fu">create_measures</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">df</span>,</span></span>
 <span class="r-in"><span>  numerators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M066"</span>, <span class="st">"M344"</span>, <span class="st">"M341"</span>, <span class="st">"M070"</span>, <span class="st">"M069"</span><span class="op">)</span>,</span></span>

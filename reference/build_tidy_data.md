@@ -15,7 +15,7 @@ build_tidy_data(dataset, raw_datasets = dataset)
 - dataset:
 
   Character, name of the published dataset as listed in
-  tidy_data_sources.yml (e.g., "activity_performance_monthly")
+  tidy_data_sources.yml (e.g., "measures_monthly")
 
 - raw_datasets:
 

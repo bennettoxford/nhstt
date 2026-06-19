@@ -1,0 +1,60 @@
+# Get position of therapy types within the referral pathways
+
+Get the number of courses of therapy by therapy type and position within
+the referral pathway. A course of therapy is a set of 2 or more attended
+treatment appointments where the same therapy type is recorded that
+occur within a referral pathway. Counts are based on referrals finishing
+a course of treatment in the year. Other low/high internsity and
+low/high employment support therapy types have been excluded from theses
+analyses.
+
+## Usage
+
+``` r
+get_therapy_annual(periods = NULL, use_cache = TRUE, version = NULL)
+```
+
+## Arguments
+
+- periods:
+
+  Character vector, specifying periods (e.g., "2023-24", "2024-25"). If
+  NULL (default), returns all available annual periods
+
+- use_cache:
+
+  Logical, specifying whether to use cached data if available. Default
+  TRUE.
+
+- version:
+
+  Character, specifying a pinned data version (e.g., "0.1.0"). If NULL
+  (default), the latest version is used. See
+  [`available_versions()`](https://bennettoxford.github.io/nhstt/reference/available_versions.md).
+
+## Value
+
+Tibble with key measures data in long format
+
+## References
+
+NHS England. [NHS Talking Therapies for Anxiety and Depression Annual
+Reports](https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# Get all annual periods
+therapy_df <- get_therapy_annual()
+
+# Get specific annual periods
+therapy_df <- get_therapy_annual(periods = c("2023-24", "2024-25"))
+
+# Re-download to get the latest data version
+therapy_df <- get_therapy_annual(use_cache = FALSE)
+
+# Pin to a specific data version for reproducibility
+therapy_df <- get_therapy_annual(version = "0.1.0")
+} # }
+```

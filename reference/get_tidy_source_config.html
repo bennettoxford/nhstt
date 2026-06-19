@@ -16,7 +16,7 @@ tidy_data_sources.yml overrides the derived URL."><!-- Privacy-friendly analytic
 
     <a class="navbar-brand me-2" href="../index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@ tidy_data_sources.yml overrides the derived URL.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_tidy_source_config</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_tidy_source_config</span><span class="op">(</span><span class="va">dataset</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -80,12 +80,16 @@ tidy_data_sources.yml overrides the derived URL.</p>
 
 
 <dl><dt id="arg-dataset">dataset<a class="anchor" aria-label="anchor" href="#arg-dataset"></a></dt>
-<dd><p>Character, dataset name (e.g., "activity_performance_monthly")</p></dd>
+<dd><p>Character, dataset name (e.g., "measures_monthly")</p></dd>
+
+
+<dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
+<dd><p>Character, specific version to use, or NULL for the latest</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>List with fields: version, url</p>
+    <p>List with fields: version, versions, url</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

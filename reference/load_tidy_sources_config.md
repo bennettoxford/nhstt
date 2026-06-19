@@ -10,4 +10,5 @@ load_tidy_sources_config()
 
 ## Value
 
-List of dataset configurations keyed by dataset name
+List of dataset configurations keyed by dataset name. Each entry has
+`version` (latest), `versions` (all known), and `url` (latest).

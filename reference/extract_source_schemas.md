@@ -17,7 +17,7 @@ extract_source_schemas(dataset, periods = NULL)
 
 - dataset:
 
-  Character, dataset name (e.g., "activity_performance_monthly")
+  Character, dataset name (e.g., "measures_monthly")
 
 - periods:
 

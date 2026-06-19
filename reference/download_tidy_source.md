@@ -20,7 +20,7 @@ download_tidy_source(dataset, url, version)
 
 - version:
 
-  Character, dataset version (stored in sidecar)
+  Character, dataset version (included in cached filename)
 
 ## Value
 

@@ -5,7 +5,7 @@ Get path to pre-built tidy parquet in cache
 ## Usage
 
 ``` r
-get_tidy_source_cache_path(dataset)
+get_tidy_source_cache_path(dataset, version)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ get_tidy_source_cache_path(dataset)
 - dataset:
 
   Character, dataset name
+
+- version:
+
+  Character, dataset version
 
 ## Value
 

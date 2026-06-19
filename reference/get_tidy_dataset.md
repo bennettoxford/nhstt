@@ -8,7 +8,7 @@ requested periods.
 ## Usage
 
 ``` r
-get_tidy_dataset(dataset, periods = NULL, use_cache = TRUE)
+get_tidy_dataset(dataset, periods = NULL, use_cache = TRUE, version = NULL)
 ```
 
 ## Arguments
@@ -24,6 +24,10 @@ get_tidy_dataset(dataset, periods = NULL, use_cache = TRUE)
 - use_cache:
 
   Logical, whether to use cached data if available
+
+- version:
+
+  Character, specific data version to use, or NULL for latest
 
 ## Value
 

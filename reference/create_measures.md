@@ -18,7 +18,7 @@ create_measures(data, numerators, denominator, group_type = "Provider")
 - data:
 
   Tibble, a tidy dataset as returned by
-  [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md)
+  [`get_measures_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_monthly.md)
 
 - numerators:
 
@@ -44,7 +44,7 @@ denominator_measure_id, ratio
 
 ``` r
 if (FALSE) { # \dontrun{
-df <- get_activity_performance_monthly()
+df <- get_measures_monthly()
 df_measures <- create_measures(
   df,
   numerators = c("M066", "M344", "M341", "M070", "M069"),

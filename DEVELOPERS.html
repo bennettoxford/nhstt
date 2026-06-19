@@ -10,7 +10,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,7 @@
 <th align="left">Last period</th>
 <th align="right">Periods</th>
 <th align="right">Version</th>
-</tr></thead><tbody><tr><td align="left"><code><a href="reference/get_key_measures_annual.html">get_key_measures_annual()</a></code></td>
+</tr></thead><tbody><tr><td align="left"><code><a href="reference/get_measures_annual.html">get_measures_annual()</a></code></td>
 <td align="left">annual</td>
 <td align="left">2017-18</td>
 <td align="left">2024-25</td>
@@ -88,13 +88,13 @@
 <td align="left">2024-25</td>
 <td align="right">6</td>
 <td align="right">0.1.0</td>
-</tr><tr><td align="left"><code><a href="reference/get_therapy_position_annual.html">get_therapy_position_annual()</a></code></td>
+</tr><tr><td align="left"><code><a href="reference/get_therapy_annual.html">get_therapy_annual()</a></code></td>
 <td align="left">annual</td>
 <td align="left">2019-20</td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
 <td align="right">0.1.0</td>
-</tr><tr><td align="left"><code><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code></td>
+</tr><tr><td align="left"><code><a href="reference/get_measures_monthly.html">get_measures_monthly()</a></code></td>
 <td align="left">monthly</td>
 <td align="left">2023-05</td>
 <td align="left">2026-03</td>
@@ -133,7 +133,7 @@
 <th align="right">Periods</th>
 <th align="right">Time for one (s)</th>
 <th align="right">Est. full build (min)</th>
-</tr></thead><tbody><tr><td align="left"><code>key_measures_annual</code></td>
+</tr></thead><tbody><tr><td align="left"><code>measures_annual</code></td>
 <td align="left">2024-25</td>
 <td align="right">8</td>
 <td align="right">61.4</td>
@@ -143,12 +143,12 @@
 <td align="right">6</td>
 <td align="right">116.5</td>
 <td align="right">11.6</td>
-</tr><tr><td align="left"><code>therapy_position_annual</code></td>
+</tr><tr><td align="left"><code>therapy_annual</code></td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
 <td align="right">0.3</td>
 <td align="right">0.0</td>
-</tr><tr><td align="left"><code>activity_performance_monthly</code></td>
+</tr><tr><td align="left"><code>measures_monthly</code></td>
 <td align="left">2026-03</td>
 <td align="right">35</td>
 <td align="right">5.4</td>
@@ -162,7 +162,7 @@
 <li><p><code>just build-data</code> — rebuilds all parquets and writes to <code>data-raw/</code></p></li>
 <li>
 <p>Create a GitHub Release using <code>just release</code> (run after merging to main):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">just</span> release activity_performance_monthly 0.4.0 <span class="st">"Monthly activity and performance data YYYY-MM to YYYY-MM"</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">just</span> release measures_monthly 0.4.0 <span class="st">"Monthly activity and performance data YYYY-MM to YYYY-MM"</span></span></code></pre></div>
 </li>
 <li><p>Update <code>version</code> for that dataset only in <code>inst/config/tidy_data_sources.yml</code></p></li>
 </ol><p>Provider metadata is published the same way, but its parquet is built from the live ODS API snapshot:</p>

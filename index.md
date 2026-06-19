@@ -19,11 +19,11 @@ pak::pak("bennettoxford/nhstt")
 
 library(nhstt)
 
-# Load annual key measures dataset for financial year 2024-25
-km_annual <- get_key_measures_annual(periods = "2024-25")
+# Load the latest release of monthly measures
+df_monthly <- get_measures_monthly()
 
-# Load all monthly activity performance datasets
-ap_monthly <- get_activity_performance_monthly()
+# Load specific version of monthly measures
+df_monthly <- get_measures_monthly(version = "0.3.0")
 ```
 
 ## Available NHS Talking Therapies data
@@ -38,15 +38,15 @@ number of reporting periods covered by each dataset.
 
 | Function | First period | Last period | Periods | Tidy data | Version |
 |:---|:---|:---|---:|:---|---:|
-| [`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md) | 2017-18 | 2024-25 | 8 | [Download](https://github.com/bennettoxford/nhstt/releases/download/key-measures-annual-v0.2.0/key_measures_annual.parquet) | 0.2.0 |
-| [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md) | 2019-20 | 2024-25 | 6 | [Download](https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.2.0/proms_annual.parquet) | 0.1.0 |
-| [`get_therapy_position_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_position_annual.md) | 2019-20 | 2024-25 | 6 | [Download](https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet) | 0.1.0 |
+| [`get_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_measures_annual.md) | 2017-18 | 2024-25 | 8 | [Download](https://github.com/bennettoxford/nhstt/releases/download/key-measures-annual-v0.2.0/key_measures_annual.parquet) | 0.2.0 |
+| [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md) | 2019-20 | 2024-25 | 6 | [Download](https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.2.0/proms_annual.parquet) | 0.2.0 |
+| [`get_therapy_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_annual.md) | 2019-20 | 2024-25 | 6 | [Download](https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet) | 0.1.0 |
 
 ### Monthly data
 
 | Function | First period | Last period | Periods | Tidy data | Version |
 |:---|:---|:---|---:|:---|---:|
-| [`get_activity_performance_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_activity_performance_monthly.md) | 2021-01 | 2026-03 | 63 | [Download](https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.4.0/activity_performance_monthly.parquet) | 0.4.0 |
+| [`get_measures_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_monthly.md) | 2021-01 | 2026-03 | 63 | [Download](https://github.com/bennettoxford/nhstt/releases/download/activity-performance-monthly-v0.4.0/activity_performance_monthly.parquet) | 0.4.0 |
 
 ### Metadata
 

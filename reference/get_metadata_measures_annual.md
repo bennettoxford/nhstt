@@ -6,7 +6,7 @@ sheets released alongside the annual NHS Talking Therapies reports.
 ## Usage
 
 ``` r
-get_metadata_measures_annual(periods = NULL, use_cache = TRUE)
+get_metadata_measures_annual(periods = NULL, use_cache = TRUE, version = NULL)
 ```
 
 ## Arguments
@@ -20,6 +20,12 @@ get_metadata_measures_annual(periods = NULL, use_cache = TRUE)
 
   Logical, specifying whether to use cached data if available. Default
   TRUE.
+
+- version:
+
+  Character, specifying a pinned data version (e.g., "0.1.0"). If NULL
+  (default), the latest version is used. See
+  [`available_versions()`](https://bennettoxford.github.io/nhstt/reference/available_versions.md).
 
 ## Value
 

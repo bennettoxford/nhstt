@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,11 +96,11 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bennettoxford/nhstt" class="external-link">nhstt</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load annual key measures dataset for financial year 2024-25</span></span>
-<span><span class="va">km_annual</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_key_measures_annual.html">get_key_measures_annual</a></span><span class="op">(</span>periods <span class="op">=</span> <span class="st">"2024-25"</span><span class="op">)</span></span>
+<span><span class="co"># Load the latest release of monthly measures</span></span>
+<span><span class="va">df_monthly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_measures_monthly.html">get_measures_monthly</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load all monthly activity performance datasets</span></span>
-<span><span class="va">ap_monthly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Load specific version of monthly measures</span></span>
+<span><span class="va">df_monthly</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_measures_monthly.html">get_measures_monthly</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"0.3.0"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="available-nhs-talking-therapies-data">Available NHS Talking Therapies data<a class="anchor" aria-label="anchor" href="#available-nhs-talking-therapies-data"></a>
@@ -128,7 +128,7 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code><a href="reference/get_key_measures_annual.html">get_key_measures_annual()</a></code></td>
+<td align="left"><code><a href="reference/get_measures_annual.html">get_measures_annual()</a></code></td>
 <td align="left">2017-18</td>
 <td align="left">2024-25</td>
 <td align="right">8</td>
@@ -141,10 +141,10 @@
 <td align="left">2024-25</td>
 <td align="right">6</td>
 <td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.2.0/proms_annual.parquet" class="external-link">Download</a></td>
-<td align="right">0.1.0</td>
+<td align="right">0.2.0</td>
 </tr>
 <tr>
-<td align="left"><code><a href="reference/get_therapy_position_annual.html">get_therapy_position_annual()</a></code></td>
+<td align="left"><code><a href="reference/get_therapy_annual.html">get_therapy_annual()</a></code></td>
 <td align="left">2019-20</td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
@@ -175,7 +175,7 @@
 <th align="right">Version</th>
 </tr></thead>
 <tbody><tr>
-<td align="left"><code><a href="reference/get_activity_performance_monthly.html">get_activity_performance_monthly()</a></code></td>
+<td align="left"><code><a href="reference/get_measures_monthly.html">get_measures_monthly()</a></code></td>
 <td align="left">2021-01</td>
 <td align="left">2026-03</td>
 <td align="right">63</td>

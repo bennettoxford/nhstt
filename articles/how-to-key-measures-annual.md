@@ -13,7 +13,7 @@ workflow for accessing and visualising this publicly available data.
 
 We start by loading the necessary packages and downloading the annual
 key measures dataset with
-[`get_key_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_key_measures_annual.md).
+[`get_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_measures_annual.md).
 This report contains annual performance indicators for NHS Talking
 Therapies services across England.
 
@@ -28,7 +28,7 @@ library(stringr)
 
 # Get key_measures data
 # When running this for the first time it will download and tidy the reports
-key_measures <- get_key_measures_annual(
+key_measures <- get_measures_annual(
   periods = c("2022-23", "2023-24", "2024-25")
 )
 ```

@@ -5,7 +5,7 @@ Load pre-built tidy parquet from cache
 ## Usage
 
 ``` r
-load_tidy_source(dataset)
+load_tidy_source(dataset, version)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ load_tidy_source(dataset)
 - dataset:
 
   Character, dataset name
+
+- version:
+
+  Character, dataset version
 
 ## Value
 

@@ -6,7 +6,7 @@ reported measure.
 ## Usage
 
 ``` r
-get_metadata_monthly(periods = NULL, use_cache = TRUE)
+get_metadata_monthly(periods = NULL, use_cache = TRUE, version = NULL)
 ```
 
 ## Arguments
@@ -20,6 +20,12 @@ get_metadata_monthly(periods = NULL, use_cache = TRUE)
 
   Logical, specifying whether to use cached data if available. Default
   TRUE.
+
+- version:
+
+  Character, specifying a pinned data version (e.g., "0.3.0"). If NULL
+  (default), the latest version is used. See
+  [`available_versions()`](https://bennettoxford.github.io/nhstt/reference/available_versions.md).
 
 ## Value
 
