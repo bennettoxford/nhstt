@@ -1,6 +1,6 @@
 # Period validation -------------------------------------------------------
 
-test_that("get_key_measures_annual errors for periods missing from the data", {
+test_that("get_measures_annual errors for periods missing from the data", {
   paths <- make_test_parquet(
     "key_measures_annual",
     periods = c("2023-24", "2024-25")
@@ -15,12 +15,12 @@ test_that("get_key_measures_annual errors for periods missing from the data", {
     .package = "nhstt"
   )
   expect_error(
-    get_key_measures_annual(periods = "9999-00"),
+    get_measures_annual(periods = "9999-00"),
     regexp = "9999-00"
   )
 })
 
-test_that("get_activity_performance_monthly errors for periods missing from the data", {
+test_that("get_measures_monthly errors for periods missing from the data", {
   paths <- make_test_parquet(
     "activity_performance_monthly",
     periods = c("2025-08", "2025-09")
@@ -35,7 +35,7 @@ test_that("get_activity_performance_monthly errors for periods missing from the 
     .package = "nhstt"
   )
   expect_error(
-    get_activity_performance_monthly(periods = "9999-00"),
+    get_measures_monthly(periods = "9999-00"),
     regexp = "9999-00"
   )
 })
@@ -51,14 +51,14 @@ test_that("period errors list the periods available in the data", {
   })
 
   expect_error(
-    get_key_measures_annual(periods = c("2024-25", "2025-26")),
+    get_measures_annual(periods = c("2024-25", "2025-26")),
     regexp = "2023-24"
   )
 })
 
 # Period filtering ---------------------------------------------------------
 
-test_that("get_key_measures_annual filters to requested periods", {
+test_that("get_measures_annual filters to requested periods", {
   paths <- make_test_parquet(
     "key_measures_annual",
     periods = c("2022-23", "2023-24", "2024-25")
@@ -68,13 +68,13 @@ test_that("get_key_measures_annual filters to requested periods", {
     unlink(paths$sidecar_path)
   })
 
-  result <- get_key_measures_annual(periods = c("2023-24", "2024-25"))
+  result <- get_measures_annual(periods = c("2023-24", "2024-25"))
   expect_setequal(result$reporting_period, c("2023-24", "2024-25"))
 })
 
 # Output order ------------------------------------------------------------
 
-test_that("get_key_measures_annual returns rows most-recent-first", {
+test_that("get_measures_annual returns rows most-recent-first", {
   paths <- make_test_parquet(
     "key_measures_annual",
     periods = c("2022-23", "2024-25", "2023-24")
@@ -84,11 +84,11 @@ test_that("get_key_measures_annual returns rows most-recent-first", {
     unlink(paths$sidecar_path)
   })
 
-  result <- get_key_measures_annual()
+  result <- get_measures_annual()
   expect_equal(result$reporting_period[1], "2024-25")
 })
 
-test_that("get_activity_performance_monthly returns rows most-recent-first", {
+test_that("get_measures_monthly returns rows most-recent-first", {
   paths <- make_test_parquet(
     "activity_performance_monthly",
     periods = c("2024-01", "2025-03", "2024-06")
@@ -98,13 +98,13 @@ test_that("get_activity_performance_monthly returns rows most-recent-first", {
     unlink(paths$sidecar_path)
   })
 
-  result <- get_activity_performance_monthly()
+  result <- get_measures_monthly()
   expect_equal(result$reporting_period[1], "2025-03")
 })
 
 # Cache behaviour ---------------------------------------------------------
 
-test_that("get_key_measures_annual skips download when cache is current", {
+test_that("get_measures_annual skips download when cache is current", {
   paths <- make_test_parquet("key_measures_annual", periods = c("2024-25"))
   on.exit({
     unlink(paths$cache_path)
@@ -119,11 +119,11 @@ test_that("get_key_measures_annual skips download when cache is current", {
     .package = "nhstt"
   )
 
-  get_key_measures_annual()
+  get_measures_annual()
   expect_false(downloaded)
 })
 
-test_that("get_key_measures_annual downloads when use_cache = FALSE", {
+test_that("get_measures_annual downloads when use_cache = FALSE", {
   paths <- make_test_parquet("key_measures_annual", periods = c("2024-25"))
   on.exit({
     unlink(paths$cache_path)
@@ -138,7 +138,7 @@ test_that("get_key_measures_annual downloads when use_cache = FALSE", {
     .package = "nhstt"
   )
 
-  suppressMessages(get_key_measures_annual(use_cache = FALSE))
+  suppressMessages(get_measures_annual(use_cache = FALSE))
   expect_true(downloaded)
 })
 

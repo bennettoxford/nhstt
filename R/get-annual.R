@@ -17,15 +17,15 @@
 #' @examples
 #' \dontrun{
 #' # Get all annual periods
-#' key_measures_df <- get_key_measures_annual()
+#' measures_df <- get_measures_annual()
 #'
 #' # Get specific annual periods
-#' key_measures_df <- get_key_measures_annual(periods = c("2023-24", "2024-25"))
+#' measures_df <- get_measures_annual(periods = c("2023-24", "2024-25"))
 #'
 #' # Re-download to get the latest data version
-#' key_measures_df <- get_key_measures_annual(use_cache = FALSE)
+#' measures_df <- get_measures_annual(use_cache = FALSE)
 #' }
-get_key_measures_annual <- function(
+get_measures_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
@@ -87,15 +87,15 @@ get_proms_annual <- function(
 #' @examples
 #' \dontrun{
 #' # Get all annual periods
-#' therapy_position_df <- get_therapy_position_annual()
+#' therapy_df <- get_therapy_annual()
 #'
 #' # Get specific annual periods
-#' therapy_position_df <- get_therapy_position_annual(periods = c("2023-24", "2024-25"))
+#' therapy_df <- get_therapy_annual(periods = c("2023-24", "2024-25"))
 #'
 #' # Re-download to get the latest data version
-#' therapy_position_df <- get_therapy_position_annual(use_cache = FALSE)
+#' therapy_df <- get_therapy_annual(use_cache = FALSE)
 #' }
-get_therapy_position_annual <- function(
+get_therapy_annual <- function(
   periods = NULL,
   use_cache = TRUE
 ) {
