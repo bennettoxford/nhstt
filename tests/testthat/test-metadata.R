@@ -3,7 +3,7 @@ test_that("get_metadata_measures_annual loads the pre-built parquet", {
     "metadata_measures_annual",
     periods = c("2023-24", "2024-25"),
     extra_cols = list(
-      dataset_name = c("key_measures_annual", "key_measures_annual"),
+      dataset_name = c("measures_annual", "measures_annual"),
       field_name = c("a", "b")
     )
   )

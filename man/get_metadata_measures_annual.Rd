@@ -4,13 +4,16 @@
 \alias{get_metadata_measures_annual}
 \title{Get annual metadata for data measures}
 \usage{
-get_metadata_measures_annual(periods = NULL, use_cache = TRUE)
+get_metadata_measures_annual(periods = NULL, use_cache = TRUE, version = NULL)
 }
 \arguments{
 \item{periods}{Character vector, specifying periods (e.g., "2023-24", "2024-25").
 If NULL (default), returns all available annual periods}
 
 \item{use_cache}{Logical, specifying whether to use cached data if available. Default TRUE.}
+
+\item{version}{Character, specifying a pinned data version (e.g., "0.1.0").
+If NULL (default), the latest version is used. See \code{\link[=available_versions]{available_versions()}}.}
 }
 \value{
 Tibble containing metadata rows for each annual measure field

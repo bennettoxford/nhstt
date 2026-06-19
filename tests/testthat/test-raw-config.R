@@ -1,7 +1,7 @@
 # Validation function tests ---------------------------------------------------
 
 test_that("validate_dataset accepts valid dataset", {
-  expect_invisible(validate_dataset("key_measures_annual", "annual"))
+  expect_invisible(validate_dataset("measures_annual", "annual"))
 })
 
 test_that("validate_dataset accepts metadata dataset", {
@@ -47,7 +47,7 @@ test_that("validate_frequency errors for invalid frequency", {
 })
 
 test_that("validate_period accepts valid period", {
-  expect_invisible(validate_period("2023-24", "key_measures_annual", "annual"))
+  expect_invisible(validate_period("2023-24", "measures_annual", "annual"))
 })
 
 test_that("validate_period accepts metadata period", {
@@ -60,7 +60,7 @@ test_that("validate_period accepts metadata period", {
 
 test_that("validate_period errors for invalid period", {
   expect_error(
-    validate_period("fy9999", "key_measures_annual", "annual"),
+    validate_period("fy9999", "measures_annual", "annual"),
     "Invalid period"
   )
 })
@@ -79,10 +79,10 @@ test_that("load_raw_config has datasets key", {
   expect_true("datasets" %in% names(raw_config))
 })
 
-test_that("load_raw_config has key_measures_annual dataset", {
+test_that("load_raw_config has measures_annual dataset", {
   raw_config <- load_raw_config()
 
-  expect_true("key_measures_annual" %in% names(raw_config$datasets))
+  expect_true("measures_annual" %in% names(raw_config$datasets))
 })
 
 test_that("load_raw_config has metadata_measures_monthly dataset", {
@@ -109,15 +109,15 @@ test_that("load_raw_config has metadata variables datasets", {
   )
 })
 
-test_that("key_measures_annual has frequency field", {
+test_that("measures_annual has frequency field", {
   raw_config <- load_raw_config()
 
-  expect_equal(raw_config$datasets$key_measures_annual$frequency, "annual")
+  expect_equal(raw_config$datasets$measures_annual$frequency, "annual")
 })
 
-test_that("key_measures_annual has required fields", {
+test_that("measures_annual has required fields", {
   raw_config <- load_raw_config()
-  km <- raw_config$datasets$key_measures_annual
+  km <- raw_config$datasets$measures_annual
 
   expect_true("title" %in% names(km))
   expect_true("version" %in% names(km))
@@ -129,7 +129,7 @@ test_that("key_measures_annual has required fields", {
 # List available periods tests -------------------------------------------------
 
 test_that("list_available_periods returns character vector", {
-  periods <- list_available_periods("key_measures_annual", "annual")
+  periods <- list_available_periods("measures_annual", "annual")
 
   expect_type(periods, "character")
   expect_true(length(periods) > 0)
@@ -156,13 +156,13 @@ test_that("list_available_periods includes metadata annual periods", {
 })
 
 test_that("list_available_periods returns financial year format", {
-  periods <- list_available_periods("key_measures_annual", "annual")
+  periods <- list_available_periods("measures_annual", "annual")
 
   expect_true(all(grepl("^\\d{4}-\\d{2}$", periods)))
 })
 
 test_that("list_available_periods includes known periods", {
-  periods <- list_available_periods("key_measures_annual", "annual")
+  periods <- list_available_periods("measures_annual", "annual")
 
   expect_true("2023-24" %in% periods)
   expect_true("2017-18" %in% periods)
@@ -177,7 +177,7 @@ test_that("list_available_periods errors for invalid dataset", {
 
 test_that("list_available_periods errors for invalid frequency", {
   expect_error(
-    list_available_periods("key_measures_annual", "invalid_frequency"),
+    list_available_periods("measures_annual", "invalid_frequency"),
     "Invalid frequency"
   )
 })
@@ -185,13 +185,13 @@ test_that("list_available_periods errors for invalid frequency", {
 # Get source info tests --------------------------------------------------------
 
 test_that("get_source_config returns a list", {
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   expect_type(source, "list")
 })
 
 test_that("get_source_config has required fields", {
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   expect_true("url" %in% names(source))
   expect_true("format" %in% names(source))
@@ -200,13 +200,13 @@ test_that("get_source_config has required fields", {
 })
 
 test_that("get_source_config returns correct period", {
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   expect_equal(source$period, "2023-24")
 })
 
 test_that("get_source_config returns valid URL", {
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   expect_match(source$url, "^https://")
   expect_match(source$url, "files\\.digital\\.nhs\\.uk")
@@ -214,26 +214,26 @@ test_that("get_source_config returns valid URL", {
 
 test_that("get_source_config errors for invalid period", {
   expect_error(
-    get_source_config("key_measures_annual", "fy9999", "annual"),
+    get_source_config("measures_annual", "fy9999", "annual"),
     "Invalid period"
   )
 })
 
 test_that("get_source_config returns URL string", {
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   expect_type(source$url, "character")
   expect_match(source$url, "^https://")
 })
 
 test_that("get_source_config returns correct format for zip", {
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   expect_equal(source$format, "zip")
 })
 
 test_that("get_source_config returns correct format for rar", {
-  source <- get_source_config("key_measures_annual", "2018-19", "annual")
+  source <- get_source_config("measures_annual", "2018-19", "annual")
 
   expect_equal(source$format, "rar")
 })
@@ -245,14 +245,14 @@ test_that("get_source_config returns correct format for xlsx", {
 })
 
 test_that("get_source_config returns csv_file string", {
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   expect_type(source$csv_file, "character")
   expect_true(nchar(source$csv_file) > 0)
 })
 
 test_that("get_source_config has csv_file field", {
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   expect_true("csv_file" %in% names(source))
   expect_type(source$csv_file, "character")
@@ -309,7 +309,7 @@ test_that("annual metadata variables sources report sheets", {
 # Get dataset version tests ----------------------------------------------------
 
 test_that("get_dataset_version returns version string", {
-  version <- get_dataset_version("key_measures_annual", "annual")
+  version <- get_dataset_version("measures_annual", "annual")
 
   expect_type(version, "character")
   expect_match(version, "^\\d+\\.\\d+\\.\\d+$")
@@ -324,7 +324,7 @@ test_that("get_dataset_version errors for invalid dataset", {
 
 test_that("get_dataset_version errors for invalid frequency", {
   expect_error(
-    get_dataset_version("key_measures_annual", "invalid"),
+    get_dataset_version("measures_annual", "invalid"),
     "Invalid frequency"
   )
 })
@@ -352,15 +352,15 @@ test_that("available_nhstt_reports has required columns", {
   expect_true(all(required_cols %in% names(reports)))
 })
 
-test_that("available_nhstt_reports includes key_measures_annual", {
+test_that("available_nhstt_reports includes measures_annual", {
   reports <- available_nhstt_reports()
 
-  expect_true("key_measures_annual" %in% reports$dataset)
+  expect_true("measures_annual" %in% reports$dataset)
 })
 
 test_that("available_nhstt_reports includes annual key_measures", {
   reports <- available_nhstt_reports()
-  km_reports <- reports[reports$dataset == "key_measures_annual", ]
+  km_reports <- reports[reports$dataset == "measures_annual", ]
 
   expect_true("annual" %in% km_reports$frequency)
 })
@@ -368,7 +368,7 @@ test_that("available_nhstt_reports includes annual key_measures", {
 test_that("available_nhstt_reports shows correct period counts", {
   reports <- available_nhstt_reports()
   km_annual <- reports[
-    reports$dataset == "key_measures_annual" & reports$frequency == "annual",
+    reports$dataset == "measures_annual" & reports$frequency == "annual",
   ]
 
   # Should have 8 annual periods (2017-18 through 2024-25)
@@ -378,24 +378,24 @@ test_that("available_nhstt_reports shows correct period counts", {
 test_that("available_nhstt_reports shows correct first and last periods", {
   reports <- available_nhstt_reports()
   km_annual <- reports[
-    reports$dataset == "key_measures_annual" & reports$frequency == "annual",
+    reports$dataset == "measures_annual" & reports$frequency == "annual",
   ]
 
   expect_equal(km_annual$first_period, "2017-18")
   expect_equal(km_annual$last_period, "2024-25")
 })
 
-test_that("available_nhstt_reports shows correct period counts for activity_performance_monthly", {
+test_that("available_nhstt_reports shows correct period counts for measures_monthly", {
   reports <- available_nhstt_reports()
-  monthly <- reports[reports$dataset == "activity_performance_monthly", ]
+  monthly <- reports[reports$dataset == "measures_monthly", ]
 
   # Update when adding new monthly periods (currently 2021-01 through 2026-03)
   expect_equal(monthly$n_periods, 63)
 })
 
-test_that("available_nhstt_reports shows correct first and last periods for activity_performance_monthly", {
+test_that("available_nhstt_reports shows correct first and last periods for measures_monthly", {
   reports <- available_nhstt_reports()
-  monthly <- reports[reports$dataset == "activity_performance_monthly", ]
+  monthly <- reports[reports$dataset == "measures_monthly", ]
 
   expect_equal(monthly$first_period, "2021-01")
   # Update when adding new monthly periods
@@ -518,9 +518,9 @@ test_that("validate_raw_config errors when zip/rar missing csv_file", {
 
 test_that("list_available_periods excludes development periods by default", {
   # This test assumes no actual development periods exist in raw_config.yml
-  periods <- list_available_periods("key_measures_annual", "annual")
+  periods <- list_available_periods("measures_annual", "annual")
   periods_with_dev <- list_available_periods(
-    "key_measures_annual",
+    "measures_annual",
     "annual",
     include_development = TRUE
   )
@@ -532,14 +532,14 @@ test_that("list_available_periods excludes development periods by default", {
 test_that("validate_period accepts periods in raw_config including development", {
   # validate_period should work for all periods (including development)
   # since it's used internally by read_raw()
-  expect_invisible(validate_period("2023-24", "key_measures_annual", "annual"))
+  expect_invisible(validate_period("2023-24", "measures_annual", "annual"))
 })
 
 # Source config field tests ---------------------------------------------------
 
 test_that("get_source_config returns csv_file for archive datasets", {
   # This test ensures we access the correct field name (csv_file not csv_pattern)
-  source <- get_source_config("key_measures_annual", "2023-24", "annual")
+  source <- get_source_config("measures_annual", "2023-24", "annual")
 
   # For zip/rar archives, csv_file should be present
   expect_true("csv_file" %in% names(source))

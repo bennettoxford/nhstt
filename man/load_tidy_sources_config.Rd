@@ -7,7 +7,8 @@
 load_tidy_sources_config()
 }
 \value{
-List of dataset configurations keyed by dataset name
+List of dataset configurations keyed by dataset name. Each entry
+has \code{version} (latest), \code{versions} (all known), and \code{url} (latest).
 }
 \description{
 Load tidy data sources configuration
