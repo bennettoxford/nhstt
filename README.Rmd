@@ -38,11 +38,8 @@ pak::pak("bennettoxford/nhstt")
 ```{r example, eval = FALSE}
 library(nhstt)
 
-# Load annual key measures dataset for financial year 2024-25
-km_annual <- get_key_measures_annual(periods = "2024-25")
-
 # Load all monthly activity performance datasets
-ap_monthly <- get_activity_performance_monthly()
+df_monthly <- get_measures_monthly()
 ```
 
 ## Available NHS Talking Therapies data

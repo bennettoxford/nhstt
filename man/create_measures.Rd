@@ -8,7 +8,7 @@ create_measures(data, numerators, denominator, group_type = "Provider")
 }
 \arguments{
 \item{data}{Tibble, a tidy dataset as returned by
-\code{\link[=get_activity_performance_monthly]{get_activity_performance_monthly()}}}
+\code{\link[=get_measures_monthly]{get_measures_monthly()}}}
 
 \item{numerators}{Character vector of measure IDs to use as numerators
 (e.g., \code{c("M066", "M344")})}
@@ -33,7 +33,7 @@ interval, with a \code{ratio} column giving numerator / denominator.
 }
 \examples{
 \dontrun{
-df <- get_activity_performance_monthly()
+df <- get_measures_monthly()
 df_measures <- create_measures(
   df,
   numerators = c("M066", "M344", "M341", "M070", "M069"),

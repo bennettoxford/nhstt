@@ -7,7 +7,7 @@
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
-#' @inheritParams get_key_measures_annual
+#' @inheritParams get_measures_annual
 #'
 #' @return Tibble containing metadata rows for each annual measure field
 #' @export
@@ -31,7 +31,7 @@ get_metadata_measures_annual <- function(
 #' NHS England.
 #' \href{https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports}{NHS Talking Therapies for Anxiety and Depression Annual Reports}
 #'
-#' @inheritParams get_key_measures_annual
+#' @inheritParams get_measures_annual
 #'
 #' @return Tibble containing metadata rows for each annual variable definition
 #' @export

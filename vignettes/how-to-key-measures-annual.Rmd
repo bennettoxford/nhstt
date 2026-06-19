@@ -21,7 +21,7 @@ We'll look at regional trends in depression referrals and finished treatments to
 
 ## Setup
 
-We start by loading the necessary packages and downloading the annual key measures dataset with `get_key_measures_annual()`. This report contains annual performance indicators for NHS Talking Therapies services across England.
+We start by loading the necessary packages and downloading the annual key measures dataset with `get_measures_annual()`. This report contains annual performance indicators for NHS Talking Therapies services across England.
 
 ```{r setup, message=FALSE, warning=FALSE}
 # Load packages
@@ -33,7 +33,7 @@ library(stringr)
 
 # Get key_measures data
 # When running this for the first time it will download and tidy the reports
-key_measures <- get_key_measures_annual(
+key_measures <- get_measures_annual(
   periods = c("2022-23", "2023-24", "2024-25")
 )
 ```
