@@ -3,7 +3,7 @@
 # pinned with version = "x.y.z" for reproducibility.
 #
 # Every version must have an explicit url — this avoids breakage when a
-# dataset is renamed, since the URL encodes the historical release name.
+# dataset is renamed, since the URL encodes the release name at publish time.
 #
 # To publish updated data for a dataset:
 #   1. Prepend a new version + url entry here (keep older entries below)

@@ -652,10 +652,85 @@ build_tidy_data <- function(dataset, raw_datasets = dataset) {
   }
 
   out_dir <- "data-raw"
-  if (!dir.exists(out_dir)) {
-    dir.create(out_dir, recursive = TRUE)
-  }
+  dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
   out_path <- file.path(out_dir, paste0(dataset, ".parquet"))
+
+  write_parquet(combined, out_path, compression = "zstd")
+
+  cli_process_done()
+  cli_alert_success("Written to {.file {out_path}}")
+  cli_alert_info(
+    "Upload {.file {out_path}} to a GitHub Release and update the version in {.file inst/config/tidy_data_sources.yml}"
+  )
+
+  invisible(out_path)
+}
+
+#' Build combined tidy parquet for legacy-format annual measures (2012-13 to 2016-17)
+#'
+#' Developer tool. Downloads source files for all five legacy-format reporting
+#' periods, runs the bespoke extraction pipeline, and writes a parquet to
+#' `data-raw/measures_annual_legacy_format.parquet`.
+#'
+#' Output schema matches `measures_annual` exactly (England-level only) so the
+#' two parquets can be row-bound when releasing a combined dataset.
+#'
+#' After running this function, upload the resulting parquet to a GitHub Release
+#' and update `inst/config/tidy_data_sources.yml` with the new version.
+#'
+#' @param breakdowns Character vector, specifying breakdown dimensions to include
+#'   (e.g., `"age_gender"`, `"ethnicity"`, `"sexual_orientation"`,
+#'   `"disability"`, `"religion"`, `"imd"`, `"ltc"`).
+#'   Availability varies by year. Defaults to all available breakdowns.
+#'
+#' @return Invisibly returns the path to the written parquet file
+#'
+#' @importFrom dplyr filter select
+#' @importFrom arrow write_parquet
+#' @importFrom cli cli_process_start cli_process_done cli_alert_success cli_alert_info
+#'
+#' @keywords internal
+build_annual_legacy_format_measures <- function(
+  breakdowns = c(
+    "age_gender",
+    "ethnicity",
+    "sexual_orientation",
+    "disability",
+    "religion",
+    "imd",
+    "ltc"
+  )
+) {
+  tidy_cfg <- get_tidy_config("measures_annual", "annual")
+  pivot_cfg <- tidy_cfg$pivot_longer
+
+  cli_process_start(
+    "Building legacy-format annual measures (2012-13 to 2016-17)"
+  )
+
+  combined <- extract_annual_legacy_format(breakdowns = breakdowns) |>
+    pivot_longer_measures(pivot_cfg) |>
+    add_period_columns() |>
+    filter(!is.na(value)) |>
+    clean_column_values(tidy_cfg$clean_column_values) |>
+    select(
+      reporting_period,
+      start_date,
+      end_date,
+      org_type,
+      org_code,
+      org_name,
+      variable_type,
+      variable_a,
+      variable_b,
+      measure_name,
+      measure_statistic,
+      value
+    )
+
+  out_dir <- "data-raw"
+  dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+  out_path <- file.path(out_dir, "measures_annual_legacy_format.parquet")
 
   write_parquet(combined, out_path, compression = "zstd")
 
