@@ -189,7 +189,7 @@ test_that("every exported getter has a dataset in tidy_data_sources.yml", {
   expected <- c(
     "measures_annual",
     "proms_annual",
-    "therapy_annual",
+    "therapy_position_annual",
     "measures_monthly",
     "metadata_measures_annual",
     "metadata_variables_annual",

@@ -555,7 +555,7 @@ compare_schemas <- function(
 #' Downloads raw data for a dataset/period and saves the first n rows as a
 #' fixture CSV file for offline testing.
 #'
-#' @param dataset Character, dataset name (e.g., "therapy_annual")
+#' @param dataset Character, dataset name (e.g., "therapy_position_annual")
 #' @param period Character, period (e.g., "2021-22")
 #' @param frequency Character, "annual" or "monthly"
 #' @param n_rows Integer, number of rows to save (default 5)

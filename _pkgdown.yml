@@ -65,7 +65,7 @@ reference:
     contents:
       - get_measures_annual
       - get_proms_annual
-      - get_therapy_annual
+      - get_therapy_position_annual
   - title: "Monthly data"
     contents:
       - get_measures_monthly
