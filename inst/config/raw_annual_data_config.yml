@@ -116,11 +116,11 @@ datasets:
         csv_file: "Table4.csv"
       - period: "2019-20"
         csv_file: "psych-ther-1920-out-ther-csv.csv"
-  therapy_annual:
-    title: "Therapy types by number of therapies per appointment"
+  therapy_position_annual:
+    title: "Position of therapy type within the referral pathway"
     description: "Counts of attended appointments by therapy type, broken down by the total number of therapies recorded per appointment"
     version: "0.1.0"
-    get_function: "get_therapy_annual"
+    get_function: "get_therapy_position_annual"
     frequency: "annual"
     copyright: "Copyright NHS England"
     license: "OGL-UK-3.0"
