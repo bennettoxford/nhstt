@@ -14,7 +14,7 @@ test_that("load_tidy_sources_config includes all four main datasets", {
   expect_true("measures_monthly" %in% names(cfg))
   expect_true("measures_annual" %in% names(cfg))
   expect_true("proms_annual" %in% names(cfg))
-  expect_true("therapy_annual" %in% names(cfg))
+  expect_true("therapy_position_annual" %in% names(cfg))
 })
 
 test_that("each dataset config has version, versions, and url fields", {
