@@ -26,6 +26,25 @@ archives:
     - period: "2017-18"
       url: "https://files.digital.nhs.uk/82/2CCBED/psych-ther-ann-2017-18-csvs.zip"
       format: "zip"
+  # Annual main data report archives for legacy-format periods (XLSX and CSV packs)
+  # These use bespoke extraction code in R/raw-annual-legacy-format.R because the
+  # formats differ fundamentally from the uniform structured CSVs used from 2017-18.
+  annual_main_legacy_format:
+    - period: "2016-17"
+      url: "https://files.digital.nhs.uk/F8/5B17FF/psych-ther-ann-rep-csv-pack-2016-17_v3.0.zip"
+      format: "zip"
+    - period: "2015-16"
+      url: "https://files.digital.nhs.uk/zip/2/j/psych-ther-ann-rep-csv-pack-2015-16.zip"
+      format: "zip"
+    - period: "2014-15"
+      url: "https://files.digital.nhs.uk/publicationimport/pub19xxx/pub19098/psych-ther-ann-rep-tab-2014-15.xlsx"
+      format: "xlsx"
+    - period: "2013-14"
+      url: "https://files.digital.nhs.uk/publicationimport/pub14xxx/pub14899/psych-ther-ann-rep-tab-2013-14.xlsx"
+      format: "xlsx"
+    - period: "2012-13"
+      url: "https://files.digital.nhs.uk/publicationimport/pub13xxx/pub13339/psyc-ther-ann-rep-ref-tab-2012-13.xlsx"
+      format: "xlsx"
   # Annual therapy-based outcomes report archives
   annual_tbo:
     - period: "2024-25"

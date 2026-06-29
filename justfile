@@ -28,6 +28,10 @@ release dataset version notes='':
     tag=$(echo "{{dataset}}" | tr '_' '-')-v{{version}}
     gh release create "$tag" data-raw/{{dataset}}.parquet --notes "{{notes}}" --target "$(git branch --show-current)"
 
+# Build legacy-format annual measures parquet (2012-13 to 2016-17) and write to data-raw/
+build-annual-legacy-format:
+    Rscript --quiet --vanilla -e 'devtools::load_all(); build_annual_legacy_format_measures()'
+
 # Build all pre-built tidy parquets and write to data-raw/ (slow — downloads raw data)
 build-data:
     Rscript --quiet --vanilla -e '\

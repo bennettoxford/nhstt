@@ -1,0 +1,4 @@
+CCG,CCGName,LTC,FinishedCourseTreatment,Improvement,ImprovementRate,NoRelibableChange,NoRelibableChangeRate,Deterioration,DeteriorationRate,StartedCaseness,StartedNotCaseness,Recovery,RecoveryRate,ReliableRecovery,ReliableRecoveryRate
+England,England,LTC,132507,83799,63.2,38152,28.8,8745,6.6,123189,9097,56461,45.8,53788,43.6
+England,England,No_LTC,334541,223689,66.9,88445,26.4,18910,5.7,309397,24774,159647,51.5,152273,49.2
+14E,EAST COMMISSIONING HUB,LTC,1200,750,62.5,340,28.3,90,7.5,1100,90,510,46.4,480,43.6

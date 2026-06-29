@@ -30,9 +30,9 @@ Julia, or any language that reads parquet.
 | Function | Frequency | First period | Last period | Periods | Version |
 |:---|:---|:---|:---|---:|---:|
 | `get_measures_annual()` | annual | 2017-18 | 2024-25 | 8 | 0.2.0 |
-| `get_proms_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.1.0 |
+| `get_proms_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.2.0 |
 | `get_therapy_position_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.1.0 |
-| `get_measures_monthly()` | monthly | 2023-05 | 2026-03 | 35 | 0.3.0 |
+| `get_measures_monthly()` | monthly | 2021-01 | 2026-03 | 63 | 0.4.0 |
 | `get_metadata_measures_annual()` | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | `get_metadata_variables_annual()` | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | `get_metadata_monthly()` | monthly | 2026-05 | 2026-05 | 1 | 0.1.0 |
@@ -45,10 +45,68 @@ One period timed per dataset; extrapolated to full build. Re-run with
 
 | Dataset | Timed period | Periods | Time for one (s) | Est. full build (min) |
 |:---|:---|---:|---:|---:|
-| `measures_annual` | 2024-25 | 8 | 61.4 | 8.2 |
-| `proms_annual` | 2024-25 | 6 | 116.5 | 11.6 |
-| `therapy_position_annual` | 2024-25 | 6 | 0.3 | 0.0 |
-| `measures_monthly` | 2026-03 | 35 | 5.4 | 3.2 |
+| `measures_annual` | 2024-25 | 8 | 61.5 | 8.2 |
+| `proms_annual` | 2024-25 | 6 | 198.2 | 19.8 |
+| `therapy_position_annual` | 2024-25 | 6 | 6.9 | 0.7 |
+| `measures_monthly` | 2026-03 | 63 | 2.7 | 2.8 |
+
+## Annual measures: two pipelines
+
+The `measures_annual` dataset combines data from two separate pipelines
+that share a common schema and are row-bound at build time.
+
+“Legacy format” refers to the 2012-13 to 2016-17 reports, which were
+published as XLSX workbooks (2012–15) and ZIP/CSV packs (2015–17) rather
+than the uniform structured CSVs introduced in 2017-18. The readers in
+`R/raw-annual-legacy-format.R` are just a translation layer: they bring
+the the old formats into the same wide intermediate structure as the
+post-2017-18 raw CSVs, then use the same `pivot_longer_measures()`
+workflow. I use “legacy” to refer to the data format, not the data.
+
+### Breakdown availability
+
+Breakdowns are only included where available and may not have the same
+subgroups as later years. Numbers show unique subgroup counts (distinct
+`variable_a` times `variable_b` combinations) for England-level rows.
+
+#### Legacy format (pre 2017-18)
+
+Percentage measures are not included for 2012-13 because the denominator
+methodology differs from later years. I didn’t yet add all the available
+breakdowns.
+
+| Breakdown                     | 2012-13 | 2013-14 | 2014-15 | 2015-16 | 2016-17 |
+|:------------------------------|--------:|--------:|--------:|--------:|--------:|
+| Age Group                     |       5 |       5 |       5 |       5 |       5 |
+| Disability Type               |      NA |      NA |      15 |      15 |      15 |
+| Ethnic Group                  |      17 |      22 |      16 |      16 |      16 |
+| Gender                        |       2 |       2 |       2 |       2 |       2 |
+| Indices of Deprivation Decile |      NA |      NA |      NA |      11 |      11 |
+| Long Term Condition Status    |      NA |      NA |      NA |       2 |       3 |
+| Religion                      |      NA |      NA |      15 |      15 |      15 |
+| Sexual Orientation Type       |      NA |      NA |       6 |       6 |       6 |
+
+#### Modern format (2017-18 onwards)
+
+For the “modern format” I include all available breakdowns.
+
+| Breakdown | 2017-18 | 2018-19 | 2019-20 | 2020-21 | 2021-22 | 2022-23 | 2023-24 | 2024-25 |
+|:---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Age Group | 5 | 5 | 5 | 5 | 6 | 6 | 6 | 6 |
+| BME Group | NA | NA | NA | 3 | 3 | 3 | 3 | 3 |
+| Consultation Medium | 7 | 7 | 7 | 9 | 9 | 14 | 14 | 14 |
+| Disability Type | NA | NA | NA | 15 | 15 | 15 | 15 | 15 |
+| Ethnic Group | 22 | 22 | 22 | 22 | 22 | 22 | 22 | 22 |
+| Gender | 3 | 3 | 3 | 4 | 4 | 4 | 4 | 4 |
+| Indices of Deprivation Decile | 11 | 11 | 11 | 11 | 11 | 11 | 11 | 11 |
+| Long Term Condition Status | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 |
+| Mental Health Care Cluster | 10 | 10 | 10 | 10 | 10 | 10 | 10 | 10 |
+| Presenting Complaint | NA | NA | NA | 17 | 17 | 20 | 20 | 20 |
+| Problem Descriptor | 16 | 16 | 16 | NA | NA | NA | NA | NA |
+| Religion | 13 | 13 | 13 | 13 | 13 | 13 | 13 | 13 |
+| Sexual Orientation Type | NA | NA | NA | 4 | 4 | 4 | 4 | 4 |
+| Stepped Care Pathway | 4 | 4 | 4 | 4 | 4 | 4 | 4 | 8 |
+| Waiting Time | 15 | 15 | 15 | 15 | 15 | 15 | 15 | 15 |
 
 ## Publishing new data
 

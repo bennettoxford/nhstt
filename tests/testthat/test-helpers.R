@@ -17,7 +17,7 @@ test_that("summarise_percentiles returns correct structure", {
   expect_s3_class(result, "tbl_df")
   expect_named(result, c("end_date", "percentile", "value"))
 
-  # Check number of rows: 9 percentiles × 2 periods = 18
+  # Check number of rows: 9 percentiles times 2 periods = 18
   expect_equal(nrow(result), 18)
 
   # Check percentile column contains expected values
@@ -85,7 +85,7 @@ test_that("summarise_percentiles works with multiple grouping variables", {
     group_by = c(measure_id, region)
   )
 
-  # 2 measures × 2 regions = 4 rows
+  # 2 measures times 2 regions = 4 rows
   expect_equal(nrow(result), 4)
   expect_named(
     result,
