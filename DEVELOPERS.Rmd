@@ -61,7 +61,7 @@ knitr::kable(
 
 One period timed per dataset; extrapolated to full build. Re-run with `just render-developers`.
 
-```{r build-times, echo = FALSE, message = FALSE}
+```{r build-times, echo = FALSE, message = FALSE, cache = TRUE}
 reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::distinct(dataset, frequency, last_period, n_periods)
@@ -92,6 +92,50 @@ knitr::kable(
   ),
   align = c("l", "l", "r", "r", "r")
 )
+```
+
+## Annual measures: two pipelines
+
+The `measures_annual` dataset combines data from two separate pipelines that share a common schema and are row-bound at build time.
+
+"Legacy format" refers to the 2012-13 to 2016-17 reports, which were published as XLSX workbooks (2012–15) and ZIP/CSV packs (2015–17) rather than the uniform structured CSVs introduced in 2017-18. The readers in `R/raw-annual-legacy-format.R` are just a translation layer: they bring the the old formats into the same wide intermediate structure as the post-2017-18 raw CSVs, then use  the same `pivot_longer_measures()` workflow. I use "legacy" to refer to the data format, not the data.
+
+### Breakdown availability
+
+Breakdowns are only included where available and may not have the same subgroups as later years. Numbers show unique subgroup counts (distinct `variable_a` times `variable_b` combinations) for England-level rows.
+
+#### Legacy format (pre 2017-18)
+
+Percentage measures are not included for 2012-13 because the denominator methodology differs from later years. I didn't yet add all the available breakdowns.
+
+```{r breakdown-availability, echo = FALSE, message = FALSE}
+library(arrow, warn.conflicts = FALSE)
+library(dplyr, warn.conflicts = FALSE)
+library(tidyr, warn.conflicts = FALSE)
+library(knitr)
+library(nhstt)
+
+breakdown_table <- function(df) {
+  df |>
+    filter(variable_type != "Total", org_type == "England") |>
+    distinct(reporting_period, variable_type, variable_a, variable_b) |>
+    count(reporting_period, variable_type) |>
+    pivot_wider(names_from = reporting_period, values_from = n) |>
+    arrange(variable_type) |>
+    rename(Breakdown = variable_type)
+}
+
+legacy <- read_parquet("data-raw/measures_annual_legacy_format.parquet")
+kable(breakdown_table(legacy), na = "—")
+```
+
+#### Modern format (2017-18 onwards)
+
+For the "modern format" I include all available breakdowns.
+
+```{r breakdown-availability-modern, echo = FALSE, message = FALSE}
+modern <- get_measures_annual()
+kable(breakdown_table(modern), na = "—")
 ```
 
 ## Publishing new data
