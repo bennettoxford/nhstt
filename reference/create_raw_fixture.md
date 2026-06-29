@@ -13,7 +13,7 @@ create_raw_fixture(dataset, period, frequency, n_rows = 5, overwrite = FALSE)
 
 - dataset:
 
-  Character, dataset name (e.g., "therapy_annual")
+  Character, dataset name (e.g., "therapy_position_annual")
 
 - period:
 
