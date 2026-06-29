@@ -101,21 +101,21 @@ get_proms_annual <- function(
 #' @examples
 #' \dontrun{
 #' # Get all annual periods
-#' therapy_df <- get_therapy_annual()
+#' therapy_df <- get_therapy_position_annual()
 #'
 #' # Get specific annual periods
-#' therapy_df <- get_therapy_annual(periods = c("2023-24", "2024-25"))
+#' therapy_df <- get_therapy_position_annual(periods = c("2023-24", "2024-25"))
 #'
 #' # Re-download to get the latest data version
-#' therapy_df <- get_therapy_annual(use_cache = FALSE)
+#' therapy_df <- get_therapy_position_annual(use_cache = FALSE)
 #'
 #' # Pin to a specific data version for reproducibility
-#' therapy_df <- get_therapy_annual(version = "0.1.0")
+#' therapy_df <- get_therapy_position_annual(version = "0.1.0")
 #' }
-get_therapy_annual <- function(
+get_therapy_position_annual <- function(
   periods = NULL,
   use_cache = TRUE,
   version = NULL
 ) {
-  get_tidy_dataset("therapy_annual", periods, use_cache, version)
+  get_tidy_dataset("therapy_position_annual", periods, use_cache, version)
 }
