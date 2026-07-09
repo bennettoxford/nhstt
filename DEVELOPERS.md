@@ -58,17 +58,18 @@ affect annual dataset versions or caches.
 1.  Update raw config (e.g. `raw_monthly_data_config.yml`) with new
     sources
 
-2.  `just build-data` — rebuilds all parquets and writes to `data-raw/`
+2.  Add the new version at the top of the dataset’s `versions` list in
+    `inst/config/tidy_data_sources.yml` — the first entry is the
+    default (no URL needed — it is derived from dataset name + version)
 
-3.  Create a GitHub Release using `just release` (run after merging to
+3.  `just build-data` — rebuilds all parquets and writes to `data-raw/`
+
+4.  Create a GitHub Release using `just release` (run after merging to
     main):
 
     ``` bash
-    just release measures_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
+    just release measures_monthly 0.5.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
     ```
-
-4.  Update `version` for that dataset only in
-    `inst/config/tidy_data_sources.yml`
 
 Provider metadata is published the same way, but its parquet is built
 from the live ODS API snapshot:

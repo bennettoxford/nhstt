@@ -174,7 +174,6 @@ validate_dataset_metadata <- function(dataset_name, dataset) {
   # Check required fields
   required_fields <- c(
     "title",
-    "version",
     "get_function",
     "frequency",
     "sources"
@@ -186,13 +185,6 @@ validate_dataset_metadata <- function(dataset_name, dataset) {
       "Dataset {.val {dataset_name}} missing required fields: {.val {missing_fields}}",
       "i" = "Required fields: {.val {required_fields}}"
     ))
-  }
-
-  # Validate version format
-  if (!grepl("^\\d+\\.\\d+\\.\\d+$", dataset$version)) {
-    cli_warn(
-      "Dataset {.val {dataset_name}} version {.val {dataset$version}} is not in semantic versioning format (x.y.z)"
-    )
   }
 
   # Validate frequency
@@ -515,6 +507,7 @@ get_source_config <- function(dataset, period, frequency) {
 #' available_nhstt_reports()
 available_nhstt_reports <- function() {
   raw_config <- load_raw_config()
+  tidy_sources <- load_tidy_sources_config()
   all_reports <- list()
 
   # Iterate through all datasets
@@ -533,7 +526,9 @@ available_nhstt_reports <- function() {
       first_period = periods_sorted[1],
       last_period = periods_sorted[length(periods_sorted)],
       n_periods = length(periods),
-      version = dataset_config$version
+      # Raw datasets published under a different name (e.g. the metadata
+      # main/additional sheets combined into one release) have no version here
+      version = tidy_sources[[dataset_key]]$version %||% NA_character_
     )
   }
 
@@ -579,22 +574,4 @@ list_available_periods <- function(
   }
 
   map_chr(sources, "period")
-}
-
-#' Get dataset version
-#'
-#' @param dataset Character, specifying dataset name
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#'
-#' @return Character version string
-#'
-#' @keywords internal
-get_dataset_version <- function(dataset, frequency) {
-  validate_dataset(dataset, frequency)
-  validate_frequency(frequency)
-
-  raw_config <- load_raw_config()
-
-  # Navigate to dataset
-  raw_config$datasets[[dataset]]$version
 }

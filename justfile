@@ -22,7 +22,7 @@ build:
 # Can be run from a PR branch before merging, e.g. so the pkgdown CI check can
 # download the new data — the package only resolves the asset URL, not the tag.
 # Usage: just release <dataset> <version> [notes]
-# Example: just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
+# Example: just release measures_monthly 0.5.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
 release dataset version notes='':
     #!/usr/bin/env bash
     tag=$(echo "{{dataset}}" | tr '_' '-')-v{{version}}
@@ -32,8 +32,8 @@ release dataset version notes='':
 build-data:
     Rscript --quiet --vanilla -e '\
         devtools::load_all(); \
-        build_tidy_data("activity_performance_monthly"); \
-        build_tidy_data("key_measures_annual"); \
+        build_tidy_data("measures_monthly"); \
+        build_tidy_data("measures_annual"); \
         build_tidy_data("proms_annual"); \
         build_tidy_data("therapy_position_annual"); \
         build_tidy_data("metadata_measures_monthly"); \
@@ -85,6 +85,6 @@ update-schemas:
         schemas_tbo <- extract_archive_schemas("annual_tbo"); \
         write.csv(schemas_tbo, "inst/schemas/annual_tbo_schemas.csv", row.names = FALSE); \
         message("Updated inst/schemas/annual_tbo_schemas.csv"); \
-        schemas_monthly <- extract_source_schemas("activity_performance_monthly"); \
-        write.csv(schemas_monthly, "inst/schemas/activity_performance_monthly_schemas.csv", row.names = FALSE); \
-        message("Updated inst/schemas/activity_performance_monthly_schemas.csv")'
+        schemas_monthly <- extract_source_schemas("measures_monthly"); \
+        write.csv(schemas_monthly, "inst/schemas/measures_monthly_schemas.csv", row.names = FALSE); \
+        message("Updated inst/schemas/measures_monthly_schemas.csv")'

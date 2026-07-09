@@ -192,3 +192,38 @@ test_that("extract_source_schemas errors for invalid dataset", {
     "Invalid dataset"
   )
 })
+
+# check_filter_values tests ----------------------------------------------------
+
+test_that("check_filter_values passes when all filter values are present", {
+  config <- get_tidy_config("measures_monthly", "monthly")
+  df <- tibble::tibble(group_type = config$filter$group_type)
+
+  expect_no_error(check_filter_values(df, "measures_monthly", "monthly"))
+  expect_identical(check_filter_values(df, "measures_monthly", "monthly"), df)
+})
+
+test_that("check_filter_values errors when a filter value matches no rows", {
+  config <- get_tidy_config("measures_monthly", "monthly")
+  df <- tibble::tibble(group_type = config$filter$group_type[-1])
+
+  expect_error(
+    check_filter_values(df, "measures_monthly", "monthly"),
+    "matched no rows"
+  )
+})
+
+test_that("check_filter_values errors when a filter column is missing", {
+  df <- tibble::tibble(other_column = "England")
+
+  expect_error(
+    check_filter_values(df, "measures_monthly", "monthly"),
+    "not in the tidied output"
+  )
+})
+
+test_that("check_filter_values passes datasets without filters through", {
+  df <- tibble::tibble(variable_a = "cbt")
+
+  expect_no_error(check_filter_values(df, "therapy_position_annual", "annual"))
+})

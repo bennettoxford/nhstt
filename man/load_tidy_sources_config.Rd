@@ -11,6 +11,8 @@ List of dataset configurations keyed by dataset name. Each entry
 has \code{version} (latest), \code{versions} (all known), and \code{url} (latest).
 }
 \description{
-Load tidy data sources configuration
+Version entries without an explicit \code{url} get one derived from the dataset
+name and version via \code{\link[=derive_tidy_source_url]{derive_tidy_source_url()}}. An explicit \code{url} is only
+needed for releases published under a historical dataset name.
 }
 \keyword{internal}
