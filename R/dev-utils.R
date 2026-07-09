@@ -610,6 +610,47 @@ create_raw_fixture <- function(
   invisible(fixture_path)
 }
 
+#' Check that configured filter values match rows in the tidied data
+#'
+#' Developer tool, run as part of [build_tidy_data()]. Filtering happens per
+#' period, and a filter value can legitimately be absent from individual
+#' periods (e.g. SubICB only appears in monthly data from mid-2022). But a
+#' value that matches no rows across all periods combined is almost certainly
+#' misspelled in the tidy config, so this errors rather than silently
+#' publishing a parquet with those rows missing.
+#'
+#' @param df Tibble, tidied data combined across all periods
+#' @param dataset Character, raw dataset name
+#' @param frequency Character, "annual" or "monthly"
+#'
+#' @return Invisibly returns `df`
+#'
+#' @importFrom cli cli_abort
+#'
+#' @keywords internal
+check_filter_values <- function(df, dataset, frequency) {
+  config <- get_tidy_config(dataset, frequency)
+
+  for (col_name in names(config$filter)) {
+    if (!col_name %in% names(df)) {
+      cli_abort(c(
+        "Filter column {.val {col_name}} for {.val {dataset}} is not in the tidied output",
+        "i" = "Check the filter section of the tidy config against the select section"
+      ))
+    }
+
+    unmatched <- setdiff(config$filter[[col_name]], unique(df[[col_name]]))
+    if (length(unmatched) > 0) {
+      cli_abort(c(
+        "Filter values {.val {unmatched}} in column {.val {col_name}} matched no rows in {.val {dataset}} across any period",
+        "i" = "Check the filter values in the tidy config against the raw data"
+      ))
+    }
+  }
+
+  invisible(df)
+}
+
 #' Build combined tidy parquet for a dataset
 #'
 #' Developer tool. Runs the full raw-to-tidy pipeline for all available periods,
@@ -645,7 +686,8 @@ build_tidy_data <- function(dataset, raw_datasets = dataset) {
       map(periods, \(period) {
         download_and_tidy(raw_dataset, period, frequency)
       }) |>
-        list_rbind()
+        list_rbind() |>
+        check_filter_values(raw_dataset, frequency)
     })
 
     combined <- list_rbind(data_list)

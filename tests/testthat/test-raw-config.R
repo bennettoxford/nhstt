@@ -120,7 +120,6 @@ test_that("measures_annual has required fields", {
   km <- raw_config$datasets$measures_annual
 
   expect_true("title" %in% names(km))
-  expect_true("version" %in% names(km))
   expect_true("get_function" %in% names(km))
   expect_true("frequency" %in% names(km))
   expect_true("sources" %in% names(km))
@@ -306,29 +305,6 @@ test_that("annual metadata variables sources report sheets", {
   expect_equal(add_source$range, "A10:H308")
 })
 
-# Get dataset version tests ----------------------------------------------------
-
-test_that("get_dataset_version returns version string", {
-  version <- get_dataset_version("measures_annual", "annual")
-
-  expect_type(version, "character")
-  expect_match(version, "^\\d+\\.\\d+\\.\\d+$")
-})
-
-test_that("get_dataset_version errors for invalid dataset", {
-  expect_error(
-    get_dataset_version("invalid", "annual"),
-    "Invalid dataset"
-  )
-})
-
-test_that("get_dataset_version errors for invalid frequency", {
-  expect_error(
-    get_dataset_version("measures_annual", "invalid"),
-    "Invalid frequency"
-  )
-})
-
 # Available reports tests ------------------------------------------------------
 
 test_that("available_nhstt_reports returns a tibble", {
@@ -452,7 +428,7 @@ test_that("validate_raw_config errors with missing required fields", {
     datasets = list(
       test_dataset_annual = list(
         title = "Test"
-        # Missing: version, get_function, frequency, sources
+        # Missing: get_function, frequency, sources
       )
     )
   )

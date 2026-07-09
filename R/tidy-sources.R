@@ -1,5 +1,9 @@
 #' Load tidy data sources configuration
 #'
+#' Version entries without an explicit `url` get one derived from the dataset
+#' name and version via [derive_tidy_source_url()]. An explicit `url` is only
+#' needed for releases published under a historical dataset name.
+#'
 #' @return List of dataset configurations keyed by dataset name. Each entry
 #'   has `version` (latest), `versions` (all known), and `url` (latest).
 #'
@@ -43,9 +47,7 @@ load_tidy_sources_config <- function() {
         )
       }
       if (is.null(entry$url)) {
-        cli_abort(
-          "Dataset {.val {dataset}} version {.val {entry$version}} has no url"
-        )
+        cfg$versions[[i]]$url <- derive_tidy_source_url(dataset, entry$version)
       }
     }
 
@@ -201,28 +203,6 @@ get_tidy_source_sidecar_path <- function(dataset, version) {
 #' @keywords internal
 tidy_source_cache_is_current <- function(dataset, version) {
   file.exists(get_tidy_source_cache_path(dataset, version))
-}
-
-#' Remove a versioned tidy source cache file
-#'
-#' @param dataset Character, dataset name
-#' @param version Character, dataset version
-#'
-#' @return Invisible TRUE
-#'
-#' @keywords internal
-invalidate_tidy_source_cache <- function(dataset, version) {
-  parquet_path <- get_tidy_source_cache_path(dataset, version)
-  sidecar_path <- get_tidy_source_sidecar_path(dataset, version)
-
-  if (file.exists(parquet_path)) {
-    unlink(parquet_path)
-  }
-  if (file.exists(sidecar_path)) {
-    unlink(sidecar_path)
-  }
-
-  invisible(TRUE)
 }
 
 #' Download pre-built tidy parquet and store in cache

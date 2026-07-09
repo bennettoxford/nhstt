@@ -17,7 +17,7 @@ download_and_tidy(dataset, period, frequency)
 Tibble with tidy data
 }
 \description{
-Orchestrates the complete tidy pipeline: read raw → tidy → cache.
+Orchestrates the complete tidy pipeline: read raw → tidy.
 This replaces all dataset-specific fetch_and_tidy_* functions.
 }
 \keyword{internal}

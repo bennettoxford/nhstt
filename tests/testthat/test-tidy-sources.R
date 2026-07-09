@@ -79,6 +79,35 @@ test_that("dataset urls point to GitHub Release parquet assets", {
   }
 })
 
+# URL derivation tests ----------------------------------------------------------
+
+test_that("derive_tidy_source_url follows the release tag convention", {
+  expect_equal(
+    derive_tidy_source_url("measures_monthly", "0.5.0"),
+    "https://github.com/bennettoxford/nhstt/releases/download/measures-monthly-v0.5.0/measures_monthly.parquet"
+  )
+})
+
+test_that("versions without an explicit url fall back to the derived url", {
+  cfg <- load_tidy_sources_config()
+
+  # measures_monthly 0.5.0 has no url in tidy_data_sources.yml
+  expect_equal(
+    cfg$measures_monthly$version_urls[["0.5.0"]],
+    derive_tidy_source_url("measures_monthly", "0.5.0")
+  )
+})
+
+test_that("explicit urls override the derived url", {
+  cfg <- load_tidy_sources_config()
+
+  # 0.4.0 was released under the old dataset name, so it has an explicit url
+  expect_match(
+    cfg$measures_monthly$version_urls[["0.4.0"]],
+    "activity-performance-monthly-v0\\.4\\.0/activity_performance_monthly\\.parquet"
+  )
+})
+
 # get_tidy_source_config tests -------------------------------------------------
 
 test_that("get_tidy_source_config returns config for valid dataset", {
@@ -198,27 +227,6 @@ test_that("tidy_source_cache_is_current is version-specific", {
 
   expect_true(tidy_source_cache_is_current(dataset, "0.2.0"))
   expect_false(tidy_source_cache_is_current(dataset, "0.1.0"))
-})
-
-# invalidate_tidy_source_cache tests ------------------------------------------
-
-test_that("invalidate_tidy_source_cache removes parquet and sidecar", {
-  dataset <- "measures_annual"
-  version <- "0.2.0"
-  parquet_path <- get_tidy_source_cache_path(dataset, version)
-  sidecar_path <- get_tidy_source_sidecar_path(dataset, version)
-
-  file.create(parquet_path)
-  file.create(sidecar_path)
-
-  invalidate_tidy_source_cache(dataset, version)
-
-  expect_false(file.exists(parquet_path))
-  expect_false(file.exists(sidecar_path))
-})
-
-test_that("invalidate_tidy_source_cache is safe when files do not exist", {
-  expect_invisible(invalidate_tidy_source_cache("measures_annual", "0.2.0"))
 })
 
 # download_tidy_source tests ---------------------------------------------------
@@ -354,19 +362,5 @@ test_that("every tidy data source version has a GitHub Release URL", {
         label = paste(dataset, version, "url ends with .parquet")
       )
     }
-  }
-})
-
-test_that("tidy data source versions match the raw config versions", {
-  sources <- load_tidy_sources_config()
-  raw_config <- load_raw_config()
-
-  for (dataset in intersect(names(sources), names(raw_config$datasets))) {
-    expect_equal(
-      sources[[dataset]]$version,
-      raw_config$datasets[[dataset]]$version,
-      label = paste("tidy_data_sources.yml version for", dataset),
-      expected.label = "raw config version"
-    )
   }
 })

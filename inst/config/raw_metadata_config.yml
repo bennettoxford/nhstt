@@ -11,7 +11,6 @@ datasets:
   metadata_measures_main_annual:
     title: "Annual metadata - data measures (main)"
     description: "Field definitions for key measures dataset"
-    version: "0.1.0"
     get_function: "get_metadata_measures_annual"
     frequency: "annual"
     type: "metadata"
@@ -26,7 +25,6 @@ datasets:
   metadata_measures_additional_annual:
     title: "Annual metadata - data measures (additional)"
     description: "Field definitions for additional annual CSVs"
-    version: "0.1.0"
     get_function: "get_metadata_measures_annual"
     frequency: "annual"
     type: "metadata"
@@ -41,7 +39,6 @@ datasets:
   metadata_variables_main_annual:
     title: "Annual metadata - variables (main)"
     description: "Variable derivations for key measures dataset"
-    version: "0.1.0"
     get_function: "get_metadata_variables_annual"
     frequency: "annual"
     type: "metadata"
@@ -56,7 +53,6 @@ datasets:
   metadata_variables_additional_annual:
     title: "Annual metadata - variables (additional)"
     description: "Variable derivations for additional annual CSVs"
-    version: "0.1.0"
     get_function: "get_metadata_variables_annual"
     frequency: "annual"
     type: "metadata"
@@ -72,7 +68,6 @@ datasets:
   metadata_measures_monthly:
     title: "Monthly metadata"
     description: "Measure definitions, derivations, and construction details"
-    version: "0.1.0"
     get_function: "get_metadata_monthly"
     frequency: "monthly"
     type: "metadata"
@@ -88,7 +83,6 @@ datasets:
   metadata_providers:
     title: "Provider organisation metadata"
     description: "NHS TT provider metadata from Organisation Data Service (ODS)"
-    version: "0.1.0"
     get_function: "get_metadata_providers"
     frequency: "live"
     type: "metadata"
