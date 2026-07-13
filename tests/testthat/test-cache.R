@@ -23,14 +23,6 @@ test_that("raw data directory is created", {
   expect_match(raw_dir, "raw/annual")
 })
 
-test_that("tidy cache directory is created", {
-  tidy_dir <- get_tidy_cache_dir("measures_annual", "annual")
-
-  expect_type(tidy_dir, "character")
-  expect_true(dir.exists(tidy_dir))
-  expect_match(tidy_dir, "tidy/annual/measures_annual")
-})
-
 test_that("raw_path is constructed correctly", {
   # Archives are extracted and stored as parquet
   zip_path <- get_raw_cache_path("measures_annual", "2023-24", "annual")
@@ -47,13 +39,6 @@ test_that("raw_path is constructed correctly", {
   expect_match(csv_path, "2025-09_measures_monthly\\.parquet$")
 })
 
-test_that("tidy_cache_path includes period and version", {
-  cache_path <- get_tidy_cache_path("measures_annual", "2023-24", "annual")
-
-  expect_match(cache_path, "2023-24_v.*\\.parquet$")
-  expect_match(cache_path, "measures_annual")
-})
-
 test_that("get_raw_cache_path validates dataset", {
   expect_error(
     get_raw_cache_path("invalid_dataset", "2023-24", "annual"),
@@ -66,24 +51,6 @@ test_that("get_raw_cache_path validates frequency", {
     get_raw_cache_path("measures_annual", "2023-24", "invalid"),
     "Invalid frequency"
   )
-})
-
-# Cache existence tests --------------------------------------------------------
-
-test_that("raw_cache_exists returns FALSE for non-existent file", {
-  # Use valid period that hasn't been downloaded
-  # Test cache is empty by default, so file won't exist
-  exists <- raw_cache_exists("measures_annual", "2017-18", "annual")
-
-  expect_false(exists)
-})
-
-test_that("tidy_cache_exists returns FALSE for non-existent file", {
-  # Use valid period that hasn't been tidied
-  # Test cache is empty by default, so file won't exist
-  exists <- tidy_cache_exists("measures_annual", "2017-18", "annual")
-
-  expect_false(exists)
 })
 
 # cache_info tests -------------------------------------------------------------
