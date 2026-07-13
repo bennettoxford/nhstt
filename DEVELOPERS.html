@@ -10,7 +10,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nhstt</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.8.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,7 @@
 <td align="left">2019-20</td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
-<td align="right">0.1.0</td>
+<td align="right">0.2.0</td>
 </tr><tr><td align="left"><code><a href="reference/get_therapy_position_annual.html">get_therapy_position_annual()</a></code></td>
 <td align="left">annual</td>
 <td align="left">2019-20</td>
@@ -96,10 +96,10 @@
 <td align="right">0.1.0</td>
 </tr><tr><td align="left"><code><a href="reference/get_measures_monthly.html">get_measures_monthly()</a></code></td>
 <td align="left">monthly</td>
-<td align="left">2023-05</td>
-<td align="left">2026-03</td>
-<td align="right">35</td>
-<td align="right">0.3.0</td>
+<td align="left">2021-01</td>
+<td align="left">2026-05</td>
+<td align="right">65</td>
+<td align="right">0.5.0</td>
 </tr><tr><td align="left"><code><a href="reference/get_metadata_measures_annual.html">get_metadata_measures_annual()</a></code></td>
 <td align="left">annual</td>
 <td align="left">2024-25</td>
@@ -114,10 +114,10 @@
 <td align="right">0.1.0</td>
 </tr><tr><td align="left"><code><a href="reference/get_metadata_monthly.html">get_metadata_monthly()</a></code></td>
 <td align="left">monthly</td>
-<td align="left">2026-05</td>
-<td align="left">2026-05</td>
+<td align="left">2026-07</td>
+<td align="left">2026-07</td>
 <td align="right">1</td>
-<td align="right">0.1.0</td>
+<td align="right">0.2.0</td>
 </tr><tr><td align="left"><code><a href="reference/get_metadata_providers.html">get_metadata_providers()</a></code></td>
 <td align="left">live</td>
 <td align="left">current</td>
@@ -127,7 +127,7 @@
 </tr></tbody></table></div>
 <div class="section level3">
 <h3 id="approximate-build-times">Approximate build times<a class="anchor" aria-label="anchor" href="#approximate-build-times"></a></h3>
-<p>One period timed per dataset; extrapolated to full build. Re-run with <code>just render-developers</code>.</p>
+<p>One period timed per dataset, multiplied by the number of periods. These numbers are hardcoded (last measured 2026-07-13) — they are not re-measured on render because timing a build of every dataset takes ages. To update them, run the <code>build-times</code> chunk in <code>DEVELOPERS.Rmd</code> interactively (it has <code>eval = FALSE</code>) and paste the table it prints over the one below.</p>
 <table class="table"><colgroup><col width="20%"><col width="20%"><col width="20%"><col width="20%"><col width="20%"></colgroup><thead><tr><th align="left">Dataset</th>
 <th align="left">Timed period</th>
 <th align="right">Periods</th>
@@ -136,36 +136,38 @@
 </tr></thead><tbody><tr><td align="left"><code>measures_annual</code></td>
 <td align="left">2024-25</td>
 <td align="right">8</td>
-<td align="right">61.4</td>
-<td align="right">8.2</td>
+<td align="right">62.0</td>
+<td align="right">8.3</td>
 </tr><tr><td align="left"><code>proms_annual</code></td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
-<td align="right">116.5</td>
-<td align="right">11.6</td>
+<td align="right">212.2</td>
+<td align="right">21.2</td>
 </tr><tr><td align="left"><code>therapy_position_annual</code></td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
-<td align="right">0.3</td>
-<td align="right">0.0</td>
+<td align="right">0.6</td>
+<td align="right">0.1</td>
 </tr><tr><td align="left"><code>measures_monthly</code></td>
-<td align="left">2026-03</td>
-<td align="right">35</td>
-<td align="right">5.4</td>
-<td align="right">3.2</td>
+<td align="left">2026-05</td>
+<td align="right">65</td>
+<td align="right">6.0</td>
+<td align="right">6.6</td>
 </tr></tbody></table></div>
 </div>
 <div class="section level2">
 <h2 id="publishing-new-data">Publishing new data<a class="anchor" aria-label="anchor" href="#publishing-new-data"></a></h2>
 <p>Each dataset is released independently — updating monthly data does not affect annual dataset versions or caches.</p>
 <ol style="list-style-type: decimal"><li><p>Update raw config (e.g. <code>raw_monthly_data_config.yml</code>) with new sources</p></li>
+<li><p>Add the new version (<code>version</code> + <code>url</code>) at the top of the dataset’s <code>versions</code> list in <code>inst/config/tidy_data_sources.yml</code> — the first entry is the default. Copy the <code>url</code> from the previous entry and update the version; <code>just release</code> creates the tag <code>{dataset-with-dashes}-v{version}</code>, so the URL is <code>https://github.com/bennettoxford/nhstt/releases/download/{tag}/{dataset}.parquet</code></p></li>
 <li><p><code>just build-data</code> — rebuilds all parquets and writes to <code>data-raw/</code></p></li>
 <li>
 <p>Create a GitHub Release using <code>just release</code> (run after merging to main):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">just</span> release measures_monthly 0.4.0 <span class="st">"Monthly activity and performance data YYYY-MM to YYYY-MM"</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">just</span> release measures_monthly 0.5.0 <span class="st">"Monthly activity and performance data YYYY-MM to YYYY-MM"</span></span></code></pre></div>
 </li>
-<li><p>Update <code>version</code> for that dataset only in <code>inst/config/tidy_data_sources.yml</code></p></li>
-</ol><p>Provider metadata is published the same way, but its parquet is built from the live ODS API snapshot:</p>
+<li><p>Check the <code>url</code> in <code>tidy_data_sources.yml</code> matches the parquet asset URL on the release page (copy-paste it if not)</p></li>
+</ol><p>The monthly metadata file (<code>metadata_measures_monthly</code>) is replaced by NHS Digital every month: they upload a newly dated xlsx and delete the old one, so the URL in <code>raw_metadata_config.yml</code> breaks each time. When the build fails downloading it, find the current link on the <a href="https://digital.nhs.uk/data-and-information/data-collections-and-data-sets/data-sets/improving-access-to-psychological-therapies-data-set/improving-access-to-psychological-therapies-data-set-reports" class="external-link">NHS Talking Therapies data set reports page</a>, then update the period, URL, and cell range in <code>raw_metadata_config.yml</code>, recreate the raw fixture with <code><a href="reference/create_raw_fixture.html">create_raw_fixture()</a></code>, and update the period in the tests and the source link in the <code><a href="reference/get_metadata_monthly.html">get_metadata_monthly()</a></code> docs.</p>
+<p>Provider metadata is published the same way, but its parquet is built from the live ODS API snapshot:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">just</span> build-data</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">just</span> release metadata_providers 0.1.0 <span class="st">"Provider organisation metadata from ODS"</span></span></code></pre></div>
 </div>
@@ -173,7 +175,7 @@
 <h2 id="configuration-files">Configuration files<a class="anchor" aria-label="anchor" href="#configuration-files"></a></h2>
 <p>All in <code>inst/config/</code>:</p>
 <ul><li>
-<code>tidy_data_sources.yml</code> — version per released dataset; GitHub Release URLs are derived from the dataset name and version</li>
+<code>tidy_data_sources.yml</code> — version and GitHub Release URL per released dataset</li>
 <li>
 <code>raw_*_config.yml</code> — raw source archives, URLs, and periods</li>
 <li>
@@ -210,7 +212,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

@@ -1,6 +1,7 @@
 # Load tidy data sources configuration
 
-Load tidy data sources configuration
+Every version entry in tidy_data_sources.yml must have an explicit `url`
+pointing at the GitHub Release parquet asset.
 
 ## Usage
 

@@ -55,7 +55,7 @@ and taken on for a course of treatment, and captures the recorded reason
 their treatment ended.
 
 The monthly dataset includes counts for each end code, available from
-January 2021 to March 2026. The table below shows the five end codes for
+January 2021 to May 2026. The table below shows the five end codes for
 referrals seen and taken on for a course of treatment, together with
 M076, which counts the total number of referrals that finished a course
 of treatment and serves as the denominator when calculating proportions.
@@ -69,23 +69,23 @@ implemented in the *nhstt* R package can be explored online.
 | ID | Description | Total events | NHS TT services |
 |----|----|----|----|
 | Numerator: Treatment end codes (seen and taken on for a course of treatment) |  |  |  |
-| M066 | Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’ | 1,887,595 | 115 |
+| M066 | Count of referrals with an end date in the reporting period - Improving Access to Psychological Therapies care spell end code is 'Mutually agreed completion of treatment’ | 1,941,090 | 119 |
 | M069 | Count of referrals that ended in the reporting period with an end code of ‘Deceased (Seen and taken on for a course of treatment)’ | 340 | 10 |
-| M070 | Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’ | 64,760 | 59 |
-| M341 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’ | 81,755 | 69 |
-| M344 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’ | 1,084,070 | 110 |
+| M070 | Count of referrals that ended in the reporting period with an end code of ‘Not Known (Seen and taken on for a course of treatment)’ | 66,595 | 60 |
+| M341 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than patient requested’ | 85,790 | 72 |
+| M344 | Count of referrals that ended in the reporting period with an end code of ‘Termination of treatment earlier than Care Professional planned’ | 1,112,000 | 114 |
 | Denominator: Referrals that finished a course of treatment |  |  |  |
-| M076 | Count of referrals with a discharge date in the period that had at least two treatment sessions (excluding follow up) | 3,504,945 | 179 |
+| M076 | Count of referrals with a discharge date in the period that had at least two treatment sessions (excluding follow up) | 3,610,860 | 183 |
 
 End codes for referrals seen and taken on for a course of treatment in
-the monthly NHS TT dataset (January 2021 to March 2026), with total
+the monthly NHS TT dataset (January 2021 to May 2026), with total
 recorded events and number of services contributing data. M076 is the
 denominator measure used to calculate proportions. {.table .gt_table
 quarto-disable-processing="false" quarto-bootstrap="false"}
 
 ## Monthly trends and variation in treatment end codes
 
-Across 63 reporting periods, these monthly data make it possible to look
+Across 65 reporting periods, these monthly data make it possible to look
 beyond annual totals and examine whether patterns in treatment end codes
 are stable or change over time.
 
@@ -95,7 +95,7 @@ treatment). We first show service-level trends across all services, then
 use decile bands to place two example services in context.
 
 Before presenting the results, we made two pragmatic data quality
-decisions for this vignette. First, we excluded 382 individual data
+decisions for this vignette. First, we excluded 387 individual data
 points where the calculated proportion exceeded 100%, as these are not
 plausible and likely reflect recording or data quality issues. Second,
 we excluded 64 services with a median monthly M076 count below 20, or

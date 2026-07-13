@@ -1,7 +1,7 @@
 # Download and tidy data
 
-Orchestrates the complete tidy pipeline: read raw → tidy → cache. This
-replaces all dataset-specific fetch_and_tidy\_\* functions.
+Orchestrates the complete tidy pipeline: read raw → tidy. This replaces
+all dataset-specific fetch_and_tidy\_\* functions.
 
 ## Usage
 
