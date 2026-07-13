@@ -11,8 +11,7 @@ List of dataset configurations keyed by dataset name. Each entry
 has \code{version} (latest), \code{versions} (all known), and \code{url} (latest).
 }
 \description{
-Version entries without an explicit \code{url} get one derived from the dataset
-name and version via \code{\link[=derive_tidy_source_url]{derive_tidy_source_url()}}. An explicit \code{url} is only
-needed for releases published under a historical dataset name.
+Every version entry in tidy_data_sources.yml must have an explicit \code{url}
+pointing at the GitHub Release parquet asset.
 }
 \keyword{internal}

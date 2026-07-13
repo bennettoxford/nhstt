@@ -8,6 +8,12 @@ datasets:
     copyright: "Copyright NHS England"
     license: "OGL-UK-3.0"
     sources:
+      - period: "2026-05"
+        url: "https://files.digital.nhs.uk/50/96081C/nhstalkingtherapies_month_may_2026_activity_performance.csv"
+        format: "csv"
+      - period: "2026-04"
+        url: "https://files.digital.nhs.uk/23/8B45A4/nhstalkingtherapies_month_apr_2026_activity_performance.csv"
+        format: "csv"
       - period: "2026-03"
         url: "https://files.digital.nhs.uk/C5/C280AE/nhstalkingtherapies_month_mar_2026_activity_performance.csv"
         format: "csv"

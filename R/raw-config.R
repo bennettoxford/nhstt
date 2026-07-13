@@ -518,6 +518,10 @@ available_nhstt_reports <- function() {
     periods <- map_chr(dataset_config$sources, "period")
     periods_sorted <- sort(periods)
 
+    # Raw datasets combined into one release (e.g. the metadata
+    # main/additional sheets) set published_dataset in the raw config
+    published_dataset <- dataset_config$published_dataset %||% dataset_key
+
     all_reports[[length(all_reports) + 1]] <- tibble(
       dataset = dataset_key,
       frequency = dataset_config$frequency,
@@ -526,9 +530,7 @@ available_nhstt_reports <- function() {
       first_period = periods_sorted[1],
       last_period = periods_sorted[length(periods_sorted)],
       n_periods = length(periods),
-      # Raw datasets published under a different name (e.g. the metadata
-      # main/additional sheets combined into one release) have no version here
-      version = tidy_sources[[dataset_key]]$version %||% NA_character_
+      version = tidy_sources[[published_dataset]]$version %||% NA_character_
     )
   }
 
