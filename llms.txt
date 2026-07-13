@@ -46,7 +46,7 @@ number of reporting periods covered by each dataset.
 
 | Function | First period | Last period | Periods | Tidy data | Version |
 |:---|:---|:---|---:|:---|---:|
-| [`get_measures_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_monthly.md) | 2021-01 | 2026-03 | 63 | [Download](https://github.com/bennettoxford/nhstt/releases/download/measures-monthly-v0.5.0/measures_monthly.parquet) | 0.5.0 |
+| [`get_measures_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_monthly.md) | 2021-01 | 2026-05 | 65 | [Download](https://github.com/bennettoxford/nhstt/releases/download/measures-monthly-v0.5.0/measures_monthly.parquet) | 0.5.0 |
 
 ### Metadata
 
@@ -54,7 +54,7 @@ number of reporting periods covered by each dataset.
 |:---|:---|:---|---:|:---|---:|
 | [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md) | 2024-25 | 2024-25 | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-annual-v0.1.0/metadata_measures_annual.parquet) | 0.1.0 |
 | [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | 2024-25 | 2024-25 | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-variables-annual-v0.1.0/metadata_variables_annual.parquet) | 0.1.0 |
-| [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | 2026-05 | 2026-05 | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.1.0/metadata_measures_monthly.parquet) | 0.1.0 |
+| [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | 2026-07 | 2026-07 | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.2.0/metadata_measures_monthly.parquet) | 0.2.0 |
 | [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | current | current | 1 | [Download](https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.1.0/metadata_providers.parquet) | 0.1.0 |
 
 ## For developers
