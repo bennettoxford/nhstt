@@ -39,27 +39,6 @@ get_raw_cache_dir <- function(frequency) {
   raw_dir
 }
 
-#' Get tidy data cache directory for a dataset
-#'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#'
-#' @return Character path to tidy cache directory
-#'
-#' @keywords internal
-get_tidy_cache_dir <- function(dataset, frequency) {
-  validate_dataset(dataset, frequency)
-  validate_frequency(frequency)
-
-  tidy_dir <- file.path(get_cache_dir(), "tidy", frequency, dataset)
-
-  if (!dir.exists(tidy_dir)) {
-    dir.create(tidy_dir, recursive = TRUE)
-  }
-
-  tidy_dir
-}
-
 #' Get raw data cache path
 #'
 #' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
@@ -76,193 +55,6 @@ get_raw_cache_path <- function(dataset, period, frequency) {
 
   filename <- paste0(period, "_", dataset, ".parquet")
   file.path(get_raw_cache_dir(frequency), filename)
-}
-
-#' Get versioned tidy cache path
-#'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#' @param dataset_version Character, specifying dataset version (e.g., "1.0.0"). Default NULL
-#'
-#' @return Character path to cached Parquet file
-#'
-#' @keywords internal
-get_tidy_cache_path <- function(
-  dataset,
-  period,
-  frequency,
-  dataset_version = NULL
-) {
-  if (is.null(dataset_version)) {
-    dataset_version <- get_dataset_version(dataset, frequency)
-  }
-  filename <- paste0(
-    period,
-    "_v",
-    dataset_version,
-    ".parquet"
-  )
-  file.path(get_tidy_cache_dir(dataset, frequency), filename)
-}
-
-#' Get dataset version metadata file path
-#'
-#' Returns the path to the JSON file that stores version metadata for a dataset
-#'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#'
-#' @return Character path to .versions.json file
-#'
-#' @keywords internal
-get_tidy_versions_json_path <- function(dataset, frequency) {
-  file.path(get_tidy_cache_dir(dataset, frequency), ".versions.json")
-}
-
-#' Check if tidy cache exists
-#'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#'
-#' @return Logical
-#'
-#' @keywords internal
-tidy_cache_exists <- function(dataset, period, frequency) {
-  cache_path <- get_tidy_cache_path(dataset, period, frequency)
-  file.exists(cache_path)
-}
-
-#' Check if raw data exists
-#'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#'
-#' @return Logical
-#'
-#' @keywords internal
-raw_cache_exists <- function(dataset, period, frequency) {
-  raw_path <- get_raw_cache_path(dataset, period, frequency)
-  file.exists(raw_path)
-}
-
-#' Write tidy data to Parquet cache
-#'
-#' @param data Tibble, containing cleaned data
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#' @param raw_data_hash Character, specifying SHA256 hash of raw data
-#' @param raw_data_url Character, specifying URL of source data
-#'
-#' @importFrom arrow write_parquet
-#'
-#' @keywords internal
-write_tidy_cache <- function(
-  data,
-  dataset,
-  period,
-  frequency,
-  raw_data_hash,
-  raw_data_url
-) {
-  cache_path <- get_tidy_cache_path(dataset, period, frequency)
-
-  write_parquet(data, cache_path, compression = "zstd")
-
-  write_tidy_versions_json(
-    dataset = dataset,
-    period = period,
-    frequency = frequency,
-    raw_data_hash = raw_data_hash,
-    raw_data_url = raw_data_url
-  )
-
-  invisible(cache_path)
-}
-
-#' Load tidy data from Parquet cache
-#'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#'
-#' @return Tibble
-#'
-#' @importFrom arrow read_parquet
-#' @importFrom cli cli_abort
-#'
-#' @keywords internal
-load_tidy_cache <- function(dataset, period, frequency) {
-  cache_path <- get_tidy_cache_path(dataset, period, frequency)
-
-  if (!file.exists(cache_path)) {
-    cli_abort("Cache not found for {dataset} {period} ({frequency})")
-  }
-
-  read_parquet(cache_path)
-}
-
-#' Record version metadata
-#'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
-#' @param raw_data_hash Character, specifying SHA256 hash
-#' @param raw_data_url Character, specifying source URL
-#'
-#' @importFrom utils packageVersion
-#' @importFrom jsonlite read_json write_json
-#'
-#' @keywords internal
-write_tidy_versions_json <- function(
-  dataset,
-  period,
-  frequency,
-  raw_data_hash,
-  raw_data_url
-) {
-  version_path <- get_tidy_versions_json_path(dataset, frequency)
-  dataset_version <- get_dataset_version(dataset, frequency)
-  pkg_version <- as.character(packageVersion("nhstt"))
-
-  if (file.exists(version_path)) {
-    versions <- read_json(version_path)
-  } else {
-    versions <- list(
-      dataset = dataset,
-      frequency = frequency,
-      periods = list()
-    )
-  }
-
-  if (is.null(versions$periods[[period]])) {
-    versions$periods[[period]] <- list(versions = list())
-  }
-
-  versions$periods[[period]]$versions[[dataset_version]] <- list(
-    created = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"),
-    raw_data_hash = raw_data_hash,
-    raw_data_url = raw_data_url,
-    dataset_version = dataset_version,
-    package_version = pkg_version
-  )
-
-  versions$periods[[period]]$current_version <- dataset_version
-  versions$periods[[period]]$latest_available <- dataset_version
-
-  temp_path <- paste0(version_path, ".tmp")
-  write_json(
-    versions,
-    temp_path,
-    pretty = TRUE,
-    auto_unbox = TRUE
-  )
-  file.rename(temp_path, version_path)
-
-  invisible(version_path)
 }
 
 #' Get raw downloads metadata file path
@@ -283,6 +75,8 @@ get_raw_downloads_json_path <- function(frequency) {
 #' @param frequency Character, specifying report frequency ("annual" or "monthly")
 #'
 #' @return List with download metadata, or empty list if file doesn't exist
+#'
+#' @importFrom jsonlite read_json
 #'
 #' @keywords internal
 read_raw_downloads_json <- function(frequency) {
@@ -305,6 +99,8 @@ read_raw_downloads_json <- function(frequency) {
 #' @param storage_format Character, specifying how it's stored ("csv", "parquet")
 #' @param raw_data_hash Character, specifying SHA256 hash of data
 #' @param file_size Numeric, specifying size of stored file in bytes
+#'
+#' @importFrom jsonlite write_json
 #'
 #' @keywords internal
 write_raw_downloads_json <- function(

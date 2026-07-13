@@ -11,6 +11,7 @@ List of dataset configurations keyed by dataset name. Each entry
 has \code{version} (latest), \code{versions} (all known), and \code{url} (latest).
 }
 \description{
-Load tidy data sources configuration
+Every version entry in tidy_data_sources.yml must have an explicit \code{url}
+pointing at the GitHub Release parquet asset.
 }
 \keyword{internal}

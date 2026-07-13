@@ -58,13 +58,15 @@ tidy_sources <- nhstt:::load_tidy_sources_config()
 
 tidy_url_lookup <- dplyr::tibble(
   dataset = names(tidy_sources),
-  tidy_data = purrr::map_chr(tidy_sources, "url")
+  tidy_data = purrr::map_chr(tidy_sources, "url"),
+  version = purrr::map_chr(tidy_sources, "version")
 ) |>
   dplyr::mutate(tidy_data = paste0("[Download](", tidy_data, ")"))
 
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::filter(frequency == "annual") |>
+  dplyr::select(-version) |>
   dplyr::left_join(tidy_url_lookup, by = "dataset") |>
   dplyr::select(
     get_function,
@@ -97,6 +99,7 @@ knitr::kable(
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::filter(frequency == "monthly") |>
+  dplyr::select(-version) |>
   dplyr::left_join(tidy_url_lookup, by = "dataset") |>
   dplyr::select(
     get_function,
@@ -128,7 +131,7 @@ knitr::kable(
 ```{r datasets-metadata, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(stringr::str_detect(title, "metadata")) |>
-  dplyr::select(get_function, first_period, last_period, n_periods, version) |>
+  dplyr::select(get_function, first_period, last_period, n_periods) |>
   dplyr::distinct() |>
   dplyr::left_join(
     dplyr::tibble(

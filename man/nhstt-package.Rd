@@ -6,7 +6,7 @@
 \alias{nhstt-package}
 \title{nhstt: NHS Talking Therapies for anxiety and depression reports in R}
 \description{
-Provides functions to download and tidy annual NHS Talking Therapies for anxiety and depression (NHS TT) reports.
+Analysis-ready datasets of publicly available reports from NHS Talking Therapies for anxiety and depression (NHS TT).
 }
 \seealso{
 Useful links:

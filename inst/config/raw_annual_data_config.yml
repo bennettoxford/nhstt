@@ -52,7 +52,6 @@ datasets:
   measures_annual:
     title: "Key Performance Measures (Annual)"
     description: "Annual referrals, assessments, treatment completions, recovery rates, waiting times by organisation"
-    version: "0.2.0"
     get_function: "get_measures_annual"
     frequency: "annual"
     copyright: "Copyright NHS England"
@@ -78,7 +77,6 @@ datasets:
   proms_annual:
     title: "Patient Reported Outcome Measures (Annual)"
     description: "Patient Reported Outcome Measures (PROMs) mean and SD broken down by providers"
-    version: "0.2.0"
     get_function: "get_proms_annual"
     frequency: "annual"
     copyright: "Copyright NHS England"
@@ -100,7 +98,6 @@ datasets:
   therapy_position_annual:
     title: "Position of therapy type within the referral pathway"
     description: "Counts of attended appointments by therapy type, broken down by the total number of therapies recorded per appointment"
-    version: "0.1.0"
     get_function: "get_therapy_position_annual"
     frequency: "annual"
     copyright: "Copyright NHS England"

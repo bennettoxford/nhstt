@@ -349,7 +349,7 @@ mutate_columns <- function(df, mutate_config) {
 
 #' Download and tidy data
 #'
-#' Orchestrates the complete tidy pipeline: read raw → tidy → cache.
+#' Orchestrates the complete tidy pipeline: read raw → tidy.
 #' This replaces all dataset-specific fetch_and_tidy_* functions.
 #'
 #' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
@@ -364,24 +364,11 @@ mutate_columns <- function(df, mutate_config) {
 download_and_tidy <- function(dataset, period, frequency) {
   raw_df <- read_raw(dataset, period, frequency, use_cache = TRUE)
 
-  raw_data_hash <- calculate_data_hash(raw_df)
-  source_info <- get_source_config(dataset, period, frequency)
-
   raw_data_list <- list(raw_df)
   names(raw_data_list) <- period
 
   cli_process_start("Tidying {dataset} ({frequency}) for {period}")
   tidy_df <- tidy_dataset(raw_data_list, dataset, frequency)
-
-  write_tidy_cache(
-    data = tidy_df,
-    dataset = dataset,
-    period = period,
-    frequency = frequency,
-    raw_data_hash = raw_data_hash,
-    raw_data_url = source_info$url
-  )
-
   cli_process_done()
 
   tidy_df

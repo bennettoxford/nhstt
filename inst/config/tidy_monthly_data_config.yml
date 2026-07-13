@@ -15,10 +15,11 @@ datasets:
 
     filter:
       group_type:
-        - England
-        - Commissioning Region
-        - Integrated Care Board (ICB)
         - Provider
+        - England
+        - CommissioningRegion
+        - SubICB
+        - SubICB/Provider
 
     as_numeric:
       - value
