@@ -79,35 +79,6 @@ test_that("dataset urls point to GitHub Release parquet assets", {
   }
 })
 
-# URL derivation tests ----------------------------------------------------------
-
-test_that("derive_tidy_source_url follows the release tag convention", {
-  expect_equal(
-    derive_tidy_source_url("measures_monthly", "0.5.0"),
-    "https://github.com/bennettoxford/nhstt/releases/download/measures-monthly-v0.5.0/measures_monthly.parquet"
-  )
-})
-
-test_that("versions without an explicit url fall back to the derived url", {
-  cfg <- load_tidy_sources_config()
-
-  # measures_monthly 0.5.0 has no url in tidy_data_sources.yml
-  expect_equal(
-    cfg$measures_monthly$version_urls[["0.5.0"]],
-    derive_tidy_source_url("measures_monthly", "0.5.0")
-  )
-})
-
-test_that("explicit urls override the derived url", {
-  cfg <- load_tidy_sources_config()
-
-  # 0.4.0 was released under the old dataset name, so it has an explicit url
-  expect_match(
-    cfg$measures_monthly$version_urls[["0.4.0"]],
-    "activity-performance-monthly-v0\\.4\\.0/activity_performance_monthly\\.parquet"
-  )
-})
-
 # get_tidy_source_config tests -------------------------------------------------
 
 test_that("get_tidy_source_config returns config for valid dataset", {

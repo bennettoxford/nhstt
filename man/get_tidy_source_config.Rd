@@ -15,9 +15,6 @@ get_tidy_source_config(dataset, version = NULL)
 List with fields: version, versions, url
 }
 \description{
-The download URL is derived from the dataset name and version using the
-GitHub Release tag convention (\verb{\{dataset-with-dashes\}-v\{version\}}), which
-is what \verb{just release} creates. An explicit \code{url} field in
-tidy_data_sources.yml overrides the derived URL.
+Get tidy source configuration for a dataset
 }
 \keyword{internal}

@@ -52,7 +52,7 @@ test_that("validate_period accepts valid period", {
 
 test_that("validate_period accepts metadata period", {
   expect_invisible(validate_period(
-    "2026-05",
+    "2026-07",
     "metadata_measures_monthly",
     "monthly"
   ))
@@ -137,7 +137,7 @@ test_that("list_available_periods returns character vector", {
 test_that("list_available_periods includes metadata period", {
   periods <- list_available_periods("metadata_measures_monthly", "monthly")
 
-  expect_true("2026-05" %in% periods)
+  expect_true("2026-07" %in% periods)
 })
 
 test_that("list_available_periods includes metadata annual periods", {
@@ -238,7 +238,7 @@ test_that("get_source_config returns correct format for rar", {
 })
 
 test_that("get_source_config returns correct format for xlsx", {
-  source <- get_source_config("metadata_measures_monthly", "2026-05", "monthly")
+  source <- get_source_config("metadata_measures_monthly", "2026-07", "monthly")
 
   expect_equal(source$format, "xlsx")
 })
@@ -258,11 +258,11 @@ test_that("get_source_config has csv_file field", {
 })
 
 test_that("metadata source includes sheet and range details", {
-  source <- get_source_config("metadata_measures_monthly", "2026-05", "monthly")
+  source <- get_source_config("metadata_measures_monthly", "2026-07", "monthly")
 
   expect_true("sheet" %in% names(source))
   expect_equal(source$sheet, "Measures")
-  expect_equal(source$range, "A5:H471")
+  expect_equal(source$range, "A5:H486")
 })
 
 test_that("annual metadata measures main source reports sheet", {
@@ -365,8 +365,8 @@ test_that("available_nhstt_reports shows correct period counts for measures_mont
   reports <- available_nhstt_reports()
   monthly <- reports[reports$dataset == "measures_monthly", ]
 
-  # Update when adding new monthly periods (currently 2021-01 through 2026-03)
-  expect_equal(monthly$n_periods, 63)
+  # Update when adding new monthly periods (currently 2021-01 through 2026-05)
+  expect_equal(monthly$n_periods, 65)
 })
 
 test_that("available_nhstt_reports shows correct first and last periods for measures_monthly", {
@@ -375,7 +375,15 @@ test_that("available_nhstt_reports shows correct first and last periods for meas
 
   expect_equal(monthly$first_period, "2021-01")
   # Update when adding new monthly periods
-  expect_equal(monthly$last_period, "2026-03")
+  expect_equal(monthly$last_period, "2026-05")
+})
+
+test_that("available_nhstt_reports has a version for every dataset", {
+  reports <- available_nhstt_reports()
+
+  # Raw datasets published under a combined name (metadata main/additional
+  # sheets) resolve via published_dataset in the raw config
+  expect_false(any(is.na(reports$version)))
 })
 
 # Config validation tests ------------------------------------------------------
@@ -524,7 +532,7 @@ test_that("get_source_config returns csv_file for archive datasets", {
 })
 
 test_that("get_source_config returns sheet and range for xlsx datasets", {
-  source <- get_source_config("metadata_measures_monthly", "2026-05", "monthly")
+  source <- get_source_config("metadata_measures_monthly", "2026-07", "monthly")
 
   # For xlsx sources, sheet and range should be present
   expect_true("sheet" %in% names(source))

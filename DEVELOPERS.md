@@ -30,25 +30,29 @@ Julia, or any language that reads parquet.
 | Function | Frequency | First period | Last period | Periods | Version |
 |:---|:---|:---|:---|---:|---:|
 | `get_measures_annual()` | annual | 2017-18 | 2024-25 | 8 | 0.2.0 |
-| `get_proms_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.1.0 |
+| `get_proms_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.2.0 |
 | `get_therapy_position_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.1.0 |
-| `get_measures_monthly()` | monthly | 2023-05 | 2026-03 | 35 | 0.3.0 |
+| `get_measures_monthly()` | monthly | 2021-01 | 2026-05 | 65 | 0.5.0 |
 | `get_metadata_measures_annual()` | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | `get_metadata_variables_annual()` | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
-| `get_metadata_monthly()` | monthly | 2026-05 | 2026-05 | 1 | 0.1.0 |
+| `get_metadata_monthly()` | monthly | 2026-07 | 2026-07 | 1 | 0.2.0 |
 | `get_metadata_providers()` | live | current | current | 1 | 0.1.0 |
 
 ### Approximate build times
 
-One period timed per dataset; extrapolated to full build. Re-run with
-`just render-developers`.
+One period timed per dataset, multiplied by the number of periods. These
+numbers are hardcoded (last measured 2026-07-13) — they are not
+re-measured on render because timing a build of every dataset takes
+ages. To update them, run the `build-times` chunk in `DEVELOPERS.Rmd`
+interactively (it has `eval = FALSE`) and paste the table it prints over
+the one below.
 
 | Dataset | Timed period | Periods | Time for one (s) | Est. full build (min) |
 |:---|:---|---:|---:|---:|
-| `measures_annual` | 2024-25 | 8 | 61.4 | 8.2 |
-| `proms_annual` | 2024-25 | 6 | 116.5 | 11.6 |
-| `therapy_position_annual` | 2024-25 | 6 | 0.3 | 0.0 |
-| `measures_monthly` | 2026-03 | 35 | 5.4 | 3.2 |
+| `measures_annual` | 2024-25 | 8 | 62.0 | 8.3 |
+| `proms_annual` | 2024-25 | 6 | 212.2 | 21.2 |
+| `therapy_position_annual` | 2024-25 | 6 | 0.6 | 0.1 |
+| `measures_monthly` | 2026-05 | 65 | 6.0 | 6.6 |
 
 ## Publishing new data
 
@@ -58,9 +62,12 @@ affect annual dataset versions or caches.
 1.  Update raw config (e.g. `raw_monthly_data_config.yml`) with new
     sources
 
-2.  Add the new version at the top of the dataset’s `versions` list in
-    `inst/config/tidy_data_sources.yml` — the first entry is the
-    default (no URL needed — it is derived from dataset name + version)
+2.  Add the new version (`version` + `url`) at the top of the dataset’s
+    `versions` list in `inst/config/tidy_data_sources.yml` — the first
+    entry is the default. Copy the `url` from the previous entry and
+    update the version; `just release` creates the tag
+    `{dataset-with-dashes}-v{version}`, so the URL is
+    `https://github.com/bennettoxford/nhstt/releases/download/{tag}/{dataset}.parquet`
 
 3.  `just build-data` — rebuilds all parquets and writes to `data-raw/`
 
@@ -70,6 +77,20 @@ affect annual dataset versions or caches.
     ``` bash
     just release measures_monthly 0.5.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
     ```
+
+5.  Check the `url` in `tidy_data_sources.yml` matches the parquet asset
+    URL on the release page (copy-paste it if not)
+
+The monthly metadata file (`metadata_measures_monthly`) is replaced by
+NHS Digital every month: they upload a newly dated xlsx and delete the
+old one, so the URL in `raw_metadata_config.yml` breaks each time. When
+the build fails downloading it, find the current link on the [NHS
+Talking Therapies data set reports
+page](https://digital.nhs.uk/data-and-information/data-collections-and-data-sets/data-sets/improving-access-to-psychological-therapies-data-set/improving-access-to-psychological-therapies-data-set-reports),
+then update the period, URL, and cell range in
+`raw_metadata_config.yml`, recreate the raw fixture with
+`create_raw_fixture()`, and update the period in the tests and the
+source link in the `get_metadata_monthly()` docs.
 
 Provider metadata is published the same way, but its parquet is built
 from the live ODS API snapshot:
@@ -83,8 +104,8 @@ just release metadata_providers 0.1.0 "Provider organisation metadata from ODS"
 
 All in `inst/config/`:
 
-- `tidy_data_sources.yml` — version per released dataset; GitHub Release
-  URLs are derived from the dataset name and version
+- `tidy_data_sources.yml` — version and GitHub Release URL per released
+  dataset
 - `raw_*_config.yml` — raw source archives, URLs, and periods
 - `tidy_*_config.yml` — tidy transformations (filters, derivations,
   columns)
