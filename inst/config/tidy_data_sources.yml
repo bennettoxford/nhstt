@@ -19,6 +19,8 @@
 datasets:
   measures_annual:
     versions:
+      - version: "0.3.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.3.0/measures_annual.parquet"
       - version: "0.2.0"
         url: "https://github.com/bennettoxford/nhstt/releases/download/key-measures-annual-v0.2.0/key_measures_annual.parquet"
   proms_annual:
