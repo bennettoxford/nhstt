@@ -11,6 +11,7 @@ datasets:
         - Commissioning Region
         - STP
         - CCG
+        - ICB
         - Provider
       variable_type:
         - Total
