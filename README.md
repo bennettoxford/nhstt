@@ -54,7 +54,7 @@ number of reporting periods covered by each dataset.
 
 | Function | First period | Last period | Periods | Tidy data | Version |
 |:---|:---|:---|---:|:---|---:|
-| `get_measures_monthly()` | 2021-01 | 2026-05 | 65 | [Download](https://github.com/bennettoxford/nhstt/releases/download/measures-monthly-v0.5.0/measures_monthly.parquet) | 0.5.0 |
+| `get_measures_monthly()` | 2021-01 | 2026-07 | 67 | [Download](https://github.com/bennettoxford/nhstt/releases/download/measures-monthly-v0.6.0/measures_monthly.parquet) | 0.6.0 |
 
 ### Metadata
 
