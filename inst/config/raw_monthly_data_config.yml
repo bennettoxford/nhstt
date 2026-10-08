@@ -1,4 +1,5 @@
 # NHS Talking Therapies raw monthly data configuration
+# https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-monthly-statistics-including-employment-advisors
 datasets:
   measures_monthly:
     title: "Activity and Performance Measures (Monthly)"
@@ -8,6 +9,12 @@ datasets:
     copyright: "Copyright NHS England"
     license: "OGL-UK-3.0"
     sources:
+      - period: "2026-07"
+        url: "https://files.digital.nhs.uk/4D/E4A025/nhstalkingtherapies_month_jul_2026_activity_performance.csv"
+        format: "csv"
+      - period: "2026-06"
+        url: "https://files.digital.nhs.uk/4D/BDC3D4/nhstalkingtherapies_month_jun_2026_activity_performance.csv"
+        format: "csv"
       - period: "2026-05"
         url: "https://files.digital.nhs.uk/50/96081C/nhstalkingtherapies_month_may_2026_activity_performance.csv"
         format: "csv"
