@@ -7,11 +7,11 @@
 download_raw(dataset, period, frequency, use_cache = TRUE)
 }
 \arguments{
-\item{dataset}{Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")}
+\item{dataset}{Character, specifying dataset name (e.g., "measures_annual", "measures_monthly")}
 
-\item{period}{Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)}
+\item{period}{Character, specifying reporting period (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)}
 
-\item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
+\item{frequency}{Character, specifying report frequency ("annual", "quarterly" or "monthly")}
 
 \item{use_cache}{Logical, specifying whether to use cached data if available. Default TRUE}
 }

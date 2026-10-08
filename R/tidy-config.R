@@ -11,6 +11,7 @@ load_tidy_config <- function() {
   config_files <- c(
     "tidy_annual_data_config.yml",
     "tidy_monthly_data_config.yml",
+    "tidy_quarterly_data_config.yml",
     "tidy_metadata_config.yml"
   )
 
@@ -94,8 +95,8 @@ validate_tidy_config <- function(config) {
 
 #' Get tidy configuration for a dataset
 #'
-#' @param dataset Character, dataset name (e.g., "key_measures_annual")
-#' @param frequency Character, "annual" or "monthly" (used for validation only)
+#' @param dataset Character, dataset name (e.g., "measures_annual")
+#' @param frequency Character, "annual", "quarterly" or "monthly" (used for validation only)
 #'
 #' @return Named list of configuration values
 #'
@@ -121,6 +122,8 @@ get_tidy_config <- function(dataset, frequency) {
   dataset_config$clean_column_names <- dataset_config$clean_column_names %||%
     FALSE
   dataset_config$rename <- dataset_config$rename %||% list()
+  dataset_config$recode <- dataset_config$recode %||% list()
+  dataset_config$na_values <- dataset_config$na_values %||% character()
   dataset_config$filter <- dataset_config$filter %||% list()
   dataset_config$as_numeric <- dataset_config$as_numeric %||% character()
   dataset_config$separate <- dataset_config$separate %||% list()
@@ -136,11 +139,11 @@ get_tidy_config <- function(dataset, frequency) {
 #' Generic tidy pipeline for all datasets
 #'
 #' Applies configuration-driven transformations to convert raw data to tidy format.
-#' Supports both wide-to-long pivoting (key_measures) and long-format data (activity_performance).
+#' Supports both wide-to-long pivoting (measures_annual) and long-format data (measures_monthly).
 #'
 #' @param raw_data_list Named list, specifying raw tibbles (e.g., list("2023-24" = df))
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual")
-#' @param frequency Character, specifying frequency ("annual" or "monthly")
+#' @param dataset Character, specifying dataset name (e.g., "measures_annual")
+#' @param frequency Character, specifying frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return Tibble in tidy long format
 #'
@@ -176,6 +179,16 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
       df <- mutate(df, end_date = parse_reporting_date(end_date))
     }
 
+    # Recode values before placeholders are replaced, as a placeholder can be
+    # a real category in some periods (e.g. Religion "null" for "None")
+    if (length(config$recode) > 0) {
+      df <- recode_values(df, config$recode)
+    }
+
+    if (length(config$na_values) > 0) {
+      df <- replace_values_with_na(df, config$na_values)
+    }
+
     # Filter rows
     if (length(config$filter) > 0) {
       df <- filter_rows(df, filter_config = config$filter)
@@ -195,7 +208,7 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
   })
 
   # === PIVOT TO LONG FORMAT / COMBINE PERIODS ===
-  # For wide-to-long datasets (key_measures), pivot before combining
+  # For wide-to-long datasets (measures_annual), pivot before combining
   if (!is.null(config$pivot_longer) && length(config$pivot_longer) > 0) {
     combined <- tidy_list |>
       pivot_longer_measures(
@@ -203,7 +216,7 @@ tidy_dataset <- function(raw_data_list, dataset, frequency) {
       ) |>
       add_period_columns()
   } else {
-    # For long-format data (activity_performance), just combine periods
+    # For long-format data (measures_monthly), just combine periods
     combined <- list_rbind(tidy_list)
   }
 
@@ -352,9 +365,9 @@ mutate_columns <- function(df, mutate_config) {
 #' Orchestrates the complete tidy pipeline: read raw → tidy.
 #' This replaces all dataset-specific fetch_and_tidy_* functions.
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying frequency ("annual" or "monthly")
+#' @param dataset Character, specifying dataset name (e.g., "measures_annual", "measures_monthly")
+#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)
+#' @param frequency Character, specifying frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return Tibble with tidy data
 #'

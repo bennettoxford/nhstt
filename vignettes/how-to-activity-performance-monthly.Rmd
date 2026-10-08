@@ -37,9 +37,9 @@ library(gt)
 #| label: load-data
 #| message: false
 #| warning: false
-df_activity_performance <- get_measures_monthly()
-START_DATE_NHSTT <- min(df_activity_performance$start_date)
-END_DATE_NHSTT <- max(df_activity_performance$end_date)
+df_measures_monthly <- get_measures_monthly()
+START_DATE_NHSTT <- min(df_measures_monthly$start_date)
+END_DATE_NHSTT <- max(df_measures_monthly$end_date)
 
 df_monthly_metadata <- get_metadata_monthly()
 ```
@@ -60,7 +60,7 @@ referral_ended_measures <- c(
 # Measures table pairing each end code with the denominator M076, which
 # counts referrals that finished a course of treatment (at least two
 # clinical sessions before discharge)
-df_measures <- df_activity_performance |>
+df_measures <- df_measures_monthly |>
   create_measures(
     numerators = referral_ended_measures,
     denominator = "M076"
@@ -141,7 +141,7 @@ df_numerator_summary <- df_measures |>
   )
 
 # Summary counts for denominator (M076)
-df_denominator_summary <- df_activity_performance |>
+df_denominator_summary <- df_measures_monthly |>
   filter(measure_id == "M076", group_type == "Provider") |>
   group_by(measure_id) |>
   summarise(
@@ -207,7 +207,7 @@ df_monthly_metadata |>
 
 ## Monthly trends and variation in treatment end codes
 
-Across `r length(unique(df_activity_performance$reporting_period))` reporting periods, these monthly data make it possible to look beyond annual totals and examine whether patterns in treatment end codes are stable or change over time.
+Across `r length(unique(df_measures_monthly$reporting_period))` reporting periods, these monthly data make it possible to look beyond annual totals and examine whether patterns in treatment end codes are stable or change over time.
 
 Because services differ considerably in size, we present both raw counts and proportions relative to M076 (total referrals finishing a course of treatment).
 We first show service-level trends across all services, then use decile bands to place two example services in context.

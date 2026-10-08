@@ -11,6 +11,7 @@ load_raw_config <- function() {
   config_files <- c(
     "raw_annual_data_config.yml",
     "raw_monthly_data_config.yml",
+    "raw_quarterly_data_config.yml",
     "raw_metadata_config.yml"
   )
 
@@ -188,7 +189,7 @@ validate_dataset_metadata <- function(dataset_name, dataset) {
   }
 
   # Validate frequency
-  valid_frequencies <- c("annual", "monthly", "live")
+  valid_frequencies <- c("annual", "quarterly", "monthly", "live")
   if (!dataset$frequency %in% valid_frequencies) {
     cli_abort(c(
       "Dataset {.val {dataset_name}} has invalid frequency: {.val {dataset$frequency}}",
@@ -319,6 +320,14 @@ validate_dataset_sources <- function(dataset_name, dataset, config) {
         "Dataset {.val {dataset_name}} source {i} period {.val {source$period}} does not match monthly format (YYYY-MM)"
       )
     }
+
+    if (
+      freq == "quarterly" && !grepl("^\\d{4}-\\d{2}-q[1-4]$", source$period)
+    ) {
+      cli_warn(
+        "Dataset {.val {dataset_name}} source {i} period {.val {source$period}} does not match quarterly format (YYYY-YY-qn)"
+      )
+    }
   }
 
   invisible(TRUE)
@@ -344,7 +353,7 @@ validate_dataset_config <- function(dataset_name, dataset, config) {
 #' Validate dataset name
 #'
 #' @param dataset Character, specifying dataset name
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return Invisible TRUE if valid, aborts otherwise
 #'
@@ -394,13 +403,13 @@ validate_dataset <- function(dataset, frequency) {
 
 #' Validate frequency
 #'
-#' @param frequency Character, specifying report frequency to validate ("annual", "monthly", or "live")
+#' @param frequency Character, specifying report frequency to validate ("annual", "quarterly", "monthly", or "live")
 #'
 #' @return Invisible TRUE if valid, aborts otherwise
 #'
 #' @keywords internal
 validate_frequency <- function(frequency) {
-  valid_frequencies <- c("annual", "monthly", "live")
+  valid_frequencies <- c("annual", "quarterly", "monthly", "live")
 
   if (!frequency %in% valid_frequencies) {
     cli_abort(c(
@@ -414,9 +423,9 @@ validate_frequency <- function(frequency) {
 
 #' Validate period for a dataset and frequency
 #'
-#' @param period Character, specifying reporting period to validate (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param period Character, specifying reporting period to validate (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)
+#' @param dataset Character, specifying dataset name (e.g., "measures_annual", "measures_monthly")
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return Invisible TRUE if valid, aborts otherwise
 #'
@@ -442,8 +451,8 @@ validate_period <- function(period, dataset, frequency) {
 #' Get source configuration for a dataset period
 #'
 #' @param dataset Character, specifying dataset name
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly")
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return List with url, format, and format-specific fields (csv_file, sheet, range)
 #'
@@ -540,7 +549,7 @@ available_nhstt_reports <- function() {
 #' List available periods for a dataset and frequency
 #'
 #' @param dataset Character, specifying dataset name
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #' @param include_development Logical, specifying whether to include periods marked with development = true. Default FALSE
 #'
 #' @return Character vector of available periods

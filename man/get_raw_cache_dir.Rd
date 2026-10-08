@@ -7,7 +7,7 @@
 get_raw_cache_dir(frequency)
 }
 \arguments{
-\item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
+\item{frequency}{Character, specifying report frequency ("annual", "quarterly" or "monthly")}
 }
 \value{
 Character path to raw data directory
