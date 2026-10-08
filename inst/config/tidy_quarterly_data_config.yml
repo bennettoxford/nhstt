@@ -17,7 +17,7 @@ datasets:
       value: measure_value_suppressed
 
     recode:
-      # Religion "None" is "null" in 2025-26-q1 to 2025-26-q3, the only real
+      # Religion "None" is "null" in 2024-25-q2 to 2025-26-q4, the only real
       # category that uses this placeholder
       variable_a:
         None: "null"
@@ -82,7 +82,7 @@ datasets:
       value: measure_value_suppressed
 
     recode:
-      # Religion "None" is "null" in 2025-26-q1 to 2025-26-q3, the only real
+      # Religion "None" is "null" in 2024-25-q2 to 2025-26-q4, the only real
       # category that uses this placeholder
       variable_a:
         None: "null"
@@ -144,7 +144,7 @@ datasets:
       value: measure_value_suppressed
 
     recode:
-      # Religion "None" is "null" in 2025-26-q1 to 2025-26-q3, the only real
+      # Religion "None" is "null" in 2024-25-q2 to 2025-26-q4, the only real
       # category that uses this placeholder
       variable_a:
         None: "null"

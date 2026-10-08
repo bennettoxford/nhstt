@@ -395,7 +395,7 @@ test_that("available_nhstt_reports shows correct periods for quarterly datasets"
     )
   )
   # Update when adding new quarterly periods
-  expect_true(all(quarterly$n_periods == 6))
+  expect_true(all(quarterly$n_periods == 13))
   expect_true(all(quarterly$first_period == "2023-24-q1"))
   expect_true(all(quarterly$last_period == "2026-27-q1"))
 })

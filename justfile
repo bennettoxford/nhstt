@@ -29,9 +29,10 @@ release dataset version notes='':
     gh release create "$tag" data-raw/{{dataset}}.parquet --notes "{{notes}}" --target "$(git branch --show-current)"
 
 # Build all pre-built tidy parquets and write to data-raw/ (slow — downloads raw data)
+# helpers = FALSE keeps raw downloads in the real cache; the test helpers redirect it to a temp folder
 build-data:
     Rscript --quiet --vanilla -e '\
-        devtools::load_all(); \
+        devtools::load_all(helpers = FALSE); \
         build_tidy_data("measures_monthly"); \
         build_tidy_data("measures_quarterly", raw_datasets = c("measures_icb_subicb_quarterly", "measures_provider_quarterly", "measures_subicb_provider_quarterly")); \
         build_tidy_data("measures_annual"); \
@@ -76,9 +77,10 @@ docs-serve:
 docs: docs-build docs-serve
 
 # Update schemas (extracts column names from raw data)
+# helpers = FALSE keeps raw downloads in the real cache; the test helpers redirect it to a temp folder
 update-schemas:
     Rscript --quiet --vanilla -e '\
-        devtools::load_all(); \
+        devtools::load_all(helpers = FALSE); \
         dir.create("inst/schemas", recursive = TRUE, showWarnings = FALSE); \
         schemas_main <- extract_archive_schemas("annual_main"); \
         write.csv(schemas_main, "inst/schemas/annual_main_schemas.csv", row.names = FALSE); \
