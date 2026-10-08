@@ -1083,7 +1083,7 @@ test_that("pivot_longer measure_cols exist in renamed raw data for some period",
         next
       }
 
-      raw_dir <- test_path("fixtures", "schemas", frequency, dataset, "raw")
+      raw_dir <- test_path("fixtures", frequency, dataset, "raw")
       periods <- tools::file_path_sans_ext(
         list.files(raw_dir, pattern = "\\.csv$")
       )

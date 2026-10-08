@@ -48,7 +48,6 @@ make_test_parquet <- function(
 load_raw_fixture <- function(dataset, period, frequency) {
   fixture_path <- test_path(
     "fixtures",
-    "schemas",
     frequency,
     dataset,
     "raw",
@@ -83,7 +82,6 @@ load_raw_fixture <- function(dataset, period, frequency) {
 load_tidy_schema <- function(dataset, frequency) {
   schema_path <- test_path(
     "fixtures",
-    "schemas",
     frequency,
     dataset,
     "tidy",
