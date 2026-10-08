@@ -580,7 +580,6 @@ create_raw_fixture <- function(
     "tests",
     "testthat",
     "fixtures",
-    "schemas",
     frequency,
     dataset,
     "raw",
