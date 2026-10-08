@@ -1,4 +1,5 @@
 # NHS Talking Therapies raw annual data configuration
+# https://digital.nhs.uk/data-and-information/publications/statistical/nhs-talking-therapies-for-anxiety-and-depression-annual-reports
 archives:
   # Annual main data report archives (contain multiple CSV files)
   annual_main:
