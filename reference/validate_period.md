@@ -13,16 +13,17 @@ validate_period(period, dataset, frequency)
 - period:
 
   Character, specifying reporting period to validate (e.g., "2023-24"
-  for annual, "2025-09" for monthly)
+  for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures_annual",
-  "activity_performance_monthly")
+  Character, specifying dataset name (e.g., "measures_annual",
+  "measures_monthly")
 
 - frequency:
 
-  Character, specifying report frequency ("annual" or "monthly")
+  Character, specifying report frequency ("annual", "quarterly" or
+  "monthly")
 
 ## Value
 

@@ -12,7 +12,8 @@ get_raw_cache_dir(frequency)
 
 - frequency:
 
-  Character, specifying report frequency ("annual" or "monthly")
+  Character, specifying report frequency ("annual", "quarterly" or
+  "monthly")
 
 ## Value
 

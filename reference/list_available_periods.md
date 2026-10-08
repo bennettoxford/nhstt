@@ -16,7 +16,8 @@ list_available_periods(dataset, frequency, include_development = FALSE)
 
 - frequency:
 
-  Character, specifying report frequency ("annual" or "monthly")
+  Character, specifying report frequency ("annual", "quarterly" or
+  "monthly")
 
 - include_development:
 

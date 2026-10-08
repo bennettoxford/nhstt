@@ -13,7 +13,8 @@ get_raw_downloads_json_path(frequency)
 
 - frequency:
 
-  Character, specifying report frequency ("annual" or "monthly")
+  Character, specifying report frequency ("annual", "quarterly" or
+  "monthly")
 
 ## Value
 

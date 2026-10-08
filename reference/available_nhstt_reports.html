@@ -33,12 +33,15 @@ their time period coverage and frequency"><!-- Privacy-friendly analytics by Pla
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-metadata" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Metadata</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-metadata"><li><h6 class="dropdown-header" data-toc-skip>Annual metadata</h6></li>
-    <li><a class="dropdown-item" href="../articles/metadata-annual.html">Key measures</a></li>
+    <li><a class="dropdown-item" href="../articles/metadata-annual.html">Key measures and breakdowns</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Monthly metadata</h6></li>
     <li><a class="dropdown-item" href="../articles/metadata-monthly-core.html">Core measures</a></li>
     <li><a class="dropdown-item" href="../articles/metadata-monthly-ea.html">Employment Advisor (EA) measures</a></li>
     <li><a class="dropdown-item" href="../articles/metadata-monthly-ltc.html">Long-term Condition (LTC) measures</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Quarterly metadata</h6></li>
+    <li><a class="dropdown-item" href="../articles/metadata-quarterly.html">Measures and breakdowns</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Organisation metadata</h6></li>
     <li><a class="dropdown-item" href="../articles/metadata-ods.html">NHS Talking Therapies providers</a></li>
@@ -84,19 +87,22 @@ their time period coverage and frequency</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">available_nhstt_reports</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    dataset       frequency title get_function first_period last_period n_periods</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> measures_ann… annual    Key … get_measure… 2017-18      2024-25             8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> proms_annual  annual    Pati… get_proms_a… 2019-20      2024-25             6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> therapy_posi… annual    Posi… get_therapy… 2019-20      2024-25             6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> measures_mon… monthly   Acti… get_measure… 2021-01      2026-07            67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> metadata_mea… monthly   Mont… get_metadat… 2026-07      2026-07             1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> metadata_pro… live      Prov… get_metadat… current      current             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> measures_icb… quarterly Acti… get_measure… 2023-24-q1   2026-27-q1         13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> measures_pro… quarterly Acti… get_measure… 2023-24-q1   2026-27-q1         13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> measures_sub… quarterly Acti… get_measure… 2023-24-q1   2026-27-q1         13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> metadata_mea… monthly   Mont… get_metadat… 2026-07      2026-07             1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> metadata_pro… live      Prov… get_metadat… current      current             1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: version &lt;chr&gt;</span></span>
 </code></pre></div>
     </div>

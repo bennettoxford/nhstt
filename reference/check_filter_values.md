@@ -27,7 +27,7 @@ check_filter_values(df, dataset, frequency)
 
 - frequency:
 
-  Character, "annual" or "monthly"
+  Character, "annual", "quarterly" or "monthly"
 
 ## Value
 

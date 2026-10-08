@@ -26,9 +26,9 @@ library(dplyr)
 library(scales)
 library(stringr)
 
-# Get key_measures data
+# Get measures_annual data
 # When running this for the first time it will download and tidy the reports
-key_measures <- get_measures_annual(
+measures_annual <- get_measures_annual(
   periods = c("2022-23", "2023-24", "2024-25")
 )
 ```
@@ -42,7 +42,7 @@ of the underlying data structure.
 ``` r
 
 # Select data for analysis
-selected_measures <- key_measures |>
+selected_measures <- measures_annual |>
   filter(org_type == "Commissioning Region") |>
   filter(!org_name == "UNKNOWN") |>
   filter(

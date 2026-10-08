@@ -13,7 +13,7 @@ Step-by-step guides for analysing NHS TT data
 
 ### Metadata
 
-Metadata for annual and monthly reports
+Metadata for annual, quarterly and monthly reports
 
 - [Metadata for annual key
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-annual.md):
@@ -23,5 +23,7 @@ Metadata for annual and monthly reports
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ea.md):
 - [Long-term Condition
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ltc.md):
+- [Quarterly measures and
+  breakdowns](https://bennettoxford.github.io/nhstt/articles/metadata-quarterly.md):
 - [NHS Talking Therapies providers
   metadata](https://bennettoxford.github.io/nhstt/articles/metadata-ods.md):

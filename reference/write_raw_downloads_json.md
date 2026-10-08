@@ -21,17 +21,18 @@ write_raw_downloads_json(
 
 - dataset:
 
-  Character, specifying dataset name (e.g., "key_measures_annual",
-  "activity_performance_monthly")
+  Character, specifying dataset name (e.g., "measures_annual",
+  "measures_monthly")
 
 - period:
 
   Character, specifying reporting period (e.g., "2023-24" for annual,
-  "2025-09" for monthly)
+  "2026-27-q1" for quarterly, "2025-09" for monthly)
 
 - frequency:
 
-  Character, specifying report frequency ("annual" or "monthly")
+  Character, specifying report frequency ("annual", "quarterly" or
+  "monthly")
 
 - url:
 

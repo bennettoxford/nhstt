@@ -12,6 +12,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ea.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ltc.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-ods.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-quarterly.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/authors.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/index.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/add_period_columns.html</loc></url>
@@ -21,6 +22,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/cache_clear.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/cache_info.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/calculate_data_hash.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/check_duplicate_keys.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/check_filter_values.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/check_required_columns.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/clean_column_values.html</loc></url>
@@ -43,10 +45,12 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/extract_measure_time.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/extract_source_schemas.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/filter_rows.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/format_raw_cache.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_available_periods.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_cache_dir.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_measures_annual.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_measures_monthly.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/get_measures_quarterly.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.html</loc></url>
@@ -87,14 +91,17 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/read_archive_file.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/read_raw.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/read_raw_downloads_json.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/recode_values.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/rename_columns.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/replace_suppression_with_na.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/replace_values_with_na.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/resolve_cache_file.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/separate_columns.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/str_extract_icd10.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/str_extract_snomed.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/summarise_measures.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/summarise_percentiles.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/summarise_raw_cache.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/theme_nhstt.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/tidy_dataset.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/tidy_source_cache_is_current.html</loc></url>

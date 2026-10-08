@@ -26,7 +26,8 @@ rename_columns(df, rename_config, period = NULL)
 
 - period:
 
-  Character, specifying current period (e.g., "2023-24", "2025-09")
+  Character, specifying current period (e.g., "2023-24", "2025-09",
+  "2026-27-q1")
 
 ## Value
 

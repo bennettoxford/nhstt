@@ -21,7 +21,7 @@ create_raw_fixture(dataset, period, frequency, n_rows = 5, overwrite = FALSE)
 
 - frequency:
 
-  Character, "annual" or "monthly"
+  Character, "annual", "quarterly" or "monthly"
 
 - n_rows:
 

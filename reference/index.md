@@ -14,6 +14,11 @@
 - [`get_measures_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_monthly.md)
   : Get monthly activity and performance measures
 
+## Quarterly data
+
+- [`get_measures_quarterly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_quarterly.md)
+  : Get quarterly activity and performance measures
+
 ## Metadata
 
 - [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md)

@@ -4,9 +4,9 @@ Shows information about the nhstt cache, including:
 
 - Cache directory location
 
-- Size and count of raw annual and monthly downloads
+- Size and count of raw annual, quarterly and monthly downloads
 
-- Size of tidy annual and monthly data
+- Size and count of tidy datasets
 
 - Total cache size
 

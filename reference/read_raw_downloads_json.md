@@ -12,7 +12,8 @@ read_raw_downloads_json(frequency)
 
 - frequency:
 
-  Character, specifying report frequency ("annual" or "monthly")
+  Character, specifying report frequency ("annual", "quarterly" or
+  "monthly")
 
 ## Value
 

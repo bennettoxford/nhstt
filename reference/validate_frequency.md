@@ -13,7 +13,7 @@ validate_frequency(frequency)
 - frequency:
 
   Character, specifying report frequency to validate ("annual",
-  "monthly", or "live")
+  "quarterly", "monthly", or "live")
 
 ## Value
 

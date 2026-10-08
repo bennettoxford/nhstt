@@ -30,7 +30,7 @@ download_and_store(
 
 - frequency:
 
-  Character, "annual" or "monthly"
+  Character, "annual", "quarterly" or "monthly"
 
 - url:
 

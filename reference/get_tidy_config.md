@@ -12,11 +12,12 @@ get_tidy_config(dataset, frequency)
 
 - dataset:
 
-  Character, dataset name (e.g., "key_measures_annual")
+  Character, dataset name (e.g., "measures_annual")
 
 - frequency:
 
-  Character, "annual" or "monthly" (used for validation only)
+  Character, "annual", "quarterly" or "monthly" (used for validation
+  only)
 
 ## Value
 

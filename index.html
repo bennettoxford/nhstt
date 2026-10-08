@@ -52,12 +52,15 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-metadata" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Metadata</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-metadata">
 <li><h6 class="dropdown-header" data-toc-skip>Annual metadata</h6></li>
-    <li><a class="dropdown-item" href="articles/metadata-annual.html">Key measures</a></li>
+    <li><a class="dropdown-item" href="articles/metadata-annual.html">Key measures and breakdowns</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Monthly metadata</h6></li>
     <li><a class="dropdown-item" href="articles/metadata-monthly-core.html">Core measures</a></li>
     <li><a class="dropdown-item" href="articles/metadata-monthly-ea.html">Employment Advisor (EA) measures</a></li>
     <li><a class="dropdown-item" href="articles/metadata-monthly-ltc.html">Long-term Condition (LTC) measures</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Quarterly metadata</h6></li>
+    <li><a class="dropdown-item" href="articles/metadata-quarterly.html">Measures and breakdowns</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Organisation metadata</h6></li>
     <li><a class="dropdown-item" href="articles/metadata-ods.html">NHS Talking Therapies providers</a></li>
@@ -105,25 +108,77 @@
 <div class="section level2">
 <h2 id="available-nhs-talking-therapies-data">Available NHS Talking Therapies data<a class="anchor" aria-label="anchor" href="#available-nhs-talking-therapies-data"></a>
 </h2>
-<p>Data can be accessed from R using the <code>get_*()</code> functions or downloaded directly using the links in the tables below. Annual and monthly datasets are also available as <a href="https://parquet.apache.org/" class="external-link">Parquet</a> files from the GitHub Releases page. The <em>Periods</em> column shows the number of reporting periods covered by each dataset.</p>
+<p>Data can be accessed from R using the <code>get_*()</code> functions or downloaded directly using the links in the tables below. Annual, quarterly and monthly datasets are also available as <a href="https://parquet.apache.org/" class="external-link">Parquet</a> files from the GitHub Releases page. The <em>Periods</em> column shows the number of reporting periods covered by each dataset.</p>
 <div class="section level3">
-<h3 id="annual-data">Annual data<a class="anchor" aria-label="anchor" href="#annual-data"></a>
+<h3 id="monthly-data">Monthly data<a class="anchor" aria-label="anchor" href="#monthly-data"></a>
 </h3>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
 </colgroup>
 <thead><tr>
 <th align="left">Function</th>
 <th align="left">First period</th>
 <th align="left">Last period</th>
 <th align="right">Periods</th>
-<th align="left">Tidy data</th>
+<th align="right">Version</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code><a href="reference/get_measures_monthly.html">get_measures_monthly()</a></code></td>
+<td align="left">2021-01</td>
+<td align="left">2026-07</td>
+<td align="right">67</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/measures-monthly-v0.6.0/measures_monthly.parquet" class="external-link">0.6.0</a></td>
+</tr></tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="quarterly-data">Quarterly data<a class="anchor" aria-label="anchor" href="#quarterly-data"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+</colgroup>
+<thead><tr>
+<th align="left">Function</th>
+<th align="left">First period</th>
+<th align="left">Last period</th>
+<th align="right">Periods</th>
+<th align="right">Version</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code><a href="reference/get_measures_quarterly.html">get_measures_quarterly()</a></code></td>
+<td align="left">2023-24-q1</td>
+<td align="left">2026-27-q1</td>
+<td align="right">13</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/measures-quarterly-v0.1.0/measures_quarterly.parquet" class="external-link">0.1.0</a></td>
+</tr></tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="annual-data">Annual data<a class="anchor" aria-label="anchor" href="#annual-data"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+</colgroup>
+<thead><tr>
+<th align="left">Function</th>
+<th align="left">First period</th>
+<th align="left">Last period</th>
+<th align="right">Periods</th>
 <th align="right">Version</th>
 </tr></thead>
 <tbody>
@@ -132,76 +187,41 @@
 <td align="left">2017-18</td>
 <td align="left">2024-25</td>
 <td align="right">8</td>
-<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.3.0/measures_annual.parquet" class="external-link">Download</a></td>
-<td align="right">0.3.0</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.3.0/measures_annual.parquet" class="external-link">0.3.0</a></td>
 </tr>
 <tr>
 <td align="left"><code><a href="reference/get_proms_annual.html">get_proms_annual()</a></code></td>
 <td align="left">2019-20</td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
-<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.2.0/proms_annual.parquet" class="external-link">Download</a></td>
-<td align="right">0.2.0</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.2.0/proms_annual.parquet" class="external-link">0.2.0</a></td>
 </tr>
 <tr>
 <td align="left"><code><a href="reference/get_therapy_position_annual.html">get_therapy_position_annual()</a></code></td>
 <td align="left">2019-20</td>
 <td align="left">2024-25</td>
 <td align="right">6</td>
-<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet" class="external-link">Download</a></td>
-<td align="right">0.1.0</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet" class="external-link">0.1.0</a></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section level3">
-<h3 id="monthly-data">Monthly data<a class="anchor" aria-label="anchor" href="#monthly-data"></a>
-</h3>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-</colgroup>
-<thead><tr>
-<th align="left">Function</th>
-<th align="left">First period</th>
-<th align="left">Last period</th>
-<th align="right">Periods</th>
-<th align="left">Tidy data</th>
-<th align="right">Version</th>
-</tr></thead>
-<tbody><tr>
-<td align="left"><code><a href="reference/get_measures_monthly.html">get_measures_monthly()</a></code></td>
-<td align="left">2021-01</td>
-<td align="left">2026-07</td>
-<td align="right">67</td>
-<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/measures-monthly-v0.6.0/measures_monthly.parquet" class="external-link">Download</a></td>
-<td align="right">0.6.0</td>
-</tr></tbody>
-</table>
-</div>
-<div class="section level3">
 <h3 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
 </h3>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
 </colgroup>
 <thead><tr>
 <th align="left">Function</th>
 <th align="left">First period</th>
 <th align="left">Last period</th>
 <th align="right">Periods</th>
-<th align="left">Tidy data</th>
 <th align="right">Version</th>
 </tr></thead>
 <tbody>
@@ -210,32 +230,28 @@
 <td align="left">2024-25</td>
 <td align="left">2024-25</td>
 <td align="right">1</td>
-<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-annual-v0.1.0/metadata_measures_annual.parquet" class="external-link">Download</a></td>
-<td align="right">0.1.0</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-annual-v0.1.0/metadata_measures_annual.parquet" class="external-link">0.1.0</a></td>
 </tr>
 <tr>
 <td align="left"><code><a href="reference/get_metadata_variables_annual.html">get_metadata_variables_annual()</a></code></td>
 <td align="left">2024-25</td>
 <td align="left">2024-25</td>
 <td align="right">1</td>
-<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/metadata-variables-annual-v0.1.0/metadata_variables_annual.parquet" class="external-link">Download</a></td>
-<td align="right">0.1.0</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/metadata-variables-annual-v0.1.0/metadata_variables_annual.parquet" class="external-link">0.1.0</a></td>
 </tr>
 <tr>
 <td align="left"><code><a href="reference/get_metadata_monthly.html">get_metadata_monthly()</a></code></td>
 <td align="left">2026-07</td>
 <td align="left">2026-07</td>
 <td align="right">1</td>
-<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.2.0/metadata_measures_monthly.parquet" class="external-link">Download</a></td>
-<td align="right">0.2.0</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.2.0/metadata_measures_monthly.parquet" class="external-link">0.2.0</a></td>
 </tr>
 <tr>
 <td align="left"><code><a href="reference/get_metadata_providers.html">get_metadata_providers()</a></code></td>
 <td align="left">current</td>
 <td align="left">current</td>
 <td align="right">1</td>
-<td align="left"><a href="https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.1.0/metadata_providers.parquet" class="external-link">Download</a></td>
-<td align="right">0.1.0</td>
+<td align="right"><a href="https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.1.0/metadata_providers.parquet" class="external-link">0.1.0</a></td>
 </tr>
 </tbody>
 </table>

@@ -50,12 +50,15 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-metadata" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Metadata</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-metadata">
 <li><h6 class="dropdown-header" data-toc-skip>Annual metadata</h6></li>
-    <li><a class="dropdown-item" href="../articles/metadata-annual.html">Key measures</a></li>
+    <li><a class="dropdown-item" href="../articles/metadata-annual.html">Key measures and breakdowns</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Monthly metadata</h6></li>
     <li><a class="dropdown-item" href="../articles/metadata-monthly-core.html">Core measures</a></li>
     <li><a class="dropdown-item" href="../articles/metadata-monthly-ea.html">Employment Advisor (EA) measures</a></li>
     <li><a class="dropdown-item" href="../articles/metadata-monthly-ltc.html">Long-term Condition (LTC) measures</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Quarterly metadata</h6></li>
+    <li><a class="dropdown-item" href="../articles/metadata-quarterly.html">Measures and breakdowns</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Organisation metadata</h6></li>
     <li><a class="dropdown-item" href="../articles/metadata-ods.html">NHS Talking Therapies providers</a></li>
@@ -115,9 +118,9 @@ services across England.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Get key_measures data</span></span>
+<span><span class="co"># Get measures_annual data</span></span>
 <span><span class="co"># When running this for the first time it will download and tidy the reports</span></span>
-<span><span class="va">key_measures</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_measures_annual.html">get_measures_annual</a></span><span class="op">(</span></span>
+<span><span class="va">measures_annual</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_measures_annual.html">get_measures_annual</a></span><span class="op">(</span></span>
 <span>  periods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2022-23"</span>, <span class="st">"2023-24"</span>, <span class="st">"2024-25"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -129,7 +132,7 @@ treatments at the regional level. This step requires careful exploration
 of the underlying data structure.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select data for analysis</span></span>
-<span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">key_measures</span> <span class="op">|&gt;</span></span>
+<span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">measures_annual</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_type</span> <span class="op">==</span> <span class="st">"Commissioning Region"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">org_name</span> <span class="op">==</span> <span class="st">"UNKNOWN"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
