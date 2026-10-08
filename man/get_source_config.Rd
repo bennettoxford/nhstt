@@ -9,9 +9,9 @@ get_source_config(dataset, period, frequency)
 \arguments{
 \item{dataset}{Character, specifying dataset name}
 
-\item{period}{Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly")}
+\item{period}{Character, specifying reporting period (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)}
 
-\item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
+\item{frequency}{Character, specifying report frequency ("annual", "quarterly" or "monthly")}
 }
 \value{
 List with url, format, and format-specific fields (csv_file, sheet, range)

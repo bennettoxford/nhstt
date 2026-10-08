@@ -456,3 +456,43 @@ test_that("clean_org_names formats NHS TT provider names", {
     )
   )
 })
+
+test_that("rename_columns applies quarterly period-specific overrides", {
+  df <- tibble::tibble(old_value = 1)
+  config <- list("2026-27-q1" = list(value = "old_value"))
+
+  expect_named(rename_columns(df, config, period = "2026-27-q1"), "value")
+  expect_named(rename_columns(df, config, period = "2025-26-q4"), "old_value")
+})
+
+test_that("recode_values replaces mapped values only", {
+  df <- tibble::tibble(
+    variable_a = c("null", "Christian", NA),
+    variable_b = "null"
+  )
+
+  result <- recode_values(df, list(variable_a = list(None = "null")))
+
+  expect_equal(result$variable_a, c("None", "Christian", NA))
+  expect_equal(result$variable_b, rep("null", 3))
+})
+
+test_that("recode_values ignores missing columns", {
+  df <- tibble::tibble(x = "a")
+
+  expect_equal(recode_values(df, list(y = list(b = "a"))), df)
+})
+
+test_that("replace_values_with_na converts placeholders in character columns", {
+  df <- tibble::tibble(
+    icb_code = c("All_ICB", "QU9"),
+    icb_name = c("null", "NHS ICB"),
+    value = c(1, 2)
+  )
+
+  result <- replace_values_with_na(df, c("null", "All_ICB"))
+
+  expect_equal(result$icb_code, c(NA, "QU9"))
+  expect_equal(result$icb_name, c(NA, "NHS ICB"))
+  expect_equal(result$value, c(1, 2))
+})

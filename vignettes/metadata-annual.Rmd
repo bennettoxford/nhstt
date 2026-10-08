@@ -23,7 +23,7 @@ library(reactable)
 
 # Metadata for annual measures
 metadata_measures_annual <- get_metadata_measures_annual() |>
-  filter(dataset_name == "key_measures_annual") |>
+  filter(dataset_name == "measures_annual") |>
   select(field_name, description)
 
 metadata_measures_annual_standard <- metadata_measures_annual |>
@@ -51,7 +51,7 @@ metadata_measures_annual_measures <- metadata_measures_annual |>
 
 # Metadata for annual variables
 metadata_variables_annual <- get_metadata_variables_annual() |>
-  filter(dataset_name == "key_measures_annual") |>
+  filter(dataset_name == "measures_annual") |>
   select(
     variable_type,
     variable_type,

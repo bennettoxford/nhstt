@@ -39,6 +39,10 @@ test_that("validate_frequency accepts monthly", {
   expect_invisible(validate_frequency("monthly"))
 })
 
+test_that("validate_frequency accepts quarterly", {
+  expect_invisible(validate_frequency("quarterly"))
+})
+
 test_that("validate_frequency errors for invalid frequency", {
   expect_error(
     validate_frequency("invalid"),
@@ -334,7 +338,7 @@ test_that("available_nhstt_reports includes measures_annual", {
   expect_true("measures_annual" %in% reports$dataset)
 })
 
-test_that("available_nhstt_reports includes annual key_measures", {
+test_that("available_nhstt_reports includes measures_annual", {
   reports <- available_nhstt_reports()
   km_reports <- reports[reports$dataset == "measures_annual", ]
 
@@ -376,6 +380,24 @@ test_that("available_nhstt_reports shows correct first and last periods for meas
   expect_equal(monthly$first_period, "2021-01")
   # Update when adding new monthly periods
   expect_equal(monthly$last_period, "2026-07")
+})
+
+test_that("available_nhstt_reports shows correct periods for quarterly datasets", {
+  reports <- available_nhstt_reports()
+  quarterly <- reports[reports$frequency == "quarterly", ]
+
+  expect_setequal(
+    quarterly$dataset,
+    c(
+      "measures_icb_subicb_quarterly",
+      "measures_provider_quarterly",
+      "measures_subicb_provider_quarterly"
+    )
+  )
+  # Update when adding new quarterly periods
+  expect_true(all(quarterly$n_periods == 13))
+  expect_true(all(quarterly$first_period == "2023-24-q1"))
+  expect_true(all(quarterly$last_period == "2026-27-q1"))
 })
 
 test_that("available_nhstt_reports has a version for every dataset", {

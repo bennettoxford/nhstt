@@ -46,7 +46,7 @@ navbar:
     - text: "Metadata"
       menu:
         - text: "Annual metadata"
-        - text: "Key measures"
+        - text: "Key measures and breakdowns"
           href: articles/metadata-annual.html
         - text: -------
         - text: "Monthly metadata"
@@ -56,6 +56,10 @@ navbar:
           href: articles/metadata-monthly-ea.html
         - text: "Long-term Condition (LTC) measures"
           href: articles/metadata-monthly-ltc.html
+        - text: -------
+        - text: "Quarterly metadata"
+        - text: "Measures and breakdowns"
+          href: articles/metadata-quarterly.html
         - text: -------
         - text: "Organisation metadata"
         - text: "NHS Talking Therapies providers"
@@ -69,6 +73,9 @@ reference:
   - title: "Monthly data"
     contents:
       - get_measures_monthly
+  - title: "Quarterly data"
+    contents:
+      - get_measures_quarterly
   - title: "Metadata"
     contents:
       - get_metadata_measures_annual
@@ -101,10 +108,11 @@ articles:
       - how-to-key-measures-annual
       - how-to-proms-annual
   - title: "Metadata"
-    desc: "Metadata for annual and monthly reports"
+    desc: "Metadata for annual, quarterly and monthly reports"
     contents:
       - metadata-annual
       - metadata-monthly-core
       - metadata-monthly-ea
       - metadata-monthly-ltc
+      - metadata-quarterly
       - metadata-ods

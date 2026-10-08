@@ -1,0 +1,6 @@
+"REPORTING_PERIOD_START","REPORTING_PERIOD_END","ICB","ICBName","SubICB","SubICBName","Provider","ProviderName","GroupType","VariableType","VariableA","VariableB","MEASURE_ID","MEASURE_NAME","MEASURE_VALUE_SUPPRESSED"
+"2025-10-01","2025-12-31","All_ICB","null","All_SubICB","null","All_Provider","null","England","Disability","01 Behaviour and Emotional","null","M001","Count_ReferralsReceived","16719"
+"2025-10-01","2025-12-31","All_ICB","null","All_SubICB","null","All_Provider","null","England","Religion","null","null","M001","Count_ReferralsReceived","142848"
+"2025-10-01","2025-12-31","Y60","MIDLANDS COMMISSIONING REGION","All_SubICB","null","All_Provider","null","CommissioningRegion","Ethnic Group","Asian or Asian British","Any other Asian background","M001","Count_ReferralsReceived","1105"
+"2025-10-01","2025-12-31","QU9","NHS BUCKINGHAMSHIRE, OXFORDSHIRE AND BERKSHIRE WEST INTEGRATED CARE BOARD","All_SubICB","null","All_Provider","null","ICB","Disability","01 Behaviour and Emotional","null","M1013","Mean_ContactTimeIETReferral","79.3"
+"2025-10-01","2025-12-31","QYG","NHS CHESHIRE AND MERSEYSIDE INTEGRATED CARE BOARD","99A","NHS CHESHIRE AND MERSEYSIDE ICB - 99A","All_Provider","null","SubICB","Total","Total","null","M001","Count_ReferralsReceived","4620"

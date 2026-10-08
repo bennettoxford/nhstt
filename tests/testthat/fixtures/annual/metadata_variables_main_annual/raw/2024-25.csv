@@ -1,0 +1,4 @@
+VariableType,VariableA,VariableB,Data field(s) used for VariableType,Data value(s) used in VariableA,Data value(s) used in VariableB,Notes
+Total,Null,Null,N/A,N/A,N/A,All records included
+Gender,Female,Null,Gender,Gender = 2,N/A,NA
+Gender,Male,Null,Gender,Gender = 1,N/A,NA

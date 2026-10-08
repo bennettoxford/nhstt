@@ -40,6 +40,34 @@ test_that("get_measures_monthly errors for periods missing from the data", {
   )
 })
 
+test_that("get_measures_quarterly filters and orders quarterly periods", {
+  paths <- make_test_parquet(
+    "measures_quarterly",
+    periods = c("2025-26-q4", "2026-27-q1", "2023-24-q1")
+  )
+  on.exit({
+    unlink(paths$cache_path)
+    unlink(paths$sidecar_path)
+  })
+
+  local_mocked_bindings(
+    download_tidy_source = function(...) stop("download should not be called"),
+    .package = "nhstt"
+  )
+  expect_equal(
+    get_measures_quarterly()$reporting_period,
+    c("2026-27-q1", "2025-26-q4", "2023-24-q1")
+  )
+  expect_equal(
+    get_measures_quarterly(periods = "2025-26-q4")$reporting_period,
+    "2025-26-q4"
+  )
+  expect_error(
+    get_measures_quarterly(periods = "2024-25-q1"),
+    regexp = "2024-25-q1"
+  )
+})
+
 test_that("period errors list the periods available in the data", {
   paths <- make_test_parquet(
     "measures_annual",
@@ -191,6 +219,7 @@ test_that("every exported getter has a dataset in tidy_data_sources.yml", {
     "proms_annual",
     "therapy_position_annual",
     "measures_monthly",
+    "measures_quarterly",
     "metadata_measures_annual",
     "metadata_variables_annual",
     "metadata_measures_monthly",

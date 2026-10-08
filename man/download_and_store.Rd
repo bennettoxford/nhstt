@@ -21,7 +21,7 @@ download_and_store(
 
 \item{period}{Character, reporting period}
 
-\item{frequency}{Character, "annual" or "monthly"}
+\item{frequency}{Character, "annual", "quarterly" or "monthly"}
 
 \item{url}{Character, source URL}
 

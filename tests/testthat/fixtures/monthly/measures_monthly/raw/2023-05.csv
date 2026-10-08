@@ -1,0 +1,6 @@
+REPORTING_PERIOD_START,REPORTING_PERIOD_END,GROUP_TYPE,ORG_CODE1,ORG_NAME1,ORG_CODE2,ORG_NAME2,MEASURE_ID,MEASURE_NAME,MEASURE_VALUE_SUPPRESSED
+01/05/2023,31/05/2023,England,all,all SubICBs,all,all Providers,M001,Count_ReferralsReceived,146659
+01/05/2023,31/05/2023,England,all,all SubICBs,all,all Providers,M002,Count_SelfReferrals,103825
+01/05/2023,31/05/2023,England,all,all SubICBs,all,all Providers,M003,Count_GPReferrals,14028
+01/05/2023,31/05/2023,England,all,all SubICBs,all,all Providers,M004,Count_HealthVisitorReferrals,606
+01/05/2023,31/05/2023,England,all,all SubICBs,all,all Providers,M005,Count_OtherPrimaryCareReferrals,5408

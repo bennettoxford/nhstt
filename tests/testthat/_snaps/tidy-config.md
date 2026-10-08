@@ -1,4 +1,4 @@
-# tidy_dataset snapshot test for column names (key_measures)
+# tidy_dataset snapshot test for column names (measures_annual)
 
     Code
       names(result)
@@ -8,7 +8,7 @@
        [7] "variable_type"     "variable_a"        "variable_b"       
       [10] "measure_name"      "measure_statistic" "value"            
 
-# tidy_dataset snapshot test for column names (activity_performance)
+# tidy_dataset snapshot test for column names (measures_monthly)
 
     Code
       names(result)

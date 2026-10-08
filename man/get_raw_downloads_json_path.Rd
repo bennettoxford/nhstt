@@ -7,7 +7,7 @@
 get_raw_downloads_json_path(frequency)
 }
 \arguments{
-\item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
+\item{frequency}{Character, specifying report frequency ("annual", "quarterly" or "monthly")}
 }
 \value{
 Character path to .downloads.json file

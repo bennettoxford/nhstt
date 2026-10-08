@@ -256,10 +256,31 @@ test_that("cache_info counts raw downloads", {
   annual_downloads <- result$raw_downloads$annual
   # Check we have at least one dataset
   expect_true(length(annual_downloads) >= 1)
-  # Check key_measures has 2 periods
+  # Check measures_annual has 2 periods
   expect_true(length(annual_downloads$measures_annual) == 2)
   expect_true("2023-24" %in% names(annual_downloads$measures_annual))
   expect_true("2022-23" %in% names(annual_downloads$measures_annual))
+})
+
+test_that("cache_info counts quarterly raw downloads", {
+  write_raw_downloads_json(
+    dataset = "measures_provider_quarterly",
+    period = "2026-27-q1",
+    frequency = "quarterly",
+    url = "https://example.com/data.zip",
+    source_format = "zip",
+    storage_format = "parquet",
+    raw_data_hash = "abc123",
+    file_size = 1024
+  )
+
+  result <- cache_info()
+
+  expect_equal(result$raw_quarterly_count, 1)
+  expect_true(
+    "2026-27-q1" %in%
+      names(result$raw_downloads$quarterly$measures_provider_quarterly)
+  )
 })
 
 test_that("cache_info warns when cache exceeds size limit", {

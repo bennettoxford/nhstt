@@ -1,0 +1,5 @@
+Name of additional csv data file,VariableType,VariableA,VariableB,Data field(s) used for VariableType,Data value(s) used in VariableA,Data value(s) used in VariableB,Notes
+psych-ther-ann-rep-csv-2023-24-therapist-role,Total,ALL,ALL,N/A,N/A,N/A,All records included
+psych-ther-ann-rep-csv-2023-24-therapist-role,Presenting Complaint,Depression,NULL,"PresentingComplaintHigherCategory, PresentingComplaintLowerCategory",PresentingComplaintHigherCategory = 'Depression',N/A,NA
+psych-ther-ann-rep-csv-2023-24-therapy-type,Therapy type recorded at start of treatment,Total,All,N/A,N/A,N/A,All records included
+psych-ther-ann-rep-csv-2023-24-therapy-type,Therapy type recorded at start of treatment,Low intensity,Guided self help book,TherapyType_First,"TherapyType_First IN (748051000000105, 748101000000105, 748041000000107, 748091000000102, 748061000000108, 702545008, 1026111000000108, 975131000000104)",TherapyType_First = '748051000000105',NA

@@ -7,7 +7,7 @@
 read_raw_downloads_json(frequency)
 }
 \arguments{
-\item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
+\item{frequency}{Character, specifying report frequency ("annual", "quarterly" or "monthly")}
 }
 \value{
 List with download metadata, or empty list if file doesn't exist
