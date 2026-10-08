@@ -11,7 +11,7 @@ check_filter_values(df, dataset, frequency)
 
 \item{dataset}{Character, raw dataset name}
 
-\item{frequency}{Character, "annual" or "monthly"}
+\item{frequency}{Character, "annual", "quarterly" or "monthly"}
 }
 \value{
 Invisibly returns \code{df}

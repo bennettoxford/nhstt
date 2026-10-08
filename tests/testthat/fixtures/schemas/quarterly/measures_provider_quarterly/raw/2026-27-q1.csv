@@ -1,0 +1,6 @@
+"REPORTING_PERIOD_START","REPORTING_PERIOD_END","ICB","ICBName","SubICB","SubICBName","Provider","ProviderName","GroupType","VariableType","VariableA","VariableB","MEASURE_ID","MEASURE_NAME","MEASURE_VALUE_SUPPRESSED"
+"01/04/2026","30/06/2026","All_ICB","null","All_SubICB","null","All_Provider","null","England","Disability","01 Behaviour and Emotional","null","M001","Count_ReferralsReceived","19455"
+"01/04/2026","30/06/2026","All_ICB","null","All_SubICB","null","8J724","LGBT FOUNDATION","Provider","Disability","01 Behaviour and Emotional","null","M001","Count_ReferralsReceived","90"
+"01/04/2026","30/06/2026","All_ICB","null","All_SubICB","null","RVN","AVON AND WILTSHIRE MENTAL HEALTH PARTNERSHIP NHS TRUST","Provider","Problem Descriptor","Anxiety and stress related disorders","723916001 - MUS Not Otherwise Specified","M001","Count_ReferralsReceived","10"
+"01/04/2026","30/06/2026","All_ICB","null","All_SubICB","null","A0X6J","BIG LIFE SERVICES (MANCHESTER)","Provider","Disability","01 Behaviour and Emotional","null","M053","Percentage_AccessingServices6WeeksFinishedCourseTreatment","56"
+"01/04/2026","30/06/2026","All_ICB","null","All_SubICB","null","8HX13","AFRICAN AND CARIBBEAN MENTAL HEALTH SERVICES","Provider","Total","Total","null","M001","Count_ReferralsReceived","85"

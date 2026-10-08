@@ -557,7 +557,7 @@ compare_schemas <- function(
 #'
 #' @param dataset Character, dataset name (e.g., "therapy_position_annual")
 #' @param period Character, period (e.g., "2021-22")
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual", "quarterly" or "monthly"
 #' @param n_rows Integer, number of rows to save (default 5)
 #' @param overwrite Logical, whether to overwrite existing fixture (default FALSE)
 #'
@@ -621,7 +621,7 @@ create_raw_fixture <- function(
 #'
 #' @param df Tibble, tidied data combined across all periods
 #' @param dataset Character, raw dataset name
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual", "quarterly" or "monthly"
 #'
 #' @return Invisibly returns `df`
 #'

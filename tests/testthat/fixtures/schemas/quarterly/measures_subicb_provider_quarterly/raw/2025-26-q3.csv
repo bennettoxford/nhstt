@@ -1,0 +1,6 @@
+"REPORTING_PERIOD_START","REPORTING_PERIOD_END","ICB","ICBName","SubICB","SubICBName","Provider","ProviderName","GroupType","VariableType","VariableA","VariableB","MEASURE_ID","MEASURE_NAME","MEASURE_VALUE_SUPPRESSED"
+"2025-10-01","2025-12-31","All_ICB","null","All_SubICB","null","All_Provider","null","England","Disability","01 Behaviour and Emotional","null","M001","Count_ReferralsReceived","16719"
+"2025-10-01","2025-12-31","QOP","NHS GREATER MANCHESTER INTEGRATED CARE BOARD","00T","NHS GREATER MANCHESTER ICB - 00T","AML01","1POINT (NORTH WEST)","SubICB-Provider","Disability","01 Behaviour and Emotional","null","M001","Count_ReferralsReceived","15"
+"2025-10-01","2025-12-31","QOP","NHS GREATER MANCHESTER INTEGRATED CARE BOARD","00T","NHS GREATER MANCHESTER ICB - 00T","AML01","1POINT (NORTH WEST)","SubICB-Provider","Age Group","18 to 25","null","M001","Count_ReferralsReceived","145"
+"2025-10-01","2025-12-31","QOP","NHS GREATER MANCHESTER INTEGRATED CARE BOARD","00T","NHS GREATER MANCHESTER ICB - 00T","AML01","1POINT (NORTH WEST)","SubICB-Provider","Disability","01 Behaviour and Emotional","null","M049","Median_WaitAccessingServices","3.0"
+"2025-10-01","2025-12-31","InvalidCode","Unknown","13Q","NATIONAL COMMISSIONING HUB 1","NR5","LIVEWELL SOUTHWEST","SubICB-Provider","Total","Total","null","M001","Count_ReferralsReceived","5"
