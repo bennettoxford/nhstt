@@ -41,7 +41,7 @@ make_test_parquet <- function(
 #'
 #' @param dataset Character, dataset name
 #' @param period Character, period (e.g., "2023-24")
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual", "quarterly" or "monthly"
 #'
 #' @return Tibble with fixture data
 #' @keywords internal
@@ -72,7 +72,7 @@ load_raw_fixture <- function(dataset, period, frequency) {
 #' Load tidy schema for testing
 #'
 #' @param dataset Character, dataset name
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual", "quarterly" or "monthly"
 #'
 #' @return Tibble with expected tidy schema
 #' @keywords internal
@@ -102,7 +102,7 @@ load_tidy_schema <- function(dataset, frequency) {
 #' Get expected tidy column names
 #'
 #' @param dataset Character, dataset name
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual", "quarterly" or "monthly"
 #'
 #' @return Character vector of expected column names
 #' @keywords internal
@@ -117,7 +117,7 @@ expected_tidy_columns <- function(dataset, frequency) {
 #'
 #' @param dataset Character, dataset name
 #' @param periods Character vector of periods (e.g., c("2023-24", "2024-25"))
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual", "quarterly" or "monthly"
 #'
 #' @return Named list of raw data tibbles
 #' @keywords internal

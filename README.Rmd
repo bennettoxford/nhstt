@@ -13,6 +13,16 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+tidy_sources <- nhstt:::load_tidy_sources_config()
+
+tidy_url_lookup <- dplyr::tibble(
+  dataset = names(tidy_sources),
+  url = purrr::map_chr(tidy_sources, "url"),
+  version = purrr::map_chr(tidy_sources, "version")
+) |>
+  dplyr::mutate(version = paste0("[", version, "](", url, ")")) |>
+  dplyr::select(-url)
 ```
 
 # nhstt
@@ -48,20 +58,76 @@ df_monthly <- get_measures_monthly(version = "0.3.0")
 ## Available NHS Talking Therapies data
 
 Data can be accessed from R using the `get_*()` functions or downloaded directly using the links in the tables below.
-Annual and monthly datasets are also available as [Parquet](https://parquet.apache.org/) files from the GitHub Releases page.
+Annual, quarterly and monthly datasets are also available as [Parquet](https://parquet.apache.org/) files from the GitHub Releases page.
 The _Periods_ column shows the number of reporting periods covered by each dataset.
+
+### Monthly data
+
+```{r datasets-monthly, echo = FALSE, message = FALSE}
+
+df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
+  dplyr::filter(!stringr::str_detect(title, "metadata")) |>
+  dplyr::filter(frequency == "monthly") |>
+  dplyr::select(-version) |>
+  dplyr::left_join(tidy_url_lookup, by = "dataset") |>
+  dplyr::select(
+    get_function,
+    first_period,
+    last_period,
+    n_periods,
+    version
+  ) |>
+  dplyr::mutate(get_function = paste0("`", get_function, "()`"))
+
+knitr::kable(
+  df_nhstt_reports,
+  row.names = FALSE,
+  col.names = c(
+    "Function",
+    "First period",
+    "Last period",
+    "Periods",
+    "Version"
+  ),
+  align = c("l", "l", "l", "r", "r")
+)
+```
+
+### Quarterly data
+
+```{r datasets-quarterly, echo = FALSE, message = FALSE}
+# The three quarterly CSVs are published as one dataset
+df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
+  dplyr::filter(frequency == "quarterly") |>
+  dplyr::distinct(get_function, first_period, last_period, n_periods) |>
+  dplyr::mutate(dataset = "measures_quarterly") |>
+  dplyr::left_join(tidy_url_lookup, by = "dataset") |>
+  dplyr::select(
+    get_function,
+    first_period,
+    last_period,
+    n_periods,
+    version
+  ) |>
+  dplyr::mutate(get_function = paste0("`", get_function, "()`"))
+
+knitr::kable(
+  df_nhstt_reports,
+  row.names = FALSE,
+  col.names = c(
+    "Function",
+    "First period",
+    "Last period",
+    "Periods",
+    "Version"
+  ),
+  align = c("l", "l", "l", "r", "r")
+)
+```
 
 ### Annual data
 
 ```{r datasets-annual, echo = FALSE, message = FALSE}
-tidy_sources <- nhstt:::load_tidy_sources_config()
-
-tidy_url_lookup <- dplyr::tibble(
-  dataset = names(tidy_sources),
-  tidy_data = purrr::map_chr(tidy_sources, "url"),
-  version = purrr::map_chr(tidy_sources, "version")
-) |>
-  dplyr::mutate(tidy_data = paste0("[Download](", tidy_data, ")"))
 
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(!stringr::str_detect(title, "metadata")) |>
@@ -73,7 +139,6 @@ df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
     first_period,
     last_period,
     n_periods,
-    tidy_data,
     version
   ) |>
   dplyr::mutate(get_function = paste0("`", get_function, "()`"))
@@ -86,43 +151,9 @@ knitr::kable(
     "First period",
     "Last period",
     "Periods",
-    "Tidy data",
     "Version"
   ),
-  align = c("l", "l", "l", "r", "l", "r")
-)
-```
-
-### Monthly data
-
-```{r datasets-monthly, echo = FALSE, message = FALSE}
-df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
-  dplyr::filter(!stringr::str_detect(title, "metadata")) |>
-  dplyr::filter(frequency == "monthly") |>
-  dplyr::select(-version) |>
-  dplyr::left_join(tidy_url_lookup, by = "dataset") |>
-  dplyr::select(
-    get_function,
-    first_period,
-    last_period,
-    n_periods,
-    tidy_data,
-    version
-  ) |>
-  dplyr::mutate(get_function = paste0("`", get_function, "()`"))
-
-knitr::kable(
-  df_nhstt_reports,
-  row.names = FALSE,
-  col.names = c(
-    "Function",
-    "First period",
-    "Last period",
-    "Periods",
-    "Tidy data",
-    "Version"
-  ),
-  align = c("l", "l", "l", "r", "l", "r")
+  align = c("l", "l", "l", "r", "r")
 )
 ```
 
@@ -157,7 +188,6 @@ df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
     first_period,
     last_period,
     n_periods,
-    tidy_data,
     version
   )
 
@@ -169,10 +199,9 @@ knitr::kable(
     "First period",
     "Last period",
     "Periods",
-    "Tidy data",
     "Version"
   ),
-  align = c("l", "l", "l", "r", "l", "r")
+  align = c("l", "l", "l", "r", "r")
 )
 ```
 

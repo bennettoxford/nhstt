@@ -22,7 +22,7 @@ get_cache_dir <- function() {
 
 #' Get raw data cache directory
 #'
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return Character path to raw data directory
 #'
@@ -41,9 +41,9 @@ get_raw_cache_dir <- function(frequency) {
 
 #' Get raw data cache path
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param dataset Character, specifying dataset name (e.g., "measures_annual", "measures_monthly")
+#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return Character path to raw data file
 #'
@@ -61,7 +61,7 @@ get_raw_cache_path <- function(dataset, period, frequency) {
 #'
 #' Returns the path to the JSON file that stores download metadata for raw data
 #'
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return Character path to .downloads.json file
 #'
@@ -72,7 +72,7 @@ get_raw_downloads_json_path <- function(frequency) {
 
 #' Read raw downloads metadata
 #'
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #'
 #' @return List with download metadata, or empty list if file doesn't exist
 #'
@@ -91,9 +91,9 @@ read_raw_downloads_json <- function(frequency) {
 
 #' Record raw download metadata
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param dataset Character, specifying dataset name (e.g., "measures_annual", "measures_monthly")
+#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #' @param url Character, specifying source URL
 #' @param source_format Character, specifying original format ("zip", "rar", "csv", "xlsx")
 #' @param storage_format Character, specifying how it's stored ("csv", "parquet")
@@ -146,8 +146,8 @@ write_raw_downloads_json <- function(
 #'
 #' Shows information about the nhstt cache, including:
 #' - Cache directory location
-#' - Size and count of raw annual and monthly downloads
-#' - Size of tidy annual and monthly data
+#' - Size and count of raw annual, quarterly and monthly downloads
+#' - Size and count of tidy datasets
 #' - Total cache size
 #'
 #' @details
@@ -181,23 +181,9 @@ cache_info <- function(max_size_mb = 1000) {
   all_files <- list.files(cache_dir, recursive = TRUE, full.names = TRUE)
   total_size <- sum(file.info(all_files)$size, na.rm = TRUE)
 
-  raw_annual_dir <- file.path(cache_dir, "raw", "annual")
-  raw_annual_size <- 0
-  if (dir.exists(raw_annual_dir)) {
-    raw_annual_size <- sum(
-      file.info(list.files(raw_annual_dir, full.names = TRUE))$size,
-      na.rm = TRUE
-    )
-  }
-
-  raw_monthly_dir <- file.path(cache_dir, "raw", "monthly")
-  raw_monthly_size <- 0
-  if (dir.exists(raw_monthly_dir)) {
-    raw_monthly_size <- sum(
-      file.info(list.files(raw_monthly_dir, full.names = TRUE))$size,
-      na.rm = TRUE
-    )
-  }
+  raw_annual <- summarise_raw_cache("annual")
+  raw_quarterly <- summarise_raw_cache("quarterly")
+  raw_monthly <- summarise_raw_cache("monthly")
 
   # Pre-built tidy parquets (flat files in tidy/)
   tidy_dir <- file.path(cache_dir, "tidy")
@@ -214,21 +200,6 @@ cache_info <- function(max_size_mb = 1000) {
     tidy_count <- length(tidy_files)
   }
 
-  # Get raw downloads metadata (developer pipeline)
-  raw_annual_meta <- read_raw_downloads_json("annual")
-  raw_monthly_meta <- read_raw_downloads_json("monthly")
-
-  raw_annual_count <- if (length(raw_annual_meta) > 0) {
-    sum(sapply(raw_annual_meta, length))
-  } else {
-    0
-  }
-  raw_monthly_count <- if (length(raw_monthly_meta) > 0) {
-    sum(sapply(raw_monthly_meta, length))
-  } else {
-    0
-  }
-
   cli_dl(c(
     "Cache directory" = "{.path {cache_dir}}",
     "Tidy data" = paste0(
@@ -239,25 +210,9 @@ cache_info <- function(max_size_mb = 1000) {
       if (tidy_count != 1) "s" else "",
       ")"
     ),
-    "Raw annual data (developer)" = paste0(
-      format(structure(raw_annual_size, class = "object_size"), units = "auto"),
-      " (",
-      raw_annual_count,
-      " download",
-      if (raw_annual_count != 1) "s" else "",
-      ")"
-    ),
-    "Raw monthly data (developer)" = paste0(
-      format(
-        structure(raw_monthly_size, class = "object_size"),
-        units = "auto"
-      ),
-      " (",
-      raw_monthly_count,
-      " download",
-      if (raw_monthly_count != 1) "s" else "",
-      ")"
-    ),
+    "Raw annual data (developer)" = format_raw_cache(raw_annual),
+    "Raw quarterly data (developer)" = format_raw_cache(raw_quarterly),
+    "Raw monthly data (developer)" = format_raw_cache(raw_monthly),
     "Total size" = format(
       structure(total_size, class = "object_size"),
       units = "auto"
@@ -277,16 +232,60 @@ cache_info <- function(max_size_mb = 1000) {
     cache_dir = cache_dir,
     tidy_size = tidy_size,
     tidy_count = tidy_count,
-    raw_annual_size = raw_annual_size,
-    raw_annual_count = raw_annual_count,
-    raw_monthly_size = raw_monthly_size,
-    raw_monthly_count = raw_monthly_count,
+    raw_annual_size = raw_annual$size,
+    raw_annual_count = raw_annual$count,
+    raw_quarterly_size = raw_quarterly$size,
+    raw_quarterly_count = raw_quarterly$count,
+    raw_monthly_size = raw_monthly$size,
+    raw_monthly_count = raw_monthly$count,
     total_size = total_size,
     raw_downloads = list(
-      annual = raw_annual_meta,
-      monthly = raw_monthly_meta
+      annual = raw_annual$downloads,
+      quarterly = raw_quarterly$downloads,
+      monthly = raw_monthly$downloads
     )
   ))
+}
+
+#' Summarise raw cache for a frequency
+#'
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
+#'
+#' @return List with size (bytes), count (downloads) and downloads (metadata)
+#'
+#' @keywords internal
+summarise_raw_cache <- function(frequency) {
+  raw_dir <- file.path(get_cache_dir(), "raw", frequency)
+  size <- 0
+  if (dir.exists(raw_dir)) {
+    size <- sum(
+      file.info(list.files(raw_dir, full.names = TRUE))$size,
+      na.rm = TRUE
+    )
+  }
+
+  downloads <- read_raw_downloads_json(frequency)
+  count <- if (length(downloads) > 0) sum(sapply(downloads, length)) else 0
+
+  list(size = size, count = count, downloads = downloads)
+}
+
+#' Format raw cache summary for display
+#'
+#' @param summary List, from summarise_raw_cache()
+#'
+#' @return Character, e.g. "1.2 Mb (3 downloads)"
+#'
+#' @keywords internal
+format_raw_cache <- function(summary) {
+  paste0(
+    format(structure(summary$size, class = "object_size"), units = "auto"),
+    " (",
+    summary$count,
+    " download",
+    if (summary$count != 1) "s" else "",
+    ")"
+  )
 }
 
 #' Clear cache

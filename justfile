@@ -33,6 +33,7 @@ build-data:
     Rscript --quiet --vanilla -e '\
         devtools::load_all(); \
         build_tidy_data("measures_monthly"); \
+        build_tidy_data("measures_quarterly", raw_datasets = c("measures_icb_subicb_quarterly", "measures_provider_quarterly", "measures_subicb_provider_quarterly")); \
         build_tidy_data("measures_annual"); \
         build_tidy_data("proms_annual"); \
         build_tidy_data("therapy_position_annual"); \
@@ -87,4 +88,7 @@ update-schemas:
         message("Updated inst/schemas/annual_tbo_schemas.csv"); \
         schemas_monthly <- extract_source_schemas("measures_monthly"); \
         write.csv(schemas_monthly, "inst/schemas/measures_monthly_schemas.csv", row.names = FALSE); \
-        message("Updated inst/schemas/measures_monthly_schemas.csv")'
+        message("Updated inst/schemas/measures_monthly_schemas.csv"); \
+        schemas_quarterly <- extract_archive_schemas("quarterly"); \
+        write.csv(schemas_quarterly, "inst/schemas/quarterly_schemas.csv", row.names = FALSE); \
+        message("Updated inst/schemas/quarterly_schemas.csv")'

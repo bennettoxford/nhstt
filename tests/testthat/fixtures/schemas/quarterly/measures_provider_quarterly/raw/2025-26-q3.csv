@@ -1,0 +1,6 @@
+"REPORTING_PERIOD_START","REPORTING_PERIOD_END","ICB","ICBName","SubICB","SubICBName","Provider","ProviderName","GroupType","VariableType","VariableA","VariableB","MEASURE_ID","MEASURE_NAME","MEASURE_VALUE_SUPPRESSED"
+"2025-10-01","2025-12-31","All_ICB","null","All_SubICB","null","All_Provider","null","England","Disability","01 Behaviour and Emotional","null","M001","Count_ReferralsReceived","16719"
+"2025-10-01","2025-12-31","All_ICB","null","All_SubICB","null","RW4","MERSEY CARE NHS FOUNDATION TRUST","Provider","Disability","01 Behaviour and Emotional","null","M001","Count_ReferralsReceived","545"
+"2025-10-01","2025-12-31","All_ICB","null","All_SubICB","null","RWX","BERKSHIRE HEALTHCARE NHS FOUNDATION TRUST","Provider","Problem Descriptor","Anxiety and stress related disorders","723916001 - MUS Not Otherwise Specified","M001","Count_ReferralsReceived","10"
+"2025-10-01","2025-12-31","All_ICB","null","All_SubICB","null","RW4","MERSEY CARE NHS FOUNDATION TRUST","Provider","Disability","01 Behaviour and Emotional","null","M053","Percentage_AccessingServices6WeeksFinishedCourseTreatment","95"
+"2025-10-01","2025-12-31","All_ICB","null","All_SubICB","null","RW1","HAMPSHIRE AND ISLE OF WIGHT HEALTHCARE NHS FOUNDATION TRUST","Provider","Total","Total","null","M001","Count_ReferralsReceived","10120"

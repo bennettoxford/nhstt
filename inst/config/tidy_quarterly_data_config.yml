@@ -1,0 +1,194 @@
+# NHS Talking Therapies tidy quarterly data configuration
+# Tidy options: clean_column_names, rename, recode, na_values, filter, as_numeric, separate, mutate, pivot_longer, clean_column_values, select
+# Rename format: new_name: old_name (use "YYYY-YY-qn" keys for period-specific renames)
+# Recode format: column: {new_value: old_value}
+# Each CSV repeats the England rows, so only the ICB/sub-ICB file keeps them
+datasets:
+  measures_icb_subicb_quarterly:
+    clean_column_names: true
+
+    rename:
+      start_date: reporting_period_start
+      end_date: reporting_period_end
+      org_type: group_type
+      icb_code: icb
+      sub_icb_code: sub_icb
+      provider_code: provider
+      value: measure_value_suppressed
+
+    recode:
+      # Religion "None" is "null" in 2025-26-q1 to 2025-26-q3, the only real
+      # category that uses this placeholder
+      variable_a:
+        None: "null"
+
+    na_values:
+      - "null"
+      - All_ICB
+      - All_SubICB
+      - All_Provider
+
+    filter:
+      org_type:
+        - England
+        - CommissioningRegion
+        - ICB
+        - SubICB
+
+    as_numeric:
+      - value
+
+    separate:
+      measure_name:
+        into:
+          - measure_statistic
+          - measure_name
+        sep: "^([^_]+)_(.+)$"
+        remove: false
+
+    clean_column_values:
+      - measure_name
+      - measure_statistic
+
+    select:
+      - reporting_period
+      - start_date
+      - end_date
+      - org_type
+      - icb_code
+      - icb_name
+      - sub_icb_code
+      - sub_icb_name
+      - provider_code
+      - provider_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - measure_id
+      - measure_name
+      - measure_statistic
+      - value
+
+  measures_provider_quarterly:
+    clean_column_names: true
+
+    rename:
+      start_date: reporting_period_start
+      end_date: reporting_period_end
+      org_type: group_type
+      icb_code: icb
+      sub_icb_code: sub_icb
+      provider_code: provider
+      value: measure_value_suppressed
+
+    recode:
+      # Religion "None" is "null" in 2025-26-q1 to 2025-26-q3, the only real
+      # category that uses this placeholder
+      variable_a:
+        None: "null"
+
+    na_values:
+      - "null"
+      - All_ICB
+      - All_SubICB
+      - All_Provider
+
+    filter:
+      org_type:
+        - Provider
+
+    as_numeric:
+      - value
+
+    separate:
+      measure_name:
+        into:
+          - measure_statistic
+          - measure_name
+        sep: "^([^_]+)_(.+)$"
+        remove: false
+
+    clean_column_values:
+      - measure_name
+      - measure_statistic
+
+    select:
+      - reporting_period
+      - start_date
+      - end_date
+      - org_type
+      - icb_code
+      - icb_name
+      - sub_icb_code
+      - sub_icb_name
+      - provider_code
+      - provider_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - measure_id
+      - measure_name
+      - measure_statistic
+      - value
+
+  measures_subicb_provider_quarterly:
+    clean_column_names: true
+
+    rename:
+      start_date: reporting_period_start
+      end_date: reporting_period_end
+      org_type: group_type
+      icb_code: icb
+      sub_icb_code: sub_icb
+      provider_code: provider
+      value: measure_value_suppressed
+
+    recode:
+      # Religion "None" is "null" in 2025-26-q1 to 2025-26-q3, the only real
+      # category that uses this placeholder
+      variable_a:
+        None: "null"
+
+    na_values:
+      - "null"
+      - All_ICB
+      - All_SubICB
+      - All_Provider
+
+    filter:
+      org_type:
+        - SubICB-Provider
+
+    as_numeric:
+      - value
+
+    separate:
+      measure_name:
+        into:
+          - measure_statistic
+          - measure_name
+        sep: "^([^_]+)_(.+)$"
+        remove: false
+
+    clean_column_values:
+      - measure_name
+      - measure_statistic
+
+    select:
+      - reporting_period
+      - start_date
+      - end_date
+      - org_type
+      - icb_code
+      - icb_name
+      - sub_icb_code
+      - sub_icb_name
+      - provider_code
+      - provider_name
+      - variable_type
+      - variable_a
+      - variable_b
+      - measure_id
+      - measure_name
+      - measure_statistic
+      - value
