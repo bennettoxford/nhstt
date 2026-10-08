@@ -650,6 +650,38 @@ check_filter_values <- function(df, dataset, frequency) {
   invisible(df)
 }
 
+#' Check that no rows share the same key in the tidied data
+#'
+#' Developer tool, run as part of [build_tidy_data()]. The key is every column
+#' except `value`. Duplicate keys usually mean the same rows came from more
+#' than one raw dataset (e.g. the England rows repeated in each quarterly CSV)
+#' and a tidy filter is missing, so this errors rather than publishing them.
+#'
+#' @param df Tibble, tidied data combined across all periods and raw datasets
+#' @param dataset Character, published dataset name
+#'
+#' @return Invisibly returns `df`
+#'
+#' @importFrom cli cli_abort
+#' @importFrom dplyr distinct across
+#' @importFrom tidyselect all_of
+#'
+#' @keywords internal
+check_duplicate_keys <- function(df, dataset) {
+  key_cols <- setdiff(names(df), "value")
+  n_duplicates <- nrow(df) - nrow(distinct(df, across(all_of(key_cols))))
+
+  if (n_duplicates > 0) {
+    cli_abort(c(
+      "{n_duplicates} row{?s} in {.val {dataset}} share{?s/} a key with another row",
+      "i" = "The key is every column except {.val value}",
+      "i" = "Check the tidy filters for raw datasets that repeat the same rows"
+    ))
+  }
+
+  invisible(df)
+}
+
 #' Build combined tidy parquet for a dataset
 #'
 #' Developer tool. Runs the full raw-to-tidy pipeline for all available periods,
@@ -691,6 +723,8 @@ build_tidy_data <- function(dataset, raw_datasets = dataset) {
 
     combined <- list_rbind(data_list)
   }
+
+  check_duplicate_keys(combined, dataset)
 
   out_dir <- "data-raw"
   if (!dir.exists(out_dir)) {

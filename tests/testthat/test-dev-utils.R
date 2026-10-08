@@ -227,3 +227,39 @@ test_that("check_filter_values passes datasets without filters through", {
 
   expect_no_error(check_filter_values(df, "therapy_position_annual", "annual"))
 })
+
+test_that("check_duplicate_keys passes when every key is unique", {
+  df <- tibble::tibble(
+    reporting_period = c("2026-27-q1", "2026-27-q1"),
+    org_type = c("England", "ICB"),
+    value = c(1, 1)
+  )
+
+  expect_no_error(check_duplicate_keys(df, "measures_quarterly"))
+})
+
+test_that("check_duplicate_keys errors when rows share a key", {
+  df <- tibble::tibble(
+    reporting_period = c("2026-27-q1", "2026-27-q1", "2026-27-q1"),
+    org_type = c("England", "England", "ICB"),
+    value = c(1, 2, 3)
+  )
+
+  expect_error(
+    check_duplicate_keys(df, "measures_quarterly"),
+    regexp = "1 row in .*measures_quarterly.* shares a key"
+  )
+})
+
+test_that("check_duplicate_keys uses all columns when there is no value column", {
+  df <- tibble::tibble(
+    measure_id = c("M001", "M001"),
+    description = c("a", "b")
+  )
+
+  expect_no_error(check_duplicate_keys(df, "metadata_measures_monthly"))
+  expect_error(
+    check_duplicate_keys(rbind(df, df[1, ]), "metadata_measures_monthly"),
+    regexp = "share"
+  )
+})
