@@ -16,14 +16,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/bennettoxford/nhstt/blob/main/DESCRIPTION)
 
-Wiedemann M, Ojedele L, Kingsley V (2026). *nhstt: NHS Talking Therapies
-for anxiety and depression reports in R*. R package version 0.8.1,
-<https://github.com/bennettoxford/nhstt>.
+Wiedemann M, Ojedele L, Kingsley V (2026). *nhstt: Public NHS Talking
+Therapies for anxiety and depression reports in R*. R package version
+0.9.0, <https://github.com/bennettoxford/nhstt>.
 
     @Manual{,
-      title = {nhstt: NHS Talking Therapies for anxiety and depression reports in R},
+      title = {nhstt: Public NHS Talking Therapies for anxiety and depression reports in R},
       author = {Milan Wiedemann and Lola Ojedele and Viveck Kingsley},
       year = {2026},
-      note = {R package version 0.8.1},
+      note = {R package version 0.9.0},
       url = {https://github.com/bennettoxford/nhstt},
     }

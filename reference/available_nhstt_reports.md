@@ -33,9 +33,9 @@ available_nhstt_reports()
 #>  2 proms_annual  annual    Pati… get_proms_a… 2019-20      2024-25             6
 #>  3 therapy_posi… annual    Posi… get_therapy… 2019-20      2024-25             6
 #>  4 measures_mon… monthly   Acti… get_measure… 2021-01      2026-07            67
-#>  5 measures_icb… quarterly Acti… get_measure… 2023-24-q1   2026-27-q1         13
-#>  6 measures_pro… quarterly Acti… get_measure… 2023-24-q1   2026-27-q1         13
-#>  7 measures_sub… quarterly Acti… get_measure… 2023-24-q1   2026-27-q1         13
+#>  5 measures_icb… quarterly Acti… get_measure… 2022-23-q2   2026-27-q1         16
+#>  6 measures_pro… quarterly Acti… get_measure… 2022-23-q2   2026-27-q1         16
+#>  7 measures_sub… quarterly Acti… get_measure… 2022-23-q2   2026-27-q1         16
 #>  8 metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1
 #>  9 metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1
 #> 10 metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1

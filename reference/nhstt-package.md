@@ -1,4 +1,4 @@
-# nhstt: NHS Talking Therapies for anxiety and depression reports in R
+# nhstt: Public NHS Talking Therapies for anxiety and depression reports in R
 
 Analysis-ready datasets of publicly available reports from NHS Talking
 Therapies for anxiety and depression (NHS TT).

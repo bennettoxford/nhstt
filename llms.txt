@@ -45,7 +45,7 @@ by each dataset.
 
 | Function | First period | Last period | Periods | Version |
 |:---|:---|:---|---:|---:|
-| [`get_measures_quarterly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_quarterly.md) | 2023-24-q1 | 2026-27-q1 | 13 | [0.1.0](https://github.com/bennettoxford/nhstt/releases/download/measures-quarterly-v0.1.0/measures_quarterly.parquet) |
+| [`get_measures_quarterly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_quarterly.md) | 2022-23-q2 | 2026-27-q1 | 16 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/measures-quarterly-v0.2.0/measures_quarterly.parquet) |
 
 ### Annual data
 

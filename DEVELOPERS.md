@@ -30,7 +30,7 @@ Julia, or any language that reads parquet.
 | [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md) | annual | 2019-20 | 2024-25 | 6 | 0.2.0 |
 | [`get_therapy_position_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_position_annual.md) | annual | 2019-20 | 2024-25 | 6 | 0.1.0 |
 | [`get_measures_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_monthly.md) | monthly | 2021-01 | 2026-07 | 67 | 0.6.0 |
-| [`get_measures_quarterly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_quarterly.md) | quarterly | 2023-24-q1 | 2026-27-q1 | 13 | 0.1.0 |
+| [`get_measures_quarterly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_quarterly.md) | quarterly | 2022-23-q2 | 2026-27-q1 | 16 | 0.2.0 |
 | [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md) | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
 | [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | monthly | 2026-07 | 2026-07 | 1 | 0.2.0 |
