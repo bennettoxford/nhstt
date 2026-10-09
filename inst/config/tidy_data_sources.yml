@@ -33,6 +33,8 @@ datasets:
         url: "https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet"
   measures_quarterly:
     versions:
+      - version: "0.2.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/measures-quarterly-v0.2.0/measures_quarterly.parquet"
       - version: "0.1.0"
         url: "https://github.com/bennettoxford/nhstt/releases/download/measures-quarterly-v0.1.0/measures_quarterly.parquet"
   measures_monthly:
