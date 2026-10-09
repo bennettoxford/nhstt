@@ -230,6 +230,7 @@ read_archive_file <- function(archive_name, period, file_pattern) {
 #' @importFrom cli cli_abort cli_process_start cli_process_done cli_alert_warning
 #' @importFrom purrr imap map flatten compact
 #' @importFrom dplyr bind_rows arrange desc
+#' @importFrom stringr str_escape
 #'
 #' @keywords internal
 extract_archive_schemas <- function(archive_name, periods = NULL) {
@@ -248,7 +249,12 @@ extract_archive_schemas <- function(archive_name, periods = NULL) {
     map(csv_files, function(csv_file) {
       tryCatch(
         {
-          raw_data <- read_archive_file(archive_name, period, csv_file)
+          # Match the exact filename, some contain regex characters like "(2)"
+          raw_data <- read_archive_file(
+            archive_name,
+            period,
+            paste0("^", str_escape(csv_file), "$")
+          )
           column_names <- names(raw_data)
 
           # Create data frame for this file

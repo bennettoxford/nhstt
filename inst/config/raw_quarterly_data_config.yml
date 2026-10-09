@@ -42,6 +42,15 @@ archives:
     - period: "2023-24-q1"
       url: "https://files.digital.nhs.uk/40/18BDD6/nhstalkingtherapies_quarterly_data_q1_23_24.zip"
       format: "zip"
+    - period: "2022-23-q4"
+      url: "https://files.digital.nhs.uk/D3/EBD33A/IAPT%20Quarterly%20Activity%20Data%20-%20zipped%20files.zip"
+      format: "zip"
+    - period: "2022-23-q3"
+      url: "https://files.digital.nhs.uk/05/58EB4A/IAPT%20Quarterly%20Activity%20Data%20-%20zipped%20files.zip"
+      format: "zip"
+    - period: "2022-23-q2"
+      url: "https://files.digital.nhs.uk/4F/51E807/IAPT%20Quarterly%20Activity%20Data%20-%20zipped%20files.zip"
+      format: "zip"
 
 datasets:
   # The three CSVs are combined into a single published dataset;
@@ -82,6 +91,12 @@ datasets:
         csv_file: "nhstalkingtherapies_quarterly_ICB_subICB_q2_23_24.csv"
       - period: "2023-24-q1"
         csv_file: "nhstalkingtherapies_quarterly_ICB_subICB_q1_23_24.csv"
+      - period: "2022-23-q4"
+        csv_file: "iapt_quarterly_ICB_subICB_q4_22_23.csv"
+      - period: "2022-23-q3"
+        csv_file: "iapt_quarterly_ICB_subICB_q3_22_23.csv"
+      - period: "2022-23-q2"
+        csv_file: "iapt_quarterly_ICB_subICB_q2_22_23"
 
   measures_provider_quarterly:
     title: "Activity and Performance Measures by Provider (Quarterly)"
@@ -119,6 +134,12 @@ datasets:
         csv_file: "nhstalkingtherapies_quarterly_provider_q2_23_24.csv"
       - period: "2023-24-q1"
         csv_file: "nhstalkingtherapies_quarterly_provider_q1_23_24.csv"
+      - period: "2022-23-q4"
+        csv_file: "iapt_quarterly_provider_q4_22_23.csv"
+      - period: "2022-23-q3"
+        csv_file: "iapt_quarterly_provider_q3_22_23.csv"
+      - period: "2022-23-q2"
+        csv_file: "iapt_quarterly_provider_q2_22_23"
 
   measures_subicb_provider_quarterly:
     title: "Activity and Performance Measures by Sub-ICB and Provider (Quarterly)"
@@ -156,3 +177,9 @@ datasets:
         csv_file: "nhstalkingtherapies_quarterly_subICB_provider_q2_23_24.csv"
       - period: "2023-24-q1"
         csv_file: "nhstalkingtherapies_quarterly_subICB_provider_q1_23_24.csv"
+      - period: "2022-23-q4"
+        csv_file: "iapt_quarterly_subICB_provider_q4_22_23.csv"
+      - period: "2022-23-q3"
+        csv_file: "iapt_quarterly_subICB_provider_q3_22_23.csv"
+      - period: "2022-23-q2"
+        csv_file: "iapt_quarterly_subICB_provider_q2_22_23"
