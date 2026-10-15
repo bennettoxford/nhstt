@@ -146,7 +146,7 @@ write_raw_downloads_json <- function(
 #'
 #' Shows information about the nhstt cache, including:
 #' - Cache directory location
-#' - Size and count of raw annual, quarterly and monthly downloads
+#' - Size and count of raw monthly, quarterly and annual downloads
 #' - Size and count of tidy datasets
 #' - Total cache size
 #'

@@ -28,16 +28,34 @@ release dataset version notes='':
     tag=$(echo "{{dataset}}" | tr '_' '-')-v{{version}}
     gh release create "$tag" data-raw/{{dataset}}.parquet --notes "{{notes}}" --target "$(git branch --show-current)"
 
+# helpers = FALSE in the build-data-* recipes keeps raw downloads in the real cache; the test helpers redirect it to a temp folder
 # Build all pre-built tidy parquets and write to data-raw/ (slow — downloads raw data)
-# helpers = FALSE keeps raw downloads in the real cache; the test helpers redirect it to a temp folder
-build-data:
+build-data: build-data-monthly build-data-quarterly build-data-annual build-data-metadata
+
+# Build the monthly tidy parquet
+build-data-monthly:
     Rscript --quiet --vanilla -e '\
         devtools::load_all(helpers = FALSE); \
-        build_tidy_data("measures_monthly"); \
-        build_tidy_data("measures_quarterly", raw_datasets = c("measures_icb_subicb_quarterly", "measures_provider_quarterly", "measures_subicb_provider_quarterly")); \
+        build_tidy_data("measures_monthly")'
+
+# Build the quarterly tidy parquet
+build-data-quarterly:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(helpers = FALSE); \
+        build_tidy_data("measures_quarterly", raw_datasets = c("measures_icb_subicb_quarterly", "measures_provider_quarterly", "measures_subicb_provider_quarterly"))'
+
+# Build the annual tidy parquets
+build-data-annual:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(helpers = FALSE); \
         build_tidy_data("measures_annual"); \
         build_tidy_data("proms_annual"); \
-        build_tidy_data("therapy_position_annual"); \
+        build_tidy_data("therapy_position_annual")'
+
+# Build the metadata tidy parquets
+build-data-metadata:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(helpers = FALSE); \
         build_tidy_data("metadata_measures_monthly"); \
         build_tidy_data("metadata_providers"); \
         build_tidy_data("metadata_measures_annual", raw_datasets = c("metadata_measures_main_annual", "metadata_measures_additional_annual")); \
