@@ -120,6 +120,24 @@ test_that("extract_archive_schemas error message lists available archives", {
   )
 })
 
+test_that("extract_archive_schemas reads files with regex characters in the name", {
+  csv_name <- "iapt_quarterly_provider_q2_22_23 (2).csv"
+  csv_path <- file.path(withr::local_tempdir(), csv_name)
+  writeLines(c("GroupType,MEASURE_ID", "England,M001"), csv_path)
+  zip_path <- withr::local_tempfile(fileext = ".zip")
+  utils::zip(zip_path, csv_path, flags = "-jq")
+
+  local_mocked_bindings(
+    list_archive_files = function(...) list("2022-23-q2" = csv_name),
+    download_with_retry = function(url, dest) file.copy(zip_path, dest)
+  )
+
+  result <- extract_archive_schemas("quarterly", periods = "2022-23-q2")
+
+  expect_equal(unique(result$csv_file), csv_name)
+  expect_setequal(result$column, c("GroupType", "MEASURE_ID"))
+})
+
 # compare_schemas() ----
 
 test_that("compare_schemas errors if schema file doesn't exist", {
