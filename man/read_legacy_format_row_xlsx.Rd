@@ -2,7 +2,7 @@
 % Please edit documentation in R/raw-annual-legacy-format.R
 \name{read_legacy_format_row_xlsx}
 \alias{read_legacy_format_row_xlsx}
-\title{Read a labelled row from an XLSX sheet as a numeric vector}
+\title{Find a row by its label in an XLSX sheet and return it as numbers}
 \usage{
 read_legacy_format_row_xlsx(path, sheet, row_label = "England total")
 }
@@ -19,7 +19,7 @@ Numeric vector; positions correspond to source column indices, \code{NA}
 for empty or non-numeric cells
 }
 \description{
-Scans column 1 for \code{row_label} and returns the entire row as a numeric
-vector.  Column indices correspond to source column positions.
+Looks in column 1 for \code{row_label} and returns all values in that row as a
+numeric vector. Position in the vector matches the source column number.
 }
 \keyword{internal}
