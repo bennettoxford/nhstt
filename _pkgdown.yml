@@ -34,21 +34,17 @@ navbar:
       href: reference/index.html
     - text: "How-to guides"
       menu:
+        - text: "Monthly data"
+        - text: "Activity and performance"
+          href: articles/how-to-activity-performance-monthly.html
+        - text: -------
         - text: "Annual data"
         - text: "Key measures"
           href: articles/how-to-key-measures-annual.html
         - text: "PROMs"
           href: articles/how-to-proms-annual.html
-        - text: -------
-        - text: "Monthly data"
-        - text: "Activity and performance"
-          href: articles/how-to-activity-performance-monthly.html
     - text: "Metadata"
       menu:
-        - text: "Annual metadata"
-        - text: "Key measures and breakdowns"
-          href: articles/metadata-annual.html
-        - text: -------
         - text: "Monthly metadata"
         - text: "Core measures"
           href: articles/metadata-monthly-core.html
@@ -61,26 +57,30 @@ navbar:
         - text: "Measures and breakdowns"
           href: articles/metadata-quarterly.html
         - text: -------
+        - text: "Annual metadata"
+        - text: "Measures and breakdowns"
+          href: articles/metadata-annual.html
+        - text: -------
         - text: "Organisation metadata"
         - text: "NHS Talking Therapies providers"
           href: articles/metadata-ods.html
 reference:
-  - title: "Annual data"
-    contents:
-      - get_measures_annual
-      - get_proms_annual
-      - get_therapy_position_annual
   - title: "Monthly data"
     contents:
       - get_measures_monthly
   - title: "Quarterly data"
     contents:
       - get_measures_quarterly
+  - title: "Annual data"
+    contents:
+      - get_measures_annual
+      - get_proms_annual
+      - get_therapy_position_annual
   - title: "Metadata"
     contents:
+      - get_metadata_monthly
       - get_metadata_measures_annual
       - get_metadata_variables_annual
-      - get_metadata_monthly
       - get_metadata_providers
   - title: "Cache management"
     contents:
@@ -108,11 +108,11 @@ articles:
       - how-to-key-measures-annual
       - how-to-proms-annual
   - title: "Metadata"
-    desc: "Metadata for annual, quarterly and monthly reports"
+    desc: "Metadata for monthly, quarterly and annual reports"
     contents:
-      - metadata-annual
       - metadata-monthly-core
       - metadata-monthly-ea
       - metadata-monthly-ltc
       - metadata-quarterly
+      - metadata-annual
       - metadata-ods

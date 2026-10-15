@@ -16,7 +16,7 @@ Invisibly returns a list with cache information
 Shows information about the nhstt cache, including:
 \itemize{
 \item Cache directory location
-\item Size and count of raw annual, quarterly and monthly downloads
+\item Size and count of raw monthly, quarterly and annual downloads
 \item Size and count of tidy datasets
 \item Total cache size
 }

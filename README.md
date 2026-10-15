@@ -37,8 +37,8 @@ df_monthly <- get_measures_monthly(version = "0.3.0")
 ## Available NHS Talking Therapies data
 
 Data can be accessed from R using the `get_*()` functions or downloaded
-directly using the links in the tables below. Annual, quarterly and
-monthly datasets are also available as
+directly using the links in the tables below. Monthly, quarterly and
+annual datasets are also available as
 [Parquet](https://parquet.apache.org/) files from the GitHub Releases
 page. The *Periods* column shows the number of reporting periods covered
 by each dataset.
@@ -67,9 +67,9 @@ by each dataset.
 
 | Function | First period | Last period | Periods | Version |
 |:---|:---|:---|---:|---:|
+| `get_metadata_monthly()` | 2026-07 | 2026-07 | 1 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.2.0/metadata_measures_monthly.parquet) |
 | `get_metadata_measures_annual()` | 2024-25 | 2024-25 | 1 | [0.1.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-annual-v0.1.0/metadata_measures_annual.parquet) |
 | `get_metadata_variables_annual()` | 2024-25 | 2024-25 | 1 | [0.1.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-variables-annual-v0.1.0/metadata_variables_annual.parquet) |
-| `get_metadata_monthly()` | 2026-07 | 2026-07 | 1 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.2.0/metadata_measures_monthly.parquet) |
 | `get_metadata_providers()` | current | current | 1 | [0.1.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.1.0/metadata_providers.parquet) |
 
 ## For developers
