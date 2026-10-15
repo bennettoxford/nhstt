@@ -9,15 +9,15 @@ tidy_dataset(raw_data_list, dataset, frequency)
 \arguments{
 \item{raw_data_list}{Named list, specifying raw tibbles (e.g., list("2023-24" = df))}
 
-\item{dataset}{Character, specifying dataset name (e.g., "key_measures_annual")}
+\item{dataset}{Character, specifying dataset name (e.g., "measures_annual")}
 
-\item{frequency}{Character, specifying frequency ("annual" or "monthly")}
+\item{frequency}{Character, specifying frequency ("annual", "quarterly" or "monthly")}
 }
 \value{
 Tibble in tidy long format
 }
 \description{
 Applies configuration-driven transformations to convert raw data to tidy format.
-Supports both wide-to-long pivoting (key_measures) and long-format data (activity_performance).
+Supports both wide-to-long pivoting (measures_annual) and long-format data (measures_monthly).
 }
 \keyword{internal}

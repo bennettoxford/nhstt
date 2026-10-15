@@ -230,6 +230,7 @@ read_archive_file <- function(archive_name, period, file_pattern) {
 #' @importFrom cli cli_abort cli_process_start cli_process_done cli_alert_warning
 #' @importFrom purrr imap map flatten compact
 #' @importFrom dplyr bind_rows arrange desc
+#' @importFrom stringr str_escape
 #'
 #' @keywords internal
 extract_archive_schemas <- function(archive_name, periods = NULL) {
@@ -248,7 +249,12 @@ extract_archive_schemas <- function(archive_name, periods = NULL) {
     map(csv_files, function(csv_file) {
       tryCatch(
         {
-          raw_data <- read_archive_file(archive_name, period, csv_file)
+          # Match the exact filename, some contain regex characters like "(2)"
+          raw_data <- read_archive_file(
+            archive_name,
+            period,
+            paste0("^", str_escape(csv_file), "$")
+          )
           column_names <- names(raw_data)
 
           # Create data frame for this file
@@ -557,7 +563,7 @@ compare_schemas <- function(
 #'
 #' @param dataset Character, dataset name (e.g., "therapy_position_annual")
 #' @param period Character, period (e.g., "2021-22")
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual", "quarterly" or "monthly"
 #' @param n_rows Integer, number of rows to save (default 5)
 #' @param overwrite Logical, whether to overwrite existing fixture (default FALSE)
 #'
@@ -580,7 +586,6 @@ create_raw_fixture <- function(
     "tests",
     "testthat",
     "fixtures",
-    "schemas",
     frequency,
     dataset,
     "raw",
@@ -608,6 +613,79 @@ create_raw_fixture <- function(
   )
 
   invisible(fixture_path)
+}
+
+#' Check that configured filter values match rows in the tidied data
+#'
+#' Developer tool, run as part of [build_tidy_data()]. Filtering happens per
+#' period, and a filter value can legitimately be absent from individual
+#' periods (e.g. SubICB only appears in monthly data from mid-2022). But a
+#' value that matches no rows across all periods combined is almost certainly
+#' misspelled in the tidy config, so this errors rather than silently
+#' publishing a parquet with those rows missing.
+#'
+#' @param df Tibble, tidied data combined across all periods
+#' @param dataset Character, raw dataset name
+#' @param frequency Character, "annual", "quarterly" or "monthly"
+#'
+#' @return Invisibly returns `df`
+#'
+#' @importFrom cli cli_abort
+#'
+#' @keywords internal
+check_filter_values <- function(df, dataset, frequency) {
+  config <- get_tidy_config(dataset, frequency)
+
+  for (col_name in names(config$filter)) {
+    if (!col_name %in% names(df)) {
+      cli_abort(c(
+        "Filter column {.val {col_name}} for {.val {dataset}} is not in the tidied output",
+        "i" = "Check the filter section of the tidy config against the select section"
+      ))
+    }
+
+    unmatched <- setdiff(config$filter[[col_name]], unique(df[[col_name]]))
+    if (length(unmatched) > 0) {
+      cli_abort(c(
+        "Filter values {.val {unmatched}} in column {.val {col_name}} matched no rows in {.val {dataset}} across any period",
+        "i" = "Check the filter values in the tidy config against the raw data"
+      ))
+    }
+  }
+
+  invisible(df)
+}
+
+#' Check that no rows share the same key in the tidied data
+#'
+#' Developer tool, run as part of [build_tidy_data()]. The key is every column
+#' except `value`. Duplicate keys usually mean the same rows came from more
+#' than one raw dataset (e.g. the England rows repeated in each quarterly CSV)
+#' and a tidy filter is missing, so this errors rather than publishing them.
+#'
+#' @param df Tibble, tidied data combined across all periods and raw datasets
+#' @param dataset Character, published dataset name
+#'
+#' @return Invisibly returns `df`
+#'
+#' @importFrom cli cli_abort
+#' @importFrom dplyr distinct across
+#' @importFrom tidyselect all_of
+#'
+#' @keywords internal
+check_duplicate_keys <- function(df, dataset) {
+  key_cols <- setdiff(names(df), "value")
+  n_duplicates <- nrow(df) - nrow(distinct(df, across(all_of(key_cols))))
+
+  if (n_duplicates > 0) {
+    cli_abort(c(
+      "{n_duplicates} row{?s} in {.val {dataset}} share{?s/} a key with another row",
+      "i" = "The key is every column except {.val value}",
+      "i" = "Check the tidy filters for raw datasets that repeat the same rows"
+    ))
+  }
+
+  invisible(df)
 }
 
 #' Build combined tidy parquet for a dataset
@@ -645,11 +723,14 @@ build_tidy_data <- function(dataset, raw_datasets = dataset) {
       map(periods, \(period) {
         download_and_tidy(raw_dataset, period, frequency)
       }) |>
-        list_rbind()
+        list_rbind() |>
+        check_filter_values(raw_dataset, frequency)
     })
 
     combined <- list_rbind(data_list)
   }
+
+  check_duplicate_keys(combined, dataset)
 
   out_dir <- "data-raw"
   dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)

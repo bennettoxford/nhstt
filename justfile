@@ -22,7 +22,7 @@ build:
 # Can be run from a PR branch before merging, e.g. so the pkgdown CI check can
 # download the new data — the package only resolves the asset URL, not the tag.
 # Usage: just release <dataset> <version> [notes]
-# Example: just release activity_performance_monthly 0.4.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
+# Example: just release measures_monthly 0.5.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
 release dataset version notes='':
     #!/usr/bin/env bash
     tag=$(echo "{{dataset}}" | tr '_' '-')-v{{version}}
@@ -32,14 +32,34 @@ release dataset version notes='':
 build-annual-legacy-format:
     Rscript --quiet --vanilla -e 'devtools::load_all(); build_annual_legacy_format_measures()'
 
+# helpers = FALSE in the build-data-* recipes keeps raw downloads in the real cache; the test helpers redirect it to a temp folder
 # Build all pre-built tidy parquets and write to data-raw/ (slow — downloads raw data)
-build-data:
+build-data: build-data-monthly build-data-quarterly build-data-annual build-data-metadata
+
+# Build the monthly tidy parquet
+build-data-monthly:
     Rscript --quiet --vanilla -e '\
-        devtools::load_all(); \
-        build_tidy_data("activity_performance_monthly"); \
-        build_tidy_data("key_measures_annual"); \
+        devtools::load_all(helpers = FALSE); \
+        build_tidy_data("measures_monthly")'
+
+# Build the quarterly tidy parquet
+build-data-quarterly:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(helpers = FALSE); \
+        build_tidy_data("measures_quarterly", raw_datasets = c("measures_icb_subicb_quarterly", "measures_provider_quarterly", "measures_subicb_provider_quarterly"))'
+
+# Build the annual tidy parquets
+build-data-annual:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(helpers = FALSE); \
+        build_tidy_data("measures_annual"); \
         build_tidy_data("proms_annual"); \
-        build_tidy_data("therapy_position_annual"); \
+        build_tidy_data("therapy_position_annual")'
+
+# Build the metadata tidy parquets
+build-data-metadata:
+    Rscript --quiet --vanilla -e '\
+        devtools::load_all(helpers = FALSE); \
         build_tidy_data("metadata_measures_monthly"); \
         build_tidy_data("metadata_providers"); \
         build_tidy_data("metadata_measures_annual", raw_datasets = c("metadata_measures_main_annual", "metadata_measures_additional_annual")); \
@@ -79,9 +99,10 @@ docs-serve:
 docs: docs-build docs-serve
 
 # Update schemas (extracts column names from raw data)
+# helpers = FALSE keeps raw downloads in the real cache; the test helpers redirect it to a temp folder
 update-schemas:
     Rscript --quiet --vanilla -e '\
-        devtools::load_all(); \
+        devtools::load_all(helpers = FALSE); \
         dir.create("inst/schemas", recursive = TRUE, showWarnings = FALSE); \
         schemas_main <- extract_archive_schemas("annual_main"); \
         write.csv(schemas_main, "inst/schemas/annual_main_schemas.csv", row.names = FALSE); \
@@ -89,6 +110,9 @@ update-schemas:
         schemas_tbo <- extract_archive_schemas("annual_tbo"); \
         write.csv(schemas_tbo, "inst/schemas/annual_tbo_schemas.csv", row.names = FALSE); \
         message("Updated inst/schemas/annual_tbo_schemas.csv"); \
-        schemas_monthly <- extract_source_schemas("activity_performance_monthly"); \
-        write.csv(schemas_monthly, "inst/schemas/activity_performance_monthly_schemas.csv", row.names = FALSE); \
-        message("Updated inst/schemas/activity_performance_monthly_schemas.csv")'
+        schemas_monthly <- extract_source_schemas("measures_monthly"); \
+        write.csv(schemas_monthly, "inst/schemas/measures_monthly_schemas.csv", row.names = FALSE); \
+        message("Updated inst/schemas/measures_monthly_schemas.csv"); \
+        schemas_quarterly <- extract_archive_schemas("quarterly"); \
+        write.csv(schemas_quarterly, "inst/schemas/quarterly_schemas.csv", row.names = FALSE); \
+        message("Updated inst/schemas/quarterly_schemas.csv")'

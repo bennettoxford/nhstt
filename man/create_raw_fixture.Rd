@@ -11,7 +11,7 @@ create_raw_fixture(dataset, period, frequency, n_rows = 5, overwrite = FALSE)
 
 \item{period}{Character, period (e.g., "2021-22")}
 
-\item{frequency}{Character, "annual" or "monthly"}
+\item{frequency}{Character, "annual", "quarterly" or "monthly"}
 
 \item{n_rows}{Integer, number of rows to save (default 5)}
 

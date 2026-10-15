@@ -7,9 +7,9 @@
 get_tidy_config(dataset, frequency)
 }
 \arguments{
-\item{dataset}{Character, dataset name (e.g., "key_measures_annual")}
+\item{dataset}{Character, dataset name (e.g., "measures_annual")}
 
-\item{frequency}{Character, "annual" or "monthly" (used for validation only)}
+\item{frequency}{Character, "annual", "quarterly" or "monthly" (used for validation only)}
 }
 \value{
 Named list of configuration values

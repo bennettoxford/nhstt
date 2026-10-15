@@ -72,7 +72,7 @@ convert_to_numeric <- function(df, measure_cols) {
 #'   Can contain:
 #'   - Simple mappings: `new_name: old_name` (applied to all periods)
 #'   - Period-specific mappings: `"YYYY-YY": {new_name: old_name}`
-#' @param period Character, specifying current period (e.g., "2023-24", "2025-09")
+#' @param period Character, specifying current period (e.g., "2023-24", "2025-09", "2026-27-q1")
 #'
 #' @return Tibble with renamed columns
 #'
@@ -85,7 +85,7 @@ rename_columns <- function(df, rename_config, period = NULL) {
   }
 
   # Separate global and period-specific renames
-  is_period_key <- grepl("^\\d{4}-(\\d{2}|\\d{2})$", names(rename_config))
+  is_period_key <- grepl("^\\d{4}-\\d{2}(-q[1-4])?$", names(rename_config))
 
   # Extract global renames (not period-specific)
   global_renames <- rename_config[!is_period_key]
@@ -124,6 +124,52 @@ rename_columns <- function(df, rename_config, period = NULL) {
   # For dplyr, we need: c(new_name = old_name)
   # Keep the mapping as-is (just ensure it's unnamed properly)
   rename(df, !!!stats::setNames(unname(valid_mapping), names(valid_mapping)))
+}
+
+#' Recode values
+#'
+#' Replaces values in columns using a mapping (e.g., for a category that is
+#' labelled differently in some periods)
+#'
+#' @param df Tibble, specifying data with columns to recode
+#' @param recode_config Named list, specifying for each column a mapping of
+#'   `new_value: old_value` (e.g., list(variable_a = list(None = "null")))
+#'
+#' @return Tibble with recoded values
+#'
+#' @keywords internal
+recode_values <- function(df, recode_config) {
+  for (col_name in intersect(names(recode_config), names(df))) {
+    mapping <- unlist(recode_config[[col_name]])
+    matched <- match(df[[col_name]], mapping)
+    df[[col_name]] <- ifelse(
+      is.na(matched),
+      df[[col_name]],
+      names(mapping)[matched]
+    )
+  }
+
+  df
+}
+
+#' Replace values with NA
+#'
+#' Converts placeholder values (e.g., "null", "All_ICB") to NA in all
+#' character columns
+#'
+#' @param df Tibble, specifying data to clean
+#' @param values Character vector, specifying values to replace with NA
+#'
+#' @return Tibble with placeholder values as NA
+#'
+#' @importFrom dplyr mutate across where
+#'
+#' @keywords internal
+replace_values_with_na <- function(df, values) {
+  mutate(
+    df,
+    across(where(is.character), \(x) ifelse(x %in% values, NA_character_, x))
+  )
 }
 
 #' Filter rows

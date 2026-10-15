@@ -16,7 +16,7 @@ Can contain:
 \item Period-specific mappings: \code{"YYYY-YY": {new_name: old_name}}
 }}
 
-\item{period}{Character, specifying current period (e.g., "2023-24", "2025-09")}
+\item{period}{Character, specifying current period (e.g., "2023-24", "2025-09", "2026-27-q1")}
 }
 \value{
 Tibble with renamed columns

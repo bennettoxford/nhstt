@@ -9,7 +9,7 @@ list_available_periods(dataset, frequency, include_development = FALSE)
 \arguments{
 \item{dataset}{Character, specifying dataset name}
 
-\item{frequency}{Character, specifying report frequency ("annual" or "monthly")}
+\item{frequency}{Character, specifying report frequency ("annual", "quarterly" or "monthly")}
 
 \item{include_development}{Logical, specifying whether to include periods marked with development = true. Default FALSE}
 }

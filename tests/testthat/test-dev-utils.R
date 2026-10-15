@@ -120,6 +120,24 @@ test_that("extract_archive_schemas error message lists available archives", {
   )
 })
 
+test_that("extract_archive_schemas reads files with regex characters in the name", {
+  csv_name <- "iapt_quarterly_provider_q2_22_23 (2).csv"
+  csv_path <- file.path(withr::local_tempdir(), csv_name)
+  writeLines(c("GroupType,MEASURE_ID", "England,M001"), csv_path)
+  zip_path <- withr::local_tempfile(fileext = ".zip")
+  utils::zip(zip_path, csv_path, flags = "-jq")
+
+  local_mocked_bindings(
+    list_archive_files = function(...) list("2022-23-q2" = csv_name),
+    download_with_retry = function(url, dest) file.copy(zip_path, dest)
+  )
+
+  result <- extract_archive_schemas("quarterly", periods = "2022-23-q2")
+
+  expect_equal(unique(result$csv_file), csv_name)
+  expect_setequal(result$column, c("GroupType", "MEASURE_ID"))
+})
+
 # compare_schemas() ----
 
 test_that("compare_schemas errors if schema file doesn't exist", {
@@ -190,5 +208,76 @@ test_that("extract_source_schemas errors for invalid dataset", {
   expect_error(
     extract_source_schemas("invalid_dataset"),
     "Invalid dataset"
+  )
+})
+
+# check_filter_values tests ----------------------------------------------------
+
+test_that("check_filter_values passes when all filter values are present", {
+  config <- get_tidy_config("measures_monthly", "monthly")
+  df <- tibble::tibble(group_type = config$filter$group_type)
+
+  expect_no_error(check_filter_values(df, "measures_monthly", "monthly"))
+  expect_identical(check_filter_values(df, "measures_monthly", "monthly"), df)
+})
+
+test_that("check_filter_values errors when a filter value matches no rows", {
+  config <- get_tidy_config("measures_monthly", "monthly")
+  df <- tibble::tibble(group_type = config$filter$group_type[-1])
+
+  expect_error(
+    check_filter_values(df, "measures_monthly", "monthly"),
+    "matched no rows"
+  )
+})
+
+test_that("check_filter_values errors when a filter column is missing", {
+  df <- tibble::tibble(other_column = "England")
+
+  expect_error(
+    check_filter_values(df, "measures_monthly", "monthly"),
+    "not in the tidied output"
+  )
+})
+
+test_that("check_filter_values passes datasets without filters through", {
+  df <- tibble::tibble(variable_a = "cbt")
+
+  expect_no_error(check_filter_values(df, "therapy_position_annual", "annual"))
+})
+
+test_that("check_duplicate_keys passes when every key is unique", {
+  df <- tibble::tibble(
+    reporting_period = c("2026-27-q1", "2026-27-q1"),
+    org_type = c("England", "ICB"),
+    value = c(1, 1)
+  )
+
+  expect_no_error(check_duplicate_keys(df, "measures_quarterly"))
+})
+
+test_that("check_duplicate_keys errors when rows share a key", {
+  df <- tibble::tibble(
+    reporting_period = c("2026-27-q1", "2026-27-q1", "2026-27-q1"),
+    org_type = c("England", "England", "ICB"),
+    value = c(1, 2, 3)
+  )
+
+  expect_error(
+    check_duplicate_keys(df, "measures_quarterly"),
+    regexp = "1 row in .*measures_quarterly.* shares a key"
+  )
+})
+
+test_that("check_duplicate_keys uses all columns when there is no value column", {
+  df <- tibble::tibble(
+    measure_id = c("M001", "M001"),
+    description = c("a", "b")
+  )
+
+  expect_no_error(check_duplicate_keys(df, "metadata_measures_monthly"))
+  expect_error(
+    check_duplicate_keys(rbind(df, df[1, ]), "metadata_measures_monthly"),
+    regexp = "share"
   )
 })
