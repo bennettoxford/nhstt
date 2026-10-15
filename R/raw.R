@@ -69,7 +69,7 @@ resolve_cache_file <- function(file_path, use_cache) {
 #'
 #' @param dataset Character, dataset name
 #' @param period Character, reporting period
-#' @param frequency Character, "annual" or "monthly"
+#' @param frequency Character, "annual", "quarterly" or "monthly"
 #' @param url Character, source URL
 #' @param source_format Character, source format ("csv", "zip", "rar", "xlsx")
 #' @param file_path Character, destination path
@@ -155,9 +155,9 @@ download_and_store <- function(
 
 #' Download and cache raw data
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param dataset Character, specifying dataset name (e.g., "measures_annual", "measures_monthly")
+#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #' @param use_cache Logical, specifying whether to use cached data if available. Default TRUE
 #'
 #' @return Character path to cached file
@@ -201,9 +201,9 @@ download_raw <- function(dataset, period, frequency, use_cache = TRUE) {
 #' Downloads (if needed) and reads a single raw dataset file into memory.
 #' All data is stored as parquet files (archives are extracted during download).
 #'
-#' @param dataset Character, specifying dataset name (e.g., "key_measures_annual", "activity_performance_monthly")
-#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2025-09" for monthly)
-#' @param frequency Character, specifying report frequency ("annual" or "monthly")
+#' @param dataset Character, specifying dataset name (e.g., "measures_annual", "measures_monthly")
+#' @param period Character, specifying reporting period (e.g., "2023-24" for annual, "2026-27-q1" for quarterly, "2025-09" for monthly)
+#' @param frequency Character, specifying report frequency ("annual", "quarterly" or "monthly")
 #' @param use_cache Logical, specifying whether to use cached data if available. Default TRUE
 #'
 #' @return Tibble with raw data

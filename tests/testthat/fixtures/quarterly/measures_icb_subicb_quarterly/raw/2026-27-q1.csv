@@ -1,0 +1,6 @@
+"REPORTING_PERIOD_START","REPORTING_PERIOD_END","ICB","ICBName","SubICB","SubICBName","Provider","ProviderName","GroupType","VariableType","VariableA","VariableB","MEASURE_ID","MEASURE_NAME","MEASURE_VALUE_SUPPRESSED"
+"01/04/2026","30/06/2026","All_ICB","null","All_SubICB","null","All_Provider","null","England","Disability","01 Behaviour and Emotional","null","M001","Count_ReferralsReceived","19455"
+"01/04/2026","30/06/2026","All_ICB","null","All_SubICB","null","All_Provider","null","England","Religion","None","null","M001","Count_ReferralsReceived","140408"
+"01/04/2026","30/06/2026","InvalidRegionCode","Unknown","All_SubICB","null","All_Provider","null","CommissioningRegion","Ethnic Group","Asian or Asian British","Any other Asian background","M001","Count_ReferralsReceived","70"
+"01/04/2026","30/06/2026","D7T5G","NHS ESSEX INTEGRATED CARE BOARD","All_SubICB","null","All_Provider","null","ICB","Disability","01 Behaviour and Emotional","null","M1013","Mean_ContactTimeIETReferral","74.1"
+"01/04/2026","30/06/2026","D7T5G","NHS ESSEX INTEGRATED CARE BOARD","06Q","NHS ESSEX ICB - 06Q","All_Provider","null","SubICB","Total","Total","null","M001","Count_ReferralsReceived","2880"

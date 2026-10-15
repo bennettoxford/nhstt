@@ -1,5 +1,8 @@
 #' Load tidy data sources configuration
 #'
+#' Every version entry in tidy_data_sources.yml must have an explicit `url`
+#' pointing at the GitHub Release parquet asset.
+#'
 #' @return List of dataset configurations keyed by dataset name. Each entry
 #'   has `version` (latest), `versions` (all known), and `url` (latest).
 #'
@@ -34,7 +37,7 @@ load_tidy_sources_config <- function() {
       )
     }
 
-    # Each entry must be a list with at least a version field
+    # Each entry must be a list with version and url fields
     for (i in seq_along(cfg$versions)) {
       entry <- cfg$versions[[i]]
       if (!is.list(entry) || is.null(entry$version)) {
@@ -43,9 +46,10 @@ load_tidy_sources_config <- function() {
         )
       }
       if (is.null(entry$url)) {
-        cli_abort(
-          "Dataset {.val {dataset}} version {.val {entry$version}} has no url"
-        )
+        cli_abort(c(
+          "Dataset {.val {dataset}} version {.val {entry$version}} has no 'url' field",
+          "i" = "Copy the parquet asset url from the GitHub Release page into tidy_data_sources.yml"
+        ))
       }
     }
 
@@ -63,31 +67,7 @@ load_tidy_sources_config <- function() {
   sources
 }
 
-#' Derive the GitHub Release URL for a tidy source
-#'
-#' @param dataset Character, dataset name
-#' @param version Character, dataset version
-#'
-#' @return Character URL
-#'
-#' @keywords internal
-derive_tidy_source_url <- function(dataset, version) {
-  release_tag <- paste0(gsub("_", "-", dataset), "-v", version)
-  paste0(
-    "https://github.com/bennettoxford/nhstt/releases/download/",
-    release_tag,
-    "/",
-    dataset,
-    ".parquet"
-  )
-}
-
 #' Get tidy source configuration for a dataset
-#'
-#' The download URL is derived from the dataset name and version using the
-#' GitHub Release tag convention (`{dataset-with-dashes}-v{version}`), which
-#' is what `just release` creates. An explicit `url` field in
-#' tidy_data_sources.yml overrides the derived URL.
 #'
 #' @param dataset Character, dataset name (e.g., "measures_monthly")
 #' @param version Character, specific version to use, or NULL for the latest
@@ -201,28 +181,6 @@ get_tidy_source_sidecar_path <- function(dataset, version) {
 #' @keywords internal
 tidy_source_cache_is_current <- function(dataset, version) {
   file.exists(get_tidy_source_cache_path(dataset, version))
-}
-
-#' Remove a versioned tidy source cache file
-#'
-#' @param dataset Character, dataset name
-#' @param version Character, dataset version
-#'
-#' @return Invisible TRUE
-#'
-#' @keywords internal
-invalidate_tidy_source_cache <- function(dataset, version) {
-  parquet_path <- get_tidy_source_cache_path(dataset, version)
-  sidecar_path <- get_tidy_source_sidecar_path(dataset, version)
-
-  if (file.exists(parquet_path)) {
-    unlink(parquet_path)
-  }
-  if (file.exists(sidecar_path)) {
-    unlink(sidecar_path)
-  }
-
-  invisible(TRUE)
 }
 
 #' Download pre-built tidy parquet and store in cache
