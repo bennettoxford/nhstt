@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# nhstt
+# nhstt <a href="https://bennettoxford.github.io/nhstt/"><img src="man/figures/logo.png" align="right" height="139" alt="nhstt website" /></a>
 
 <!-- badges: start -->
 
