@@ -6,6 +6,8 @@
 \alias{nhstt-package}
 \title{nhstt: Public NHS Talking Therapies for anxiety and depression reports in R}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Analysis-ready datasets of publicly available reports from NHS Talking Therapies for anxiety and depression (NHS TT).
 }
 \seealso{
