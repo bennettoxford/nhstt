@@ -35,14 +35,16 @@ navbar:
     - text: "How-to guides"
       menu:
         - text: "Monthly data"
-        - text: "Activity and performance"
+        - text: "Treatment end codes"
           href: articles/how-to-measures-monthly.html
         - text: -------
         - text: "Annual data"
-        - text: "Key measures"
+        - text: "Referrals and finished treatments"
           href: articles/how-to-measures-annual.html
-        - text: "PROMs"
-          href: articles/how-to-proms-annual.html
+    - text: "Data descriptions"
+      menu:
+        - text: "Differences across reporting periods"
+          href: articles/data-description-counts.html
     - text: "Metadata"
       menu:
         - text: "Monthly metadata"
@@ -64,10 +66,6 @@ navbar:
         - text: "Organisation metadata"
         - text: "NHS Talking Therapies providers"
           href: articles/metadata-ods.html
-    - text: "Data descriptions"
-      menu:
-        - text: "Comparing counts across reporting periods"
-          href: articles/data-description-counts.html
 
 reference:
   - title: "Monthly data"
@@ -111,7 +109,10 @@ articles:
     contents:
       - how-to-measures-monthly
       - how-to-measures-annual
-      - how-to-proms-annual
+  - title: "Data descriptions"
+    desc: "Descriptions and checks of the NHS TT datasets"
+    contents:
+      - data-description-counts
   - title: "Metadata"
     desc: "Metadata for monthly, quarterly, and annual reports"
     contents:
@@ -121,7 +122,3 @@ articles:
       - metadata-quarterly
       - metadata-annual
       - metadata-ods
-  - title: "Data descriptions"
-    desc: "Descriptions and checks of the NHS TT datasets"
-    contents:
-      - data-description-counts

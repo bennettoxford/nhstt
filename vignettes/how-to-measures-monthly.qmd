@@ -1,9 +1,9 @@
 ---
-title: "Exploring monthly changes in treatment end codes"
+title: "Treatment end codes"
 bibliography: references.bib
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{Exploring monthly changes in treatment end codes}
+  %\VignetteIndexEntry{Treatment end codes}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 knitr:

@@ -1,7 +1,7 @@
 ---
-title: "Comparing counts across reporting periods"
+title: "Differences across reporting periods"
 vignette: >
-  %\VignetteIndexEntry{Comparing counts across reporting periods}
+  %\VignetteIndexEntry{Differences across reporting periods}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 knitr:
@@ -105,8 +105,8 @@ year_range <- function(which_report) {
 ```
 
 @tbl-comparison compares the annual counts (1 April to 31 March) with the sum of the monthly and quarterly counts for the same time interval.
-Double counting would make the sums higher than the annual count.
-Late data submissions might make them lower.
+There could be several reasons for differences between the reporting periods.
+For example, double counting would make the sums higher than the annual count, and late data submissions might make them lower.
 The monthly and quarterly sums differ from the annual count by `r sprintf("%+.1f%%", min(comparison$percent_difference))` to `r sprintf("%+.1f%%", max(comparison$percent_difference))`.
 
 ```{r}
