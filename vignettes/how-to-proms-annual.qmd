@@ -1,18 +1,14 @@
 ---
 title: "How to use the annual PROMs data"
-output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{how-to-proms-annual}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 > **Note:** This guide is for illustration purposes only and may contain errors. It demonstrates example usage of the dataset and functions, but results should not be interpreted as validated analyses.
 
@@ -23,7 +19,10 @@ We'll look at effect sizes for depression treatment across selected therapy type
 
 We start by loading the necessary packages and downloading the annual PROMS dataset with `get_proms_annual()`. This report contains clinical outcome measures including PHQ-9, GAD-7, and WSAS scores for NHS Talking Therapies services across England.
 
-```{r setup, message=FALSE, warning=FALSE}
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
 # Load packages
 library(nhstt)
 library(ggplot2)
@@ -41,7 +40,8 @@ proms <- get_proms_annual()
 Here we filter the data to focus on effect sizes for GAD-7 and PHQ-9 measures at the national England level for depression, selecting six specific therapy types: applied relaxation, CBT, collaborative care, brief psychodynamic psychotherapy, and computer-based guided and non-guided self-help.
 This step requires careful exploration of the underlying data structure.
 
-```{r select-data}
+```{r}
+#| label: select-data
 selected_proms <- proms |>
   filter(org_type == "England") |>
   filter(!org_name == "UNKNOWN") |>
@@ -77,7 +77,14 @@ selected_proms <- proms |>
 
 Finally, we visualise the effect sizes for GAD-7 and PHQ-9 across the selected therapy types for depression treatment in England, showing trends for two reporting periods.
 
-```{r fig-example, echo=FALSE, fig.height = 6, fig.width = 8, fig.cap = "GAD-7 and PHQ-9 effect sizes by therapy type for depression treatment in England.", warning = FALSE}
+```{r}
+#| label: fig-example
+#| echo: false
+#| warning: false
+#| fig-height: 6
+#| fig-width: 8
+#| fig-cap: GAD-7 and PHQ-9 effect sizes by therapy type for depression treatment in
+#|   England.
 # Create figure
 fig_effect_sizes <- selected_proms |>
   ggplot(

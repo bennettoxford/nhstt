@@ -1,5 +1,5 @@
 [format]
 exclude = [
-  "vignettes/how-to-activity-performance-monthly.Rmd",
-  "vignettes/how-to-key-measures-annual.Rmd"
+  "vignettes/how-to-measures-monthly.qmd",
+  "vignettes/how-to-measures-annual.qmd"
 ]

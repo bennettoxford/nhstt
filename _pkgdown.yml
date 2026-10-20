@@ -64,6 +64,8 @@ navbar:
         - text: "Organisation metadata"
         - text: "NHS Talking Therapies providers"
           href: articles/metadata-ods.html
+    - text: "Data description"
+      href: articles/data-description.html
 reference:
   - title: "Monthly data"
     contents:
@@ -116,3 +118,7 @@ articles:
       - metadata-quarterly
       - metadata-annual
       - metadata-ods
+  - title: "Data description"
+    desc: "Checks of how the monthly, quarterly and annual reports compare"
+    contents:
+      - data-description

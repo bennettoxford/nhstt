@@ -1,18 +1,14 @@
 ---
 title: "How to use the annual key measures data"
-output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{how-to-key-measures-annual}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{how-to-measures-annual}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 > **Note:** This guide is for illustration purposes only and may contain errors. It demonstrates example usage of the dataset and functions, but results should not be interpreted as validated analyses.
 
@@ -23,7 +19,10 @@ We'll look at regional trends in depression referrals and finished treatments to
 
 We start by loading the necessary packages and downloading the annual key measures dataset with `get_measures_annual()`. This report contains annual performance indicators for NHS Talking Therapies services across England.
 
-```{r setup, message=FALSE, warning=FALSE}
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
 # Load packages
 library(nhstt)
 library(ggplot2)
@@ -43,7 +42,8 @@ measures_annual <- get_measures_annual(
 Here we filter the data to focus on received referrals and finished treatments at the regional level.
 This step requires careful exploration of the underlying data structure.
 
-```{r select-data}
+```{r}
+#| label: select-data
 # Select data for analysis
 selected_measures <- measures_annual |>
   filter(org_type == "Commissioning Region") |>
@@ -80,7 +80,13 @@ selected_measures <- selected_measures |>
 
 Finally, we visualise the trends over time for each region.
 
-```{r fig-example, echo=FALSE, fig.height = 12, fig.width = 8, fig.cap = "Trends for counts of referrals received and finished course of treatment for depression broken down by region."}
+```{r}
+#| label: fig-example
+#| echo: false
+#| fig-height: 12
+#| fig-width: 8
+#| fig-cap: Trends for counts of referrals received and finished course of treatment
+#|   for depression broken down by region.
 fig_dep_ref_tx_by_region <- selected_measures |>
   mutate(value = as.numeric(value)) |>
   ggplot(
