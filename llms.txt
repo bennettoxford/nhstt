@@ -156,16 +156,21 @@ Experimental helpers for creating, exploring, and visualising measures
 
 Step-by-step guides for analysing NHS TT data
 
-- [Exploring monthly changes in treatment end
-  codes](https://bennettoxford.github.io/nhstt/articles/how-to-activity-performance-monthly.md):
-- [How to use the annual key measures
-  data](https://bennettoxford.github.io/nhstt/articles/how-to-key-measures-annual.md):
-- [How to use the annual PROMs
-  data](https://bennettoxford.github.io/nhstt/articles/how-to-proms-annual.md):
+- [Treatment end
+  codes](https://bennettoxford.github.io/nhstt/articles/how-to-measures-monthly.md):
+- [Referrals and finished
+  treatments](https://bennettoxford.github.io/nhstt/articles/how-to-measures-annual.md):
+
+### Data descriptions
+
+Descriptions and checks of the NHS TT datasets
+
+- [Differences across reporting
+  periods](https://bennettoxford.github.io/nhstt/articles/data-description-counts.md):
 
 ### Metadata
 
-Metadata for monthly, quarterly and annual reports
+Metadata for monthly, quarterly, and annual reports
 
 - [Core
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.md):

@@ -15,8 +15,13 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="metadata-annual_files/libs/quarto-html/popper.min.js"></script><script src="metadata-annual_files/libs/quarto-html/tippy.umd.min.js"></script><link href="metadata-annual_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="metadata-annual_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<script src="metadata-annual_files/libs/core-js-2.5.3/shim.min.js"></script><script src="metadata-annual_files/libs/react-18.2.0/react.min.js"></script><script src="metadata-annual_files/libs/react-18.2.0/react-dom.min.js"></script><script src="metadata-annual_files/libs/reactwidget-2.0.0/react-tools.js"></script><link href="metadata-annual_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="metadata-annual_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="metadata-annual_files/libs/reactable-0.4.5/reactable.css" rel="stylesheet">
+<script src="metadata-annual_files/libs/reactable-binding-0.4.5/reactable.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Metadata for annual key measures">
+<meta property="og:image" content="https://bennettoxford.github.io/nhstt/logo.png">
 <!-- Privacy-friendly analytics by Plausible --><script async src="https://plausible.io/js/pa-eGtUj6yMT9xZ_NpjGZ0PD.js"></script><script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
@@ -44,11 +49,16 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides">
 <li><h6 class="dropdown-header" data-toc-skip>Monthly data</h6></li>
-    <li><a class="dropdown-item" href="../articles/how-to-activity-performance-monthly.html">Activity and performance</a></li>
+    <li><a class="dropdown-item" href="../articles/how-to-measures-monthly.html">Treatment end codes</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Annual data</h6></li>
-    <li><a class="dropdown-item" href="../articles/how-to-key-measures-annual.html">Key measures</a></li>
-    <li><a class="dropdown-item" href="../articles/how-to-proms-annual.html">PROMs</a></li>
+    <li><a class="dropdown-item" href="../articles/how-to-measures-annual.html">Referrals and finished treatments</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-data-descriptions" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Data descriptions</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-data-descriptions">
+<li><a class="dropdown-item" href="../articles/data-description-counts.html">Differences across reporting periods</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
@@ -80,75 +90,150 @@
 
 
   </div>
-</nav><div class="container template-article">
-
-
-
-<script src="metadata-annual_files/core-js-2.5.3/shim.min.js"></script><script src="metadata-annual_files/react-18.2.0/react.min.js"></script><script src="metadata-annual_files/react-18.2.0/react-dom.min.js"></script><script src="metadata-annual_files/reactwidget-2.0.0/react-tools.js"></script><link href="metadata-annual_files/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
-<script src="metadata-annual_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="metadata-annual_files/reactable-0.4.5/reactable.css" rel="stylesheet">
-<script src="metadata-annual_files/reactable-binding-0.4.5/reactable.js"></script><div class="row">
+</nav><div class="container template-quarto">
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Metadata for annual key measures</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/metadata-annual.Rmd" class="external-link"><code>vignettes/metadata-annual.Rmd</code></a></small>
-      <div class="d-none name"><code>metadata-annual.Rmd</code></div>
+
+
+
+
+      <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/metadata-annual.qmd" class="external-link"><code>vignettes/metadata-annual.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<blockquote>
-<p><strong>Note:</strong> This package currently only provides metadata
-for the most recent annual reporting period. Not all annual measures
-from the table below are currently available in the tidy data provided
-by this package - there are some inconsistencies across the years that
-we need to investigate first. We plan to implement all available
-measures for all years in the future.</p>
+
+
+
+
+
+    <blockquote>
+<p><strong>Note:</strong> This package currently only provides metadata for the most recent annual reporting period. Not all annual measures from the table below are currently available in the tidy data provided by this package - there are some inconsistencies across the years that we need to investigate first. We plan to implement all available measures for all years in the future.</p>
 </blockquote>
-<div class="section level2">
-<h2 id="measures">Measures<a class="anchor" aria-label="anchor" href="#measures"></a>
+<section class="level2"><h2 id="measures">Measures<a class="anchor" aria-label="anchor" href="#measures"></a>
 </h2>
-<p>The following table shows all available measures in the most recent
-annual key measures dataset.</p>
-<div class="reactable html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"field_name":[],"description":[]},"columns":[{"id":"field_name","name":"Column name and description","type":"character","cell":[]},{"id":"description","name":"description","type":"character","searchable":true,"show":false}],"sortable":false,"searchable":true,"defaultPageSize":10,"outlined":true,"striped":true,"dataKey":"e4ae48c548f0227603bd366c18c44d20"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>The following table shows all available measures in the most recent annual key measures dataset.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="reactable html-widget html-fill-item" id="htmlwidget-0fc3b37a54a922feedfd" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0fc3b37a54a922feedfd">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"field_name":[],"description":[]},"columns":[{"id":"field_name","name":"Column name and description","type":"character","cell":[]},{"id":"description","name":"description","type":"character","searchable":true,"show":false}],"sortable":false,"searchable":true,"defaultPageSize":10,"outlined":true,"striped":true,"dataKey":"e4ae48c548f0227603bd366c18c44d20"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
-<div class="section level2">
-<h2 id="breakdowns">Breakdowns<a class="anchor" aria-label="anchor" href="#breakdowns"></a>
+</div>
+</section><section class="level2"><h2 id="breakdowns">Breakdowns<a class="anchor" aria-label="anchor" href="#breakdowns"></a>
 </h2>
-<div class="section level3">
-<h3 id="organisational">Organisational<a class="anchor" aria-label="anchor" href="#organisational"></a>
+<section class="level3"><h3 id="organisational">Organisational<a class="anchor" aria-label="anchor" href="#organisational"></a>
 </h3>
-<p>The following table shows the standard organisational columns
-available for all breakdowns.</p>
-<div class="reactable html-widget html-fill-item" id="htmlwidget-e5c8c404fe174e4c81bd" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"field_name":[],"description":[]},"columns":[{"id":"field_name","name":"Column name and description","type":"character","cell":[]},{"id":"description","name":"description","type":"character","searchable":true,"show":false}],"sortable":false,"defaultPageSize":10,"outlined":true,"striped":true,"dataKey":"e4ae48c548f0227603bd366c18c44d20"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>The following table shows the standard organisational columns available for all breakdowns.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="reactable html-widget html-fill-item" id="htmlwidget-792715b2714a429c94a5" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-792715b2714a429c94a5">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"field_name":[],"description":[]},"columns":[{"id":"field_name","name":"Column name and description","type":"character","cell":[]},{"id":"description","name":"description","type":"character","searchable":true,"show":false}],"sortable":false,"defaultPageSize":10,"outlined":true,"striped":true,"dataKey":"e4ae48c548f0227603bd366c18c44d20"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
-<div class="section level3">
-<h3 id="demographic-clinical-and-treatment-delivery">Demographic, clinical, and treatment delivery<a class="anchor" aria-label="anchor" href="#demographic-clinical-and-treatment-delivery"></a>
+</div>
+</section><section class="level3"><h3 id="demographic-clinical-and-treatment-delivery">Demographic, clinical, and treatment delivery<a class="anchor" aria-label="anchor" href="#demographic-clinical-and-treatment-delivery"></a>
 </h3>
-<p>The following table shows all available demographic, clinical, and
-treatment delivery variables for breakdowns.</p>
+<p>The following table shows all available demographic, clinical, and treatment delivery variables for breakdowns.</p>
 <p>These three columns provide further options for breakdowns:</p>
 <ul>
 <li>
-<code>VariableType</code>: The type of variable by which the data
-are categorised.</li>
+<code>VariableType</code>: The type of variable by which the data are categorised.</li>
 <li>
-<code>VariableA</code>: The high-level variable values for the
-categories</li>
+<code>VariableA</code>: The high-level variable values for the categories</li>
 <li>
-<code>VariableB</code>: The sub-category (where applicable - NULL if
-not applicable)</li>
+<code>VariableB</code>: The sub-category (where applicable - NULL if not applicable)</li>
 </ul>
-<div class="reactable html-widget html-fill-item" id="htmlwidget-36aa3d2a04d42bbc2145" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"variable_type":[],"variable_a":[],"variable_b":[]},"columns":[{"id":"variable_type","name":"Variable type","type":"character","style":"function(rowInfo, column, state) {\n        const firstSorted = state.sorted[0]\n        // Merge cells if unsorted or sorting by variable_type\n        if (!firstSorted || firstSorted.id === 'variable_type') {\n          const prevRow = state.pageRows[rowInfo.viewIndex - 1]\n          if (prevRow && rowInfo.values['variable_type'] === prevRow['variable_type']) {\n            return { visibility: 'hidden' }\n          }\n        }\n        // Add border when variable_type changes\n        if (rowInfo.viewIndex > 0) {\n          const prevRow = state.pageRows[rowInfo.viewIndex - 1]\n          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {\n            return { borderTop: '1px solid #333' }\n          }\n        }\n      }"},{"id":"variable_a","name":"Variable A","type":"character","style":"function(rowInfo, column, state) {\n        // Add border when variable_type changes\n        if (rowInfo.viewIndex > 0) {\n          const prevRow = state.pageRows[rowInfo.viewIndex - 1]\n          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {\n            return { borderTop: '1px solid #333' }\n          }\n        }\n      }"},{"id":"variable_b","name":"Variable B","type":"character","style":"function(rowInfo, column, state) {\n        // Add border when variable_type changes\n        if (rowInfo.viewIndex > 0) {\n          const prevRow = state.pageRows[rowInfo.viewIndex - 1]\n          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {\n            return { borderTop: '1px solid #333' }\n          }\n        }\n      }"}],"sortable":false,"searchable":true,"defaultPageSize":10,"outlined":true,"striped":true,"dataKey":"e96f160ca687a2bc40fdfd2336476523"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style"],"jsHooks":[]}</script>
+<div class="cell">
+<div class="cell-output-display">
+<div class="reactable html-widget html-fill-item" id="htmlwidget-40e9fd8d04523f8ca815" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-40e9fd8d04523f8ca815">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"variable_type":[],"variable_a":[],"variable_b":[]},"columns":[{"id":"variable_type","name":"Variable type","type":"character","style":"function(rowInfo, column, state) {\n        const firstSorted = state.sorted[0]\n        // Merge cells if unsorted or sorting by variable_type\n        if (!firstSorted || firstSorted.id === 'variable_type') {\n          const prevRow = state.pageRows[rowInfo.viewIndex - 1]\n          if (prevRow && rowInfo.values['variable_type'] === prevRow['variable_type']) {\n            return { visibility: 'hidden' }\n          }\n        }\n        // Add border when variable_type changes\n        if (rowInfo.viewIndex > 0) {\n          const prevRow = state.pageRows[rowInfo.viewIndex - 1]\n          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {\n            return { borderTop: '1px solid #333' }\n          }\n        }\n      }"},{"id":"variable_a","name":"Variable A","type":"character","style":"function(rowInfo, column, state) {\n        // Add border when variable_type changes\n        if (rowInfo.viewIndex > 0) {\n          const prevRow = state.pageRows[rowInfo.viewIndex - 1]\n          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {\n            return { borderTop: '1px solid #333' }\n          }\n        }\n      }"},{"id":"variable_b","name":"Variable B","type":"character","style":"function(rowInfo, column, state) {\n        // Add border when variable_type changes\n        if (rowInfo.viewIndex > 0) {\n          const prevRow = state.pageRows[rowInfo.viewIndex - 1]\n          if (prevRow && rowInfo.values['variable_type'] !== prevRow['variable_type']) {\n            return { borderTop: '1px solid #333' }\n          }\n        }\n      }"}],"sortable":false,"searchable":true,"defaultPageSize":10,"outlined":true,"striped":true,"dataKey":"e96f160ca687a2bc40fdfd2336476523"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style"],"jsHooks":[]}</script>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+</section></section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
-
 
 
     <footer><div class="pkgdown-footer-left">

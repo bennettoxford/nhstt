@@ -2,16 +2,16 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
-  how-to-activity-performance-monthly: how-to-activity-performance-monthly.html
-  how-to-key-measures-annual: how-to-key-measures-annual.html
-  how-to-proms-annual: how-to-proms-annual.html
+  data-description-counts: data-description-counts.html
+  how-to-measures-annual: how-to-measures-annual.html
+  how-to-measures-monthly: how-to-measures-monthly.html
   metadata-annual: metadata-annual.html
   metadata-monthly-core: metadata-monthly-core.html
   metadata-monthly-ea: metadata-monthly-ea.html
   metadata-monthly-ltc: metadata-monthly-ltc.html
   metadata-ods: metadata-ods.html
   metadata-quarterly: metadata-quarterly.html
-last_built: 2026-10-16T13:50Z
+last_built: 2026-10-20T18:01Z
 urls:
   reference: https://bennettoxford.github.io/nhstt/reference
   article: https://bennettoxford.github.io/nhstt/articles

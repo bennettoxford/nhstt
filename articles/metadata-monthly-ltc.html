@@ -15,8 +15,13 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="metadata-monthly-ltc_files/libs/quarto-html/popper.min.js"></script><script src="metadata-monthly-ltc_files/libs/quarto-html/tippy.umd.min.js"></script><link href="metadata-monthly-ltc_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="metadata-monthly-ltc_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<script src="metadata-monthly-ltc_files/libs/core-js-2.5.3/shim.min.js"></script><script src="metadata-monthly-ltc_files/libs/react-18.2.0/react.min.js"></script><script src="metadata-monthly-ltc_files/libs/react-18.2.0/react-dom.min.js"></script><script src="metadata-monthly-ltc_files/libs/reactwidget-2.0.0/react-tools.js"></script><link href="metadata-monthly-ltc_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="metadata-monthly-ltc_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="metadata-monthly-ltc_files/libs/reactable-0.4.5/reactable.css" rel="stylesheet">
+<script src="metadata-monthly-ltc_files/libs/reactable-binding-0.4.5/reactable.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Long-term Condition measures">
+<meta property="og:image" content="https://bennettoxford.github.io/nhstt/logo.png">
 <!-- Privacy-friendly analytics by Plausible --><script async src="https://plausible.io/js/pa-eGtUj6yMT9xZ_NpjGZ0PD.js"></script><script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
@@ -44,11 +49,16 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides">
 <li><h6 class="dropdown-header" data-toc-skip>Monthly data</h6></li>
-    <li><a class="dropdown-item" href="../articles/how-to-activity-performance-monthly.html">Activity and performance</a></li>
+    <li><a class="dropdown-item" href="../articles/how-to-measures-monthly.html">Treatment end codes</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Annual data</h6></li>
-    <li><a class="dropdown-item" href="../articles/how-to-key-measures-annual.html">Key measures</a></li>
-    <li><a class="dropdown-item" href="../articles/how-to-proms-annual.html">PROMs</a></li>
+    <li><a class="dropdown-item" href="../articles/how-to-measures-annual.html">Referrals and finished treatments</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-data-descriptions" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Data descriptions</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-data-descriptions">
+<li><a class="dropdown-item" href="../articles/data-description-counts.html">Differences across reporting periods</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
@@ -80,34 +90,121 @@
 
 
   </div>
-</nav><div class="container template-article">
-
-
-
-<script src="metadata-monthly-ltc_files/core-js-2.5.3/shim.min.js"></script><script src="metadata-monthly-ltc_files/react-18.2.0/react.min.js"></script><script src="metadata-monthly-ltc_files/react-18.2.0/react-dom.min.js"></script><script src="metadata-monthly-ltc_files/reactwidget-2.0.0/react-tools.js"></script><link href="metadata-monthly-ltc_files/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
-<script src="metadata-monthly-ltc_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="metadata-monthly-ltc_files/reactable-0.4.5/reactable.css" rel="stylesheet">
-<script src="metadata-monthly-ltc_files/reactable-binding-0.4.5/reactable.js"></script><div class="row">
+</nav><div class="container template-quarto">
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Long-term Condition measures</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/metadata-monthly-ltc.Rmd" class="external-link"><code>vignettes/metadata-monthly-ltc.Rmd</code></a></small>
-      <div class="d-none name"><code>metadata-monthly-ltc.Rmd</code></div>
+
+
+
+
+      <small class="dont-index">Source: <a href="https://github.com/bennettoxford/nhstt/blob/main/vignettes/metadata-monthly-ltc.qmd" class="external-link"><code>vignettes/metadata-monthly-ltc.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<blockquote>
-<p><strong>Note:</strong> This package currently only provides metadata
-for the most recent monthly reporting period. Older monthly periods
-might have less, or different measures.</p>
+
+
+
+
+
+    <blockquote>
+<p><strong>Note:</strong> This package currently only provides metadata for the most recent monthly reporting period. Older monthly periods might have less, or different measures.</p>
 </blockquote>
-<p>In total there are <strong>12</strong> monthly Long-term Condition
-(LTC) measures:</p>
-<div class="reactable html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"measure_id":["M271","M272","M273","M274","M275","M276","M277","M278","M283","M284","M285","M286"],"description":["Count of referrals with a first attended integrated care contact date in the reporting period","Count of referrals with a first attended integrated treatment care contact in the reporting period","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway.","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway.","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started at caseness using standard moved to recovery calculation.","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started ‘not at caseness’ using standard moved to recovery calculation.","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores.","Proportion of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway that moved to recovery using the standard recovery calculation,  i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage.","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started 'at caseness' using standard moved to recovery calculation.","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started ‘not at caseness’ using standard moved to recovery calculation.","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores.","Proportion of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway that moved to recovery using the standard recovery calculation,  i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage."]},"columns":[{"id":"measure_id","name":"Measure ID and description","type":"character","cell":[{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M271"]},": ","Count of referrals with a first attended integrated care contact date in the reporting period"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M272"]},": ","Count of referrals with a first attended integrated treatment care contact in the reporting period"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M273"]},": ","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M274"]},": ","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M275"]},": ","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started at caseness using standard moved to recovery calculation."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M276"]},": ","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started ‘not at caseness’ using standard moved to recovery calculation."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M277"]},": ","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M278"]},": ","Proportion of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway that moved to recovery using the standard recovery calculation,  i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M283"]},": ","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started 'at caseness' using standard moved to recovery calculation."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M284"]},": ","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started ‘not at caseness’ using standard moved to recovery calculation."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M285"]},": ","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M286"]},": ","Proportion of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway that moved to recovery using the standard recovery calculation,  i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage."]}]},{"id":"description","name":"description","type":"character","searchable":true,"show":false}],"sortable":false,"searchable":true,"defaultPageSize":10,"outlined":true,"striped":true,"dataKey":"1c72c0a546a2fa247b718958a114cd28"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script></main>
+<p>In total there are <strong>12</strong> monthly Long-term Condition (LTC) measures:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="reactable html-widget html-fill-item" id="htmlwidget-07b8fe22888c7869cd55" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-07b8fe22888c7869cd55">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"measure_id":["M271","M272","M273","M274","M275","M276","M277","M278","M283","M284","M285","M286"],"description":["Count of referrals with a first attended integrated care contact date in the reporting period","Count of referrals with a first attended integrated treatment care contact in the reporting period","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway.","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway.","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started at caseness using standard moved to recovery calculation.","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started ‘not at caseness’ using standard moved to recovery calculation.","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores.","Proportion of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway that moved to recovery using the standard recovery calculation,  i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage.","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started 'at caseness' using standard moved to recovery calculation.","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started ‘not at caseness’ using standard moved to recovery calculation.","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores.","Proportion of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway that moved to recovery using the standard recovery calculation,  i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage."]},"columns":[{"id":"measure_id","name":"Measure ID and description","type":"character","cell":[{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M271"]},": ","Count of referrals with a first attended integrated care contact date in the reporting period"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M272"]},": ","Count of referrals with a first attended integrated treatment care contact in the reporting period"]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M273"]},": ","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M274"]},": ","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M275"]},": ","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started at caseness using standard moved to recovery calculation."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M276"]},": ","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and started ‘not at caseness’ using standard moved to recovery calculation."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M277"]},": ","Count of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M278"]},": ","Proportion of referrals that finished a course of treatment in the reporting period and had at least one attended integrated care contact in the pathway that moved to recovery using the standard recovery calculation,  i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M283"]},": ","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started 'at caseness' using standard moved to recovery calculation."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M284"]},": ","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and started ‘not at caseness’ using standard moved to recovery calculation."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M285"]},": ","Count of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway and moved to recovery using the standard recovery calculation, i.e. not including additional persistent physical symptoms (PPS) scores."]},{"name":"div","attribs":{},"children":[{"name":"code","attribs":{"style":{"color":"#2A788EFF"}},"children":["M286"]},": ","Proportion of referrals that finished a course of treatment in the reporting period and had no attended integrated care contacts in the pathway that moved to recovery using the standard recovery calculation,  i.e. not including additional persistent physical symptoms (PPS) scores. expressed as a percentage."]}]},{"id":"description","name":"description","type":"character","searchable":true,"show":false}],"sortable":false,"searchable":true,"defaultPageSize":10,"outlined":true,"striped":true,"dataKey":"1c72c0a546a2fa247b718958a114cd28"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
 </div>
 
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main>
+</div>
 
 
     <footer><div class="pkgdown-footer-left">
