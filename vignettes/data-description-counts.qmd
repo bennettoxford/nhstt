@@ -1,0 +1,156 @@
+---
+title: "Comparing counts across reporting periods"
+vignette: >
+  %\VignetteIndexEntry{Comparing counts across reporting periods}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    echo: false
+    collapse: true
+    comment: '#>'
+    message: false
+    warning: false
+---
+
+> **Note:** This is a first exploratory description of the data. It may contain errors.
+
+NHS Talking Therapies (NHS TT) publishes monthly, quarterly, and annual reports.
+Without double counting, the monthly and quarterly counts in a financial year should add up to the annual count.
+
+```{r}
+#| label: setup
+library(nhstt)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(gt)
+
+# The monthly and quarterly reports use measure IDs. The annual report uses names
+measures <- tribble(
+  ~measure_id , ~measure_name               , ~label                         ,
+  "M001"      , "referrals_received"        , "Referrals received"           ,
+  "M076"      , "finished_course_treatment" , "Finished course of treatment" ,
+  "M191"      , "recovery"                  , "Recovery"                     ,
+  "M193"      , "reliable_recovery"         , "Reliable recovery"
+)
+
+# NHS financial years run from April to March
+financial_year <- function(date) {
+  year_start <- year(date) - (month(date) < 4)
+  paste0(year_start, "-", substr(year_start + 1, 3, 4))
+}
+```
+
+```{r}
+#| label: load-data
+annual_england <- get_measures_annual() |>
+  filter(
+    org_type == "England",
+    variable_type == "Total",
+    measure_name %in% measures$measure_name,
+    measure_statistic == "count"
+  ) |>
+  mutate(value = as.numeric(value))
+
+monthly_england <- get_measures_monthly() |>
+  filter(
+    group_type == "England",
+    measure_id %in% measures$measure_id,
+    measure_statistic == "count"
+  )
+
+quarterly_england <- get_measures_quarterly() |>
+  filter(
+    org_type == "England",
+    variable_type == "Total",
+    measure_id %in% measures$measure_id,
+    measure_statistic == "count"
+  )
+```
+
+```{r}
+#| label: compare
+annual <- annual_england |>
+  inner_join(measures, by = "measure_name") |>
+  transmute(financial_year = reporting_period, label, annual = value)
+
+comparison <- bind_rows(
+  monthly = monthly_england,
+  quarterly = quarterly_england,
+  .id = "report"
+) |>
+  inner_join(select(measures, measure_id, label), by = "measure_id") |>
+  mutate(financial_year = financial_year(start_date)) |>
+  summarise(
+    summed = sum(value),
+    n_periods = n_distinct(reporting_period),
+    .by = c(report, financial_year, label)
+  ) |>
+  # Keep complete financial years only
+  filter(n_periods == if_else(report == "monthly", 12, 4)) |>
+  select(-n_periods) |>
+  inner_join(annual, by = c("financial_year", "label")) |>
+  mutate(
+    label = factor(label, levels = measures$label),
+    difference = summed - annual,
+    percent_difference = 100 * difference / annual
+  ) |>
+  arrange(label, financial_year, report)
+
+year_range <- function(which_report) {
+  years <- comparison$financial_year[comparison$report == which_report]
+  paste(range(years), collapse = " to ")
+}
+```
+
+@tbl-comparison compares the annual counts (1 April to 31 March) with the sum of the monthly and quarterly counts for the same time interval.
+Double counting would make the sums higher than the annual count.
+Late data submissions might make them lower.
+The monthly and quarterly sums differ from the annual count by `r sprintf("%+.1f%%", min(comparison$percent_difference))` to `r sprintf("%+.1f%%", max(comparison$percent_difference))`.
+
+```{r}
+#| label: tbl-comparison
+#| tbl-cap: Annual, monthly, and quarterly counts for England by NHS financial year (1 April to 31 March).
+comparison |>
+  pivot_wider(
+    names_from = report,
+    values_from = c(summed, difference, percent_difference),
+    names_vary = "slowest"
+  ) |>
+  gt(groupname_col = "label", rowname_col = "financial_year") |>
+  tab_spanner("Monthly", ends_with("_monthly")) |>
+  tab_spanner("Quarterly", ends_with("_quarterly")) |>
+  cols_label(
+    annual = "Annual",
+    starts_with("summed") ~ "Sum",
+    starts_with("difference") ~ "Δ",
+    starts_with("percent_difference") ~ "Δ (%)"
+  ) |>
+  fmt_integer(c(annual, starts_with("summed"))) |>
+  fmt_integer(starts_with("difference"), force_sign = TRUE) |>
+  fmt_number(
+    starts_with("percent_difference"),
+    decimals = 2,
+    force_sign = TRUE
+  ) |>
+  sub_missing() |>
+  tab_style(
+    cell_text(weight = "bold"),
+    locations = list(
+      cells_column_labels(),
+      cells_column_spanners(),
+      cells_row_groups()
+    )
+  ) |>
+  tab_footnote(
+    "Δ: difference from the annual count."
+  ) |>
+  tab_source_note(
+    "Each measure counts a referral once, by its received date or end date. We include complete financial years only."
+  ) |>
+  tab_style(
+    cell_text(align = "left"),
+    locations = list(cells_footnotes(), cells_source_notes())
+  )
+```
