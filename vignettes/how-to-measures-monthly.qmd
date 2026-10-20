@@ -1,12 +1,16 @@
 ---
-title: "Exploring monthly changes in treatment end codes"
+title: "Treatment end codes"
 bibliography: references.bib
 link-citations: true
-output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Exploring monthly changes in treatment end codes}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Treatment end codes}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    echo: false
+    message: false
+    warning: false
 ---
 
 > This vignette provides the complete R code used to reproduce the analyses in our blog post: [From public NHS Talking Therapies reports to research insights: Introducing the *nhstt* R package](https://talkingtherapies.opensafely.org/from-public-nhs-talking-therapies-reports-to-research-insights-introducing-the-nhstt-r-package/).
@@ -26,7 +30,6 @@ The examples are descriptive and intended to illustrate what can be done with th
 ```{r}
 #| label: setup
 #| include: false
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(nhstt)
 library(ggplot2)
 library(dplyr)
