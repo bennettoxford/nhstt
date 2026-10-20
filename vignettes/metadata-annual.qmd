@@ -1,22 +1,20 @@
 ---
 title: "Metadata for annual key measures"
-output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{metadata-annual}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 > **Note:** This package currently only provides metadata for the most recent annual reporting period. Not all annual measures from the table below are currently available in the tidy data provided by this package - there are some inconsistencies across the years that we need to investigate first. We plan to implement all available measures for all years in the future.
 
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
 library(nhstt)
 library(dplyr)
 library(reactable)
@@ -64,7 +62,9 @@ metadata_variables_annual <- get_metadata_variables_annual() |>
 
 The following table shows all available measures in the most recent annual key measures dataset.
 
-```{r tab-key-measures-measures, echo=FALSE}
+```{r}
+#| label: tab-key-measures-measures
+#| echo: false
 
 reactable(
   metadata_measures_annual_measures,
@@ -99,7 +99,9 @@ reactable(
 
 The following table shows the standard organisational columns available for all breakdowns.
 
-```{r tab-key-measures-standard, echo=FALSE}
+```{r}
+#| label: tab-key-measures-standard
+#| echo: false
 
 reactable(
   metadata_measures_annual_standard,
@@ -139,7 +141,9 @@ These three columns provide further options for breakdowns:
 - `VariableB`: The sub-category (where applicable - NULL if not applicable)
 
 
-```{r tab-key-measures-variables, echo=FALSE}
+```{r}
+#| label: tab-key-measures-variables
+#| echo: false
 # Following the merge cells example at:
 # https://glin.github.io/reactable/articles/cookbook/cookbook.html#merge-cells
 reactable(

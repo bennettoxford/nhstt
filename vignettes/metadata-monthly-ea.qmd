@@ -1,38 +1,38 @@
 ---
-title: "Core measures"
-output: rmarkdown::html_vignette
+title: "Employment Advisor (EA) measures"
 vignette: >
-  %\VignetteIndexEntry{Core measures}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Employment Advisor measures}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 > **Note:** This package currently only provides metadata for the most recent monthly reporting period. Older monthly periods might have less, or different measures.
 
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
 library(nhstt)
 library(dplyr)
 library(reactable)
 
-# Metadata for monthly core measures
-metadata_monthly_core <- get_metadata_monthly() |>
-  filter(measure_type == "Core") |>
+# Metadata for monthly EA measures
+metadata_monthly_ea <- get_metadata_monthly() |>
+  filter(measure_type == "EA") |>
   select(measure_id, description)
 ```
 
-In total there are **`r length(unique(metadata_monthly_core$measure_id))`** monthly _core_ measures:
+In total there are **`r length(unique(metadata_monthly_ea$measure_id))`** monthly Employment Advisor (EA) measures:
 
-```{r tab-measures-monthly-core, echo=FALSE}
+```{r}
+#| label: tab-measures-monthly-ea
+#| echo: false
 
 reactable(
-  metadata_monthly_core,
+  metadata_monthly_ea,
   searchable = TRUE,
   sortable = FALSE,
   defaultPageSize = 10,
@@ -40,7 +40,7 @@ reactable(
     measure_id = colDef(
       name = "Measure ID and description",
       cell = function(value, index) {
-        description <- metadata_monthly_core$description[index]
+        description <- metadata_monthly_ea$description[index]
         htmltools::tags$div(
           htmltools::tags$code(
             style = "color: #2A788EFF;",

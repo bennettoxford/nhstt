@@ -1,20 +1,18 @@
 ---
 title: "NHS Talking Therapies providers metadata"
-output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{metadata-ods}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
 library(nhstt)
 library(dplyr)
 library(reactable)
@@ -35,7 +33,9 @@ metadata_ods <- get_metadata_providers(use_cache = TRUE) |>
 
 This table shows all NHS Talking Therapies providers available in the annual data reports and information about their location (town, ICB, region). The data comes from the [NHS Organisation Data Service](https://www.odsdatasearchandexport.nhs.uk/).
 
-```{r ods-providers, echo=FALSE}
+```{r}
+#| label: ods-providers
+#| echo: false
 reactable(
   metadata_ods,
   searchable = TRUE,

@@ -1,38 +1,38 @@
 ---
-title: "Long-term Condition measures"
-output: rmarkdown::html_vignette
+title: "Core measures"
 vignette: >
-  %\VignetteIndexEntry{Long-term Condition measures}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Core measures}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 > **Note:** This package currently only provides metadata for the most recent monthly reporting period. Older monthly periods might have less, or different measures.
 
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
 library(nhstt)
 library(dplyr)
 library(reactable)
 
-# Metadata for monthly LTC measures
-metadata_monthly_ltc <- get_metadata_monthly() |>
-  filter(measure_type == "LTC") |>
+# Metadata for monthly core measures
+metadata_monthly_core <- get_metadata_monthly() |>
+  filter(measure_type == "Core") |>
   select(measure_id, description)
 ```
 
-In total there are **`r length(unique(metadata_monthly_ltc$measure_id))`** monthly Long-term Condition (LTC) measures:
+In total there are **`r length(unique(metadata_monthly_core$measure_id))`** monthly _core_ measures:
 
-```{r tab-measures-monthly-ltc, echo=FALSE}
+```{r}
+#| label: tab-measures-monthly-core
+#| echo: false
 
 reactable(
-  metadata_monthly_ltc,
+  metadata_monthly_core,
   searchable = TRUE,
   sortable = FALSE,
   defaultPageSize = 10,
@@ -40,7 +40,7 @@ reactable(
     measure_id = colDef(
       name = "Measure ID and description",
       cell = function(value, index) {
-        description <- metadata_monthly_ltc$description[index]
+        description <- metadata_monthly_core$description[index]
         htmltools::tags$div(
           htmltools::tags$code(
             style = "color: #2A788EFF;",
