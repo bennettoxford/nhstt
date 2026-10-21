@@ -59,17 +59,17 @@ by each dataset.
 
 | Function | First period | Last period | Periods | Version |
 |:---|:---|:---|---:|---:|
-| `get_measures_annual()` | 2017-18 | 2024-25 | 8 | [0.3.0](https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.3.0/measures_annual.parquet) |
-| `get_proms_annual()` | 2019-20 | 2024-25 | 6 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.2.0/proms_annual.parquet) |
-| `get_therapy_position_annual()` | 2019-20 | 2024-25 | 6 | [0.1.0](https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.1.0/therapy_position_annual.parquet) |
+| `get_measures_annual()` | 2017-18 | 2025-26 | 9 | [0.4.0](https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.4.0/measures_annual.parquet) |
+| `get_proms_annual()` | 2019-20 | 2025-26 | 7 | [0.3.0](https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.3.0/proms_annual.parquet) |
+| `get_therapy_position_annual()` | 2019-20 | 2025-26 | 7 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.2.0/therapy_position_annual.parquet) |
 
 ### Metadata
 
 | Function | First period | Last period | Periods | Version |
 |:---|:---|:---|---:|---:|
 | `get_metadata_monthly()` | 2026-07 | 2026-07 | 1 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.2.0/metadata_measures_monthly.parquet) |
-| `get_metadata_measures_annual()` | 2024-25 | 2024-25 | 1 | [0.1.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-annual-v0.1.0/metadata_measures_annual.parquet) |
-| `get_metadata_variables_annual()` | 2024-25 | 2024-25 | 1 | [0.1.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-variables-annual-v0.1.0/metadata_variables_annual.parquet) |
+| `get_metadata_measures_annual()` | 2024-25 | 2025-26 | 2 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-annual-v0.2.0/metadata_measures_annual.parquet) |
+| `get_metadata_variables_annual()` | 2024-25 | 2025-26 | 2 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-variables-annual-v0.2.0/metadata_variables_annual.parquet) |
 | `get_metadata_providers()` | current | current | 1 | [0.1.0](https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.1.0/metadata_providers.parquet) |
 
 ## For developers
