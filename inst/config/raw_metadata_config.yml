@@ -2,6 +2,9 @@
 archives:
   # Annual metadata files (contain multiple sheets)
   annual_metadata:
+    - period: "2025-26"
+      url: "https://files.digital.nhs.uk/02/C07466/psych-ther-ann-2025-26-meta.xlsx"
+      format: "xlsx"
     - period: "2024-25"
       url: "https://files.digital.nhs.uk/BE/AAF6D0/psych-ther-ann-2024-25-meta.xlsx"
       format: "xlsx"
@@ -21,6 +24,9 @@ datasets:
     license: "OGL-UK-3.0"
     archive: "annual_metadata"
     sources:
+      - period: "2025-26"
+        sheet: "Data measures (main)"
+        range: "A10:D57"
       - period: "2024-25"
         sheet: "Data measures (main)"
         range: "A10:D57"
@@ -36,6 +42,9 @@ datasets:
     license: "OGL-UK-3.0"
     archive: "annual_metadata"
     sources:
+      - period: "2025-26"
+        sheet: "Data measures (additional)"
+        range: "A10:E137"
       - period: "2024-25"
         sheet: "Data measures (additional)"
         range: "A10:E137"
@@ -51,6 +60,9 @@ datasets:
     license: "OGL-UK-3.0"
     archive: "annual_metadata"
     sources:
+      - period: "2025-26"
+        sheet: "Variables (main)"
+        range: "A10:G271"
       - period: "2024-25"
         sheet: "Variables (main)"
         range: "A10:G271"
@@ -66,6 +78,9 @@ datasets:
     license: "OGL-UK-3.0"
     archive: "annual_metadata"
     sources:
+      - period: "2025-26"
+        sheet: "Variables (additional)"
+        range: "A10:H308"
       - period: "2024-25"
         sheet: "Variables (additional)"
         range: "A10:H308"
