@@ -29,17 +29,17 @@ available_nhstt_reports()
 #> # A tibble: 13 × 8
 #>    dataset       frequency title get_function first_period last_period n_periods
 #>    <chr>         <chr>     <chr> <chr>        <chr>        <chr>           <int>
-#>  1 measures_ann… annual    Key … get_measure… 2017-18      2024-25             8
-#>  2 proms_annual  annual    Pati… get_proms_a… 2019-20      2024-25             6
-#>  3 therapy_posi… annual    Posi… get_therapy… 2019-20      2024-25             6
+#>  1 measures_ann… annual    Key … get_measure… 2017-18      2025-26             9
+#>  2 proms_annual  annual    Pati… get_proms_a… 2019-20      2025-26             7
+#>  3 therapy_posi… annual    Posi… get_therapy… 2019-20      2025-26             7
 #>  4 measures_mon… monthly   Acti… get_measure… 2021-01      2026-07            67
 #>  5 measures_icb… quarterly Acti… get_measure… 2022-23-q2   2026-27-q1         16
 #>  6 measures_pro… quarterly Acti… get_measure… 2022-23-q2   2026-27-q1         16
 #>  7 measures_sub… quarterly Acti… get_measure… 2022-23-q2   2026-27-q1         16
-#>  8 metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1
-#>  9 metadata_mea… annual    Annu… get_metadat… 2024-25      2024-25             1
-#> 10 metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1
-#> 11 metadata_var… annual    Annu… get_metadat… 2024-25      2024-25             1
+#>  8 metadata_mea… annual    Annu… get_metadat… 2024-25      2025-26             2
+#>  9 metadata_mea… annual    Annu… get_metadat… 2024-25      2025-26             2
+#> 10 metadata_var… annual    Annu… get_metadat… 2024-25      2025-26             2
+#> 11 metadata_var… annual    Annu… get_metadat… 2024-25      2025-26             2
 #> 12 metadata_mea… monthly   Mont… get_metadat… 2026-07      2026-07             1
 #> 13 metadata_pro… live      Prov… get_metadat… current      current             1
 #> # ℹ 1 more variable: version <chr>
