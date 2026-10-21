@@ -21,6 +21,7 @@ Suggests:
     knitr,
     lubridate,
     paletteer,
+    patchwork,
     quarto,
     reactable,
     readr,
