@@ -158,6 +158,8 @@ Step-by-step guides for analysing NHS TT data
 
 - [Treatment end
   codes](https://bennettoxford.github.io/nhstt/articles/how-to-measures-monthly.md):
+- [Reliable recovery by age
+  group](https://bennettoxford.github.io/nhstt/articles/how-to-measures-quarterly.md):
 - [Referrals and finished
   treatments](https://bennettoxford.github.io/nhstt/articles/how-to-measures-annual.md):
 

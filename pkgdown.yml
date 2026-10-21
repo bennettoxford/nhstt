@@ -5,13 +5,14 @@ articles:
   data-description-counts: data-description-counts.html
   how-to-measures-annual: how-to-measures-annual.html
   how-to-measures-monthly: how-to-measures-monthly.html
+  how-to-measures-quarterly: how-to-measures-quarterly.html
   metadata-annual: metadata-annual.html
   metadata-monthly-core: metadata-monthly-core.html
   metadata-monthly-ea: metadata-monthly-ea.html
   metadata-monthly-ltc: metadata-monthly-ltc.html
   metadata-ods: metadata-ods.html
   metadata-quarterly: metadata-quarterly.html
-last_built: 2026-10-21T07:42Z
+last_built: 2026-10-21T10:27Z
 urls:
   reference: https://bennettoxford.github.io/nhstt/reference
   article: https://bennettoxford.github.io/nhstt/articles
