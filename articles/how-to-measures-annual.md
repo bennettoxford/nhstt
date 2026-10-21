@@ -25,11 +25,31 @@ library(ggplot2)
 library(dplyr)
 library(scales)
 library(stringr)
+library(patchwork)
+
+# Measures to analyse, with labels for the figure
+selected_measure_labels <- c(
+  referrals_received = "Referrals received",
+  finished_course_treatment = "Finished course of treatment"
+)
+
+# Filters for data selection
+selected_org_type <- "Commissioning Region"
+excluded_org_name <- "UNKNOWN"
+selected_measure_statistic <- "count"
+selected_variable_a <- "Depression"
 
 # Get measures_annual data
-# When running this for the first time it will download and tidy the reports
 measures_annual <- get_measures_annual(
-  periods = c("2022-23", "2023-24", "2024-25")
+  periods = c(
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  )
 )
 ```
 
@@ -43,13 +63,11 @@ of the underlying data structure.
 
 # Select data for analysis
 selected_measures <- measures_annual |>
-  filter(org_type == "Commissioning Region") |>
-  filter(!org_name == "UNKNOWN") |>
-  filter(
-    measure_name %in% c("referrals_received", "finished_course_treatment")
-  ) |>
-  filter(measure_statistic == "count") |>
-  filter(variable_a == "Depression") |>
+  filter(org_type == selected_org_type) |>
+  filter(org_name != excluded_org_name) |>
+  filter(measure_name %in% names(selected_measure_labels)) |>
+  filter(measure_statistic == selected_measure_statistic) |>
+  filter(variable_a == selected_variable_a) |>
   select(
     start_date,
     end_date,
@@ -67,8 +85,8 @@ selected_measures <- selected_measures |>
     org_name = str_replace_all(org_name, "\\b(Of|And)\\b", tolower),
     measure_name = factor(
       measure_name,
-      levels = c("referrals_received", "finished_course_treatment"),
-      labels = c("Referrals received", "Finished course of treatment")
+      levels = names(selected_measure_labels),
+      labels = selected_measure_labels
     )
   )
 ```

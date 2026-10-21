@@ -120,11 +120,31 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Measures to analyse, with labels for the figure</span></span>
+<span><span class="va">selected_measure_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  referrals_received <span class="op">=</span> <span class="st">"Referrals received"</span>,</span>
+<span>  finished_course_treatment <span class="op">=</span> <span class="st">"Finished course of treatment"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Filters for data selection</span></span>
+<span><span class="va">selected_org_type</span> <span class="op">&lt;-</span> <span class="st">"Commissioning Region"</span></span>
+<span><span class="va">excluded_org_name</span> <span class="op">&lt;-</span> <span class="st">"UNKNOWN"</span></span>
+<span><span class="va">selected_measure_statistic</span> <span class="op">&lt;-</span> <span class="st">"count"</span></span>
+<span><span class="va">selected_variable_a</span> <span class="op">&lt;-</span> <span class="st">"Depression"</span></span>
 <span></span>
 <span><span class="co"># Get measures_annual data</span></span>
-<span><span class="co"># When running this for the first time it will download and tidy the reports</span></span>
 <span><span class="va">measures_annual</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_measures_annual.html">get_measures_annual</a></span><span class="op">(</span></span>
-<span>  periods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2022-23"</span>, <span class="st">"2023-24"</span>, <span class="st">"2024-25"</span><span class="op">)</span></span>
+<span>  periods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"2019-20"</span>,</span>
+<span>    <span class="st">"2020-21"</span>,</span>
+<span>    <span class="st">"2021-22"</span>,</span>
+<span>    <span class="st">"2022-23"</span>,</span>
+<span>    <span class="st">"2023-24"</span>,</span>
+<span>    <span class="st">"2024-25"</span>,</span>
+<span>    <span class="st">"2025-26"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 </section><section class="level2"><h2 id="select-data-for-analysis">Select data for analysis<a class="anchor" aria-label="anchor" href="#select-data-for-analysis"></a>
@@ -134,13 +154,11 @@
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select data for analysis</span></span>
 <span><span class="va">selected_measures</span> <span class="op">&lt;-</span> <span class="va">measures_annual</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_type</span> <span class="op">==</span> <span class="st">"Commissioning Region"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">org_name</span> <span class="op">==</span> <span class="st">"UNKNOWN"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>    <span class="va">measure_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"referrals_received"</span>, <span class="st">"finished_course_treatment"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_statistic</span> <span class="op">==</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_a</span> <span class="op">==</span> <span class="st">"Depression"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_type</span> <span class="op">==</span> <span class="va">selected_org_type</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_name</span> <span class="op">!=</span> <span class="va">excluded_org_name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">selected_measure_labels</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">measure_statistic</span> <span class="op">==</span> <span class="va">selected_measure_statistic</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_a</span> <span class="op">==</span> <span class="va">selected_variable_a</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
 <span>    <span class="va">start_date</span>,</span>
 <span>    <span class="va">end_date</span>,</span>
@@ -158,8 +176,8 @@
 <span>    org_name <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace_all</a></span><span class="op">(</span><span class="va">org_name</span>, <span class="st">"\\b(Of|And)\\b"</span>, <span class="va">tolower</span><span class="op">)</span>,</span>
 <span>    measure_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
 <span>      <span class="va">measure_name</span>,</span>
-<span>      levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"referrals_received"</span>, <span class="st">"finished_course_treatment"</span><span class="op">)</span>,</span>
-<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Referrals received"</span>, <span class="st">"Finished course of treatment"</span><span class="op">)</span></span>
+<span>      levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">selected_measure_labels</span><span class="op">)</span>,</span>
+<span>      labels <span class="op">=</span> <span class="va">selected_measure_labels</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </div>
@@ -170,7 +188,7 @@
 <div class="cell-output-display">
 <div id="fig-example" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig"><div aria-describedby="fig-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="how-to-measures-annual_files/figure-html/fig-example-1.png" width="768">
+<img src="how-to-measures-annual_files/figure-html/fig-example-1.png" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure 1: Trends for counts of referrals received and finished course of treatment for depression broken down by region.
