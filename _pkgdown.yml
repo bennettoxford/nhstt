@@ -38,6 +38,10 @@ navbar:
         - text: "Treatment end codes"
           href: articles/how-to-measures-monthly.html
         - text: -------
+        - text: "Quarterly data"
+        - text: "Reliable recovery by age group"
+          href: articles/how-to-measures-quarterly.html
+        - text: -------
         - text: "Annual data"
         - text: "Referrals and finished treatments"
           href: articles/how-to-measures-annual.html
@@ -108,6 +112,7 @@ articles:
     desc: "Step-by-step guides for analysing NHS TT data"
     contents:
       - how-to-measures-monthly
+      - how-to-measures-quarterly
       - how-to-measures-annual
   - title: "Data descriptions"
     desc: "Descriptions and checks of the NHS TT datasets"
