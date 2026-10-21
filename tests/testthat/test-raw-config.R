@@ -155,7 +155,9 @@ test_that("list_available_periods includes metadata annual periods", {
   )
 
   expect_true("2024-25" %in% measures_periods)
+  expect_true("2025-26" %in% measures_periods)
   expect_true("2024-25" %in% variables_periods)
+  expect_true("2025-26" %in% variables_periods)
 })
 
 test_that("list_available_periods returns financial year format", {
@@ -351,8 +353,8 @@ test_that("available_nhstt_reports shows correct period counts", {
     reports$dataset == "measures_annual" & reports$frequency == "annual",
   ]
 
-  # Should have 8 annual periods (2017-18 through 2024-25)
-  expect_equal(km_annual$n_periods, 8)
+  # Should have 9 annual periods (2017-18 through 2025-26)
+  expect_equal(km_annual$n_periods, 9)
 })
 
 test_that("available_nhstt_reports shows correct first and last periods", {
@@ -362,7 +364,7 @@ test_that("available_nhstt_reports shows correct first and last periods", {
   ]
 
   expect_equal(km_annual$first_period, "2017-18")
-  expect_equal(km_annual$last_period, "2024-25")
+  expect_equal(km_annual$last_period, "2025-26")
 })
 
 test_that("available_nhstt_reports shows correct period counts for measures_monthly", {

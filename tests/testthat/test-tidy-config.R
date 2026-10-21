@@ -302,6 +302,42 @@ test_that("tidy_dataset snapshot test for column names (measures_annual)", {
   expect_snapshot(names(result))
 })
 
+test_that("tidy_dataset converts value to numeric (measures_annual)", {
+  raw_list <- load_raw_data("measures_annual", "2025-26", "annual")
+  result <- tidy_dataset(raw_list, "measures_annual", "annual")
+
+  expect_type(result$value, "double")
+  referrals <- result$value[
+    result$variable_type == "Total" &
+      result$measure_name == "referrals_received"
+  ]
+  expect_equal(referrals, 1813303)
+})
+
+test_that("tidy_dataset harmonises relabelled values (measures_annual)", {
+  raw_list <- load_raw_data(
+    "measures_annual",
+    c("2017-18", "2022-23"),
+    "annual"
+  )
+  raw_list[["2017-18"]]$VariableA[1] <- "Received only LI therapy"
+  raw_list[["2017-18"]]$VariableB[1] <- "Mean Wait"
+  raw_list[["2022-23"]]$VariableA[1] <- "Accessing services"
+  raw_list[["2022-23"]]$VariableB[1] <- "Generalized anxiety disorder"
+  result <- tidy_dataset(raw_list, "measures_annual", "annual")
+
+  expect_true(all(
+    c("Received only low intensity therapy", "First treatment") %in%
+      result$variable_a
+  ))
+  expect_true(all(
+    c("Mean wait", "Generalised anxiety disorder") %in% result$variable_b
+  ))
+  expect_false(any(
+    c("Received only LI therapy", "Accessing services") %in% result$variable_a
+  ))
+})
+
 test_that("tidy_dataset converts to long format (measures_annual)", {
   raw_list <- load_raw_data("measures_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "measures_annual", "annual")
@@ -313,12 +349,15 @@ test_that("tidy_dataset converts to long format (measures_annual)", {
 test_that("tidy_dataset handles multiple periods and schema variations (measures_annual)", {
   raw_list <- load_raw_data(
     "measures_annual",
-    c("2017-18", "2024-25"),
+    c("2017-18", "2024-25", "2025-26"),
     "annual"
   )
   result <- tidy_dataset(raw_list, "measures_annual", "annual")
 
-  expect_setequal(unique(result$reporting_period), c("2017-18", "2024-25"))
+  expect_setequal(
+    unique(result$reporting_period),
+    c("2017-18", "2024-25", "2025-26")
+  )
 
   n_rows_1718 <- nrow(load_raw_fixture(
     "measures_annual",
@@ -857,6 +896,15 @@ test_that("tidy_dataset converts to long format (proms_annual)", {
   expect_gt(nrow(result), nrow(raw_fixture))
 })
 
+test_that("tidy_dataset harmonises relabelled values (proms_annual)", {
+  raw_list <- load_raw_data("proms_annual", "2020-21", "annual")
+  raw_list[["2020-21"]]$Diagnosis[1] <- "Body Dysmorphic disorder"
+  result <- tidy_dataset(raw_list, "proms_annual", "annual")
+
+  expect_true("Body Dysmorphic Disorder" %in% result$variable_a)
+  expect_false("Body Dysmorphic disorder" %in% result$variable_a)
+})
+
 test_that("tidy_dataset cleans column names (proms_annual)", {
   raw_list <- load_raw_data("proms_annual", "2024-25", "annual")
   result <- tidy_dataset(raw_list, "proms_annual", "annual")
@@ -870,14 +918,30 @@ test_that("tidy_dataset cleans column names (proms_annual)", {
 test_that("tidy_dataset handles multiple periods and schema variations (proms_annual)", {
   raw_list <- load_raw_data(
     "proms_annual",
-    c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25"),
+    c(
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ),
     "annual"
   )
   result <- tidy_dataset(raw_list, "proms_annual", "annual")
 
   expect_setequal(
     unique(result$reporting_period),
-    c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25")
+    c(
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    )
   )
   n_rows_1920 <- nrow(load_raw_fixture(
     "proms_annual",
@@ -917,6 +981,15 @@ test_that("tidy_dataset handles multiple periods and schema variations (proms_an
   expect_gt(nrow(result), n_rows_2425)
 
   expect_named(result, expected_tidy_columns("proms_annual", "annual"))
+})
+
+test_that("tidy_dataset harmonises relabelled values (therapy_position_annual)", {
+  raw_list <- load_raw_data("therapy_position_annual", "2019-20", "annual")
+  raw_list[["2019-20"]]$TherapyType[1] <- "50 Cognitive Behaviour Therapy (CBT)"
+  result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
+
+  expect_true("50_cognitive_behavioural_therapy" %in% result$variable_a)
+  expect_false("50_cognitive_behaviour_therapy_cbt" %in% result$variable_a)
 })
 
 test_that("tidy_dataset returns a tibble (therapy_position_annual)", {
@@ -1005,14 +1078,30 @@ test_that("tidy_dataset snapshot test for column names (therapy_position_annual)
 test_that("tidy_dataset handles all periods (therapy_position_annual)", {
   raw_list <- load_raw_data(
     "therapy_position_annual",
-    c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25"),
+    c(
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ),
     "annual"
   )
   result <- tidy_dataset(raw_list, "therapy_position_annual", "annual")
 
   expect_setequal(
     unique(result$reporting_period),
-    c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25")
+    c(
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    )
   )
 
   n_rows_1920 <- nrow(load_raw_fixture(
