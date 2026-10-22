@@ -19,6 +19,8 @@
 datasets:
   measures_annual:
     versions:
+      - version: "0.5.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.5.0/measures_annual.parquet"
       - version: "0.4.0"
         url: "https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.4.0/measures_annual.parquet"
       - version: "0.3.0"
