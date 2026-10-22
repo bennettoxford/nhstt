@@ -29,7 +29,7 @@ Julia, or any language that reads parquet.
 
 | Function | Frequency | First period | Last period | Periods | Version |
 |:---|:---|:---|:---|---:|---:|
-| `get_measures_annual()` | annual | 2012-13 | 2025-26 | 14 | 0.4.0 |
+| `get_measures_annual()` | annual | 2012-13 | 2025-26 | 14 | 0.5.0 |
 | `get_proms_annual()` | annual | 2019-20 | 2025-26 | 7 | 0.3.0 |
 | `get_therapy_position_annual()` | annual | 2019-20 | 2025-26 | 7 | 0.2.0 |
 | `get_measures_monthly()` | monthly | 2021-01 | 2026-07 | 67 | 0.6.0 |
