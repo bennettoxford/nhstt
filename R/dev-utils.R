@@ -705,6 +705,7 @@ check_duplicate_keys <- function(df, dataset) {
 #' @return Invisibly returns the path to the written parquet file
 #'
 #' @importFrom purrr map list_rbind
+#' @importFrom dplyr bind_rows
 #' @importFrom arrow write_parquet
 #' @importFrom cli cli_process_start cli_process_done cli_alert_success cli_alert_info
 #'
@@ -730,12 +731,15 @@ build_tidy_data <- function(dataset, raw_datasets = dataset) {
     combined <- list_rbind(data_list)
   }
 
+  # Annual reports before 2017-18 have their own readers, see R/raw-annual-legacy.R
+  if (!is.null(raw_config$datasets[[dataset]]$legacy_archive)) {
+    combined <- bind_rows(combined, tidy_annual_legacy_totals(dataset))
+  }
+
   check_duplicate_keys(combined, dataset)
 
   out_dir <- "data-raw"
-  if (!dir.exists(out_dir)) {
-    dir.create(out_dir, recursive = TRUE)
-  }
+  dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
   out_path <- file.path(out_dir, paste0(dataset, ".parquet"))
 
   write_parquet(combined, out_path, compression = "zstd")

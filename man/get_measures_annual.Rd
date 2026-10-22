@@ -22,6 +22,12 @@ Tibble with key measures data in long format
 Get annual key performance measures including referrals, assessments,
 treatment completions, recovery rates, and waiting times by organisation
 }
+\details{
+Periods from 2012-13 to 2016-17 contain England totals only, with no
+breakdowns. Some measures are not published for these years. 2012-13 was
+the first year of the dataset and only counts referrals received in that
+year, so it is not directly comparable with later years.
+}
 \examples{
 \dontrun{
 # Get all annual periods

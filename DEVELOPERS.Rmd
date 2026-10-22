@@ -108,6 +108,19 @@ knitr::kable(
 )
 ```
 
+## Annual measures before 2017-18
+
+The annual reports from 2012-13 to 2016-17 use a different format from later years. Up to 2014-15 they are XLSX workbooks. 2015-16 and 2016-17 are ZIP packs of CSVs. The layout changes every year. For these years `measures_annual` has England totals only. It has no breakdowns and no organisations below England.
+
+The `measures_annual` entry in `raw_annual_data_config.yml` has `legacy_archive: "annual_legacy"`. This tells `build_tidy_data()` to add these rows with `tidy_annual_legacy_totals()` in `R/raw-annual-legacy.R`. It also adds these years to `available_nhstt_reports()`. The `annual_legacy` archive says where each measure is in each year's file. The rows then go through the same tidy config as later years.
+
+The build stops if a published percentage does not match its count. This catches a column read from the wrong position. Measures without a percentage have no such check, and neither does any of 2012-13. We checked their column positions by hand against the source headers.
+
+Some measures are missing in early years.
+
+- 2013-14 and 2012-13 do not publish the number not at caseness.
+- 2012-13 was the first year of the dataset, so only referrals received in that year count. Its outcomes are grouped differently. We include only the recovery and reliable recovery counts, with no percentages.
+
 ## Publishing new data
 
 Each dataset is released independently — updating monthly data does not affect annual dataset versions or caches.

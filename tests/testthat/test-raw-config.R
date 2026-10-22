@@ -353,8 +353,8 @@ test_that("available_nhstt_reports shows correct period counts", {
     reports$dataset == "measures_annual" & reports$frequency == "annual",
   ]
 
-  # Should have 9 annual periods (2017-18 through 2025-26)
-  expect_equal(km_annual$n_periods, 9)
+  # 2012-13 to 2016-17 (annual_legacy) and 2017-18 to 2025-26
+  expect_equal(km_annual$n_periods, 14)
 })
 
 test_that("available_nhstt_reports shows correct first and last periods", {
@@ -363,7 +363,7 @@ test_that("available_nhstt_reports shows correct first and last periods", {
     reports$dataset == "measures_annual" & reports$frequency == "annual",
   ]
 
-  expect_equal(km_annual$first_period, "2017-18")
+  expect_equal(km_annual$first_period, "2012-13")
   expect_equal(km_annual$last_period, "2025-26")
 })
 

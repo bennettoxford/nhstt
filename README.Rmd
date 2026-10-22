@@ -64,7 +64,6 @@ The _Periods_ column shows the number of reporting periods covered by each datas
 ### Monthly data
 
 ```{r datasets-monthly, echo = FALSE, message = FALSE}
-
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::filter(frequency == "monthly") |>
@@ -127,8 +126,9 @@ knitr::kable(
 
 ### Annual data
 
-```{r datasets-annual, echo = FALSE, message = FALSE}
+For 2012-13 to 2016-17, `get_measures_annual()` only has England totals for some key measures.
 
+```{r datasets-annual, echo = FALSE, message = FALSE}
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>
   dplyr::filter(!stringr::str_detect(title, "metadata")) |>
   dplyr::filter(frequency == "annual") |>
