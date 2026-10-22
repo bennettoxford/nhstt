@@ -29,7 +29,7 @@ available_nhstt_reports()
 #> # A tibble: 13 × 8
 #>    dataset       frequency title get_function first_period last_period n_periods
 #>    <chr>         <chr>     <chr> <chr>        <chr>        <chr>           <int>
-#>  1 measures_ann… annual    Key … get_measure… 2017-18      2025-26             9
+#>  1 measures_ann… annual    Key … get_measure… 2012-13      2025-26            14
 #>  2 proms_annual  annual    Pati… get_proms_a… 2019-20      2025-26             7
 #>  3 therapy_posi… annual    Posi… get_therapy… 2019-20      2025-26             7
 #>  4 measures_mon… monthly   Acti… get_measure… 2021-01      2026-07            67

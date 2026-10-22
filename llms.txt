@@ -49,9 +49,12 @@ by each dataset.
 
 ### Annual data
 
+[`get_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_measures_annual.md)
+also has England totals for 2012-13 to 2016-17, with no breakdowns.
+
 | Function | First period | Last period | Periods | Version |
 |:---|:---|:---|---:|---:|
-| [`get_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_measures_annual.md) | 2017-18 | 2025-26 | 9 | [0.4.0](https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.4.0/measures_annual.parquet) |
+| [`get_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_measures_annual.md) | 2012-13 | 2025-26 | 14 | [0.4.0](https://github.com/bennettoxford/nhstt/releases/download/measures-annual-v0.4.0/measures_annual.parquet) |
 | [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md) | 2019-20 | 2025-26 | 7 | [0.3.0](https://github.com/bennettoxford/nhstt/releases/download/proms-annual-v0.3.0/proms_annual.parquet) |
 | [`get_therapy_position_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_position_annual.md) | 2019-20 | 2025-26 | 7 | [0.2.0](https://github.com/bennettoxford/nhstt/releases/download/therapy-position-annual-v0.2.0/therapy_position_annual.parquet) |
 

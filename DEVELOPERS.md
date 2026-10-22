@@ -26,7 +26,7 @@ Julia, or any language that reads parquet.
 
 | Function | Frequency | First period | Last period | Periods | Version |
 |:---|:---|:---|:---|---:|---:|
-| [`get_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_measures_annual.md) | annual | 2017-18 | 2025-26 | 9 | 0.4.0 |
+| [`get_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_measures_annual.md) | annual | 2012-13 | 2025-26 | 14 | 0.4.0 |
 | [`get_proms_annual()`](https://bennettoxford.github.io/nhstt/reference/get_proms_annual.md) | annual | 2019-20 | 2025-26 | 7 | 0.3.0 |
 | [`get_therapy_position_annual()`](https://bennettoxford.github.io/nhstt/reference/get_therapy_position_annual.md) | annual | 2019-20 | 2025-26 | 7 | 0.2.0 |
 | [`get_measures_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_measures_monthly.md) | monthly | 2021-01 | 2026-07 | 67 | 0.6.0 |
@@ -51,6 +51,36 @@ the one below.
 | `proms_annual` | 2024-25 | 6 | 212.2 | 21.2 |
 | `therapy_position_annual` | 2024-25 | 6 | 0.6 | 0.1 |
 | `measures_monthly` | 2026-05 | 65 | 6.0 | 6.6 |
+
+## Annual measures before 2017-18
+
+The annual reports from 2012-13 to 2016-17 use a different format from
+later years. Up to 2014-15 they are XLSX workbooks. 2015-16 and 2016-17
+are ZIP packs of CSVs. The layout changes every year. For these years
+`measures_annual` has England totals only. It has no breakdowns and no
+organisations below England.
+
+The `measures_annual` entry in `raw_annual_data_config.yml` has
+`legacy_archive: "annual_legacy"`. This tells
+[`build_tidy_data()`](https://bennettoxford.github.io/nhstt/reference/build_tidy_data.md)
+to add these rows with
+[`tidy_annual_legacy_totals()`](https://bennettoxford.github.io/nhstt/reference/tidy_annual_legacy_totals.md)
+in `R/raw-annual-legacy.R`. It also adds these years to
+[`available_nhstt_reports()`](https://bennettoxford.github.io/nhstt/reference/available_nhstt_reports.md).
+The `annual_legacy` archive says where each measure is in each year’s
+file. The rows then go through the same tidy config as later years.
+
+The build stops if a published percentage does not match its count. This
+catches a column read from the wrong position. Measures without a
+percentage have no such check, and neither does any of 2012-13. We
+checked their column positions by hand against the source headers.
+
+Some measures are missing in early years.
+
+- 2013-14 and 2012-13 do not publish the number not at caseness.
+- 2012-13 was the first year of the dataset, so only referrals received
+  in that year count. Its outcomes are grouped differently. We include
+  only the recovery and reliable recovery counts, with no percentages.
 
 ## Publishing new data
 
