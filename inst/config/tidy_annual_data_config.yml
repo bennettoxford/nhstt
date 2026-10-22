@@ -5,6 +5,29 @@ datasets:
   measures_annual:
     clean_column_names: true
 
+    # Harmonise labels that changed wording but not meaning, using the latest label
+    recode:
+      variable_a:
+        "First treatment": "Accessing services"
+        "First to Second treatment": "First to Second Treatment"
+        "Other mental health care cluster": "Other Mental Health Care Cluster"
+        "Other recorded problems": "Other Recorded Problems"
+        "Received both high and low intensity therapy": "Received both LI and HI therapies"
+        "Received only high intensity therapy": "Received only HI therapy"
+        "Received only low intensity therapy": "Received only LI therapy"
+        "Short Message Service (SMS)": "Short Message Service (SMS) - Text Messaging"
+        "Talk type for a person unable to speak": "Talk type for a Person unable to speak"
+        "Telemedicine": "Telemedicine web camera"
+      variable_b:
+        "Any other Asian background": "Any Other Asian Background"
+        "Any other Black background": "Any Other Black Background"
+        "Any other Mixed background": "Any Other Mixed Background"
+        "Any other White background": "Any Other White Background"
+        "Body dysmorphic disorder": "Body Dysmorphic Disorder"
+        "Generalised anxiety disorder": "Generalized anxiety disorder"
+        "Hypochondriacal disorders": "Hypochondriacal disorder"
+        "Mean wait": "Mean Wait"
+
     filter:
       org_type:
         - England
@@ -12,6 +35,7 @@ datasets:
         - STP
         - CCG
         - ICB
+        - SubICB
         - Provider
       variable_type:
         - Total
@@ -61,6 +85,9 @@ datasets:
         - measure_statistic
         - measure_name
 
+    as_numeric:
+      - value
+
     clean_column_values:
       - measure_name
       - measure_statistic
@@ -103,6 +130,11 @@ datasets:
       effect_size_phq: effect_phq
       effect_size_gad: effect_gad
       effect_size_wsas: effect_wsas
+
+    # Harmonise labels that changed wording but not meaning, using the latest label
+    recode:
+      variable_a:
+        "Body Dysmorphic Disorder": "Body Dysmorphic disorder"
 
     mutate:
       variable_type:
@@ -183,6 +215,14 @@ datasets:
       count_position_2: count_2therapies
       count_position_3: count_3therapies
       count_position_4: count_4therapies
+
+    # Harmonise labels that changed wording but not meaning, using the latest label
+    recode:
+      variable_a:
+        "20 Guided_Self_Help_Book": "20 Guided Self Help"
+        "42 Couples_Therapy": "42 Couples Therapy for Depression"
+        "50 Cognitive_Behavioural_Therapy": "50 Cognitive Behaviour Therapy (CBT)"
+        "51 Interpersonal_Psychotherapy": "51 Interpersonal Psycho therapy (IPT)"
 
     pivot_longer:
       id_cols:

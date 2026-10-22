@@ -3,6 +3,9 @@
 archives:
   # Annual main data report archives (contain multiple CSV files)
   annual_main:
+    - period: "2025-26"
+      url: "https://files.digital.nhs.uk/E6/96448C/psych-ther-ann-rep-csv-2025-26.zip"
+      format: "zip"
     - period: "2024-25"
       url: "https://files.digital.nhs.uk/4E/2104A0/psych-ther-ann-rep-csv-2024-25-2.zip"
       format: "zip"
@@ -48,6 +51,9 @@ archives:
       format: "xlsx"
   # Annual therapy-based outcomes report archives
   annual_tbo:
+    - period: "2025-26"
+      url: "https://files.digital.nhs.uk/51/4BC9D3/ther-based-outcomes2526.zip"
+      format: "zip"
     - period: "2024-25"
       url: "https://files.digital.nhs.uk/B7/464F54/ther-based-outcomes2425-2.zip"
       format: "zip"
@@ -78,6 +84,8 @@ datasets:
     license: "OGL-UK-3.0"
     archive: "annual_main"
     sources:
+      - period: "2025-26"
+        csv_file: "psych-ther-ann-rep-csv-2025-26-main.csv"
       - period: "2024-25"
         csv_file: "psych-ther-ann-rep-csv-2024-25-main2.csv"
       - period: "2023-24"
@@ -103,6 +111,8 @@ datasets:
     license: "OGL-UK-3.0"
     archive: "annual_tbo"
     sources:
+      - period: "2025-26"
+        csv_file: "Therapy Based Outcomes Table 4.csv"
       - period: "2024-25"
         csv_file: "Therapy Based Outcomes Table 4-2.csv"
       - period: "2023-24"
@@ -124,6 +134,8 @@ datasets:
     license: "OGL-UK-3.0"
     archive: "annual_tbo"
     sources:
+      - period: "2025-26"
+        csv_file: "Therapy Based Outcomes Table 1.csv"
       - period: "2024-25"
         csv_file: "Therapy Based Outcomes Table 1.csv"
       - period: "2023-24"

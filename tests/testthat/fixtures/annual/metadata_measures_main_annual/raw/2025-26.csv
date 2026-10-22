@@ -1,0 +1,43 @@
+"CSV field name","Description of measure","Technical construction","Additional notes"
+"OrgType","The type of organisation to which the data refer. Data are published for the following organisation types:
+- England (aggregated data for all NHS Talking Therapies service providers)
+- Commissioning Region
+- Integrated Care Board (ICB)
+- Subsection of Integrated Care Board (SubICB)
+- NHS Talking Therapies service provider","Hardcoded in processing.
+","For further information about NHS geographies, see https://www.ons.gov.uk/methodology/geography/ukgeographies/healthgeography#english-health-geography"
+"OrgCode","The Organisation Data Service (ODS) code of the organisation to which the data refer. Data are published for the following organisation types:
+- England (aggregated data for all NHS Talking Therapies service providers)
+- Commissioning Region
+- Integrated Care Board (ICB)
+- Subsection of Integrated Care Board (SubICB)
+- NHS Talking Therapies service provider","The SubICB for a referral is defined using the OrgIDComm field on the IDS101Referral table. Old codes (including CCG codes) are mapped to 2022/23 SubICB codes.
+
+ICB and Commissioning Regions are derived from the SubICB code.
+
+NHS Talking Therapies service provider is taken from the submitted OrgID_Provider field on IDS101Referral table, a mandatory dataset field in the Referral table","Organisation Data Service (ODS) reference data are available from https://odsportal.hscic.gov.uk/"
+"OrgName","The Organisation Data Service (ODS) name of the organisation to which the data refer. Data are published for the following organisation types:
+- England (aggregated data for all NHS Talking Therapies service providers)
+- Commissioning Region
+- Integrated Care Board (ICB)
+- Subsection of Integrated Care Board (SubICB)
+- NHS Talking Therapies service provider",NA,"Organisation Data Service (ODS) reference data are available from https://odsportal.hscic.gov.uk/"
+"VariableType","The type of variable by which the data are categorised. See Derivations tab of this file for full details. The following variables are used:
+- Total
+- Age Group
+- Age Group / Gender
+- Consultation Medium
+- Disability
+- Ethnic Group
+- Ethnic Group / Gender
+- Ex-British Armed Forces and Dependants
+- Gender
+- Indices of Deprivation Decile
+- Long Term Condition Status
+- Mental Health Care Cluster
+- Problem Descriptor
+- Religion
+- Sexual Orientation
+- Stepped Care Pathway
+- Waiting Time","See Variables tabs of this file for full details.",NA
+"VariableA","The high-level variable values for the categories described in VariableType.","Presents values for the above variables including invalid, missing or unknown codes. See Variables tabs of this file for full details.",NA

@@ -29,13 +29,13 @@ Julia, or any language that reads parquet.
 
 | Function | Frequency | First period | Last period | Periods | Version |
 |:---|:---|:---|:---|---:|---:|
-| `get_measures_annual()` | annual | 2017-18 | 2024-25 | 8 | 0.3.0 |
-| `get_proms_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.2.0 |
-| `get_therapy_position_annual()` | annual | 2019-20 | 2024-25 | 6 | 0.1.0 |
+| `get_measures_annual()` | annual | 2017-18 | 2025-26 | 9 | 0.4.0 |
+| `get_proms_annual()` | annual | 2019-20 | 2025-26 | 7 | 0.3.0 |
+| `get_therapy_position_annual()` | annual | 2019-20 | 2025-26 | 7 | 0.2.0 |
 | `get_measures_monthly()` | monthly | 2021-01 | 2026-07 | 67 | 0.6.0 |
 | `get_measures_quarterly()` | quarterly | 2022-23-q2 | 2026-27-q1 | 16 | 0.2.0 |
-| `get_metadata_measures_annual()` | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
-| `get_metadata_variables_annual()` | annual | 2024-25 | 2024-25 | 1 | 0.1.0 |
+| `get_metadata_measures_annual()` | annual | 2024-25 | 2025-26 | 2 | 0.2.0 |
+| `get_metadata_variables_annual()` | annual | 2024-25 | 2025-26 | 2 | 0.2.0 |
 | `get_metadata_monthly()` | monthly | 2026-07 | 2026-07 | 1 | 0.2.0 |
 | `get_metadata_providers()` | live | current | current | 1 | 0.1.0 |
 
