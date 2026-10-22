@@ -127,6 +127,8 @@ knitr::kable(
 
 ### Annual data
 
+`get_measures_annual()` also has England totals for 2012-13 to 2016-17, with no breakdowns.
+
 ```{r datasets-annual, echo = FALSE, message = FALSE}
 
 df_nhstt_reports <- nhstt:::available_nhstt_reports() |>

@@ -18,4 +18,3 @@ justfile
 vignettes/.quarto
 vignettes/_*
 tests/integration.R
-DEVELOPERS_cache/*

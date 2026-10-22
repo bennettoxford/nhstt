@@ -30,25 +30,108 @@ archives:
     - period: "2017-18"
       url: "https://files.digital.nhs.uk/82/2CCBED/psych-ther-ann-2017-18-csvs.zip"
       format: "zip"
-  # Annual main data report archives for legacy-format periods (XLSX and CSV packs)
-  # These use bespoke extraction code in R/raw-annual-legacy-format.R because the
-  # formats differ fundamentally from the uniform structured CSVs used from 2017-18.
-  annual_main_legacy_format:
+  # Annual reports before 2017-18, read by R/raw-annual-legacy.R. England
+  # totals only. `tables` maps each table to `measure: column`. A table is a CSV
+  # file pattern or an XLSX sheet name. A column is a CSV header or an XLSX
+  # column number. We list only figures that appear in the source and calculate
+  # nothing.
+  annual_legacy:
     - period: "2016-17"
       url: "https://files.digital.nhs.uk/F8/5B17FF/psych-ther-ann-rep-csv-pack-2016-17_v3.0.zip"
       format: "zip"
+      tables:
+        table-1a:
+          count_referrals_received: "ReferralsReceived"
+        table-7a:
+          count_finished_course_treatment: "FinishedCourseTreatment"
+          count_at_caseness: "StartedCaseness"
+          count_not_at_caseness: "StartedNotCaseness"
+          count_improvement: "Improvement"
+          percentage_improvement: "ImprovementRate"
+          count_no_reliable_change: "NoReliableChange"
+          percentage_no_reliable_change: "NoReliableChangeRate"
+          count_deterioration: "Deterioration"
+          percentage_deterioration: "DeteriorationRate"
+          count_recovery: "Recovery"
+          percentage_recovery: "RecoveryRate"
+          count_reliable_recovery: "ReliableRecovery"
+          percentage_reliable_recovery: "ReliableRecoveryRate"
     - period: "2015-16"
       url: "https://files.digital.nhs.uk/zip/2/j/psych-ther-ann-rep-csv-pack-2015-16.zip"
       format: "zip"
+      tables:
+        table-1a:
+          count_referrals_received: "RECEIVED"
+        table-7a:
+          count_finished_course_treatment: "FINISH_TREAT"
+          count_at_caseness: "STARTED_CASENESS"
+          count_not_at_caseness: "STARTED_NOT_CASENESS"
+          count_improvement: "REL_IMP"
+          percentage_improvement: "REL_IMP_PCNT"
+          count_no_reliable_change: "NO_REL_CHANGE"
+          percentage_no_reliable_change: "NO_REL_CHANGE_PCNT"
+          count_deterioration: "REL_DET"
+          percentage_deterioration: "REL_DET_PCNT"
+          count_recovery: "RECOVERED"
+          percentage_recovery: "RECOVERED_PCNT"
+          count_reliable_recovery: "REL_REC"
+          percentage_reliable_recovery: "REL_REC_PCNT"
     - period: "2014-15"
       url: "https://files.digital.nhs.uk/publicationimport/pub19xxx/pub19098/psych-ther-ann-rep-tab-2014-15.xlsx"
       format: "xlsx"
+      tables:
+        Table 1a:
+          count_referrals_received: 3
+        Table 9a:
+          count_finished_course_treatment: 3
+          count_at_caseness: 4
+          count_not_at_caseness: 5
+          count_improvement: 6
+          percentage_improvement: 7
+          count_no_reliable_change: 8
+          percentage_no_reliable_change: 9
+          count_deterioration: 10
+          percentage_deterioration: 11
+          count_recovery: 12
+          percentage_recovery: 13
+          count_reliable_recovery: 14
+          percentage_reliable_recovery: 15
+    # Not at caseness is not published for 2013-14 and 2012-13
     - period: "2013-14"
       url: "https://files.digital.nhs.uk/publicationimport/pub14xxx/pub14899/psych-ther-ann-rep-tab-2013-14.xlsx"
       format: "xlsx"
+      tables:
+        Table 1a:
+          count_referrals_received: 3
+        # The sheet name has a trailing space in the source file
+        "Table 10a ":
+          count_finished_course_treatment: 3
+          count_at_caseness: 4
+          count_improvement: 6
+          percentage_improvement: 7
+          count_no_reliable_change: 9
+          percentage_no_reliable_change: 10
+          count_deterioration: 12
+          percentage_deterioration: 13
+          count_recovery: 15
+          percentage_recovery: 16
+          count_reliable_recovery: 18
+          percentage_reliable_recovery: 19
+    # First year of the dataset, so only referrals received in that year count.
+    # Outcomes are grouped differently from later years. We keep only the
+    # recovery and reliable recovery ("reliable improvement and recovered")
+    # counts, which match later definitions, and no percentages.
     - period: "2012-13"
       url: "https://files.digital.nhs.uk/publicationimport/pub13xxx/pub13339/psyc-ther-ann-rep-ref-tab-2012-13.xlsx"
       format: "xlsx"
+      tables:
+        Table_1a:
+          count_referrals_received: 3
+        Table_5a:
+          count_finished_course_treatment: 3
+          count_at_caseness: 4
+          count_recovery: 18
+          count_reliable_recovery: 15
   # Annual therapy-based outcomes report archives
   annual_tbo:
     - period: "2025-26"
@@ -83,6 +166,8 @@ datasets:
     copyright: "Copyright NHS England"
     license: "OGL-UK-3.0"
     archive: "annual_main"
+    # England totals before 2017-18, see R/raw-annual-legacy.R
+    legacy_archive: "annual_legacy"
     sources:
       - period: "2025-26"
         csv_file: "psych-ther-ann-rep-csv-2025-26-main.csv"

@@ -525,6 +525,13 @@ available_nhstt_reports <- function() {
 
     # Get all periods for this dataset
     periods <- map_chr(dataset_config$sources, "period")
+    legacy_archive <- dataset_config$legacy_archive
+    if (!is.null(legacy_archive)) {
+      periods <- c(
+        periods,
+        map_chr(raw_config$archives[[legacy_archive]], "period")
+      )
+    }
     periods_sorted <- sort(periods)
 
     # Raw datasets combined into one release (e.g. the metadata
