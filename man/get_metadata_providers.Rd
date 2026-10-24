@@ -2,18 +2,27 @@
 % Please edit documentation in R/get-metadata-providers.R
 \name{get_metadata_providers}
 \alias{get_metadata_providers}
-\title{Get provider organisation metadata from ODS}
+\title{Get provider organisation metadata}
 \usage{
-get_metadata_providers(use_cache = TRUE)
+get_metadata_providers(use_cache = TRUE, version = NULL)
 }
 \arguments{
-\item{use_cache}{Logical, whether to use cached data if available. Default TRUE.}
+\item{use_cache}{Logical, specifying whether to use cached data if available. Default TRUE.}
+
+\item{version}{Character, specifying a pinned data version (e.g., "0.1.0").
+If NULL (default), the latest version is used. See \code{\link[=available_versions]{available_versions()}}.}
 }
 \value{
-Tibble with provider organisation metadata
+Tibble with provider organisation metadata. Latitude and longitude
+come from each provider's postcode, looked up on
+\href{https://postcodes.io/}{postcodes.io}. \code{retrieved_date} is the day the
+data was taken from ODS. \verb{*_last_reported} is the last period each
+provider appears in the annual, quarterly, and monthly data.
+\verb{*_latest_period} is the latest period in that data.
 }
 \description{
-Get provider organisation metadata from ODS
+Organisation details for every provider in the annual reports, from the
+NHS Organisation Data Service (ODS).
 }
 \examples{
 \dontrun{

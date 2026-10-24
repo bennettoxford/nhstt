@@ -47,9 +47,16 @@ navbar:
           href: articles/how-to-measures-annual.html
     - text: "Data descriptions"
       menu:
+        - text: "NHS TT providers"
+        - text: "Overview"
+          href: articles/metadata-providers.html
+        - text: "Submission history"
+          href: articles/metadata-providers-submission-history.html
+        - text: -------
+        - text: "Data quality"
         - text: "Differences across reporting periods"
           href: articles/data-description-counts.html
-    - text: "Metadata"
+    - text: "Measure descriptions"
       menu:
         - text: "Monthly metadata"
         - text: "Core measures"
@@ -66,10 +73,6 @@ navbar:
         - text: "Annual metadata"
         - text: "Measures and breakdowns"
           href: articles/metadata-annual.html
-        - text: -------
-        - text: "Organisation metadata"
-        - text: "NHS Talking Therapies providers"
-          href: articles/metadata-ods.html
 
 reference:
   - title: "Monthly data"
@@ -114,16 +117,20 @@ articles:
       - how-to-measures-monthly
       - how-to-measures-quarterly
       - how-to-measures-annual
-  - title: "Data descriptions"
-    desc: "Descriptions and checks of the NHS TT datasets"
+  - title: "NHS TT providers"
+    desc: "Map, table, and submission history of NHS TT providers"
+    contents:
+      - metadata-providers
+      - metadata-providers-submission-history
+  - title: "Data quality"
+    desc: "Checks of the NHS TT datasets"
     contents:
       - data-description-counts
-  - title: "Metadata"
-    desc: "Metadata for monthly, quarterly, and annual reports"
+  - title: "Measure descriptions"
+    desc: "Descriptions of the measures in the monthly, quarterly, and annual reports"
     contents:
       - metadata-monthly-core
       - metadata-monthly-ea
       - metadata-monthly-ltc
       - metadata-quarterly
       - metadata-annual
-      - metadata-ods

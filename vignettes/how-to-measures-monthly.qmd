@@ -1,6 +1,6 @@
 ---
 title: "Treatment end codes"
-bibliography: references.bib
+bibliography: assets/references.bib
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Treatment end codes}

@@ -75,5 +75,7 @@ datasets:
         url: "https://github.com/bennettoxford/nhstt/releases/download/metadata-measures-monthly-v0.1.0/metadata_measures_monthly.parquet"
   metadata_providers:
     versions:
+      - version: "0.2.0"
+        url: "https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.2.0/metadata_providers.parquet"
       - version: "0.1.0"
         url: "https://github.com/bennettoxford/nhstt/releases/download/metadata-providers-v0.1.0/metadata_providers.parquet"

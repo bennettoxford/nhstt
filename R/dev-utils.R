@@ -716,7 +716,7 @@ build_tidy_data <- function(dataset, raw_datasets = dataset) {
   cli_process_start("Building tidy data for {.val {dataset}}")
 
   if (identical(dataset, "metadata_providers")) {
-    combined <- get_metadata_providers(use_cache = FALSE)
+    combined <- build_metadata_providers()
   } else {
     data_list <- map(raw_datasets, \(raw_dataset) {
       frequency <- raw_config$datasets[[raw_dataset]]$frequency
@@ -751,4 +751,66 @@ build_tidy_data <- function(dataset, raw_datasets = dataset) {
   )
 
   invisible(out_path)
+}
+
+#' Update the NHS England region boundaries used by the providers vignette
+#'
+#' Developer tool. Downloads NHS England region boundaries from the Office for
+#' National Statistics (ONS) Open Geography Portal and writes them as GeoJSON
+#' for `vignettes/metadata-providers.qmd`. The ONS field names include the year
+#' (e.g. `NHSER24NM`), so this renames them to `region_code` and `region_name`.
+#' The vignette then works with any boundary year. The file also stores the
+#' attribution, so the map credits the boundaries it shows.
+#'
+#' Region names must match the `region_name` values in
+#' [get_metadata_providers()] for the region filter to work.
+#'
+#' @param url Character, ArcGIS feature service query returning GeoJSON in
+#'   WGS84 with the region code and name fields
+#' @param attribution Character, attribution required by the ONS licence
+#' @param path Character, file to write
+#'
+#' @return Invisibly returns `path`
+#'
+#' @importFrom cli cli_abort cli_alert_success
+#'
+#' @keywords internal
+update_region_boundaries <- function(
+  url = paste0(
+    "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/",
+    "NHS_England_Regions_January_2024_EN_BSC/FeatureServer/0/query",
+    "?where=1%3D1&outFields=NHSER24CD,NHSER24NM&outSR=4326",
+    "&geometryPrecision=4&f=geojson"
+  ),
+  attribution = paste(
+    "Region boundaries: Office for National Statistics, OGL v3.0.",
+    "Contains OS data &copy; Crown copyright and database right 2024"
+  ),
+  path = "vignettes/assets/nhs-england-regions.geojson"
+) {
+  regions <- httr2::request(url) |>
+    httr2::req_retry(max_tries = 3) |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
+
+  if (length(regions$features) == 0) {
+    cli_abort("No region boundaries returned from {.url {url}}")
+  }
+
+  regions$features <- lapply(regions$features, \(feature) {
+    fields <- names(feature$properties)
+    feature$properties <- list(
+      region_code = feature$properties[[grep("CD$", fields, value = TRUE)]],
+      region_name = feature$properties[[grep("NM$", fields, value = TRUE)]]
+    )
+    feature
+  })
+  regions$attribution <- attribution
+
+  jsonlite::write_json(regions, path, auto_unbox = TRUE, digits = NA)
+  cli_alert_success(
+    "Written {length(regions$features)} regions to {.file {path}}"
+  )
+
+  invisible(path)
 }

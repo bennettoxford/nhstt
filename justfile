@@ -61,6 +61,10 @@ build-data-metadata:
         build_tidy_data("metadata_measures_annual", raw_datasets = c("metadata_measures_main_annual", "metadata_measures_additional_annual")); \
         build_tidy_data("metadata_variables_annual", raw_datasets = c("metadata_variables_main_annual", "metadata_variables_additional_annual"))'
 
+# Update the NHS England region boundaries drawn on the providers map
+update-region-boundaries:
+    Rscript --quiet --vanilla -e 'devtools::load_all(helpers = FALSE); update_region_boundaries()'
+
 # Run all tests
 test-unit:
     Rscript --quiet --vanilla -e 'devtools::test()'

@@ -281,3 +281,36 @@ test_that("check_duplicate_keys uses all columns when there is no value column",
     regexp = "share"
   )
 })
+
+test_that("update_region_boundaries renames fields and adds attribution", {
+  path <- withr::local_tempfile(fileext = ".geojson")
+  httr2::local_mocked_responses(function(req) {
+    httr2::response_json(
+      body = list(
+        type = "FeatureCollection",
+        features = list(list(
+          type = "Feature",
+          properties = list(NHSER24CD = "E40000003", NHSER24NM = "London"),
+          geometry = list(
+            type = "Polygon",
+            coordinates = list(list(
+              list(-0.1, 51.5),
+              list(0, 51.6),
+              list(-0.1, 51.5)
+            ))
+          )
+        ))
+      )
+    )
+  })
+
+  suppressMessages(update_region_boundaries(attribution = "Test", path = path))
+  regions <- jsonlite::read_json(path)
+
+  expect_equal(
+    regions$features[[1]]$properties,
+    list(region_code = "E40000003", region_name = "London")
+  )
+  expect_equal(regions$attribution, "Test")
+  expect_length(regions$features[[1]]$geometry$coordinates[[1]], 3)
+})

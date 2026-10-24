@@ -1,0 +1,271 @@
+---
+title: "Overview of NHS TT providers"
+vignette: >
+  %\VignetteIndexEntry{Overview of NHS TT providers}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+    echo: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(nhstt)
+library(dplyr)
+library(crosstalk)
+library(leaflet)
+library(reactable)
+library(htmltools)
+
+status_levels <- c("Active", "Inactive")
+inactive_colour <- "#8a8f93"
+status_colours <- colorFactor(
+  c("#1d70b8", inactive_colour),
+  levels = status_levels
+)
+
+# Label for providers ODS has no region for, used in the table and the filters
+no_region <- "Unknown"
+
+format_quarter <- function(period) sub("-q", " Q", period)
+format_month <- function(period) {
+  format(as.Date(paste0(period, "-01")), "%B %Y")
+}
+popup_line <- function(label, value) {
+  paste0("<strong>", label, ":</strong> ", htmlEscape(value))
+}
+
+metadata_providers <- get_metadata_providers()
+
+retrieved_date <- format(unique(metadata_providers$retrieved_date), "%d %B %Y")
+latest_periods <- c(
+  annual = unique(metadata_providers$annual_latest_period),
+  quarterly = format_quarter(unique(
+    metadata_providers$quarterly_latest_period
+  )),
+  monthly = format_month(unique(metadata_providers$monthly_latest_period))
+)
+
+nhstt_providers <- metadata_providers |>
+  mutate(
+    region_name = coalesce(region_name, no_region),
+    closed = if_else(
+      is.na(end_date),
+      "",
+      paste0("<br>", popup_line("Closed", end_date))
+    ),
+    popup = paste(
+      paste0("<strong>", htmlEscape(org_name), "</strong>"),
+      popup_line("Code", org_code),
+      popup_line("ODS status", status),
+      paste0(popup_line("Open since", start_date), closed),
+      popup_line("Town", town),
+      popup_line("Postcode", postcode),
+      popup_line("ICB", coalesce(icb_name, no_region)),
+      popup_line("Region", region_name),
+      popup_line("Last annual data", coalesce(annual_last_reported, "None")),
+      popup_line(
+        "Last quarterly data",
+        coalesce(format_quarter(quarterly_last_reported), "None")
+      ),
+      popup_line(
+        "Last monthly data",
+        coalesce(format_month(monthly_last_reported), "None")
+      ),
+      sep = "<br>"
+    ),
+    in_latest_annual = annual_last_reported %in% annual_latest_period,
+    in_latest_quarterly = quarterly_last_reported %in% quarterly_latest_period,
+    in_latest_monthly = monthly_last_reported %in% monthly_latest_period
+  ) |>
+  select(
+    org_name,
+    org_code,
+    status,
+    town,
+    postcode,
+    icb_name,
+    region_name,
+    latitude,
+    longitude,
+    popup,
+    starts_with("in_latest_")
+  ) |>
+  arrange(desc(status == "Active"), org_name)
+
+# Same fields as the table search, kept apart so a search cannot match across
+# two fields
+search_text <- nhstt_providers |>
+  select(org_name, org_code, status, town, postcode, icb_name, region_name) |>
+  mutate(across(everything(), \(x) tolower(coalesce(x, "")))) |>
+  tidyr::unite("text", everything(), sep = "\n") |>
+  pull(text)
+
+shared_providers <- SharedData$new(
+  nhstt_providers,
+  key = ~org_code,
+  group = "providers"
+)
+```
+
+> **Note:** This page shows providers as listed by the NHS Organisation Data Service (ODS)[^ods] on `r retrieved_date`. We have not cleaned this data yet, so it has some known issues. For example, some providers are listed as active but have not submitted data recently.
+
+[^ods]: Organisation details come from the [NHS Organisation Data Service (ODS)](https://www.odsdatasearchandexport.nhs.uk/).
+
+```{r}
+#| label: map-and-table
+# The map interactions are in assets/metadata-providers.js and the styles in
+# assets/metadata-providers.css. Region boundaries come from
+# update_region_boundaries().
+map_interactions <- paste(
+  readLines("assets/metadata-providers.js", warn = FALSE),
+  collapse = "\n"
+)
+regions_geojson <- paste(
+  readLines("assets/nhs-england-regions.geojson", warn = FALSE),
+  collapse = ""
+)
+
+# No background tiles, the regions are drawn in map_interactions
+provider_map <- leaflet(
+  shared_providers,
+  height = 600,
+  elementId = "provider-map",
+  options = leafletOptions(
+    minZoom = 6,
+    maxZoom = 12,
+    # England plus enough margin for a popup to pan into view at the edges,
+    # otherwise the map snaps back and cuts the popup off
+    maxBounds = list(c(47, -13), c(60, 8)),
+    maxBoundsViscosity = 1
+  )
+) |>
+  addCircleMarkers(
+    lng = ~longitude,
+    lat = ~latitude,
+    radius = 6,
+    stroke = TRUE,
+    weight = 1,
+    color = "white",
+    fillColor = ~ status_colours(status),
+    fillOpacity = 0.9,
+    label = ~org_name,
+    popup = ~popup,
+    # Keep open popups clear of the zoom buttons, legend, and attribution
+    popupOptions = popupOptions(
+      autoPanPaddingTopLeft = c(55, 110),
+      autoPanPaddingBottomRight = c(10, 40)
+    )
+  ) |>
+  htmlwidgets::onRender(
+    map_interactions,
+    data = list(
+      key = nhstt_providers$org_code,
+      lat = nhstt_providers$latitude,
+      lng = nhstt_providers$longitude,
+      status = nhstt_providers$status,
+      region = nhstt_providers$region_name,
+      no_region = no_region,
+      search_text = search_text,
+      reported = list(
+        annual = nhstt_providers$in_latest_annual,
+        quarterly = nhstt_providers$in_latest_quarterly,
+        monthly = nhstt_providers$in_latest_monthly
+      ),
+      regions_geojson = regions_geojson,
+      status_levels = status_levels,
+      status_colours = status_colours(status_levels)
+    )
+  )
+
+# Footer counts the rows left after the filters and search
+provider_count_footer <- JS(
+  "function(column, state) {
+    var n = state.sortedData.length;
+    return n + ' provider' + (n === 1 ? '' : 's') + ' shown';
+  }"
+)
+
+provider_table <- reactable(
+  shared_providers,
+  elementId = "provider-table",
+  class = "provider-table",
+  width = "100%",
+  searchable = TRUE,
+  selection = "multiple",
+  onClick = "select",
+  highlight = TRUE,
+  pagination = FALSE,
+  height = 600,
+  outlined = TRUE,
+  rowStyle = function(index) {
+    if (nhstt_providers$status[index] == "Inactive") {
+      list(color = inactive_colour)
+    }
+  },
+  columns = list(
+    # The footer sits in the tick box column so it starts at the left edge
+    .selection = colDef(
+      footer = provider_count_footer,
+      footerStyle = list(fontWeight = 600)
+    ),
+    org_name = colDef(
+      name = "Provider",
+      cell = function(value, index) {
+        tagList(
+          div(strong(value)),
+          div(nhstt_providers$town[index]),
+          if (!is.na(nhstt_providers$icb_name[index])) {
+            div(nhstt_providers$icb_name[index])
+          },
+          div(nhstt_providers$region_name[index])
+        )
+      }
+    ),
+    # Hidden columns stay searchable so the search box covers every field
+    org_code = colDef(show = FALSE, searchable = TRUE),
+    town = colDef(show = FALSE, searchable = TRUE),
+    status = colDef(show = FALSE, searchable = TRUE),
+    postcode = colDef(show = FALSE, searchable = TRUE),
+    icb_name = colDef(show = FALSE, searchable = TRUE),
+    region_name = colDef(show = FALSE, searchable = TRUE),
+    latitude = colDef(show = FALSE),
+    longitude = colDef(show = FALSE),
+    popup = colDef(show = FALSE),
+    in_latest_annual = colDef(show = FALSE),
+    in_latest_quarterly = colDef(show = FALSE),
+    in_latest_monthly = colDef(show = FALSE)
+  )
+)
+
+reporting_buttons <- div(
+  class = "reporting-buttons",
+  span(class = "reporting-label", "Data submitted in"),
+  tags$button(
+    class = "reporting-button active",
+    `data-reporting` = "all",
+    "Any period"
+  ),
+  purrr::imap(latest_periods, \(period, frequency) {
+    tags$button(
+      class = "reporting-button",
+      `data-reporting` = frequency,
+      paste0(period, " (", frequency, ")")
+    )
+  })
+)
+
+tagList(
+  includeCSS("assets/metadata-providers.css"),
+  reporting_buttons,
+  div(
+    class = "provider-layout",
+    div(provider_map),
+    div(provider_table)
+  )
+)
+```

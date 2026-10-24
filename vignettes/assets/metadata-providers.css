@@ -1,0 +1,99 @@
+/* Styles for metadata-providers.qmd */
+
+/* Map and table side by side, stacked on narrow screens */
+.provider-layout {
+  display: flex;
+  gap: 24px;
+}
+.provider-layout > div {
+  flex: 1;
+  min-width: 0;
+}
+@media (max-width: 768px) {
+  .provider-layout {
+    flex-direction: column;
+  }
+}
+
+/* Map */
+#provider-map {
+  background: #ffffff;
+}
+/* Box select button that leaflet adds for crosstalk data */
+#provider-map .easy-button-container {
+  display: none;
+}
+.status-legend {
+  background: #ffffff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.status-item {
+  cursor: pointer;
+  user-select: none;
+}
+.status-item i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.status-item.off {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+/* Reporting period buttons */
+.reporting-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.reporting-label {
+  font-weight: 600;
+  margin-right: 4px;
+}
+.reporting-button {
+  border: 1px solid #b1b4b6;
+  border-radius: 4px;
+  background: #ffffff;
+  padding: 4px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.reporting-button.active {
+  background: #1d70b8;
+  border-color: #1d70b8;
+  color: #ffffff;
+}
+
+/* Table */
+.provider-table .rt-search {
+  align-self: stretch;
+  width: 100%;
+}
+/* Stretch the rows so the footer stays on the bottom line of the table */
+.provider-table .rt-table {
+  display: flex;
+  flex-direction: column;
+}
+.provider-table .rt-tbody {
+  flex: 1 0 auto;
+}
+/* The other footer cells are empty, so let the count run across them */
+.provider-table .rt-td-footer,
+.provider-table .rt-td-footer .rt-td-inner {
+  overflow: visible;
+  white-space: nowrap;
+}
+/* Line the count up with the tick boxes above it */
+.provider-table .rt-td-footer:first-child .rt-td-inner {
+  padding-left: 16px;
+}

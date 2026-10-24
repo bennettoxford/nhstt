@@ -18,3 +18,4 @@ justfile
 vignettes/.quarto
 vignettes/_*
 tests/integration.R
+vignettes/*_cache/
