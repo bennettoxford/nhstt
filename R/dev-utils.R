@@ -786,7 +786,7 @@ update_region_boundaries <- function(
     "Region boundaries: Office for National Statistics, OGL v3.0.",
     "Contains OS data &copy; Crown copyright and database right 2024"
   ),
-  path = "vignettes/nhs-england-regions.geojson"
+  path = "vignettes/assets/nhs-england-regions.geojson"
 ) {
   regions <- httr2::request(url) |>
     httr2::req_retry(max_tries = 3) |>

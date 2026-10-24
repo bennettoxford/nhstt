@@ -157,7 +157,7 @@ just release metadata_providers 0.2.0 "Provider organisation metadata from ODS"
 ### Providers vignette
 
 `vignettes/metadata-providers.qmd` draws the providers map and table.
-Three files sit next to it.
+Three files sit in `vignettes/assets/`.
 
 - `metadata-providers.js` has the map interactions, passed to
   `htmlwidgets::onRender()`

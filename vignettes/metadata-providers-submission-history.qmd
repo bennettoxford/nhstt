@@ -23,15 +23,18 @@ library(scales)
 library(patchwork)
 ```
 
-This page shows how many NHS Talking Therapies providers submitted data in each reporting period of the annual, quarterly, and monthly reports.
-For a map and table of all providers, see our page [Overview of NHS TT providers](metadata-providers.html).
+> **Note:** The counts reflect the data we have added to the package so far and may differ from the full reports published by NHS England. For example, before 2017-18 the annual reports used a substantially different data format. We have not yet added provider level breakdowns for these years, only totals for England.
+
+This page shows how many NHS Talking Therapies providers submitted data in each reporting period of the annual, quarterly, and monthly datasets.
 
 ```{r}
 #| label: load-data
 #| cache: true
+measures_annual <- get_measures_annual()
+
 # Each dataset stores provider codes in a different column
 provider_periods <- bind_rows(
-  get_measures_annual() |>
+  measures_annual |>
     filter(org_type == "Provider") |>
     distinct(reporting_period, end_date, org_code) |>
     mutate(source = "annual"),
@@ -45,8 +48,16 @@ provider_periods <- bind_rows(
     mutate(source = "monthly")
 )
 
+# Annual periods with only England totals, shown at zero providers
+england_only_periods <- measures_annual |>
+  distinct(reporting_period, end_date) |>
+  anti_join(provider_periods, by = "end_date") |>
+  mutate(source = "annual", n_providers = 0L, england_only = TRUE)
+
 provider_counts <- provider_periods |>
   count(source, reporting_period, end_date, name = "n_providers") |>
+  mutate(england_only = FALSE) |>
+  bind_rows(england_only_periods) |>
   mutate(
     period_label = case_when(
       source == "quarterly" ~ sub("-q", "-Q", reporting_period),
@@ -65,14 +76,15 @@ provider_counts <- provider_periods |>
 #| label: fig-submission-history
 #| fig-width: 10
 #| fig-height: 8
-#| fig-cap: Number of providers that submitted data in each reporting period of the annual, quarterly, and monthly reports. Before March 2018 we did not add provider level breakdowns yet, only total numbers for England.
+#| fig-cap: Trends of providers that submitted data in each reporting period. The labels show the total number of providers that submitted data in the latests available reporting period. The grey points at zero in the annual panel indicate the years where we have not yet added provider level breakdowns.
+
 # Same x and y limits in every panel so the panels are easy to compare
 date_limits <- range(provider_counts$end_date)
 count_limits <- c(0, max(provider_counts$n_providers))
 
 # Label the end of each financial year and tick every month
-year_end_breaks <- provider_periods |>
-  filter(source == "annual") |>
+year_end_breaks <- provider_counts |>
+  filter(source == "Annual") |>
   distinct(end_date) |>
   pull(end_date)
 
@@ -86,16 +98,21 @@ month_starts <- seq(
 month_end_ticks <- month_starts[-1] - 1
 
 # geom_label() aligns text with hjust, so left align from a fixed start that
-# leaves room for the longest label
-label_x <- date_limits[2] - 700
+# leaves room for the longest label at any date range
+label_x <- date_limits[2] - 0.25 * diff(date_limits)
 
 provider_counts |>
   split(~source) |>
   lapply(\(counts) {
     counts |>
       ggplot(aes(x = end_date, y = n_providers, colour = source)) +
-      geom_line(alpha = 0.2) +
-      geom_point(size = 1) +
+      geom_line(data = \(d) filter(d, !england_only), alpha = 0.2) +
+      geom_point(data = \(d) filter(d, !england_only), size = 1) +
+      geom_point(
+        data = \(d) filter(d, england_only),
+        size = 1,
+        colour = "grey60"
+      ) +
       geom_label(
         data = \(d) slice_max(d, end_date),
         aes(

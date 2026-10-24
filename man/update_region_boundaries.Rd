@@ -11,7 +11,7 @@ update_region_boundaries(
     "&geometryPrecision=4&f=geojson"),
   attribution = paste("Region boundaries: Office for National Statistics, OGL v3.0.",
     "Contains OS data &copy; Crown copyright and database right 2024"),
-  path = "vignettes/nhs-england-regions.geojson"
+  path = "vignettes/assets/nhs-england-regions.geojson"
 )
 }
 \arguments{

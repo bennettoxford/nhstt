@@ -118,15 +118,15 @@ shared_providers <- SharedData$new(
 
 ```{r}
 #| label: map-and-table
-# The map interactions are in metadata-providers.js and the styles in
-# metadata-providers.css. Region boundaries come from
+# The map interactions are in assets/metadata-providers.js and the styles in
+# assets/metadata-providers.css. Region boundaries come from
 # update_region_boundaries().
 map_interactions <- paste(
-  readLines("metadata-providers.js", warn = FALSE),
+  readLines("assets/metadata-providers.js", warn = FALSE),
   collapse = "\n"
 )
 regions_geojson <- paste(
-  readLines("nhs-england-regions.geojson", warn = FALSE),
+  readLines("assets/nhs-england-regions.geojson", warn = FALSE),
   collapse = ""
 )
 
@@ -260,7 +260,7 @@ reporting_buttons <- div(
 )
 
 tagList(
-  includeCSS("metadata-providers.css"),
+  includeCSS("assets/metadata-providers.css"),
   reporting_buttons,
   div(
     class = "provider-layout",
