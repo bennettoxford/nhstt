@@ -28,7 +28,7 @@
 - [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md)
   : Get annual metadata for variable derivations
 - [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md)
-  : Get provider organisation metadata from ODS
+  : Get provider organisation metadata
 
 ## Cache management
 

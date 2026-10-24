@@ -31,7 +31,8 @@ get_tidy_dataset(dataset, periods = NULL, use_cache = TRUE, version = NULL)
 
 ## Value
 
-Tibble, ordered most-recent period first
+Tibble, ordered most-recent period first when the dataset has a
+`reporting_period` column
 
 ## Details
 

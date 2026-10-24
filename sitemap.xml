@@ -12,13 +12,16 @@
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ea.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-monthly-ltc.html</loc></url>
-<url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-ods.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-providers-submission-history.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-providers.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/articles/metadata-quarterly.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/authors.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/index.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/add_period_columns.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/add_provider_reporting.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/available_nhstt_reports.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/available_versions.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/build_metadata_providers.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/build_tidy_data.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/cache_clear.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/cache_info.html</loc></url>
@@ -59,6 +62,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_ods_data.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/get_postcode_coordinates.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_proms_annual.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_raw_cache_dir.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/get_raw_cache_path.html</loc></url>
@@ -110,6 +114,7 @@
 <url><loc>https://bennettoxford.github.io/nhstt/reference/tidy_annual_legacy_totals.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/tidy_dataset.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/tidy_source_cache_is_current.html</loc></url>
+<url><loc>https://bennettoxford.github.io/nhstt/reference/update_region_boundaries.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_archive_exists.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_archives.html</loc></url>
 <url><loc>https://bennettoxford.github.io/nhstt/reference/validate_dataset.html</loc></url>

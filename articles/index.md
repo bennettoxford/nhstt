@@ -11,16 +11,26 @@ Step-by-step guides for analysing NHS TT data
 - [Referrals and finished
   treatments](https://bennettoxford.github.io/nhstt/articles/how-to-measures-annual.md):
 
-### Data descriptions
+### NHS TT providers
 
-Descriptions and checks of the NHS TT datasets
+Map, table, and submission history of NHS TT providers
+
+- [Overview of NHS TT
+  providers](https://bennettoxford.github.io/nhstt/articles/metadata-providers.md):
+- [Submission history for NHS TT
+  providers](https://bennettoxford.github.io/nhstt/articles/metadata-providers-submission-history.md):
+
+### Data quality
+
+Checks of the NHS TT datasets
 
 - [Differences across reporting
   periods](https://bennettoxford.github.io/nhstt/articles/data-description-counts.md):
 
-### Metadata
+### Measure descriptions
 
-Metadata for monthly, quarterly, and annual reports
+Descriptions of the measures in the monthly, quarterly, and annual
+reports
 
 - [Core
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-monthly-core.md):
@@ -32,5 +42,3 @@ Metadata for monthly, quarterly, and annual reports
   breakdowns](https://bennettoxford.github.io/nhstt/articles/metadata-quarterly.md):
 - [Metadata for annual key
   measures](https://bennettoxford.github.io/nhstt/articles/metadata-annual.md):
-- [NHS Talking Therapies providers
-  metadata](https://bennettoxford.github.io/nhstt/articles/metadata-ods.md):

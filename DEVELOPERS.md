@@ -34,7 +34,7 @@ Julia, or any language that reads parquet.
 | [`get_metadata_measures_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_measures_annual.md) | annual | 2024-25 | 2025-26 | 2 | 0.2.0 |
 | [`get_metadata_variables_annual()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_variables_annual.md) | annual | 2024-25 | 2025-26 | 2 | 0.2.0 |
 | [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md) | monthly | 2026-07 | 2026-07 | 1 | 0.2.0 |
-| [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | live | current | current | 1 | 0.1.0 |
+| [`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md) | live | current | current | 1 | 0.2.0 |
 
 ### Approximate build times
 
@@ -99,8 +99,9 @@ affect annual dataset versions or caches.
 
 3.  `just build-data` — rebuilds all parquets and writes to `data-raw/`
 
-4.  Create a GitHub Release using `just release` (run after merging to
-    main):
+4.  Push the branch, then create a GitHub Release with `just release`.
+    It tags the current branch, so you can run it from a pull request
+    branch before merging:
 
     ``` bash
     just release measures_monthly 0.5.0 "Monthly activity and performance data YYYY-MM to YYYY-MM"
@@ -108,6 +109,9 @@ affect annual dataset versions or caches.
 
 5.  Check the `url` in `tidy_data_sources.yml` matches the parquet asset
     URL on the release page (copy-paste it if not)
+
+6.  Run `just docs` to check the vignettes with the released data. The
+    pkgdown check on the pull request downloads the same release
 
 The monthly metadata file (`metadata_measures_monthly`) is replaced by
 NHS Digital every month: they upload a newly dated xlsx and delete the
@@ -122,13 +126,60 @@ and update the period in the tests and the source link in the
 [`get_metadata_monthly()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_monthly.md)
 docs.
 
-Provider metadata is published the same way, but its parquet is built
-from the live ODS API snapshot:
+Provider metadata is published the same way, see [Provider
+metadata](#provider-metadata).
+
+## Provider metadata
+
+[`get_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/get_metadata_providers.md)
+downloads a published parquet like every other getter.
+`build_tidy_data("metadata_providers")` builds that parquet with
+[`build_metadata_providers()`](https://bennettoxford.github.io/nhstt/reference/build_metadata_providers.md)
+in four steps.
+
+1.  Take the provider codes from the published annual measures
+2.  Look up each provider in the live NHS Organisation Data Service
+    (ODS) API with
+    [`get_ods_data()`](https://bennettoxford.github.io/nhstt/reference/get_ods_data.md)
+3.  Add latitude and longitude for each postcode from
+    [postcodes.io](https://postcodes.io/) with
+    [`get_postcode_coordinates()`](https://bennettoxford.github.io/nhstt/reference/get_postcode_coordinates.md)
+4.  Add the last period each provider reported, and the latest period,
+    in the published annual, quarterly, and monthly data with
+    [`add_provider_reporting()`](https://bennettoxford.github.io/nhstt/reference/add_provider_reporting.md)
+
+Steps 1 and 4 read the published datasets. Rebuild provider metadata
+after releasing new annual, quarterly, or monthly data, so the reporting
+columns include the new period. ODS changes over time, so the
+`retrieved_date` column records the day of the build.
 
 ``` bash
-just build-data
-just release metadata_providers 0.1.0 "Provider organisation metadata from ODS"
+just build-data-metadata
+just release metadata_providers 0.2.0 "Provider organisation metadata from ODS"
 ```
+
+### Providers vignette
+
+`vignettes/metadata-providers.qmd` draws the providers map and table.
+Three files sit in `vignettes/assets/`.
+
+- `metadata-providers.js` has the map interactions, passed to
+  [`htmlwidgets::onRender()`](https://rdrr.io/pkg/htmlwidgets/man/onRender.html)
+- `metadata-providers.css` has the page styles
+- `nhs-england-regions.geojson` has the NHS England region boundaries
+
+The vignette reads the JavaScript and CSS into the page when it renders,
+so the pkgdown site needs no extra files.
+
+The region boundaries come from the [Office for National Statistics
+(ONS) Open Geography Portal](https://geoportal.statistics.gov.uk/).
+[`update_region_boundaries()`](https://bennettoxford.github.io/nhstt/reference/update_region_boundaries.md)
+downloads them and renames the fields to `region_code` and
+`region_name`, so the vignette does not depend on the boundary year. To
+update them, change the default `url` and the year in `attribution`,
+then run `just update-region-boundaries`. The region names must match
+the `region_name` values from ODS. If they do not, clicking a region on
+the map hides every provider.
 
 ## Configuration files
 
@@ -157,6 +208,8 @@ Internal functions in `R/dev-utils.R` (load with
 - `compare_schemas("main")` — column changes across periods
 - `build_tidy_data("dataset_name")` — build combined parquet for one
   dataset
+- [`update_region_boundaries()`](https://bennettoxford.github.io/nhstt/reference/update_region_boundaries.md)
+  — download the region boundaries for the providers map
 
 ## Resources
 
