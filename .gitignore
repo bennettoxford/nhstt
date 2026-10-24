@@ -10,3 +10,5 @@ docs
 .Rhistory
 nhstt.Rproj
 data-raw/
+vignettes/*_cache/
+vignettes/*_files/

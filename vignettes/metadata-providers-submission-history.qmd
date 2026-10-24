@@ -4,6 +4,139 @@ vignette: >
   %\VignetteIndexEntry{Submission history for NHS TT providers}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+    echo: false
+    message: false
+    warning: false
 ---
 
-> **Note:** This page is coming soon. It will show which annual, quarterly, and monthly periods each NHS Talking Therapies provider submitted data for. For a map and table of all providers, see the [providers overview](metadata-providers.html).
+```{r}
+#| label: setup
+#| include: false
+library(nhstt)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(patchwork)
+```
+
+This page shows how many NHS Talking Therapies providers submitted data in each reporting period of the annual, quarterly, and monthly reports.
+For a map and table of all providers, see our page [Overview of NHS TT providers](metadata-providers.html).
+
+```{r}
+#| label: load-data
+#| cache: true
+# Each dataset stores provider codes in a different column
+provider_periods <- bind_rows(
+  get_measures_annual() |>
+    filter(org_type == "Provider") |>
+    distinct(reporting_period, end_date, org_code) |>
+    mutate(source = "annual"),
+  get_measures_quarterly() |>
+    filter(org_type %in% c("Provider", "SubICB-Provider")) |>
+    distinct(reporting_period, end_date, org_code = provider_code) |>
+    mutate(source = "quarterly"),
+  get_measures_monthly() |>
+    filter(group_type %in% c("Provider", "SubICB/Provider")) |>
+    distinct(reporting_period, end_date, org_code = org_code2) |>
+    mutate(source = "monthly")
+)
+
+provider_counts <- provider_periods |>
+  count(source, reporting_period, end_date, name = "n_providers") |>
+  mutate(
+    period_label = case_when(
+      source == "quarterly" ~ sub("-q", "-Q", reporting_period),
+      source == "monthly" ~ format(end_date, "%B %Y"),
+      .default = reporting_period
+    ),
+    source = factor(
+      source,
+      levels = c("annual", "quarterly", "monthly"),
+      labels = c("Annual", "Quarterly", "Monthly")
+    )
+  )
+```
+
+```{r}
+#| label: fig-submission-history
+#| fig-width: 10
+#| fig-height: 8
+#| fig-cap: Number of providers that submitted data in each reporting period of the annual, quarterly, and monthly reports. Before March 2018 we did not add provider level breakdowns yet, only total numbers for England.
+# Same x and y limits in every panel so the panels are easy to compare
+date_limits <- range(provider_counts$end_date)
+count_limits <- c(0, max(provider_counts$n_providers))
+
+# Label the end of each financial year and tick every month
+year_end_breaks <- provider_periods |>
+  filter(source == "annual") |>
+  distinct(end_date) |>
+  pull(end_date)
+
+month_starts <- seq(
+  as.Date(format(date_limits[1], "%Y-%m-01")),
+  date_limits[2] + 1,
+  by = "month"
+)
+
+# Month ends are the day before each month start
+month_end_ticks <- month_starts[-1] - 1
+
+# geom_label() aligns text with hjust, so left align from a fixed start that
+# leaves room for the longest label
+label_x <- date_limits[2] - 700
+
+provider_counts |>
+  split(~source) |>
+  lapply(\(counts) {
+    counts |>
+      ggplot(aes(x = end_date, y = n_providers, colour = source)) +
+      geom_line(alpha = 0.2) +
+      geom_point(size = 1) +
+      geom_label(
+        data = \(d) slice_max(d, end_date),
+        aes(
+          label = paste0(
+            "Reporting period: ",
+            period_label,
+            "\nN = ",
+            n_providers
+          )
+        ),
+        x = label_x,
+        hjust = 0,
+        vjust = 1,
+        nudge_y = -15,
+        size = 3.5,
+        fontface = "bold"
+      ) +
+      scale_x_date(
+        breaks = year_end_breaks,
+        minor_breaks = month_end_ticks,
+        labels = label_date("%b\n%Y"),
+        limits = date_limits
+      ) +
+      guides(x = guide_axis(minor.ticks = TRUE)) +
+      scale_y_continuous(
+        labels = label_number(accuracy = 1),
+        limits = count_limits
+      ) +
+      # Keep all levels so each source gets the same colour in every panel
+      scale_colour_brewer(palette = "Set1", drop = FALSE) +
+      labs(
+        title = unique(counts$source),
+        x = "End date of reporting period",
+        y = "Number of NHS TT providers"
+      )
+  }) |>
+  wrap_plots(ncol = 1, axis_titles = "collect") &
+  theme_classic(base_size = 14) &
+  theme(
+    legend.position = "none",
+    panel.grid.major = element_line(colour = "gray90", linetype = "dotted"),
+    plot.title = element_text(size = 12, face = "bold")
+  )
+```

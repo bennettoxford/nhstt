@@ -112,9 +112,9 @@ shared_providers <- SharedData$new(
 )
 ```
 
-> **Note:** This page shows providers as listed by the NHS Organisation Data Service (ODS) on `r retrieved_date`[^ods]. We have not cleaned this data yet, so it has some known issues. For example, some providers are listed as active but have not submitted data recently.
+> **Note:** This page shows providers as listed by the NHS Organisation Data Service (ODS)[^ods] on `r retrieved_date`. We have not cleaned this data yet, so it has some known issues. For example, some providers are listed as active but have not submitted data recently.
 
-[^ods]: Organisation details come from [ODS](https://www.odsdatasearchandexport.nhs.uk/). Locations come from [postcodes.io](https://postcodes.io/).
+[^ods]: Organisation details come from the [NHS Organisation Data Service (ODS)](https://www.odsdatasearchandexport.nhs.uk/).
 
 ```{r}
 #| label: map-and-table
