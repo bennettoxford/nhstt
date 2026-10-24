@@ -1,0 +1,9 @@
+---
+title: "Submission history for NHS TT providers"
+vignette: >
+  %\VignetteIndexEntry{Submission history for NHS TT providers}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+> **Note:** This page is coming soon. It will show which annual, quarterly, and monthly periods each NHS Talking Therapies provider submitted data for. For a map and table of all providers, see the [providers overview](metadata-providers.html).

@@ -15,7 +15,8 @@
 #' @param use_cache Logical, whether to use cached data if available
 #' @param version Character, specific data version to use, or NULL for latest
 #'
-#' @return Tibble, ordered most-recent period first
+#' @return Tibble, ordered most-recent period first when the dataset has a
+#'   `reporting_period` column
 #'
 #' @importFrom dplyr filter arrange desc
 #' @importFrom cli cli_abort
@@ -45,6 +46,11 @@ get_tidy_dataset <- function(
       ))
     }
     data <- filter(data, reporting_period %in% periods)
+  }
+
+  # Metadata such as providers has no reporting period
+  if (!"reporting_period" %in% names(data)) {
+    return(data)
   }
 
   arrange(data, desc(reporting_period))

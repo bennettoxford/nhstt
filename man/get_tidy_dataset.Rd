@@ -16,7 +16,8 @@ get_tidy_dataset(dataset, periods = NULL, use_cache = TRUE, version = NULL)
 \item{version}{Character, specific data version to use, or NULL for latest}
 }
 \value{
-Tibble, ordered most-recent period first
+Tibble, ordered most-recent period first when the dataset has a
+\code{reporting_period} column
 }
 \description{
 Shared core for all user-facing \verb{get_*()} functions. Looks up the dataset
